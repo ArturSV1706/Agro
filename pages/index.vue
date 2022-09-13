@@ -1,5 +1,5 @@
 <template>
-    <div>
-        teste branch angeloUse
+    <div >
+        <CalculoSafra />
     </div>
 </template>
