@@ -27,9 +27,9 @@
     "file": "node_modules/@nuxt/ui-templates/dist/templates/error-500.vue?vue&type=style&index=0&scoped=f37408fc&lang.css",
     "resourceType": "style"
   },
-  "C:/Users/Magda/Desktop/projeto-agro/agro/node_modules/nuxt/dist/app/entry": {
+  "C:/Users/Artur/Documents/nuxt/template/node_modules/nuxt/dist/app/entry": {
     "isEntry": true,
-    "file": "C:/Users/Magda/Desktop/projeto-agro/agro/node_modules/nuxt/dist/app/entry",
+    "file": "C:/Users/Artur/Documents/nuxt/template/node_modules/nuxt/dist/app/entry",
     "module": true,
     "resourceType": "script"
   }
