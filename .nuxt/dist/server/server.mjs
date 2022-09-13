@@ -115,7 +115,9 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /node_modules/nuxt/dist/pages/runtime/utils.mjs ($id_gPQzqsnHwc)
 // - /node_modules/nuxt/dist/app/components/utils.mjs ($id_acUmhqj8VN)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/index.vue ($id_zKWOlz8EPO)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
 // - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
@@ -2861,10 +2863,14 @@ Object.defineProperty(__vite_ssr_exports__, "_wrapIf", { enumerable: true, confi
 // - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // Dependencies: 
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/index.vue ($id_zKWOlz8EPO)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
 // --------------------
-const $id_EPiivtKlLT = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_71CurSx79s = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/pages/index.vue?macro=true");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/pages/index2.vue?macro=true");
 
 __vite_ssr_exports__.default = [
   {
@@ -2875,6 +2881,15 @@ __vite_ssr_exports__.default = [
     meta: __vite_ssr_import_0__.meta,
     alias: __vite_ssr_import_0__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/index.vue").then(m => m.default || m)
+  },
+  {
+    name: "index2",
+    path: "/index2",
+    file: "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue",
+    children: [],
+    meta: __vite_ssr_import_1__.meta,
+    alias: __vite_ssr_import_1__.meta?.alias || [],
+    component: () => __vite_ssr_dynamic_import__("/pages/index2.vue").then(m => m.default || m)
   }
 ];
 }
@@ -2919,7 +2934,9 @@ Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configur
 // Request: vue/server-renderer
 // Parents: 
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/index.vue ($id_zKWOlz8EPO)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
 // - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
@@ -2947,7 +2964,9 @@ import("vue/server-renderer")
 // Request: /@id/__x00__plugin-vue:export-helper
 // Parents: 
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/index.vue ($id_zKWOlz8EPO)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
 // - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
@@ -2967,6 +2986,41 @@ __vite_ssr_exports__.default = (sfc, props) => {
   return target;
 }
 ;
+}
+
+
+// --------------------
+// Request: /pages/index2.vue?macro=true
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - vue/server-renderer ($id_UyJffsox60)
+// - vue ($id_VkOCJnUZrn)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_FWuIS9Y8Qh = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}><h1 class="">Hello World</h1></div>`)
+}
+
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("pages/index2.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]])
+const meta = undefined
+Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
 }
 
 
@@ -3000,6 +3054,39 @@ _sfc_main.setup = (props, ctx) => {
 const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
 __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/index.vue"]]);
+}
+
+
+// --------------------
+// Request: /pages/index2.vue
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - vue/server-renderer ($id_UyJffsox60)
+// - vue ($id_VkOCJnUZrn)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_6jS2JUjPaT = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}><h1 class="">Hello World</h1></div>`)
+}
+
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("pages/index2.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
 }
 
 
@@ -3759,11 +3846,13 @@ const __modules__ = {
   "/node_modules/nuxt/dist/pages/runtime/page.mjs": $id_L9I1eoE7dW,
   "/node_modules/nuxt/dist/pages/runtime/utils.mjs": $id_ZR0LUqwyer,
   "/node_modules/nuxt/dist/app/components/utils.mjs": $id_NgApSiB2xA,
-  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_EPiivtKlLT,
+  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_71CurSx79s,
   "/pages/index.vue?macro=true": $id_UfTTsz11wj,
   "vue/server-renderer": $id_aRHphPzMpI,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
+  "/pages/index2.vue?macro=true": $id_FWuIS9Y8Qh,
   "/pages/index.vue": $id_FYGDg5l61L,
+  "/pages/index2.vue": $id_6jS2JUjPaT,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/router.options.mjs": $id_nmhVZR4Lu2,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/middleware.mjs": $id_4IgeTdkGR5,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/root-component.mjs": $id_ZnmS7tMcFt,
