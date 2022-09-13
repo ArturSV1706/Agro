@@ -2889,13 +2889,13 @@ __vite_ssr_exports__.default = [
 // - vue ($id_VkOCJnUZrn)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_H2p8ppy5Wh = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_IKaA49Sldc = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const _sfc_main = {}
 const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
 
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
-  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}></div>`)
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}> teste branch angeloUse </div>`)
 }
 
 
@@ -2979,13 +2979,13 @@ __vite_ssr_exports__.default = (sfc, props) => {
 // - vue ($id_VkOCJnUZrn)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_xoLDlcn2bc = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_vlg0qHgeJl = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const _sfc_main = {}
 const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
 
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
-  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}></div>`)
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}> teste branch angeloUse </div>`)
 }
 
 
@@ -3760,10 +3760,10 @@ const __modules__ = {
   "/node_modules/nuxt/dist/pages/runtime/utils.mjs": $id_ZR0LUqwyer,
   "/node_modules/nuxt/dist/app/components/utils.mjs": $id_NgApSiB2xA,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/routes.mjs": $id_L67Eutvovg,
-  "/pages/index.vue?macro=true": $id_H2p8ppy5Wh,
+  "/pages/index.vue?macro=true": $id_IKaA49Sldc,
   "vue/server-renderer": $id_aRHphPzMpI,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
-  "/pages/index.vue": $id_xoLDlcn2bc,
+  "/pages/index.vue": $id_vlg0qHgeJl,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/router.options.mjs": $id_6d9szs6s1N,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/middleware.mjs": $id_47CP9FyM9y,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/root-component.mjs": $id_zAr7gVYd5q,
