@@ -110,13 +110,20 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /node_modules/nuxt/dist/head/runtime/lib/vueuse-head.plugin.mjs ($id_5vEgA2Fgrh)
 // - /node_modules/nuxt/dist/head/runtime/plugin.mjs ($id_omUDQe4IGe)
 // - /node_modules/nuxt/dist/head/runtime/components.mjs ($id_sqKdb79FW5)
-// - /node_modules/nuxt/dist/app/plugins/router.mjs ($id_fEh9isZZyu)
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
+// - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
+// - /node_modules/nuxt/dist/pages/runtime/utils.mjs ($id_gPQzqsnHwc)
+// - /node_modules/nuxt/dist/app/components/utils.mjs ($id_acUmhqj8VN)
+// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index.vue ($id_zKWOlz8EPO)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
 // - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
-// - /app.vue ($id_K0boQqLzfo)
+// - /node_modules/nuxt/dist/app/components/layout.mjs ($id_OQA4gz7rLc)
+// - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/layouts.mjs ($id_c0oozvzpmC)
+// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
 // Dependencies: 
 // - @vue/runtime-dom ($id_xcKel6nH2q)
 // --------------------
@@ -225,7 +232,7 @@ globalThis.__publicAssetsURL = publicAssetsURL;
 // - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/paths.mjs ($id_uKnWuIRw89)
 // - /node_modules/nuxt/dist/app/composables/router.mjs ($id_202QqPjMtu)
 // - /node_modules/nuxt/dist/app/components/nuxt-link.mjs ($id_6yHtfHy3cx)
-// - /node_modules/nuxt/dist/app/plugins/router.mjs ($id_fEh9isZZyu)
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // Dependencies: 
 
 // --------------------
@@ -260,8 +267,10 @@ import("ufo")
 // - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/components.plugin.mjs ($id_VW8GcVrkS5)
 // - /node_modules/nuxt/dist/head/runtime/lib/vueuse-head.plugin.mjs ($id_5vEgA2Fgrh)
 // - /node_modules/nuxt/dist/head/runtime/plugin.mjs ($id_omUDQe4IGe)
-// - /node_modules/nuxt/dist/app/plugins/router.mjs ($id_fEh9isZZyu)
+// - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
+// - /node_modules/nuxt/dist/app/components/layout.mjs ($id_OQA4gz7rLc)
 // Dependencies: 
 // - /node_modules/nuxt/dist/app/nuxt.mjs ($id_4GnUEZ7ifE)
 // - /node_modules/nuxt/dist/app/composables/index.mjs ($id_sGenmuNLlo)
@@ -292,7 +301,6 @@ Object.defineProperty(__vite_ssr_exports__, "isVue3", { enumerable: true, config
 // Parents: 
 // - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
 // - /node_modules/nuxt/dist/app/composables/component.mjs ($id_UzRZUO1GKq)
-// - /node_modules/nuxt/dist/app/plugins/router.mjs ($id_fEh9isZZyu)
 // Dependencies: 
 // - vue ($id_VkOCJnUZrn)
 // - hookable ($id_Jqn8E4F5w7)
@@ -482,6 +490,7 @@ import("hookable")
 // Request: unctx
 // Parents: 
 // - /node_modules/nuxt/dist/app/nuxt.mjs ($id_4GnUEZ7ifE)
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // Dependencies: 
 
 // --------------------
@@ -630,6 +639,8 @@ Object.defineProperty(__vite_ssr_exports__, "defineNuxtComponent", { enumerable:
 // Request: vue-router
 // Parents: 
 // - /node_modules/nuxt/dist/app/composables/component.mjs ($id_UzRZUO1GKq)
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
+// - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
 // Dependencies: 
 
 // --------------------
@@ -951,7 +962,7 @@ Object.defineProperty(__vite_ssr_exports__, "createError", { enumerable: true, c
 // - /node_modules/nuxt/dist/app/composables/error.mjs ($id_bBQ8Yk34eC)
 // - /node_modules/nuxt/dist/app/composables/cookie.mjs ($id_URtEHTJ6vX)
 // - /node_modules/nuxt/dist/app/composables/router.mjs ($id_202QqPjMtu)
-// - /node_modules/nuxt/dist/app/plugins/router.mjs ($id_fEh9isZZyu)
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // Dependencies: 
 
 // --------------------
@@ -1587,9 +1598,9 @@ __vite_ssr_exports__.default = "/*\n! tailwindcss v3.1.8 | MIT License | https:/
 // - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/components.plugin.mjs ($id_VW8GcVrkS5)
 // - /node_modules/nuxt/dist/head/runtime/lib/vueuse-head.plugin.mjs ($id_5vEgA2Fgrh)
 // - /node_modules/nuxt/dist/head/runtime/plugin.mjs ($id_omUDQe4IGe)
-// - /node_modules/nuxt/dist/app/plugins/router.mjs ($id_fEh9isZZyu)
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // --------------------
-const $id_hL94tvJKtl = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_YSdAIFBoDu = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/plugins/preload.server.mjs");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/components.plugin.mjs");
@@ -1598,7 +1609,7 @@ const __vite_ssr_import_2__ = await __vite_ssr_import__("/node_modules/nuxt/dist
 
 const __vite_ssr_import_3__ = await __vite_ssr_import__("/node_modules/nuxt/dist/head/runtime/plugin.mjs");
 
-const __vite_ssr_import_4__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/plugins/router.mjs");
+const __vite_ssr_import_4__ = await __vite_ssr_import__("/node_modules/nuxt/dist/pages/runtime/router.mjs");
 
 __vite_ssr_exports__.default = [
   __vite_ssr_import_0__.default,
@@ -2537,201 +2548,480 @@ __vite_ssr_exports__.default = {"globalMeta":{"meta":[],"link":[],"style":[],"sc
 
 
 // --------------------
-// Request: /node_modules/nuxt/dist/app/plugins/router.mjs
+// Request: /node_modules/nuxt/dist/pages/runtime/router.mjs
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/plugins/server.mjs ($id_sy5CZPFt9X)
 // Dependencies: 
+// - unctx ($id_95GsJqysu7)
 // - vue ($id_VkOCJnUZrn)
-// - ufo ($id_Idgm3MW7hZ)
+// - vue-router ($id_RGqOect6fq)
 // - h3 ($id_ltfhTi4n2w)
+// - ufo ($id_Idgm3MW7hZ)
+// - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
 // - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
-// - /node_modules/nuxt/dist/app/nuxt.mjs ($id_4GnUEZ7ifE)
+// - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/routes.mjs ($id_e1siyV1pXq)
+// - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/router.options.mjs ($id_yiuBagEAR1)
 // - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/middleware.mjs ($id_g0oplxvKlu)
 // --------------------
-const $id_BasEz8ZC5U = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+const $id_wEWywEaXgp = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("unctx");
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
 
-const __vite_ssr_import_1__ = await __vite_ssr_import__("ufo");
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue-router");
 
-const __vite_ssr_import_2__ = await __vite_ssr_import__("h3");
+const __vite_ssr_import_3__ = await __vite_ssr_import__("h3");
 
-const __vite_ssr_import_3__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
+const __vite_ssr_import_4__ = await __vite_ssr_import__("ufo");
 
-const __vite_ssr_import_4__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/nuxt.mjs");
+const __vite_ssr_import_5__ = await __vite_ssr_import__("/node_modules/nuxt/dist/pages/runtime/page.mjs");
 
-const __vite_ssr_import_5__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
+const __vite_ssr_import_6__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
 
-const __vite_ssr_import_6__ = await __vite_ssr_import__("/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/middleware.mjs");
+const __vite_ssr_import_7__ = await __vite_ssr_import__("/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/routes.mjs");
 
-function getRouteFromPath(fullPath) {
-  if (typeof fullPath === "object") {
-    throw new TypeError("[nuxt] Route location object cannot be resolved when vue-router is disabled (no pages).");
+const __vite_ssr_import_8__ = await __vite_ssr_import__("/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/router.options.mjs");
+
+const __vite_ssr_import_9__ = await __vite_ssr_import__("/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/middleware.mjs");
+
+function createCurrentLocation(base, location) {
+  const { pathname, search, hash } = location;
+  const hashPos = base.indexOf("#");
+  if (hashPos > -1) {
+    const slicePos = hash.includes(base.slice(hashPos)) ? base.slice(hashPos).length : 1;
+    let pathFromHash = hash.slice(slicePos);
+    if (pathFromHash[0] !== "/") {
+      pathFromHash = "/" + pathFromHash;
+    }
+    return __vite_ssr_import_4__.withoutBase(pathFromHash, "");
   }
-  const url = __vite_ssr_import_1__.parseURL(fullPath.toString());
-  return {
-    path: url.pathname,
-    fullPath,
-    query: __vite_ssr_import_1__.parseQuery(url.search),
-    hash: url.hash,
-    params: {},
-    name: void 0,
-    matched: [],
-    redirectedFrom: void 0,
-    meta: {},
-    href: fullPath
-  };
+  const path = __vite_ssr_import_4__.withoutBase(pathname, base);
+  return path + search + hash;
 }
-__vite_ssr_exports__.default = __vite_ssr_import_3__.defineNuxtPlugin((nuxtApp) => {
-  const initialURL = false ? __vite_ssr_import_1__.withoutBase(window.location.pathname, __vite_ssr_import_5__.useRuntimeConfig().app.baseURL) + window.location.search + window.location.hash : nuxtApp.ssrContext.url;
-  const routes = [];
-  const hooks = {
-    "navigate:before": [],
-    "resolve:before": [],
-    "navigate:after": [],
-    error: []
+__vite_ssr_exports__.default = __vite_ssr_import_6__.defineNuxtPlugin(async (nuxtApp) => {let __temp, __restore;
+  nuxtApp.vueApp.component("NuxtPage", __vite_ssr_import_5__.default);
+  nuxtApp.vueApp.component("NuxtNestedPage", __vite_ssr_import_5__.default);
+  nuxtApp.vueApp.component("NuxtChild", __vite_ssr_import_5__.default);
+  const baseURL = __vite_ssr_import_6__.useRuntimeConfig().app.baseURL;
+  const routerHistory = false ? __vite_ssr_import_2__.createWebHistory(baseURL) : __vite_ssr_import_2__.createMemoryHistory(baseURL);
+  const initialURL = true ? nuxtApp.ssrContext.url : createCurrentLocation(baseURL, window.location);
+  const router = __vite_ssr_import_2__.createRouter({
+    ...__vite_ssr_import_8__.default,
+    history: routerHistory,
+    routes: __vite_ssr_import_7__.default
+  });
+  nuxtApp.vueApp.use(router);
+  const previousRoute = __vite_ssr_import_1__.shallowRef(router.currentRoute.value);
+  router.afterEach((_to, from) => {
+    previousRoute.value = from;
+  });
+  Object.defineProperty(nuxtApp.vueApp.config.globalProperties, "previousRoute", {
+    get: () => previousRoute.value
+  });
+  const _route = __vite_ssr_import_1__.shallowRef(router.resolve(initialURL));
+  const syncCurrentRoute = () => {
+    _route.value = router.currentRoute.value;
   };
-  const registerHook = (hook, guard) => {
-    hooks[hook].push(guard);
-    return () => hooks[hook].splice(hooks[hook].indexOf(guard), 1);
-  };
-  const baseURL = __vite_ssr_import_5__.useRuntimeConfig().app.baseURL;
-  const route = __vite_ssr_import_0__.reactive(getRouteFromPath(initialURL));
-  async function handleNavigation(url, replace) {
-    try {
-      const to = getRouteFromPath(url);
-      for (const middleware of hooks["navigate:before"]) {
-        const result = await middleware(to, route);
-        if (result === false || result instanceof Error) {
-          return;
-        }
-        if (result) {
-          return handleNavigation(result, true);
-        }
-      }
-      for (const handler of hooks["resolve:before"]) {
-        await handler(to, route);
-      }
-      Object.assign(route, to);
-      if (false) {
-        window.history[replace ? "replaceState" : "pushState"]({}, "", __vite_ssr_import_1__.joinURL(baseURL, url));
-        if (!nuxtApp.isHydrating) {
-          await __vite_ssr_import_4__.callWithNuxt(nuxtApp, __vite_ssr_import_5__.clearError);
-        }
-      }
-      for (const middleware of hooks["navigate:after"]) {
-        await middleware(to, route);
-      }
-    } catch (err) {
-      if (true && !hooks.error.length) {
-        console.warn("No error handlers registered to handle middleware errors. You can register an error handler with `router.onError()`", err);
-      }
-      for (const handler of hooks.error) {
-        await handler(err);
-      }
-    }
-  }
-  const router = {
-    currentRoute: route,
-    isReady: () => Promise.resolve(),
-    options: {},
-    install: () => Promise.resolve(),
-    push: (url) => handleNavigation(url, false),
-    replace: (url) => handleNavigation(url, true),
-    back: () => window.history.go(-1),
-    go: (delta) => window.history.go(delta),
-    forward: () => window.history.go(1),
-    beforeResolve: (guard) => registerHook("resolve:before", guard),
-    beforeEach: (guard) => registerHook("navigate:before", guard),
-    afterEach: (guard) => registerHook("navigate:after", guard),
-    onError: (handler) => registerHook("error", handler),
-    resolve: getRouteFromPath,
-    addRoute: (parentName, route2) => {
-      routes.push(route2);
-    },
-    getRoutes: () => routes,
-    hasRoute: (name) => routes.some((route2) => route2.name === name),
-    removeRoute: (name) => {
-      const index = routes.findIndex((route2) => route2.name === name);
-      if (index !== -1) {
-        routes.splice(index, 1);
-      }
-    }
-  };
-  nuxtApp.vueApp.component("RouterLink", {
-    functional: true,
-    props: {
-      to: String,
-      custom: Boolean,
-      replace: Boolean,
-      activeClass: String,
-      exactActiveClass: String,
-      ariaCurrentValue: String
-    },
-    setup: (props, { slots }) => {
-      const navigate = () => handleNavigation(props.to, props.replace);
-      return () => {
-        const route2 = router.resolve(props.to);
-        return props.custom ? slots.default?.({ href: props.to, navigate, route: route2 }) : __vite_ssr_import_0__.h("a", { href: props.to, onClick: (e) => {
-          e.preventDefault();
-          return navigate();
-        } }, slots);
-      };
+  nuxtApp.hook("page:finish", syncCurrentRoute);
+  router.afterEach((to, from) => {
+    if (to.matched[0]?.components?.default === from.matched[0]?.components?.default) {
+      syncCurrentRoute();
     }
   });
-  if (false) {
-    window.addEventListener("popstate", (event) => {
-      const location = event.target.location;
-      router.replace(location.href.replace(location.origin, ""));
-    });
+  const route = {};
+  for (const key in _route.value) {
+    route[key] = __vite_ssr_import_1__.computed(() => _route.value[key]);
   }
-  nuxtApp._route = route;
+  nuxtApp._route = __vite_ssr_import_1__.reactive(route);
   nuxtApp._middleware = nuxtApp._middleware || {
     global: [],
     named: {}
   };
-  nuxtApp.hooks.hookOnce("app:created", async () => {
-    router.beforeEach(async (to, from) => {
-      to.meta = __vite_ssr_import_0__.reactive(to.meta || {});
-      nuxtApp._processingMiddleware = true;
-      const middlewareEntries = /* @__PURE__ */ new Set([...__vite_ssr_import_6__.globalMiddleware, ...nuxtApp._middleware.global]);
-      for (const middleware of middlewareEntries) {
-        const result = await __vite_ssr_import_4__.callWithNuxt(nuxtApp, middleware, [to, from]);
-        if (true) {
-          if (result === false || result instanceof Error) {
-            const error = result || __vite_ssr_import_2__.createError({
-              statusMessage: `Route navigation aborted: ${initialURL}`
-            });
-            return __vite_ssr_import_4__.callWithNuxt(nuxtApp, __vite_ssr_import_5__.showError, [error]);
-          }
+  const error = __vite_ssr_import_6__.useError();
+  try {
+    if (true) {
+      ;(([__temp,__restore]=__vite_ssr_import_0__.executeAsync(()=>router.push(initialURL))),await __temp,__restore());;
+    }
+    ;(([__temp,__restore]=__vite_ssr_import_0__.executeAsync(()=>router.isReady())),await __temp,__restore());;
+  } catch (error2) {
+    __vite_ssr_import_6__.callWithNuxt(nuxtApp, __vite_ssr_import_6__.showError, [error2]);
+  }
+  router.beforeEach(async (to, from) => {
+    to.meta = __vite_ssr_import_1__.reactive(to.meta);
+    nuxtApp._processingMiddleware = true;
+    const middlewareEntries = /* @__PURE__ */ new Set([...__vite_ssr_import_9__.globalMiddleware, ...nuxtApp._middleware.global]);
+    for (const component of to.matched) {
+      const componentMiddleware = component.meta.middleware;
+      if (!componentMiddleware) {
+        continue;
+      }
+      if (Array.isArray(componentMiddleware)) {
+        for (const entry of componentMiddleware) {
+          middlewareEntries.add(entry);
         }
-        if (result || result === false) {
-          return result;
+      } else {
+        middlewareEntries.add(componentMiddleware);
+      }
+    }
+    for (const entry of middlewareEntries) {
+      const middleware = typeof entry === "string" ? nuxtApp._middleware.named[entry] || await __vite_ssr_import_9__.namedMiddleware[entry]?.().then((r) => r.default || r) : entry;
+      if (!middleware) {
+        if (true) {
+          throw new Error(`Unknown route middleware: '${entry}'. Valid middleware: ${Object.keys(__vite_ssr_import_9__.namedMiddleware).map((mw) => `'${mw}'`).join(", ")}.`);
+        }
+        throw new Error(`Unknown route middleware: '${entry}'.`);
+      }
+      const result = await __vite_ssr_import_6__.callWithNuxt(nuxtApp, middleware, [to, from]);
+      if (true) {
+        if (result === false || result instanceof Error) {
+          const error2 = result || __vite_ssr_import_3__.createError({
+            statusMessage: `Route navigation aborted: ${initialURL}`
+          });
+          return __vite_ssr_import_6__.callWithNuxt(nuxtApp, __vite_ssr_import_6__.showError, [error2]);
         }
       }
-    });
-    router.afterEach(() => {
-      delete nuxtApp._processingMiddleware;
-    });
-    await router.replace(initialURL);
-    if (!__vite_ssr_import_1__.isEqual(route.fullPath, initialURL)) {
-      await __vite_ssr_import_4__.callWithNuxt(nuxtApp, __vite_ssr_import_5__.navigateTo, [route.fullPath]);
+      if (result || result === false) {
+        return result;
+      }
     }
   });
-  return {
-    provide: {
-      route,
-      router
+  router.afterEach(async (to) => {
+    delete nuxtApp._processingMiddleware;
+    if (false && !nuxtApp.isHydrating && error.value) {
+      await __vite_ssr_import_6__.callWithNuxt(nuxtApp, __vite_ssr_import_6__.clearError);
     }
-  };
+    if (to.matched.length === 0) {
+      __vite_ssr_import_6__.callWithNuxt(nuxtApp, __vite_ssr_import_6__.showError, [__vite_ssr_import_3__.createError({
+        statusCode: 404,
+        fatal: false,
+        statusMessage: `Page not found: ${to.fullPath}`
+      })]);
+    } else if (true && to.matched[0].name === "404" && nuxtApp.ssrContext) {
+      nuxtApp.ssrContext.res.statusCode = 404;
+    } else if (true) {
+      const currentURL = to.fullPath || "/";
+      if (!__vite_ssr_import_4__.isEqual(currentURL, initialURL)) {
+        await __vite_ssr_import_6__.callWithNuxt(nuxtApp, __vite_ssr_import_6__.navigateTo, [currentURL]);
+      }
+    }
+  });
+  nuxtApp.hooks.hookOnce("app:created", async () => {
+    try {
+      await router.replace({
+        ...router.resolve(initialURL),
+        name: void 0,
+        force: true
+      });
+    } catch (error2) {
+      __vite_ssr_import_6__.callWithNuxt(nuxtApp, __vite_ssr_import_6__.showError, [error2]);
+    }
+  });
+  return { provide: { router } };
+},1);
+;
+}
+
+
+// --------------------
+// Request: /node_modules/nuxt/dist/pages/runtime/page.mjs
+// Parents: 
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - vue-router ($id_RGqOect6fq)
+// - /node_modules/nuxt/dist/pages/runtime/utils.mjs ($id_gPQzqsnHwc)
+// - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
+// - /node_modules/nuxt/dist/app/components/utils.mjs ($id_acUmhqj8VN)
+// --------------------
+const $id_L9I1eoE7dW = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue-router");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/node_modules/nuxt/dist/pages/runtime/utils.mjs");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
+
+const __vite_ssr_import_4__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/components/utils.mjs");
+
+const isNestedKey = Symbol("isNested");
+__vite_ssr_exports__.default = __vite_ssr_import_0__.defineComponent({
+  name: "NuxtPage",
+  inheritAttrs: false,
+  props: {
+    name: {
+      type: String
+    },
+    route: {
+      type: Object
+    },
+    pageKey: {
+      type: [Function, String],
+      default: null
+    }
+  },
+  setup(props, { attrs }) {
+    const nuxtApp = __vite_ssr_import_3__.useNuxtApp();
+    const isNested = __vite_ssr_import_0__.inject(isNestedKey, false);
+    __vite_ssr_import_0__.provide(isNestedKey, true);
+    return () => {
+      return __vite_ssr_import_0__.h(__vite_ssr_import_1__.RouterView, { name: props.name, route: props.route, ...attrs }, {
+        default: (routeProps) => {
+          if (!routeProps.Component) {
+            return;
+          }
+          const key = __vite_ssr_import_2__.generateRouteKey(props.pageKey, routeProps);
+          return __vite_ssr_import_4__._wrapIf(
+            __vite_ssr_import_0__.Transition,
+            routeProps.route.meta.pageTransition ?? defaultPageTransition,
+            __vite_ssr_import_2__.wrapInKeepAlive(
+              routeProps.route.meta.keepalive,
+              isNested && nuxtApp.isHydrating ? __vite_ssr_import_0__.h(Component, { key, routeProps, pageKey: key }) : __vite_ssr_import_0__.h(__vite_ssr_import_0__.Suspense, {
+                onPending: () => nuxtApp.callHook("page:start", routeProps.Component),
+                onResolve: () => nuxtApp.callHook("page:finish", routeProps.Component)
+              }, { default: () => __vite_ssr_import_0__.h(Component, { key, routeProps, pageKey: key }) })
+            )
+          ).default();
+        }
+      });
+    };
+  }
+});
+const defaultPageTransition = { name: "page", mode: "out-in" };
+const Component = __vite_ssr_import_0__.defineComponent({
+  props: ["routeProps", "pageKey"],
+  setup(props) {
+    const previousKey = props.pageKey;
+    const previousRoute = props.routeProps.route;
+    const route = {};
+    for (const key in props.routeProps.route) {
+      route[key] = __vite_ssr_import_0__.computed(() => previousKey === props.pageKey ? props.routeProps.route[key] : previousRoute[key]);
+    }
+    __vite_ssr_import_0__.provide("_route", __vite_ssr_import_0__.reactive(route));
+    return () => __vite_ssr_import_0__.h(props.routeProps.Component);
+  }
 });
 ;
 }
 
 
 // --------------------
+// Request: /node_modules/nuxt/dist/pages/runtime/utils.mjs
+// Parents: 
+// - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// --------------------
+const $id_ZR0LUqwyer = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const interpolatePath = (route, match) => {
+  return match.path.replace(/(:\w+)\([^)]+\)/g, "$1").replace(/(:\w+)[?+*]/g, "$1").replace(/:\w+/g, (r) => route.params[r.slice(1)]?.toString() || "");
+};
+const generateRouteKey = (override, routeProps) => {
+  const matchedRoute = routeProps.route.matched.find((m) => m.components.default === routeProps.Component.type);
+  const source = override ?? matchedRoute?.meta.key ?? interpolatePath(routeProps.route, matchedRoute);
+  return typeof source === "function" ? source(routeProps.route) : source;
+};
+Object.defineProperty(__vite_ssr_exports__, "generateRouteKey", { enumerable: true, configurable: true, get(){ return generateRouteKey }});
+const wrapInKeepAlive = (props, children) => {
+  return { default: () => false && props ? __vite_ssr_import_0__.h(__vite_ssr_import_0__.KeepAlive, props === true ? {} : props, children) : children };
+};
+Object.defineProperty(__vite_ssr_exports__, "wrapInKeepAlive", { enumerable: true, configurable: true, get(){ return wrapInKeepAlive }});
+;
+}
+
+
+// --------------------
+// Request: /node_modules/nuxt/dist/app/components/utils.mjs
+// Parents: 
+// - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
+// - /node_modules/nuxt/dist/app/components/layout.mjs ($id_OQA4gz7rLc)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// --------------------
+const $id_NgApSiB2xA = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const Fragment = {
+  setup(_props, { slots }) {
+    return () => slots.default?.();
+  }
+};
+const _wrapIf = (component, props, slots) => {
+  return { default: () => props ? __vite_ssr_import_0__.h(component, props === true ? {} : props, slots) : __vite_ssr_import_0__.h(Fragment, {}, slots) };
+};
+Object.defineProperty(__vite_ssr_exports__, "_wrapIf", { enumerable: true, configurable: true, get(){ return _wrapIf }});
+;
+}
+
+
+// --------------------
+// Request: /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/routes.mjs
+// Parents: 
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
+// Dependencies: 
+// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index.vue ($id_zKWOlz8EPO)
+// --------------------
+const $id_L67Eutvovg = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/pages/index.vue?macro=true");
+
+__vite_ssr_exports__.default = [
+  {
+    name: "index",
+    path: "/",
+    file: "C:/Users/Magda/Desktop/projeto-agro/agro/pages/index.vue",
+    children: [],
+    meta: __vite_ssr_import_0__.meta,
+    alias: __vite_ssr_import_0__.meta?.alias || [],
+    component: () => __vite_ssr_dynamic_import__("/pages/index.vue").then(m => m.default || m)
+  }
+];
+}
+
+
+// --------------------
+// Request: /pages/index.vue?macro=true
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/routes.mjs ($id_e1siyV1pXq)
+// Dependencies: 
+// - vue/server-renderer ($id_UyJffsox60)
+// - vue ($id_VkOCJnUZrn)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_H2p8ppy5Wh = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}></div>`)
+}
+
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("pages/index.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Magda/Desktop/projeto-agro/agro/pages/index.vue"]])
+const meta = undefined
+Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
+}
+
+
+// --------------------
+// Request: vue/server-renderer
+// Parents: 
+// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index.vue ($id_zKWOlz8EPO)
+// - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
+// - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
+// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
+// Dependencies: 
+
+// --------------------
+const $id_aRHphPzMpI = (global, module, _, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) =>
+import("vue/server-renderer")
+  .then(r => {
+    if (r.default && r.default.__esModule)
+      r = r.default
+    exports.default = r.default
+    ssrExportAll(r)
+  })
+  .catch(e => {
+    console.error(e)
+    throw new Error("[vite dev] Error loading external \"vue/server-renderer\".")
+  })
+
+
+// --------------------
+// Request: /@id/__x00__plugin-vue:export-helper
+// Parents: 
+// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index.vue ($id_zKWOlz8EPO)
+// - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
+// - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
+// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
+// Dependencies: 
+
+// --------------------
+const $id_mHD6riC5ol = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+
+__vite_ssr_exports__.default = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+}
+;
+}
+
+
+// --------------------
+// Request: /pages/index.vue
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/routes.mjs ($id_e1siyV1pXq)
+// Dependencies: 
+// - vue/server-renderer ($id_UyJffsox60)
+// - vue ($id_VkOCJnUZrn)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_xoLDlcn2bc = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}></div>`)
+}
+
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("pages/index.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Magda/Desktop/projeto-agro/agro/pages/index.vue"]]);
+}
+
+
+// --------------------
+// Request: /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/router.options.mjs
+// Parents: 
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
+// Dependencies: 
+
+// --------------------
+const $id_6d9szs6s1N = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const configRouterOptions = {}
+__vite_ssr_exports__.default = {
+...configRouterOptions,
+};
+}
+
+
+// --------------------
 // Request: /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/middleware.mjs
 // Parents: 
-// - /node_modules/nuxt/dist/app/plugins/router.mjs ($id_fEh9isZZyu)
+// - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // Dependencies: 
 
 // --------------------
@@ -2841,57 +3131,6 @@ _sfc_main.setup = (props, ctx) => {
 const __vite_ssr_import_5__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
 __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_5__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Magda/Desktop/projeto-agro/agro/node_modules/nuxt/dist/app/components/nuxt-root.vue"]]);
-}
-
-
-// --------------------
-// Request: vue/server-renderer
-// Parents: 
-// - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
-// - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
-// - /app.vue ($id_K0boQqLzfo)
-// Dependencies: 
-
-// --------------------
-const $id_aRHphPzMpI = (global, module, _, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) =>
-import("vue/server-renderer")
-  .then(r => {
-    if (r.default && r.default.__esModule)
-      r = r.default
-    exports.default = r.default
-    ssrExportAll(r)
-  })
-  .catch(e => {
-    console.error(e)
-    throw new Error("[vite dev] Error loading external \"vue/server-renderer\".")
-  })
-
-
-// --------------------
-// Request: /@id/__x00__plugin-vue:export-helper
-// Parents: 
-// - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
-// - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
-// - /app.vue ($id_K0boQqLzfo)
-// Dependencies: 
-
-// --------------------
-const $id_mHD6riC5ol = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-
-__vite_ssr_exports__.default = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-}
-;
 }
 
 
@@ -3351,47 +3590,125 @@ __vite_ssr_exports__.default = "\n.spotlight[data-v-f37408fc]{background:linear-
 // Parents: 
 // - C:/Users/Magda/Desktop/projeto-agro/agro/node_modules/nuxt/dist/app/entry ($id_GJWkE785LY)
 // Dependencies: 
-// - /app.vue ($id_K0boQqLzfo)
+// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
 // --------------------
-const $id_jfqUXiINxA = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("/app.vue");
+const $id_wevEIaB2et = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/node_modules/nuxt/dist/pages/runtime/app.vue");
 
 Object.defineProperty(__vite_ssr_exports__, "default", { enumerable: true, configurable: true, get(){ return __vite_ssr_import_0__.default }});;
 }
 
 
 // --------------------
-// Request: /app.vue
+// Request: /node_modules/nuxt/dist/pages/runtime/app.vue
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/app-component.mjs ($id_V08TbfYb6F)
 // Dependencies: 
+// - /node_modules/nuxt/dist/app/components/layout.mjs ($id_OQA4gz7rLc)
 // - vue ($id_VkOCJnUZrn)
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_fVIKxBcmti = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const _sfc_main = {}
-const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+const $id_wduxzUeiFm = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/components/layout.mjs");
 
-const __vite_ssr_import_1__ = await __vite_ssr_import__("vue/server-renderer");
+const _sfc_main = {}
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue/server-renderer");
 
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
-  _push(`<div${__vite_ssr_import_1__.ssrRenderAttrs(__vite_ssr_import_0__.mergeProps({ class: "min-W-screen min-h-screen" }, _attrs))}> dsfsa </div>`)
+  const _component_NuxtLayout = __vite_ssr_import_0__.default
+  const _component_NuxtPage = __vite_ssr_import_1__.resolveComponent("NuxtPage")
+
+  _push(__vite_ssr_import_2__.ssrRenderComponent(_component_NuxtLayout, _attrs, {
+    default: __vite_ssr_import_1__.withCtx((_, _push, _parent, _scopeId) => {
+      if (_push) {
+        _push(__vite_ssr_import_2__.ssrRenderComponent(_component_NuxtPage, null, null, _parent, _scopeId))
+      } else {
+        return [
+          __vite_ssr_import_1__.createVNode(_component_NuxtPage)
+        ]
+      }
+    }),
+    _: 1 /* STABLE */
+  }, _parent))
 }
 
 
-const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_3__ = await __vite_ssr_import__("vue");
 
 const _sfc_setup = _sfc_main.setup
 _sfc_main.setup = (props, ctx) => {
-  const ssrContext = __vite_ssr_import_2__.useSSRContext()
-  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("app.vue")
+  const ssrContext = __vite_ssr_import_3__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("node_modules/nuxt/dist/pages/runtime/app.vue")
   return _sfc_setup ? _sfc_setup(props, ctx) : undefined
 }
-const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+const __vite_ssr_import_4__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
-__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_3__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Magda/Desktop/projeto-agro/agro/app.vue"]]);
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_4__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Magda/Desktop/projeto-agro/agro/node_modules/nuxt/dist/pages/runtime/app.vue"]]);
+}
+
+
+// --------------------
+// Request: /node_modules/nuxt/dist/app/components/layout.mjs
+// Parents: 
+// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - /node_modules/nuxt/dist/app/components/utils.mjs ($id_acUmhqj8VN)
+// - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
+// - /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/layouts.mjs ($id_c0oozvzpmC)
+// --------------------
+const $id_aiWo6O9eNP = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/components/utils.mjs");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/layouts.mjs");
+
+const defaultLayoutTransition = { name: "layout", mode: "out-in" };
+__vite_ssr_exports__.default = __vite_ssr_import_0__.defineComponent({
+  props: {
+    name: {
+      type: [String, Boolean, Object],
+      default: null
+    }
+  },
+  setup(props, context) {
+    const route = __vite_ssr_import_2__.useRoute();
+    return () => {
+      const layout = (__vite_ssr_import_0__.isRef(props.name) ? props.name.value : props.name) ?? route.meta.layout ?? "default";
+      const hasLayout = layout && layout in __vite_ssr_import_3__.default;
+      if (true && layout && !hasLayout && layout !== "default") {
+        console.warn(`Invalid layout \`${layout}\` selected.`);
+      }
+      return __vite_ssr_import_1__._wrapIf(
+        __vite_ssr_import_0__.Transition,
+        hasLayout && (route.meta.layoutTransition ?? defaultLayoutTransition),
+        __vite_ssr_import_1__._wrapIf(__vite_ssr_import_3__.default[layout], hasLayout, context.slots)
+      ).default();
+    };
+  }
+});
+;
+}
+
+
+// --------------------
+// Request: /@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/layouts.mjs
+// Parents: 
+// - /node_modules/nuxt/dist/app/components/layout.mjs ($id_OQA4gz7rLc)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// --------------------
+const $id_yQhTGb1ZIB = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+__vite_ssr_exports__.default = {};
 }
 
 
@@ -3429,7 +3746,7 @@ const __modules__ = {
   "@vue/shared": $id_NOAOzpHkPB,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/css.mjs": $id_nNXiAK5YtA,
   "/assets/css/tailwind.css": $id_5YkRIFNGuw,
-  "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/plugins/server.mjs": $id_hL94tvJKtl,
+  "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/plugins/server.mjs": $id_YSdAIFBoDu,
   "/node_modules/nuxt/dist/app/plugins/preload.server.mjs": $id_1SAEi7QN5N,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/components.plugin.mjs": $id_hOCf0XRdnz,
   "/node_modules/nuxt/dist/head/runtime/lib/vueuse-head.plugin.mjs": $id_wRsEVKfW1P,
@@ -3438,12 +3755,19 @@ const __modules__ = {
   "/node_modules/nuxt/dist/head/runtime/plugin.mjs": $id_sZHFMUVrON,
   "/node_modules/nuxt/dist/head/runtime/components.mjs": $id_PE2LM6mDyc,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/meta.config.mjs": $id_BLlvF7ipWv,
-  "/node_modules/nuxt/dist/app/plugins/router.mjs": $id_BasEz8ZC5U,
+  "/node_modules/nuxt/dist/pages/runtime/router.mjs": $id_wEWywEaXgp,
+  "/node_modules/nuxt/dist/pages/runtime/page.mjs": $id_L9I1eoE7dW,
+  "/node_modules/nuxt/dist/pages/runtime/utils.mjs": $id_ZR0LUqwyer,
+  "/node_modules/nuxt/dist/app/components/utils.mjs": $id_NgApSiB2xA,
+  "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/routes.mjs": $id_L67Eutvovg,
+  "/pages/index.vue?macro=true": $id_H2p8ppy5Wh,
+  "vue/server-renderer": $id_aRHphPzMpI,
+  "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
+  "/pages/index.vue": $id_xoLDlcn2bc,
+  "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/router.options.mjs": $id_6d9szs6s1N,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/middleware.mjs": $id_47CP9FyM9y,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/root-component.mjs": $id_zAr7gVYd5q,
   "/node_modules/nuxt/dist/app/components/nuxt-root.vue": $id_E6yd95n62u,
-  "vue/server-renderer": $id_aRHphPzMpI,
-  "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
   "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/error-component.mjs": $id_3ySscD6ci4,
   "/node_modules/nuxt/dist/app/components/nuxt-error-page.vue": $id_ijXmLLb7Da,
   "/node_modules/@nuxt/ui-templates/dist/templates/error-404.vue": $id_jnXTsznO4J,
@@ -3452,8 +3776,10 @@ const __modules__ = {
   "/node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue?vue&type=style&index=0&scoped=6b2d7187&lang.css": $id_zU3KktJDTV,
   "/node_modules/@nuxt/ui-templates/dist/templates/error-500.vue": $id_x4oycDI2ir,
   "/node_modules/@nuxt/ui-templates/dist/templates/error-500.vue?vue&type=style&index=0&scoped=f37408fc&lang.css": $id_aNL2Q0cdkg,
-  "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/app-component.mjs": $id_jfqUXiINxA,
-  "/app.vue": $id_fVIKxBcmti
+  "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/app-component.mjs": $id_wevEIaB2et,
+  "/node_modules/nuxt/dist/pages/runtime/app.vue": $id_wduxzUeiFm,
+  "/node_modules/nuxt/dist/app/components/layout.mjs": $id_aiWo6O9eNP,
+  "/@id/virtual:nuxt:C:/Users/Magda/Desktop/projeto-agro/agro/.nuxt/layouts.mjs": $id_yQhTGb1ZIB
 }
 
 
