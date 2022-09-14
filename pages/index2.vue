@@ -1,42 +1,35 @@
 <script setup lang="ts">
-let fluxo_de_entrada = 23423434
-let fluxo_de_saida = 232323
+let fluxo_de_entrada = 0
+let fluxo_de_saida = 0
 const { supabase } = useSupabase()
 const { user } = useAuth()
 
 const saldoResponse = ref();
 const fluxoResponse = ref();
+const fluxoEntrada= ref();
+const fluxoSaida= ref();
 
-const despesaInput = reactive({
-    categoria: "",
-    fornecedor: "",
-    nota_fiscal: "",
-    produto: "",
-    valor: "",
-})
-
-const handleSubmit = async () => {
-    // if(!despesaInput.title || !despesaInput.note) return
-
-    await supabase.from("fluxo").insert({
-        categoria: despesaInput.categoria,
-        fornecedor: despesaInput.fornecedor,
-        produto: despesaInput.produto,
-        valor:  despesaInput.valor,
-        user_id: user.value.id
-    });
-    fluxoResponse.value = await supabase.from("fluxo").select()
-    // despesaInput.title = ""
-    // despesaInput.note = ""
-}
+// const despesaInput = reactive({
+//     categoria: "",
+//     fornecedor: "",
+//     nota_fiscal: "",
+//     produto: "",
+//     valor: "",
+// })
 
 saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
 fluxoResponse.value = await supabase.from("fluxo").select()
+fluxoEntrada.value = await supabase.from("fluxo").select().match({tipo_fluxo: "entrada" })
+
+
+fluxoSaida.value = await supabase.from("fluxo").select()
+
+
 </script>
 
 <template>
     <div>
-        <div style="display: flex; justify-content: space-evenly;">
+        <div class="flex flex-row justify-evenly">
             <div>
                 <h3>Fluxo de Entrada</h3>
                 <h1>{{fluxo_de_entrada}}</h1>
@@ -50,62 +43,28 @@ fluxoResponse.value = await supabase.from("fluxo").select()
                 <h1 v-for="saldo in saldoResponse.data" :key="saldo.id">{{saldo.saldo}}</h1>
             </div>
         </div>
-        <div style="display: flex; flex-direction: row;">
-            <div>
-                <h1>Adicionar despezas</h1>
-                <form style="display: flex; flex-direction: column;">
-                    <label for="categoria">Categoria</label>
-                    <select v-model="despesaInput.categoria" name="categoria" id="cars" form="carform">
-                        <option value="insumo">Insumo</option>
-                        <option value="combustivel">Combustível</option>
-                        <option value="manutencao">Manutenção</option>
-                        <option value="Financiamento">Financiamento</option>
-                    </select>
-                    <label for="fornecedor">Fornecedor</label>
-                    <input v-model="despesaInput.fornecedor" name="fornecedor" type="text">
-                    <label for="nota fiscal">Nota Fiscal</label>
-                    <input v-model="despesaInput.nota_fiscal" name="nota fiscal" type="number">
-                    <label for="produto">Produto</label>
-                    <input v-model="despesaInput.produto"  name="produto" type="text">
-                    <label for="valor">Valor</label>
-                    <input v-model="despesaInput.valor" name="valor" type="number">
-                    <button type='button' @click="handleSubmit">Criar</button>
-                </form>
-            </div>
-            <div>
-                <h1>Adicionar entradas</h1>
-                <form style="display: flex; flex-direction: column;">
-                    <label for="categoria">Categoria</label>
-                    <select name="categoria" id="cars" form="carform">
-                        <option value="insumo">Insumo</option>
-                        <option value="combustivel">Combustível</option>
-                        <option value="manutencao">Manutenção</option>
-                        <option value="Financiamento">Financiamento</option>
-                    </select>
-                    <label for="fornecedor">Pagador</label>
-                    <input name="fornecedor" type="text">
-                    <label for="nota fiscal">Nota Fiscal</label>
-                    <input name="nota fiscal" type="number">
-                    <label for="produto">Produto</label>
-                    <input name="produto" type="text">
-                    <label for="valor">Valor</label>
-                    <input name="valor" type="number">
-                    <button type="submit">Criar</button>
-                </form>
-            </div>
+        <div class="flex flex-row">
+            
+            
+            <AdicionarDespesa />
+            <AdicionarEntrada />
         </div>
-        <table>
+        <table class="">
+            <th>Ação</th>
             <th>Categoria</th>
             <th>Fornecedor</th>
             <th>Produto</th>
             <th>Valor</th>
             <tr v-for="fluxo in fluxoResponse.data" :key="fluxo.id">
+                <td>{{fluxo.tipo_fluxo}}</td>
                 <td>{{fluxo.categoria}}</td>
                 <td>{{fluxo.fornecedor}}</td>
                 <td>{{fluxo.produto}}</td>
-                <td>R$ {{fluxo.valor}}</td>
+                <td>R${{fluxo.valor}}</td>
             </tr>
-            
+
         </table>
+
     </div>
+    {{fluxoEntrada.data}}
 </template>

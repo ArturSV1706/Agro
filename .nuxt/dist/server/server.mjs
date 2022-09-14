@@ -114,7 +114,10 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
 // - /node_modules/nuxt/dist/pages/runtime/utils.mjs ($id_gPQzqsnHwc)
 // - /node_modules/nuxt/dist/app/components/utils.mjs ($id_acUmhqj8VN)
+// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /components/AdicionarDespesa.vue ($id_5osf35Ra3l)
+// - /components/AdicionarEntrada.vue ($id_6puMWTLI7j)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
@@ -128,6 +131,7 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
 // - /node_modules/nuxt/dist/app/components/layout.mjs ($id_OQA4gz7rLc)
 // - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/layouts.mjs ($id_N8uK2ejzkJ)
+// - /layouts/default.vue ($id_dononVQSck)
 // - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
 // Dependencies: 
 // - @vue/runtime-dom ($id_xcKel6nH2q)
@@ -1592,8 +1596,8 @@ const __vite_ssr_import_0__ = await __vite_ssr_import__("/assets/css/tailwind.cs
 // Dependencies: 
 
 // --------------------
-const $id_0XbtH60u1e = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-__vite_ssr_exports__.default = "/*\n! tailwindcss v3.1.8 | MIT License | https://tailwindcss.com\n*//*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/*,\n::before,\n::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}::before,\n::after {\n  --tw-content: '';\n}/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user's configured `sans` font-family by default.\n*/html {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: \"Inter var\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; /* 4 */\n}/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/body {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/hr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/abbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}/*\nRemove the default font size and weight for headings.\n*/h1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/a {\n  color: inherit;\n  text-decoration: inherit;\n}/*\nAdd the correct font weight in Edge and Safari.\n*/b,\nstrong {\n  font-weight: bolder;\n}/*\n1. Use the user's configured `mono` font family by default.\n2. Correct the odd `em` font sizing in all browsers.\n*/code,\nkbd,\nsamp,\npre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}/*\nAdd the correct font size in all browsers.\n*/small {\n  font-size: 80%;\n}/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/sub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}sub {\n  bottom: -0.25em;\n}sup {\n  top: -0.5em;\n}/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/table {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/button,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/button,\nselect {\n  text-transform: none;\n}/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/button,\n[type='button'],\n[type='reset'],\n[type='submit'] {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}/*\nUse the modern Firefox focus style for all focusable elements.\n*/:-moz-focusring {\n  outline: auto;\n}/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/:-moz-ui-invalid {\n  box-shadow: none;\n}/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/progress {\n  vertical-align: baseline;\n}/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/[type='search'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/::-webkit-search-decoration {\n  -webkit-appearance: none;\n}/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}/*\nAdd the correct display in Chrome and Safari.\n*/summary {\n  display: list-item;\n}/*\nRemoves the default spacing and border for appropriate elements.\n*/blockquote,\ndl,\ndd,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\nfigure,\np,\npre {\n  margin: 0;\n}fieldset {\n  margin: 0;\n  padding: 0;\n}legend {\n  padding: 0;\n}ol,\nul,\nmenu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}/*\nPrevent resizing textareas horizontally by default.\n*/textarea {\n  resize: vertical;\n}/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user's configured gray 400 color.\n*/input::-moz-placeholder, textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}input::placeholder,\ntextarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}/*\nSet the default cursor for buttons.\n*/button,\n[role=\"button\"] {\n  cursor: pointer;\n}/*\nMake sure disabled buttons don't get the pointer cursor.\n*/:disabled {\n  cursor: default;\n}/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/img,\nsvg,\nvideo,\ncanvas,\naudio,\niframe,\nembed,\nobject {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/img,\nvideo {\n  max-width: 100%;\n  height: auto;\n}[type='text'],[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  background-color: #fff;\n  border-color: #6b7280;\n  border-width: 1px;\n  border-radius: 0px;\n  padding-top: 0.5rem;\n  padding-right: 0.75rem;\n  padding-bottom: 0.5rem;\n  padding-left: 0.75rem;\n  font-size: 1rem;\n  line-height: 1.5rem;\n  --tw-shadow: 0 0 #0000;\n}[type='text']:focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: #2563eb;\n  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);\n  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);\n  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n  border-color: #2563eb;\n}input::-moz-placeholder, textarea::-moz-placeholder {\n  color: #6b7280;\n  opacity: 1;\n}input::placeholder,textarea::placeholder {\n  color: #6b7280;\n  opacity: 1;\n}::-webkit-datetime-edit-fields-wrapper {\n  padding: 0;\n}::-webkit-date-and-time-value {\n  min-height: 1.5em;\n}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field {\n  padding-top: 0;\n  padding-bottom: 0;\n}select {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\");\n  background-position: right 0.5rem center;\n  background-repeat: no-repeat;\n  background-size: 1.5em 1.5em;\n  padding-right: 2.5rem;\n  -webkit-print-color-adjust: exact;\n     color-adjust: exact;\n          print-color-adjust: exact;\n}[multiple] {\n  background-image: initial;\n  background-position: initial;\n  background-repeat: unset;\n  background-size: initial;\n  padding-right: 0.75rem;\n  -webkit-print-color-adjust: unset;\n     color-adjust: unset;\n          print-color-adjust: unset;\n}[type='checkbox'],[type='radio'] {\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  padding: 0;\n  -webkit-print-color-adjust: exact;\n     color-adjust: exact;\n          print-color-adjust: exact;\n  display: inline-block;\n  vertical-align: middle;\n  background-origin: border-box;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n  flex-shrink: 0;\n  height: 1rem;\n  width: 1rem;\n  color: #2563eb;\n  background-color: #fff;\n  border-color: #6b7280;\n  border-width: 1px;\n  --tw-shadow: 0 0 #0000;\n}[type='checkbox'] {\n  border-radius: 0px;\n}[type='radio'] {\n  border-radius: 100%;\n}[type='checkbox']:focus,[type='radio']:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);\n  --tw-ring-offset-width: 2px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: #2563eb;\n  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);\n  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);\n  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}[type='checkbox']:checked,[type='radio']:checked {\n  border-color: transparent;\n  background-color: currentColor;\n  background-size: 100% 100%;\n  background-position: center;\n  background-repeat: no-repeat;\n}[type='checkbox']:checked {\n  background-image: url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e\");\n}[type='radio']:checked {\n  background-image: url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e\");\n}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus {\n  border-color: transparent;\n  background-color: currentColor;\n}[type='checkbox']:indeterminate {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e\");\n  border-color: transparent;\n  background-color: currentColor;\n  background-size: 100% 100%;\n  background-position: center;\n  background-repeat: no-repeat;\n}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus {\n  border-color: transparent;\n  background-color: currentColor;\n}[type='file'] {\n  background: unset;\n  border-color: inherit;\n  border-width: 0;\n  border-radius: 0;\n  padding: 0;\n  font-size: unset;\n  line-height: inherit;\n}[type='file']:focus {\n  outline: 1px solid ButtonText;\n  outline: 1px auto -webkit-focus-ring-color;\n}*, ::before, ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}::-webkit-backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}.flex {\n  display: flex;\n}.table {\n  display: table;\n}.border {\n  border-width: 1px;\n}.capitalize {\n  text-transform: capitalize;\n}.outline {\n  outline-style: solid;\n}";
+const $id_29FBngFfoV = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+__vite_ssr_exports__.default = "/*\n! tailwindcss v3.1.8 | MIT License | https://tailwindcss.com\n*//*\n1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)\n2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)\n*/*,\n::before,\n::after {\n  box-sizing: border-box; /* 1 */\n  border-width: 0; /* 2 */\n  border-style: solid; /* 2 */\n  border-color: #e5e7eb; /* 2 */\n}::before,\n::after {\n  --tw-content: '';\n}/*\n1. Use a consistent sensible line-height in all browsers.\n2. Prevent adjustments of font size after orientation changes in iOS.\n3. Use a more readable tab size.\n4. Use the user's configured `sans` font-family by default.\n*/html {\n  line-height: 1.5; /* 1 */\n  -webkit-text-size-adjust: 100%; /* 2 */\n  -moz-tab-size: 4; /* 3 */\n  -o-tab-size: 4;\n     tab-size: 4; /* 3 */\n  font-family: \"Inter var\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"; /* 4 */\n}/*\n1. Remove the margin in all browsers.\n2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.\n*/body {\n  margin: 0; /* 1 */\n  line-height: inherit; /* 2 */\n}/*\n1. Add the correct height in Firefox.\n2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)\n3. Ensure horizontal rules are visible by default.\n*/hr {\n  height: 0; /* 1 */\n  color: inherit; /* 2 */\n  border-top-width: 1px; /* 3 */\n}/*\nAdd the correct text decoration in Chrome, Edge, and Safari.\n*/abbr:where([title]) {\n  -webkit-text-decoration: underline dotted;\n          text-decoration: underline dotted;\n}/*\nRemove the default font size and weight for headings.\n*/h1,\nh2,\nh3,\nh4,\nh5,\nh6 {\n  font-size: inherit;\n  font-weight: inherit;\n}/*\nReset links to optimize for opt-in styling instead of opt-out.\n*/a {\n  color: inherit;\n  text-decoration: inherit;\n}/*\nAdd the correct font weight in Edge and Safari.\n*/b,\nstrong {\n  font-weight: bolder;\n}/*\n1. Use the user's configured `mono` font family by default.\n2. Correct the odd `em` font sizing in all browsers.\n*/code,\nkbd,\nsamp,\npre {\n  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace; /* 1 */\n  font-size: 1em; /* 2 */\n}/*\nAdd the correct font size in all browsers.\n*/small {\n  font-size: 80%;\n}/*\nPrevent `sub` and `sup` elements from affecting the line height in all browsers.\n*/sub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}sub {\n  bottom: -0.25em;\n}sup {\n  top: -0.5em;\n}/*\n1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)\n2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)\n3. Remove gaps between table borders by default.\n*/table {\n  text-indent: 0; /* 1 */\n  border-color: inherit; /* 2 */\n  border-collapse: collapse; /* 3 */\n}/*\n1. Change the font styles in all browsers.\n2. Remove the margin in Firefox and Safari.\n3. Remove default padding in all browsers.\n*/button,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: inherit; /* 1 */\n  font-size: 100%; /* 1 */\n  font-weight: inherit; /* 1 */\n  line-height: inherit; /* 1 */\n  color: inherit; /* 1 */\n  margin: 0; /* 2 */\n  padding: 0; /* 3 */\n}/*\nRemove the inheritance of text transform in Edge and Firefox.\n*/button,\nselect {\n  text-transform: none;\n}/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Remove default button styles.\n*/button,\n[type='button'],\n[type='reset'],\n[type='submit'] {\n  -webkit-appearance: button; /* 1 */\n  background-color: transparent; /* 2 */\n  background-image: none; /* 2 */\n}/*\nUse the modern Firefox focus style for all focusable elements.\n*/:-moz-focusring {\n  outline: auto;\n}/*\nRemove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)\n*/:-moz-ui-invalid {\n  box-shadow: none;\n}/*\nAdd the correct vertical alignment in Chrome and Firefox.\n*/progress {\n  vertical-align: baseline;\n}/*\nCorrect the cursor style of increment and decrement buttons in Safari.\n*/::-webkit-inner-spin-button,\n::-webkit-outer-spin-button {\n  height: auto;\n}/*\n1. Correct the odd appearance in Chrome and Safari.\n2. Correct the outline style in Safari.\n*/[type='search'] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}/*\nRemove the inner padding in Chrome and Safari on macOS.\n*/::-webkit-search-decoration {\n  -webkit-appearance: none;\n}/*\n1. Correct the inability to style clickable types in iOS and Safari.\n2. Change font properties to `inherit` in Safari.\n*/::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}/*\nAdd the correct display in Chrome and Safari.\n*/summary {\n  display: list-item;\n}/*\nRemoves the default spacing and border for appropriate elements.\n*/blockquote,\ndl,\ndd,\nh1,\nh2,\nh3,\nh4,\nh5,\nh6,\nhr,\nfigure,\np,\npre {\n  margin: 0;\n}fieldset {\n  margin: 0;\n  padding: 0;\n}legend {\n  padding: 0;\n}ol,\nul,\nmenu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n}/*\nPrevent resizing textareas horizontally by default.\n*/textarea {\n  resize: vertical;\n}/*\n1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)\n2. Set the default placeholder color to the user's configured gray 400 color.\n*/input::-moz-placeholder, textarea::-moz-placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}input::placeholder,\ntextarea::placeholder {\n  opacity: 1; /* 1 */\n  color: #9ca3af; /* 2 */\n}/*\nSet the default cursor for buttons.\n*/button,\n[role=\"button\"] {\n  cursor: pointer;\n}/*\nMake sure disabled buttons don't get the pointer cursor.\n*/:disabled {\n  cursor: default;\n}/*\n1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)\n2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)\n   This can trigger a poorly considered lint error in some tools but is included by design.\n*/img,\nsvg,\nvideo,\ncanvas,\naudio,\niframe,\nembed,\nobject {\n  display: block; /* 1 */\n  vertical-align: middle; /* 2 */\n}/*\nConstrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)\n*/img,\nvideo {\n  max-width: 100%;\n  height: auto;\n}[type='text'],[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select {\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  background-color: #fff;\n  border-color: #6b7280;\n  border-width: 1px;\n  border-radius: 0px;\n  padding-top: 0.5rem;\n  padding-right: 0.75rem;\n  padding-bottom: 0.5rem;\n  padding-left: 0.75rem;\n  font-size: 1rem;\n  line-height: 1.5rem;\n  --tw-shadow: 0 0 #0000;\n}[type='text']:focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: #2563eb;\n  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);\n  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);\n  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n  border-color: #2563eb;\n}input::-moz-placeholder, textarea::-moz-placeholder {\n  color: #6b7280;\n  opacity: 1;\n}input::placeholder,textarea::placeholder {\n  color: #6b7280;\n  opacity: 1;\n}::-webkit-datetime-edit-fields-wrapper {\n  padding: 0;\n}::-webkit-date-and-time-value {\n  min-height: 1.5em;\n}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field {\n  padding-top: 0;\n  padding-bottom: 0;\n}select {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\");\n  background-position: right 0.5rem center;\n  background-repeat: no-repeat;\n  background-size: 1.5em 1.5em;\n  padding-right: 2.5rem;\n  -webkit-print-color-adjust: exact;\n     color-adjust: exact;\n          print-color-adjust: exact;\n}[multiple] {\n  background-image: initial;\n  background-position: initial;\n  background-repeat: unset;\n  background-size: initial;\n  padding-right: 0.75rem;\n  -webkit-print-color-adjust: unset;\n     color-adjust: unset;\n          print-color-adjust: unset;\n}[type='checkbox'],[type='radio'] {\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  padding: 0;\n  -webkit-print-color-adjust: exact;\n     color-adjust: exact;\n          print-color-adjust: exact;\n  display: inline-block;\n  vertical-align: middle;\n  background-origin: border-box;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n  flex-shrink: 0;\n  height: 1rem;\n  width: 1rem;\n  color: #2563eb;\n  background-color: #fff;\n  border-color: #6b7280;\n  border-width: 1px;\n  --tw-shadow: 0 0 #0000;\n}[type='checkbox'] {\n  border-radius: 0px;\n}[type='radio'] {\n  border-radius: 100%;\n}[type='checkbox']:focus,[type='radio']:focus {\n  outline: 2px solid transparent;\n  outline-offset: 2px;\n  --tw-ring-inset: var(--tw-empty,/*!*/ /*!*/);\n  --tw-ring-offset-width: 2px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: #2563eb;\n  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);\n  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);\n  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}[type='checkbox']:checked,[type='radio']:checked {\n  border-color: transparent;\n  background-color: currentColor;\n  background-size: 100% 100%;\n  background-position: center;\n  background-repeat: no-repeat;\n}[type='checkbox']:checked {\n  background-image: url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e\");\n}[type='radio']:checked {\n  background-image: url(\"data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e\");\n}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus {\n  border-color: transparent;\n  background-color: currentColor;\n}[type='checkbox']:indeterminate {\n  background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e\");\n  border-color: transparent;\n  background-color: currentColor;\n  background-size: 100% 100%;\n  background-position: center;\n  background-repeat: no-repeat;\n}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus {\n  border-color: transparent;\n  background-color: currentColor;\n}[type='file'] {\n  background: unset;\n  border-color: inherit;\n  border-width: 0;\n  border-radius: 0;\n  padding: 0;\n  font-size: unset;\n  line-height: inherit;\n}[type='file']:focus {\n  outline: 1px solid ButtonText;\n  outline: 1px auto -webkit-focus-ring-color;\n}*, ::before, ::after {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}::-webkit-backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}::backdrop {\n  --tw-border-spacing-x: 0;\n  --tw-border-spacing-y: 0;\n  --tw-translate-x: 0;\n  --tw-translate-y: 0;\n  --tw-rotate: 0;\n  --tw-skew-x: 0;\n  --tw-skew-y: 0;\n  --tw-scale-x: 1;\n  --tw-scale-y: 1;\n  --tw-pan-x:  ;\n  --tw-pan-y:  ;\n  --tw-pinch-zoom:  ;\n  --tw-scroll-snap-strictness: proximity;\n  --tw-ordinal:  ;\n  --tw-slashed-zero:  ;\n  --tw-numeric-figure:  ;\n  --tw-numeric-spacing:  ;\n  --tw-numeric-fraction:  ;\n  --tw-ring-inset:  ;\n  --tw-ring-offset-width: 0px;\n  --tw-ring-offset-color: #fff;\n  --tw-ring-color: rgb(59 130 246 / 0.5);\n  --tw-ring-offset-shadow: 0 0 #0000;\n  --tw-ring-shadow: 0 0 #0000;\n  --tw-shadow: 0 0 #0000;\n  --tw-shadow-colored: 0 0 #0000;\n  --tw-blur:  ;\n  --tw-brightness:  ;\n  --tw-contrast:  ;\n  --tw-grayscale:  ;\n  --tw-hue-rotate:  ;\n  --tw-invert:  ;\n  --tw-saturate:  ;\n  --tw-sepia:  ;\n  --tw-drop-shadow:  ;\n  --tw-backdrop-blur:  ;\n  --tw-backdrop-brightness:  ;\n  --tw-backdrop-contrast:  ;\n  --tw-backdrop-grayscale:  ;\n  --tw-backdrop-hue-rotate:  ;\n  --tw-backdrop-invert:  ;\n  --tw-backdrop-opacity:  ;\n  --tw-backdrop-saturate:  ;\n  --tw-backdrop-sepia:  ;\n}.flex {\n  display: flex;\n}.table {\n  display: table;\n}.flex-row {\n  flex-direction: row;\n}.flex-col {\n  flex-direction: column;\n}.justify-evenly {\n  justify-content: space-evenly;\n}.border {\n  border-width: 1px;\n}.capitalize {\n  text-transform: capitalize;\n}.outline {\n  outline-style: solid;\n}";
 }
 
 
@@ -2919,40 +2923,113 @@ __vite_ssr_exports__.default = [
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
 // Dependencies: 
-// - vue/server-renderer ($id_UyJffsox60)
+// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_UfTTsz11wj = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_a81thUgcqy = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/Calculoplantio.vue");
+
 const _sfc_main = {}
-const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue/server-renderer");
 
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
-  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}></div>`)
+  const _component_Calculoplantio = __vite_ssr_import_0__.default
+
+  _push(`<div${__vite_ssr_import_2__.ssrRenderAttrs(_attrs)}>`)
+  _push(__vite_ssr_import_2__.ssrRenderComponent(_component_Calculoplantio, null, null, _parent))
+  _push(`</div>`)
 }
 
 
-const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_3__ = await __vite_ssr_import__("vue");
 
 const _sfc_setup = _sfc_main.setup
 _sfc_main.setup = (props, ctx) => {
-  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  const ssrContext = __vite_ssr_import_3__.useSSRContext()
   ;(ssrContext.modules || (ssrContext.modules = new Set())).add("pages/index.vue")
   return _sfc_setup ? _sfc_setup(props, ctx) : undefined
 }
-const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+const __vite_ssr_import_4__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
-__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/index.vue"]])
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_4__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/index.vue"]])
 const meta = undefined
 Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
 }
 
 
 // --------------------
-// Request: vue/server-renderer
+// Request: /components/Calculoplantio.vue
 // Parents: 
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /pages/index.vue ($id_zKWOlz8EPO)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css ($id_3k0DnXyrJW)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_FmKM2RLRZP = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_1__.defineComponent({
+  __name: "Calculoplantio",
+  setup(__props, { expose }) {
+    expose();
+    const calculoSafra = __vite_ssr_import_0__.reactive({
+      safra: "",
+      areaPlantio: 0,
+      sacasHa: 0,
+      valorSaca: 0
+    });
+    const resultadoSafra = __vite_ssr_import_0__.reactive({
+      totalSacas: 0,
+      totalValor: 0
+    });
+    const calcularSafra = () => {
+      resultadoSafra.totalSacas = calculoSafra.areaPlantio * calculoSafra.sacasHa;
+      resultadoSafra.totalValor = resultadoSafra.totalSacas * calculoSafra.valorSaca;
+    };
+    const __returned__ = { calculoSafra, resultadoSafra, calcularSafra };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${__vite_ssr_import_2__.ssrRenderAttrs(_attrs)} data-v-94267614><div class="container-inputs" data-v-94267614><label data-v-94267614>Safra <input placeholder="ex: milho"${__vite_ssr_import_2__.ssrRenderAttr("value", $setup.calculoSafra.safra)} data-v-94267614></label><label data-v-94267614>Area total do plantio (em ha) <input placeholder="ex: 30"${__vite_ssr_import_2__.ssrRenderAttr("value", $setup.calculoSafra.areaPlantio)} data-v-94267614></label><label data-v-94267614>Sacas esperada por ha <input placeholder="ex: 30"${__vite_ssr_import_2__.ssrRenderAttr("value", $setup.calculoSafra.sacasHa)} data-v-94267614></label><label data-v-94267614>Pre\xE7o esperado por saca <input placeholder="ex: 110"${__vite_ssr_import_2__.ssrRenderAttr("value", $setup.calculoSafra.valorSaca)} data-v-94267614></label><button data-v-94267614>Calcular</button><p data-v-94267614>${__vite_ssr_import_2__.ssrInterpolate($setup.resultadoSafra.totalValor)}</p></div></div>`);
+}
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css");
+
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_4__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/Calculoplantio.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_5__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_5__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__scopeId", "data-v-94267614"], ["__file", "C:/Users/Artur/Documents/nuxt/template/components/Calculoplantio.vue"]]);
+;
+}
+
+
+// --------------------
+// Request: vue/server-renderer
+// Parents: 
+// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
+// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /components/AdicionarDespesa.vue ($id_5osf35Ra3l)
+// - /components/AdicionarEntrada.vue ($id_6puMWTLI7j)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
@@ -2964,6 +3041,7 @@ Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configur
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
+// - /layouts/default.vue ($id_dononVQSck)
 // - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
 // Dependencies: 
 
@@ -2983,9 +3061,24 @@ import("vue/server-renderer")
 
 
 // --------------------
+// Request: /components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css
+// Parents: 
+// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
+// Dependencies: 
+
+// --------------------
+const $id_VMcb5MMrhc = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+__vite_ssr_exports__.default = "\n*[data-v-94267614] {\n}\n.container-inputs[data-v-94267614] {\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: right;\r\n        flex-direction: column;\n}\ninput[data-v-94267614] {\r\n        border: 1px solid black;\r\n        width: 10vw;\r\n        margin-top: 1rem;\r\n        border-radius: 0.25rem;\r\n        outline: none;\n}\nbutton[data-v-94267614] {\r\n        background: grey;\r\n        color: white;\r\n        margin-top: 1rem;\r\n        padding: 0.2rem 0.7rem;\r\n        border-radius: 0.25rem;\n}\r\n";
+}
+
+
+// --------------------
 // Request: /@id/__x00__plugin-vue:export-helper
 // Parents: 
+// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /components/AdicionarDespesa.vue ($id_5osf35Ra3l)
+// - /components/AdicionarEntrada.vue ($id_6puMWTLI7j)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
@@ -2997,6 +3090,7 @@ import("vue/server-renderer")
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
+// - /layouts/default.vue ($id_dononVQSck)
 // - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
 // Dependencies: 
 
@@ -3019,13 +3113,99 @@ __vite_ssr_exports__.default = (sfc, props) => {
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
 // Dependencies: 
+// - /components/AdicionarDespesa.vue ($id_5osf35Ra3l)
+// - /components/AdicionarEntrada.vue ($id_6puMWTLI7j)
 // - /composables/useSupabase.ts ($id_yN6LjTobpZ)
 // - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
 // - vue ($id_VkOCJnUZrn)
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_tkexxrCNB2 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_IbwNG50CI7 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/AdicionarDespesa.vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/components/AdicionarEntrada.vue");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/composables/useAuth.ts");
+
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_5__.defineComponent({
+  __name: "index2",
+  async setup(__props, { expose }) {
+    expose();
+    let __temp, __restore;
+    let fluxo_de_entrada = 0;
+    let fluxo_de_saida = 0;
+    const { supabase } = __vite_ssr_import_2__.default();
+    const { user } = __vite_ssr_import_3__.default();
+    const saldoResponse = __vite_ssr_import_4__.ref();
+    const fluxoResponse = __vite_ssr_import_4__.ref();
+    const fluxoEntrada = __vite_ssr_import_4__.ref();
+    const fluxoSaida = __vite_ssr_import_4__.ref();
+    saldoResponse.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("usuario").select().eq("id", 1)), __temp = await __temp, __restore(), __temp);
+    fluxoResponse.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("fluxo").select()), __temp = await __temp, __restore(), __temp);
+    fluxoEntrada.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("fluxo").select().match({ tipo_fluxo: "entrada" })), __temp = await __temp, __restore(), __temp);
+    fluxoSaida.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("fluxo").select()), __temp = await __temp, __restore(), __temp);
+    const __returned__ = { fluxo_de_entrada, fluxo_de_saida, supabase, user, saldoResponse, fluxoResponse, fluxoEntrada, fluxoSaida };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_6__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_7__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_AdicionarDespesa = __vite_ssr_import_0__.default;
+  const _component_AdicionarEntrada = __vite_ssr_import_1__.default;
+  _push(`<!--[--><div><div class="flex flex-row justify-evenly"><div><h3>Fluxo de Entrada</h3><h1>${__vite_ssr_import_7__.ssrInterpolate($setup.fluxo_de_entrada)}</h1></div><div><h3>Fluxo de saida</h3><h1>${__vite_ssr_import_7__.ssrInterpolate($setup.fluxo_de_saida)}</h1></div><div><h3>Saldo da propriedade</h3><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList($setup.saldoResponse.data, (saldo) => {
+    _push(`<h1>${__vite_ssr_import_7__.ssrInterpolate(saldo.saldo)}</h1>`);
+  });
+  _push(`<!--]--></div></div><div class="flex flex-row">`);
+  _push(__vite_ssr_import_7__.ssrRenderComponent(_component_AdicionarDespesa, null, null, _parent));
+  _push(__vite_ssr_import_7__.ssrRenderComponent(_component_AdicionarEntrada, null, null, _parent));
+  _push(`</div><table class=""><th>A\xE7\xE3o</th><th>Categoria</th><th>Fornecedor</th><th>Produto</th><th>Valor</th><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList($setup.fluxoResponse.data, (fluxo) => {
+    _push(`<tr><td>${__vite_ssr_import_7__.ssrInterpolate(fluxo.tipo_fluxo)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(fluxo.categoria)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(fluxo.fornecedor)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(fluxo.produto)}</td><td>R$${__vite_ssr_import_7__.ssrInterpolate(fluxo.valor)}</td></tr>`);
+  });
+  _push(`<!--]--></table></div> ${__vite_ssr_import_7__.ssrInterpolate($setup.fluxoEntrada.data)}<!--]-->`);
+}
+const __vite_ssr_import_8__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_8__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index2.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_9__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_9__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
+
+const meta = undefined
+Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
+}
+
+
+// --------------------
+// Request: /components/AdicionarDespesa.vue
+// Parents: 
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
+// Dependencies: 
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_h4QIIxteMg = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/composables/useSupabase.ts");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useAuth.ts");
@@ -3035,16 +3215,11 @@ const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
 const __vite_ssr_import_3__ = await __vite_ssr_import__("vue");
 
 const _sfc_main = /* @__PURE__ */ __vite_ssr_import_3__.defineComponent({
-  __name: "index2",
-  async setup(__props, { expose }) {
+  __name: "AdicionarDespesa",
+  setup(__props, { expose }) {
     expose();
-    let __temp, __restore;
-    let fluxo_de_entrada = 23423434;
-    let fluxo_de_saida = 232323;
     const { supabase } = __vite_ssr_import_0__.default();
     const { user } = __vite_ssr_import_1__.default();
-    const saldoResponse = __vite_ssr_import_2__.ref();
-    const fluxoResponse = __vite_ssr_import_2__.ref();
     const despesaInput = __vite_ssr_import_2__.reactive({
       categoria: "",
       fornecedor: "",
@@ -3052,19 +3227,17 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_3__.defineComponent({
       produto: "",
       valor: ""
     });
-    const handleSubmit = async () => {
+    const handleSubmitEntrada = async () => {
       await supabase.from("fluxo").insert({
+        tipo_fluxo: "saida",
         categoria: despesaInput.categoria,
         fornecedor: despesaInput.fornecedor,
         produto: despesaInput.produto,
         valor: despesaInput.valor,
         user_id: user.value.id
       });
-      fluxoResponse.value = await supabase.from("fluxo").select();
     };
-    saldoResponse.value = ([__temp, __restore] = __vite_ssr_import_3__.withAsyncContext(() => supabase.from("usuario").select().eq("id", 1)), __temp = await __temp, __restore(), __temp);
-    fluxoResponse.value = ([__temp, __restore] = __vite_ssr_import_3__.withAsyncContext(() => supabase.from("fluxo").select()), __temp = await __temp, __restore(), __temp);
-    const __returned__ = { fluxo_de_entrada, fluxo_de_saida, supabase, user, saldoResponse, fluxoResponse, despesaInput, handleSubmit };
+    const __returned__ = { supabase, user, despesaInput, handleSubmitEntrada };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
   }
@@ -3072,38 +3245,30 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_3__.defineComponent({
 const __vite_ssr_import_4__ = await __vite_ssr_import__("vue/server-renderer");
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${__vite_ssr_import_4__.ssrRenderAttrs(_attrs)}><div style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "justify-content": "space-evenly" })}"><div><h3>Fluxo de Entrada</h3><h1>${__vite_ssr_import_4__.ssrInterpolate($setup.fluxo_de_entrada)}</h1></div><div><h3>Fluxo de saida</h3><h1>${__vite_ssr_import_4__.ssrInterpolate($setup.fluxo_de_saida)}</h1></div><div><h3>Saldo da propriedade</h3><!--[-->`);
-  __vite_ssr_import_4__.ssrRenderList($setup.saldoResponse.data, (saldo) => {
-    _push(`<h1>${__vite_ssr_import_4__.ssrInterpolate(saldo.saldo)}</h1>`);
-  });
-  _push(`<!--]--></div></div><div style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "row" })}"><div><h1>Adicionar despezas</h1><form style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Fornecedor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.fornecedor)} name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.nota_fiscal)} name="nota fiscal" type="number"><label for="produto">Produto</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.produto)} name="produto" type="text"><label for="valor">Valor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.valor)} name="valor" type="number"><button type="button">Criar</button></form></div><div><h1>Adicionar entradas</h1><form style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Pagador</label><input name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input name="nota fiscal" type="number"><label for="produto">Produto</label><input name="produto" type="text"><label for="valor">Valor</label><input name="valor" type="number"><button type="submit">Criar</button></form></div></div><table><th>Categoria</th><th>Fornecedor</th><th>Produto</th><th>Valor</th><!--[-->`);
-  __vite_ssr_import_4__.ssrRenderList($setup.fluxoResponse.data, (fluxo) => {
-    _push(`<tr><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.categoria)}</td><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.fornecedor)}</td><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.produto)}</td><td>R$ ${__vite_ssr_import_4__.ssrInterpolate(fluxo.valor)}</td></tr>`);
-  });
-  _push(`<!--]--></table></div>`);
+  _push(`<div${__vite_ssr_import_4__.ssrRenderAttrs(_attrs)}><h1>Adicionar despezas</h1><form class="flex flex-col"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Fornecedor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.fornecedor)} name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.nota_fiscal)} name="nota fiscal" type="number"><label for="produto">Produto</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.produto)} name="produto" type="text"><label for="valor">Valor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.valor)} name="valor" type="number"><button type="button">Criar</button></form></div>`);
 }
 const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
 
 const _sfc_setup = _sfc_main.setup;
 _sfc_main.setup = (props, ctx) => {
   const ssrContext = __vite_ssr_import_5__.useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index2.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/AdicionarDespesa.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
 const __vite_ssr_import_6__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
-__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_6__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
-
-const meta = undefined
-Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_6__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/components/AdicionarDespesa.vue"]]);
+;
 }
 
 
 // --------------------
 // Request: /composables/useSupabase.ts
 // Parents: 
-// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /components/AdicionarDespesa.vue ($id_5osf35Ra3l)
 // - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - /components/AdicionarEntrada.vue ($id_6puMWTLI7j)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
@@ -3150,6 +3315,8 @@ import("@supabase/supabase-js")
 // --------------------
 // Request: /composables/useAuth.ts
 // Parents: 
+// - /components/AdicionarDespesa.vue ($id_5osf35Ra3l)
+// - /components/AdicionarEntrada.vue ($id_6puMWTLI7j)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
@@ -3214,6 +3381,75 @@ const useAuth = () => {
   };
 };
 __vite_ssr_exports__.default = useAuth;
+;
+}
+
+
+// --------------------
+// Request: /components/AdicionarEntrada.vue
+// Parents: 
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
+// Dependencies: 
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_x5Da1s6KVj = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useAuth.ts");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_3__.defineComponent({
+  __name: "AdicionarEntrada",
+  setup(__props, { expose }) {
+    expose();
+    const { supabase } = __vite_ssr_import_0__.default();
+    const { user } = __vite_ssr_import_1__.default();
+    const entradaInput = __vite_ssr_import_2__.reactive({
+      categoria: "",
+      fornecedor: "",
+      nota_fiscal: "",
+      produto: "",
+      valor: ""
+    });
+    const handleSubmitEntrada = async () => {
+      await supabase.from("fluxo").insert({
+        tipo_fluxo: "entrada",
+        categoria: entradaInput.categoria,
+        fornecedor: entradaInput.fornecedor,
+        produto: entradaInput.produto,
+        valor: entradaInput.valor,
+        user_id: user.value.id
+      });
+    };
+    const __returned__ = { supabase, user, entradaInput, handleSubmitEntrada };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${__vite_ssr_import_4__.ssrRenderAttrs(_attrs)}><h1>Adicionar Entradas</h1><form class="flex flex-col"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Fornecedor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.entradaInput.fornecedor)} name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.entradaInput.nota_fiscal)} name="nota fiscal" type="number"><label for="produto">Produto</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.entradaInput.produto)} name="produto" type="text"><label for="valor">Valor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.entradaInput.valor)} name="valor" type="number"><button type="button">Criar</button></form></div>`);
+}
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_5__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/AdicionarEntrada.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_6__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_6__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/components/AdicionarEntrada.vue"]]);
 ;
 }
 
@@ -3450,31 +3686,40 @@ __vite_ssr_exports__.default = "\n.card[data-v-ee860cc1] {\r\n    padding: 2rem;
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
 // Dependencies: 
-// - vue/server-renderer ($id_UyJffsox60)
+// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_FYGDg5l61L = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_qJrOPQ5EaW = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/Calculoplantio.vue");
+
 const _sfc_main = {}
-const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue/server-renderer");
 
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
-  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}></div>`)
+  const _component_Calculoplantio = __vite_ssr_import_0__.default
+
+  _push(`<div${__vite_ssr_import_2__.ssrRenderAttrs(_attrs)}>`)
+  _push(__vite_ssr_import_2__.ssrRenderComponent(_component_Calculoplantio, null, null, _parent))
+  _push(`</div>`)
 }
 
 
-const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_3__ = await __vite_ssr_import__("vue");
 
 const _sfc_setup = _sfc_main.setup
 _sfc_main.setup = (props, ctx) => {
-  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  const ssrContext = __vite_ssr_import_3__.useSSRContext()
   ;(ssrContext.modules || (ssrContext.modules = new Set())).add("pages/index.vue")
   return _sfc_setup ? _sfc_setup(props, ctx) : undefined
 }
-const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+const __vite_ssr_import_4__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
-__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/index.vue"]]);
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_4__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/index.vue"]]);
 }
 
 
@@ -3483,80 +3728,80 @@ __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_m
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
 // Dependencies: 
+// - /components/AdicionarDespesa.vue ($id_5osf35Ra3l)
+// - /components/AdicionarEntrada.vue ($id_6puMWTLI7j)
 // - /composables/useSupabase.ts ($id_yN6LjTobpZ)
 // - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
 // - vue ($id_VkOCJnUZrn)
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_Yi8O284giY = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+const $id_OnRdIaE5mz = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/AdicionarDespesa.vue");
 
-const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useAuth.ts");
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/components/AdicionarEntrada.vue");
 
-const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/composables/useSupabase.ts");
 
-const __vite_ssr_import_3__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/composables/useAuth.ts");
 
-const _sfc_main = /* @__PURE__ */ __vite_ssr_import_3__.defineComponent({
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_5__.defineComponent({
   __name: "index2",
   async setup(__props, { expose }) {
     expose();
     let __temp, __restore;
-    let fluxo_de_entrada = 23423434;
-    let fluxo_de_saida = 232323;
-    const { supabase } = __vite_ssr_import_0__.default();
-    const { user } = __vite_ssr_import_1__.default();
-    const saldoResponse = __vite_ssr_import_2__.ref();
-    const fluxoResponse = __vite_ssr_import_2__.ref();
-    const despesaInput = __vite_ssr_import_2__.reactive({
-      categoria: "",
-      fornecedor: "",
-      nota_fiscal: "",
-      produto: "",
-      valor: ""
-    });
-    const handleSubmit = async () => {
-      await supabase.from("fluxo").insert({
-        categoria: despesaInput.categoria,
-        fornecedor: despesaInput.fornecedor,
-        produto: despesaInput.produto,
-        valor: despesaInput.valor,
-        user_id: user.value.id
-      });
-      fluxoResponse.value = await supabase.from("fluxo").select();
-    };
-    saldoResponse.value = ([__temp, __restore] = __vite_ssr_import_3__.withAsyncContext(() => supabase.from("usuario").select().eq("id", 1)), __temp = await __temp, __restore(), __temp);
-    fluxoResponse.value = ([__temp, __restore] = __vite_ssr_import_3__.withAsyncContext(() => supabase.from("fluxo").select()), __temp = await __temp, __restore(), __temp);
-    const __returned__ = { fluxo_de_entrada, fluxo_de_saida, supabase, user, saldoResponse, fluxoResponse, despesaInput, handleSubmit };
+    let fluxo_de_entrada = 0;
+    let fluxo_de_saida = 0;
+    const { supabase } = __vite_ssr_import_2__.default();
+    const { user } = __vite_ssr_import_3__.default();
+    const saldoResponse = __vite_ssr_import_4__.ref();
+    const fluxoResponse = __vite_ssr_import_4__.ref();
+    const fluxoEntrada = __vite_ssr_import_4__.ref();
+    const fluxoSaida = __vite_ssr_import_4__.ref();
+    saldoResponse.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("usuario").select().eq("id", 1)), __temp = await __temp, __restore(), __temp);
+    fluxoResponse.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("fluxo").select()), __temp = await __temp, __restore(), __temp);
+    fluxoEntrada.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("fluxo").select().match({ tipo_fluxo: "entrada" })), __temp = await __temp, __restore(), __temp);
+    fluxoSaida.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("fluxo").select()), __temp = await __temp, __restore(), __temp);
+    const __returned__ = { fluxo_de_entrada, fluxo_de_saida, supabase, user, saldoResponse, fluxoResponse, fluxoEntrada, fluxoSaida };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
   }
 });
-const __vite_ssr_import_4__ = await __vite_ssr_import__("vue/server-renderer");
+const __vite_ssr_import_6__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_7__ = await __vite_ssr_import__("vue/server-renderer");
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${__vite_ssr_import_4__.ssrRenderAttrs(_attrs)}><div style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "justify-content": "space-evenly" })}"><div><h3>Fluxo de Entrada</h3><h1>${__vite_ssr_import_4__.ssrInterpolate($setup.fluxo_de_entrada)}</h1></div><div><h3>Fluxo de saida</h3><h1>${__vite_ssr_import_4__.ssrInterpolate($setup.fluxo_de_saida)}</h1></div><div><h3>Saldo da propriedade</h3><!--[-->`);
-  __vite_ssr_import_4__.ssrRenderList($setup.saldoResponse.data, (saldo) => {
-    _push(`<h1>${__vite_ssr_import_4__.ssrInterpolate(saldo.saldo)}</h1>`);
+  const _component_AdicionarDespesa = __vite_ssr_import_0__.default;
+  const _component_AdicionarEntrada = __vite_ssr_import_1__.default;
+  _push(`<!--[--><div><div class="flex flex-row justify-evenly"><div><h3>Fluxo de Entrada</h3><h1>${__vite_ssr_import_7__.ssrInterpolate($setup.fluxo_de_entrada)}</h1></div><div><h3>Fluxo de saida</h3><h1>${__vite_ssr_import_7__.ssrInterpolate($setup.fluxo_de_saida)}</h1></div><div><h3>Saldo da propriedade</h3><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList($setup.saldoResponse.data, (saldo) => {
+    _push(`<h1>${__vite_ssr_import_7__.ssrInterpolate(saldo.saldo)}</h1>`);
   });
-  _push(`<!--]--></div></div><div style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "row" })}"><div><h1>Adicionar despezas</h1><form style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Fornecedor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.fornecedor)} name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.nota_fiscal)} name="nota fiscal" type="number"><label for="produto">Produto</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.produto)} name="produto" type="text"><label for="valor">Valor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.valor)} name="valor" type="number"><button type="button">Criar</button></form></div><div><h1>Adicionar entradas</h1><form style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Pagador</label><input name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input name="nota fiscal" type="number"><label for="produto">Produto</label><input name="produto" type="text"><label for="valor">Valor</label><input name="valor" type="number"><button type="submit">Criar</button></form></div></div><table><th>Categoria</th><th>Fornecedor</th><th>Produto</th><th>Valor</th><!--[-->`);
-  __vite_ssr_import_4__.ssrRenderList($setup.fluxoResponse.data, (fluxo) => {
-    _push(`<tr><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.categoria)}</td><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.fornecedor)}</td><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.produto)}</td><td>R$ ${__vite_ssr_import_4__.ssrInterpolate(fluxo.valor)}</td></tr>`);
+  _push(`<!--]--></div></div><div class="flex flex-row">`);
+  _push(__vite_ssr_import_7__.ssrRenderComponent(_component_AdicionarDespesa, null, null, _parent));
+  _push(__vite_ssr_import_7__.ssrRenderComponent(_component_AdicionarEntrada, null, null, _parent));
+  _push(`</div><table class=""><th>A\xE7\xE3o</th><th>Categoria</th><th>Fornecedor</th><th>Produto</th><th>Valor</th><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList($setup.fluxoResponse.data, (fluxo) => {
+    _push(`<tr><td>${__vite_ssr_import_7__.ssrInterpolate(fluxo.tipo_fluxo)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(fluxo.categoria)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(fluxo.fornecedor)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(fluxo.produto)}</td><td>R$${__vite_ssr_import_7__.ssrInterpolate(fluxo.valor)}</td></tr>`);
   });
-  _push(`<!--]--></table></div>`);
+  _push(`<!--]--></table></div> ${__vite_ssr_import_7__.ssrInterpolate($setup.fluxoEntrada.data)}<!--]-->`);
 }
-const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_8__ = await __vite_ssr_import__("vue");
 
 const _sfc_setup = _sfc_main.setup;
 _sfc_main.setup = (props, ctx) => {
-  const ssrContext = __vite_ssr_import_5__.useSSRContext();
+  const ssrContext = __vite_ssr_import_8__.useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index2.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const __vite_ssr_import_6__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+const __vite_ssr_import_9__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
-__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_6__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_9__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
 ;
 }
 
@@ -4347,11 +4592,49 @@ __vite_ssr_exports__.default = __vite_ssr_import_0__.defineComponent({
 // - /node_modules/nuxt/dist/app/components/layout.mjs ($id_OQA4gz7rLc)
 // Dependencies: 
 // - vue ($id_VkOCJnUZrn)
+// - /layouts/default.vue ($id_dononVQSck)
 // --------------------
-const $id_STXqSt8Ahx = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_VXatdSV6Wo = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
 
-__vite_ssr_exports__.default = {};
+__vite_ssr_exports__.default = {
+  default: __vite_ssr_import_0__.defineAsyncComponent(() => __vite_ssr_dynamic_import__("/layouts/default.vue"))
+};
+}
+
+
+// --------------------
+// Request: /layouts/default.vue
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/layouts.mjs ($id_N8uK2ejzkJ)
+// Dependencies: 
+// - vue/server-renderer ($id_UyJffsox60)
+// - vue ($id_VkOCJnUZrn)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_2jhiaBlcl9 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}>`)
+  __vite_ssr_import_0__.ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent)
+  _push(`</div>`)
+}
+
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("layouts/default.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/layouts/default.vue"]]);
 }
 
 
@@ -4388,7 +4671,7 @@ const __modules__ = {
   "/node_modules/nuxt/dist/head/runtime/composables.mjs": $id_TG3cDPMBp5,
   "@vue/shared": $id_NOAOzpHkPB,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/css.mjs": $id_5jdRJFxKk9,
-  "/assets/css/tailwind.css": $id_0XbtH60u1e,
+  "/assets/css/tailwind.css": $id_29FBngFfoV,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/plugins/server.mjs": $id_DpEYD16RxI,
   "/node_modules/nuxt/dist/app/plugins/preload.server.mjs": $id_1SAEi7QN5N,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/components.plugin.mjs": $id_mYd3bDVqQx,
@@ -4403,18 +4686,22 @@ const __modules__ = {
   "/node_modules/nuxt/dist/pages/runtime/utils.mjs": $id_ZR0LUqwyer,
   "/node_modules/nuxt/dist/app/components/utils.mjs": $id_NgApSiB2xA,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_V0G5Zn7mz9,
-  "/pages/index.vue?macro=true": $id_UfTTsz11wj,
+  "/pages/index.vue?macro=true": $id_a81thUgcqy,
+  "/components/Calculoplantio.vue": $id_FmKM2RLRZP,
   "vue/server-renderer": $id_aRHphPzMpI,
+  "/components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css": $id_VMcb5MMrhc,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
-  "/pages/index2.vue?macro=true": $id_tkexxrCNB2,
+  "/pages/index2.vue?macro=true": $id_IbwNG50CI7,
+  "/components/AdicionarDespesa.vue": $id_h4QIIxteMg,
   "/composables/useSupabase.ts": $id_ldWZ8HPmjw,
   "@supabase/supabase-js": $id_9XNII2VSge,
   "/composables/useAuth.ts": $id_OqK7ZbuKel,
+  "/components/AdicionarEntrada.vue": $id_x5Da1s6KVj,
   "/pages/login.vue?macro=true": $id_24okfJ3TNH,
   "/components/Auth.vue": $id_srwFyTRhDe,
   "/components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": $id_hXyNCI6Ozm,
-  "/pages/index.vue": $id_FYGDg5l61L,
-  "/pages/index2.vue": $id_Yi8O284giY,
+  "/pages/index.vue": $id_qJrOPQ5EaW,
+  "/pages/index2.vue": $id_OnRdIaE5mz,
   "/pages/login.vue": $id_zw9cVPKHCf,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/router.options.mjs": $id_nmhVZR4Lu2,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/middleware.mjs": $id_fDirMoZFok,
@@ -4432,7 +4719,8 @@ const __modules__ = {
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/app-component.mjs": $id_DwIm27mpiT,
   "/node_modules/nuxt/dist/pages/runtime/app.vue": $id_Zf8VYe9D5b,
   "/node_modules/nuxt/dist/app/components/layout.mjs": $id_yrU9drFKIO,
-  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/layouts.mjs": $id_STXqSt8Ahx
+  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/layouts.mjs": $id_VXatdSV6Wo,
+  "/layouts/default.vue": $id_2jhiaBlcl9
 }
 
 
