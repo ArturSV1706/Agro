@@ -274,8 +274,8 @@ import("ufo")
 // - /node_modules/nuxt/dist/head/runtime/plugin.mjs ($id_omUDQe4IGe)
 // - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
 // - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
-// - /components/Auth.vue ($id_bD8to5qKKa)
 // - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - /components/Auth.vue ($id_bD8to5qKKa)
 // - /middleware/auth.ts ($id_e5KqhuTNzv)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
 // - /node_modules/nuxt/dist/app/components/layout.mjs ($id_OQA4gz7rLc)
@@ -3019,44 +3019,202 @@ __vite_ssr_exports__.default = (sfc, props) => {
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
 // Dependencies: 
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
 // - vue ($id_VkOCJnUZrn)
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_h4jKMe6qDA = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+const $id_tkexxrCNB2 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/composables/useSupabase.ts");
 
-const _sfc_main = /* @__PURE__ */ __vite_ssr_import_0__.defineComponent({
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useAuth.ts");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_3__.defineComponent({
   __name: "index2",
-  setup(__props, { expose }) {
+  async setup(__props, { expose }) {
     expose();
+    let __temp, __restore;
     let fluxo_de_entrada = 23423434;
     let fluxo_de_saida = 232323;
-    let saldo = fluxo_de_entrada - fluxo_de_saida;
-    const __returned__ = { fluxo_de_entrada, fluxo_de_saida, saldo };
+    const { supabase } = __vite_ssr_import_0__.default();
+    const { user } = __vite_ssr_import_1__.default();
+    const saldoResponse = __vite_ssr_import_2__.ref();
+    const fluxoResponse = __vite_ssr_import_2__.ref();
+    const despesaInput = __vite_ssr_import_2__.reactive({
+      categoria: "",
+      fornecedor: "",
+      nota_fiscal: "",
+      produto: "",
+      valor: ""
+    });
+    const handleSubmit = async () => {
+      await supabase.from("fluxo").insert({
+        categoria: despesaInput.categoria,
+        fornecedor: despesaInput.fornecedor,
+        produto: despesaInput.produto,
+        valor: despesaInput.valor,
+        user_id: user.value.id
+      });
+      fluxoResponse.value = await supabase.from("fluxo").select();
+    };
+    saldoResponse.value = ([__temp, __restore] = __vite_ssr_import_3__.withAsyncContext(() => supabase.from("usuario").select().eq("id", 1)), __temp = await __temp, __restore(), __temp);
+    fluxoResponse.value = ([__temp, __restore] = __vite_ssr_import_3__.withAsyncContext(() => supabase.from("fluxo").select()), __temp = await __temp, __restore(), __temp);
+    const __returned__ = { fluxo_de_entrada, fluxo_de_saida, supabase, user, saldoResponse, fluxoResponse, despesaInput, handleSubmit };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
   }
 });
-const __vite_ssr_import_1__ = await __vite_ssr_import__("vue/server-renderer");
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue/server-renderer");
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${__vite_ssr_import_1__.ssrRenderAttrs(_attrs)}><div style="${__vite_ssr_import_1__.ssrRenderStyle({ "display": "flex", "justify-content": "space-evenly" })}"><div><h3>Fluxo de Entrada</h3><h1>${__vite_ssr_import_1__.ssrInterpolate($setup.fluxo_de_entrada)}</h1></div><div><h3>Fluxo de saida</h3><h1>${__vite_ssr_import_1__.ssrInterpolate($setup.fluxo_de_saida)}</h1></div><div><h3>Saldo da propriedade</h3><h1>${__vite_ssr_import_1__.ssrInterpolate($setup.saldo)}</h1></div></div><div style="${__vite_ssr_import_1__.ssrRenderStyle({ "display": "flex", "flex-direction": "row" })}"><div><h1>Adicionar despezas</h1><form style="${__vite_ssr_import_1__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Fornecedor</label><input name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input name="nota fiscal" type="number"><label for="produto">Produto</label><input name="produto" type="text"><label for="valor">Valor</label><input name="valor" type="number"><button type="submit">Criar</button></form></div><div><h1>Adicionar despezas</h1><form style="${__vite_ssr_import_1__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Pagador</label><input name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input name="nota fiscal" type="number"><label for="produto">Produto</label><input name="produto" type="text"><label for="valor">Valor</label><input name="valor" type="number"><button type="submit">Criar</button></form></div></div><table><th>Categoria</th><th>Fornecedor</th><th>Nota Fiscal</th><th>Produto</th><th>Valor</th><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr></table></div>`);
+  _push(`<div${__vite_ssr_import_4__.ssrRenderAttrs(_attrs)}><div style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "justify-content": "space-evenly" })}"><div><h3>Fluxo de Entrada</h3><h1>${__vite_ssr_import_4__.ssrInterpolate($setup.fluxo_de_entrada)}</h1></div><div><h3>Fluxo de saida</h3><h1>${__vite_ssr_import_4__.ssrInterpolate($setup.fluxo_de_saida)}</h1></div><div><h3>Saldo da propriedade</h3><!--[-->`);
+  __vite_ssr_import_4__.ssrRenderList($setup.saldoResponse.data, (saldo) => {
+    _push(`<h1>${__vite_ssr_import_4__.ssrInterpolate(saldo.saldo)}</h1>`);
+  });
+  _push(`<!--]--></div></div><div style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "row" })}"><div><h1>Adicionar despezas</h1><form style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Fornecedor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.fornecedor)} name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.nota_fiscal)} name="nota fiscal" type="number"><label for="produto">Produto</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.produto)} name="produto" type="text"><label for="valor">Valor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.valor)} name="valor" type="number"><button type="button">Criar</button></form></div><div><h1>Adicionar entradas</h1><form style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Pagador</label><input name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input name="nota fiscal" type="number"><label for="produto">Produto</label><input name="produto" type="text"><label for="valor">Valor</label><input name="valor" type="number"><button type="submit">Criar</button></form></div></div><table><th>Categoria</th><th>Fornecedor</th><th>Produto</th><th>Valor</th><!--[-->`);
+  __vite_ssr_import_4__.ssrRenderList($setup.fluxoResponse.data, (fluxo) => {
+    _push(`<tr><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.categoria)}</td><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.fornecedor)}</td><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.produto)}</td><td>R$ ${__vite_ssr_import_4__.ssrInterpolate(fluxo.valor)}</td></tr>`);
+  });
+  _push(`<!--]--></table></div>`);
 }
-const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
 
 const _sfc_setup = _sfc_main.setup;
 _sfc_main.setup = (props, ctx) => {
-  const ssrContext = __vite_ssr_import_2__.useSSRContext();
+  const ssrContext = __vite_ssr_import_5__.useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index2.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+const __vite_ssr_import_6__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
-__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_3__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_6__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
 
 const meta = undefined
 Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
+}
+
+
+// --------------------
+// Request: /composables/useSupabase.ts
+// Parents: 
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
+// - /pages/login.vue ($id_sJIhc9o139)
+// Dependencies: 
+// - @supabase/supabase-js ($id_uQhgE3ya8u)
+// --------------------
+const $id_ldWZ8HPmjw = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("@supabase/supabase-js");
+
+const supabaseUrl = "https://nsorslktwhwctyyvrvcb.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zb3JzbGt0d2h3Y3R5eXZydmNiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY2MzEwMzAwMywiZXhwIjoxOTc4Njc5MDAzfQ.QWfQ1QtJRvidDaAEY1GdRKkkRN7XNxtwovzaVeL8qlo";
+const useSupabase = () => {
+  const supabase = __vite_ssr_import_0__.createClient(supabaseUrl, supabaseKey);
+  return {
+    supabase
+  };
+};
+__vite_ssr_exports__.default = useSupabase;
+;
+}
+
+
+// --------------------
+// Request: @supabase/supabase-js
+// Parents: 
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// Dependencies: 
+
+// --------------------
+const $id_9XNII2VSge = (global, module, _, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) =>
+import("@supabase/supabase-js")
+  .then(r => {
+    if (r.default && r.default.__esModule)
+      r = r.default
+    exports.default = r.default
+    ssrExportAll(r)
+  })
+  .catch(e => {
+    console.error(e)
+    throw new Error("[vite dev] Error loading external \"@supabase/supabase-js\".")
+  })
+
+
+// --------------------
+// Request: /composables/useAuth.ts
+// Parents: 
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /components/Auth.vue ($id_bD8to5qKKa)
+// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
+// - /pages/login.vue ($id_sJIhc9o139)
+// - /middleware/auth.ts ($id_e5KqhuTNzv)
+// Dependencies: 
+// - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// --------------------
+const $id_OqK7ZbuKel = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+
+const useAuth = () => {
+  const user = __vite_ssr_import_0__.useState("user", () => null, '$OWrSqFye87');
+  const router = __vite_ssr_import_0__.useRouter();
+  const { supabase } = __vite_ssr_import_1__.default();
+  supabase.auth.onAuthStateChange((e, session) => {
+    user.value = session?.user || null;
+  });
+  const signUp = async ({ email, password, ...metadata }) => {
+    const { user: u, error } = await supabase.auth.signUp(
+      {
+        email,
+        password
+      },
+      {
+        data: metadata,
+        redirectTo: `${window.location.origin}/myProfile?source=email`
+      }
+    );
+    if (error)
+      throw error;
+    return u;
+  };
+  const signIn = async ({ email, password }) => {
+    const { user: u, error } = await supabase.auth.signIn({
+      email,
+      password
+    });
+    if (error)
+      throw error;
+    return u;
+  };
+  const signOut = async ({}) => {
+    const { error } = await supabase.auth.signOut();
+    if (error)
+      throw error;
+    router.push("/");
+  };
+  const isLoggedIn = () => {
+    return !!user.value;
+  };
+  return {
+    user,
+    signUp,
+    signIn,
+    signOut,
+    isLoggedIn
+  };
+};
+__vite_ssr_exports__.default = useAuth;
+;
 }
 
 
@@ -3276,121 +3434,6 @@ __vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_8__.default(_sf
 
 
 // --------------------
-// Request: /composables/useAuth.ts
-// Parents: 
-// - /components/Auth.vue ($id_bD8to5qKKa)
-// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
-// - /pages/login.vue ($id_sJIhc9o139)
-// - /middleware/auth.ts ($id_e5KqhuTNzv)
-// Dependencies: 
-// - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
-// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
-// --------------------
-const $id_OqK7ZbuKel = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
-
-const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useSupabase.ts");
-
-const useAuth = () => {
-  const user = __vite_ssr_import_0__.useState("user", () => null, '$OWrSqFye87');
-  const router = __vite_ssr_import_0__.useRouter();
-  const { supabase } = __vite_ssr_import_1__.default();
-  supabase.auth.onAuthStateChange((e, session) => {
-    user.value = session?.user || null;
-  });
-  const signUp = async ({ email, password, ...metadata }) => {
-    const { user: u, error } = await supabase.auth.signUp(
-      {
-        email,
-        password
-      },
-      {
-        data: metadata,
-        redirectTo: `${window.location.origin}/myProfile?source=email`
-      }
-    );
-    if (error)
-      throw error;
-    return u;
-  };
-  const signIn = async ({ email, password }) => {
-    const { user: u, error } = await supabase.auth.signIn({
-      email,
-      password
-    });
-    if (error)
-      throw error;
-    return u;
-  };
-  const signOut = async ({}) => {
-    const { error } = await supabase.auth.signOut();
-    if (error)
-      throw error;
-    router.push("/");
-  };
-  const isLoggedIn = () => {
-    return !!user.value;
-  };
-  return {
-    user,
-    signUp,
-    signIn,
-    signOut,
-    isLoggedIn
-  };
-};
-__vite_ssr_exports__.default = useAuth;
-;
-}
-
-
-// --------------------
-// Request: /composables/useSupabase.ts
-// Parents: 
-// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
-// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
-// - /pages/login.vue ($id_sJIhc9o139)
-// Dependencies: 
-// - @supabase/supabase-js ($id_uQhgE3ya8u)
-// --------------------
-const $id_ldWZ8HPmjw = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("@supabase/supabase-js");
-
-const supabaseUrl = "https://nsorslktwhwctyyvrvcb.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zb3JzbGt0d2h3Y3R5eXZydmNiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY2MzEwMzAwMywiZXhwIjoxOTc4Njc5MDAzfQ.QWfQ1QtJRvidDaAEY1GdRKkkRN7XNxtwovzaVeL8qlo";
-const useSupabase = () => {
-  const supabase = __vite_ssr_import_0__.createClient(supabaseUrl, supabaseKey);
-  return {
-    supabase
-  };
-};
-__vite_ssr_exports__.default = useSupabase;
-;
-}
-
-
-// --------------------
-// Request: @supabase/supabase-js
-// Parents: 
-// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
-// Dependencies: 
-
-// --------------------
-const $id_9XNII2VSge = (global, module, _, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) =>
-import("@supabase/supabase-js")
-  .then(r => {
-    if (r.default && r.default.__esModule)
-      r = r.default
-    exports.default = r.default
-    ssrExportAll(r)
-  })
-  .catch(e => {
-    console.error(e)
-    throw new Error("[vite dev] Error loading external \"@supabase/supabase-js\".")
-  })
-
-
-// --------------------
 // Request: /components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css
 // Parents: 
 // - /components/Auth.vue ($id_bD8to5qKKa)
@@ -3440,41 +3483,80 @@ __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_m
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
 // Dependencies: 
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
 // - vue ($id_VkOCJnUZrn)
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_OSf5NYOmET = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+const $id_Yi8O284giY = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/composables/useSupabase.ts");
 
-const _sfc_main = /* @__PURE__ */ __vite_ssr_import_0__.defineComponent({
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useAuth.ts");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_3__.defineComponent({
   __name: "index2",
-  setup(__props, { expose }) {
+  async setup(__props, { expose }) {
     expose();
+    let __temp, __restore;
     let fluxo_de_entrada = 23423434;
     let fluxo_de_saida = 232323;
-    let saldo = fluxo_de_entrada - fluxo_de_saida;
-    const __returned__ = { fluxo_de_entrada, fluxo_de_saida, saldo };
+    const { supabase } = __vite_ssr_import_0__.default();
+    const { user } = __vite_ssr_import_1__.default();
+    const saldoResponse = __vite_ssr_import_2__.ref();
+    const fluxoResponse = __vite_ssr_import_2__.ref();
+    const despesaInput = __vite_ssr_import_2__.reactive({
+      categoria: "",
+      fornecedor: "",
+      nota_fiscal: "",
+      produto: "",
+      valor: ""
+    });
+    const handleSubmit = async () => {
+      await supabase.from("fluxo").insert({
+        categoria: despesaInput.categoria,
+        fornecedor: despesaInput.fornecedor,
+        produto: despesaInput.produto,
+        valor: despesaInput.valor,
+        user_id: user.value.id
+      });
+      fluxoResponse.value = await supabase.from("fluxo").select();
+    };
+    saldoResponse.value = ([__temp, __restore] = __vite_ssr_import_3__.withAsyncContext(() => supabase.from("usuario").select().eq("id", 1)), __temp = await __temp, __restore(), __temp);
+    fluxoResponse.value = ([__temp, __restore] = __vite_ssr_import_3__.withAsyncContext(() => supabase.from("fluxo").select()), __temp = await __temp, __restore(), __temp);
+    const __returned__ = { fluxo_de_entrada, fluxo_de_saida, supabase, user, saldoResponse, fluxoResponse, despesaInput, handleSubmit };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
   }
 });
-const __vite_ssr_import_1__ = await __vite_ssr_import__("vue/server-renderer");
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue/server-renderer");
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${__vite_ssr_import_1__.ssrRenderAttrs(_attrs)}><div style="${__vite_ssr_import_1__.ssrRenderStyle({ "display": "flex", "justify-content": "space-evenly" })}"><div><h3>Fluxo de Entrada</h3><h1>${__vite_ssr_import_1__.ssrInterpolate($setup.fluxo_de_entrada)}</h1></div><div><h3>Fluxo de saida</h3><h1>${__vite_ssr_import_1__.ssrInterpolate($setup.fluxo_de_saida)}</h1></div><div><h3>Saldo da propriedade</h3><h1>${__vite_ssr_import_1__.ssrInterpolate($setup.saldo)}</h1></div></div><div style="${__vite_ssr_import_1__.ssrRenderStyle({ "display": "flex", "flex-direction": "row" })}"><div><h1>Adicionar despezas</h1><form style="${__vite_ssr_import_1__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Fornecedor</label><input name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input name="nota fiscal" type="number"><label for="produto">Produto</label><input name="produto" type="text"><label for="valor">Valor</label><input name="valor" type="number"><button type="submit">Criar</button></form></div><div><h1>Adicionar despezas</h1><form style="${__vite_ssr_import_1__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Pagador</label><input name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input name="nota fiscal" type="number"><label for="produto">Produto</label><input name="produto" type="text"><label for="valor">Valor</label><input name="valor" type="number"><button type="submit">Criar</button></form></div></div><table><th>Categoria</th><th>Fornecedor</th><th>Nota Fiscal</th><th>Produto</th><th>Valor</th><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr><tr><td>Insumo</td><td>Coopercampos</td><td>23742309</td><td>Rand\xE1pe</td><td>R$ 800,00</td></tr></table></div>`);
+  _push(`<div${__vite_ssr_import_4__.ssrRenderAttrs(_attrs)}><div style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "justify-content": "space-evenly" })}"><div><h3>Fluxo de Entrada</h3><h1>${__vite_ssr_import_4__.ssrInterpolate($setup.fluxo_de_entrada)}</h1></div><div><h3>Fluxo de saida</h3><h1>${__vite_ssr_import_4__.ssrInterpolate($setup.fluxo_de_saida)}</h1></div><div><h3>Saldo da propriedade</h3><!--[-->`);
+  __vite_ssr_import_4__.ssrRenderList($setup.saldoResponse.data, (saldo) => {
+    _push(`<h1>${__vite_ssr_import_4__.ssrInterpolate(saldo.saldo)}</h1>`);
+  });
+  _push(`<!--]--></div></div><div style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "row" })}"><div><h1>Adicionar despezas</h1><form style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Fornecedor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.fornecedor)} name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.nota_fiscal)} name="nota fiscal" type="number"><label for="produto">Produto</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.produto)} name="produto" type="text"><label for="valor">Valor</label><input${__vite_ssr_import_4__.ssrRenderAttr("value", $setup.despesaInput.valor)} name="valor" type="number"><button type="button">Criar</button></form></div><div><h1>Adicionar entradas</h1><form style="${__vite_ssr_import_4__.ssrRenderStyle({ "display": "flex", "flex-direction": "column" })}"><label for="categoria">Categoria</label><select name="categoria" id="cars" form="carform"><option value="insumo">Insumo</option><option value="combustivel">Combust\xEDvel</option><option value="manutencao">Manuten\xE7\xE3o</option><option value="Financiamento">Financiamento</option></select><label for="fornecedor">Pagador</label><input name="fornecedor" type="text"><label for="nota fiscal">Nota Fiscal</label><input name="nota fiscal" type="number"><label for="produto">Produto</label><input name="produto" type="text"><label for="valor">Valor</label><input name="valor" type="number"><button type="submit">Criar</button></form></div></div><table><th>Categoria</th><th>Fornecedor</th><th>Produto</th><th>Valor</th><!--[-->`);
+  __vite_ssr_import_4__.ssrRenderList($setup.fluxoResponse.data, (fluxo) => {
+    _push(`<tr><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.categoria)}</td><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.fornecedor)}</td><td>${__vite_ssr_import_4__.ssrInterpolate(fluxo.produto)}</td><td>R$ ${__vite_ssr_import_4__.ssrInterpolate(fluxo.valor)}</td></tr>`);
+  });
+  _push(`<!--]--></table></div>`);
 }
-const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
 
 const _sfc_setup = _sfc_main.setup;
 _sfc_main.setup = (props, ctx) => {
-  const ssrContext = __vite_ssr_import_2__.useSSRContext();
+  const ssrContext = __vite_ssr_import_5__.useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index2.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+const __vite_ssr_import_6__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
-__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_3__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_6__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue"]]);
 ;
 }
 
@@ -4324,15 +4406,15 @@ const __modules__ = {
   "/pages/index.vue?macro=true": $id_UfTTsz11wj,
   "vue/server-renderer": $id_aRHphPzMpI,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
-  "/pages/index2.vue?macro=true": $id_h4jKMe6qDA,
-  "/pages/login.vue?macro=true": $id_24okfJ3TNH,
-  "/components/Auth.vue": $id_srwFyTRhDe,
-  "/composables/useAuth.ts": $id_OqK7ZbuKel,
+  "/pages/index2.vue?macro=true": $id_tkexxrCNB2,
   "/composables/useSupabase.ts": $id_ldWZ8HPmjw,
   "@supabase/supabase-js": $id_9XNII2VSge,
+  "/composables/useAuth.ts": $id_OqK7ZbuKel,
+  "/pages/login.vue?macro=true": $id_24okfJ3TNH,
+  "/components/Auth.vue": $id_srwFyTRhDe,
   "/components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": $id_hXyNCI6Ozm,
   "/pages/index.vue": $id_FYGDg5l61L,
-  "/pages/index2.vue": $id_OSf5NYOmET,
+  "/pages/index2.vue": $id_Yi8O284giY,
   "/pages/login.vue": $id_zw9cVPKHCf,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/router.options.mjs": $id_nmhVZR4Lu2,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/middleware.mjs": $id_fDirMoZFok,
