@@ -1,5 +1,5 @@
 <template>
     <div>
-        <Calculoplantio />
+        <slot />
     </div>
 </template>
