@@ -3276,53 +3276,36 @@ Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configur
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_HSGDrh1gGo = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_2BT3SUbROW = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
 const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
 
-const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue/server-renderer");
 
-const _sfc_main = /* @__PURE__ */ __vite_ssr_import_1__.defineComponent({
-  __name: "modalFluxo",
-  props: {
-    isActive: { type: Boolean, required: false }
-  },
-  setup(__props, { expose }) {
-    expose();
-    const props = __props;
-    const isActive_prop = __vite_ssr_import_0__.ref();
-    const handleClose = () => {
-    };
-    const __returned__ = { props, isActive_prop, handleClose };
-    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
-    return __returned__;
-  }
-});
-const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
 
-const __vite_ssr_import_3__ = await __vite_ssr_import__("vue/server-renderer");
-
-function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${__vite_ssr_import_3__.ssrRenderAttrs(__vite_ssr_import_2__.mergeProps({
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${__vite_ssr_import_1__.ssrRenderAttrs(__vite_ssr_import_0__.mergeProps({
     id: "defaultModal",
     tabindex: "-1",
     "aria-hidden": "true",
     class: "overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
-  }, _attrs))}><div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 w-full max-w-2xl h-full md:h-auto"><!-- Modal content --><div class="relative bg-white rounded-lg shadow dark:bg-gray-700"><!-- Modal header --><div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600"><h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Terms of Service </h3><button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal"><svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="sr-only">Close modal</span></button></div><!-- Modal body --><div class="p-6 space-y-6">`);
-  __vite_ssr_import_3__.ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-  _push(`</div><!-- Modal footer --><div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"><button data-modal-toggle="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button><button data-modal-toggle="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button></div></div></div></div>`);
+  }, _attrs))}><div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 w-full max-w-2xl h-full md:h-auto"><!-- Modal content --><div class="relative bg-white rounded-lg shadow dark:bg-gray-700"><!-- Modal header --><div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600"><h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Terms of Service </h3><button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal"><svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="sr-only">Close modal</span></button></div><!-- Modal body --><div class="p-6 space-y-6">`)
+  __vite_ssr_import_1__.ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent)
+  _push(`</div><!-- Modal footer --><div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"><button data-modal-toggle="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">I accept</button><button data-modal-toggle="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button></div></div></div></div>`)
 }
-const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
 
-const _sfc_setup = _sfc_main.setup;
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
 _sfc_main.setup = (props, ctx) => {
-  const ssrContext = __vite_ssr_import_4__.useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/modalFluxo.vue");
-  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
-};
-const __vite_ssr_import_5__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+  const ssrContext = __vite_ssr_import_2__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("components/modalFluxo.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
-__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_5__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/components/modalFluxo.vue"]]);
-;
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_3__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/components/modalFluxo.vue"]]);
 }
 
 
@@ -4759,7 +4742,7 @@ const __modules__ = {
   "/components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css": $id_VMcb5MMrhc,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
   "/pages/index2.vue?macro=true": $id_9YXvOcq3Hl,
-  "/components/modalFluxo.vue": $id_HSGDrh1gGo,
+  "/components/modalFluxo.vue": $id_2BT3SUbROW,
   "/composables/useSupabase.ts": $id_ldWZ8HPmjw,
   "@supabase/supabase-js": $id_9XNII2VSge,
   "/composables/useAuth.ts": $id_OqK7ZbuKel,
