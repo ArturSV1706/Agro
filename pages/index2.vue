@@ -1,6 +1,6 @@
 <script setup lang="ts">
-let fluxo_de_entrada = 0
-let fluxo_de_saida = 0
+
+const showModal = ref()
 const { supabase } = useSupabase()
 const { user } = useAuth()
 
@@ -10,13 +10,12 @@ const fluxoEntrada = ref();
 const fluxoSaida = ref();
 const saldoResult = ref();
 
-// const despesaInput = reactive({
-//     categoria: "",
-//     fornecedor: "",
-//     nota_fiscal: "",
-//     produto: "",
-//     valor: "",
-// })
+const detalhe_Tipo_fluxo = ref();
+const detalhe_Categoria = ref();
+const detalhe_Fornecedor = ref();
+const detalhe_Produto = ref();
+const detalhe_Valor = ref();
+
 
 saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
 fluxoResponse.value = await supabase.from("fluxo").select()
@@ -88,6 +87,15 @@ const handleSubmitEntrada = async () => {
     entradaInput.produto = ""
     entradaInput.valor = ""
 }
+
+const handleDetalheFluxo = (id, tipo_fluxo, categoria, fornecedor, produto, valor) => {
+    detalhe_Tipo_fluxo.value = tipo_fluxo
+    detalhe_Categoria.value = categoria
+    detalhe_Fornecedor.value = fornecedor
+    detalhe_Produto.value = produto
+    detalhe_Valor.value = valor
+    showModal.value = true
+}
 </script>
 
 <template>
@@ -158,16 +166,36 @@ const handleSubmitEntrada = async () => {
             <th>Fornecedor</th>
             <th>Produto</th>
             <th>Valor</th>
+            <th>Detalhes</th>
             <tr v-for="fluxo in fluxoResponse.data" :key="fluxo.id">
                 <td>{{fluxo.tipo_fluxo}}</td>
                 <td>{{fluxo.categoria}}</td>
                 <td>{{fluxo.fornecedor}}</td>
                 <td>{{fluxo.produto}}</td>
                 <td>R$ {{fluxo.valor}}</td>
+                <td>
+                    <button
+                        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button"
+                        @click="handleDetalheFluxo(fluxo.id, fluxo.tipo_fluxo, fluxo.categoria, fluxo.fornecedor, fluxo.produto,fluxo.valor)">
+                        Toggle modal
+                    </button>
+                </td>
             </tr>
 
         </table>
 
+
+        <ModalFluxo v-if="showModal" @close="showModal = false">
+            {{detalhe_Tipo_fluxo}}
+            {{detalhe_Categoria }}
+            {{detalhe_Fornecedor}}
+            {{detalhe_Produto}}
+            {{detalhe_Valor}}
+            
+        </ModalFluxo>
+
+
     </div>
-    <!-- {{user.value.id}} -->
+
 </template>
