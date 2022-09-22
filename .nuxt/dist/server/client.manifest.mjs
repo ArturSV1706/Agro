@@ -6,6 +6,7 @@ export default {
       "assets/css/tailwind.css",
       "components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css",
       "components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css",
+      "pages/index2.vue?vue&type=style&index=0&lang.css",
       "node_modules/@nuxt/ui-templates/dist/templates/error-404.vue?vue&type=style&index=0&scoped=bc8852ab&lang.css",
       "node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue?vue&type=style&index=0&scoped=6b2d7187&lang.css",
       "node_modules/@nuxt/ui-templates/dist/templates/error-500.vue?vue&type=style&index=0&scoped=f37408fc&lang.css"
@@ -23,6 +24,10 @@ export default {
   },
   "components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": {
     "file": "components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css",
+    "resourceType": "style"
+  },
+  "pages/index2.vue?vue&type=style&index=0&lang.css": {
+    "file": "pages/index2.vue?vue&type=style&index=0&lang.css",
     "resourceType": "style"
   },
   "node_modules/@nuxt/ui-templates/dist/templates/error-404.vue?vue&type=style&index=0&scoped=bc8852ab&lang.css": {

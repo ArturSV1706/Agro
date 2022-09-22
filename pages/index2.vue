@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import { LineChart } from 'vue-chart-3';
+
 const showModal = ref()
 const { supabase } = useSupabase()
 const { user } = useAuth()
@@ -16,6 +18,15 @@ const detalhe_Fornecedor = ref();
 const detalhe_Produto = ref();
 const detalhe_Valor = ref();
 
+// Paginação
+const pagina = reactive({
+    atual: 0,
+    tamanho: 5
+
+
+})
+
+
 
 saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
 fluxoResponse.value = await supabase.from("fluxo").select()
@@ -28,7 +39,7 @@ const despesaInput = reactive({
     fornecedor: "",
     nota_fiscal: "",
     produto: "",
-    valor: "",
+    valor: ""
 })
 
 const entradaInput = reactive({
@@ -39,7 +50,30 @@ const entradaInput = reactive({
     valor: "",
 })
 
+const regexDespesa = () => {
+    let length = despesaInput.valor.length
 
+    despesaInput.valor = despesaInput.valor.replace(/[^0-9]/g, '')
+    if (length >= 11) return despesaInput.valor = despesaInput.valor.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3,$4')
+    if (length >= 10) return despesaInput.valor = despesaInput.valor.replace(/^(\d{3})(\d{3})(\d{2})$/, '$1.$2,$3')
+    if (length >= 9) return despesaInput.valor = despesaInput.valor.replace(/^(\d{2})(\d{3})(\d{2})$/, '$1.$2,$3')
+    if (length >= 7) return despesaInput.valor = despesaInput.valor.replace(/^(\d{1})(\d{3})(\d{2})$/, '$1.$2,$3')
+    if (length >= 6) return despesaInput.valor = despesaInput.valor.replace(/^(\d{3})(\d{2})$/, '$1,$2')
+    if (length >= 5) return despesaInput.valor = despesaInput.valor.replace(/^(\d{2})(\d{2})$/, '$1,$2')
+    if (length >= 3) return despesaInput.valor = despesaInput.valor.replace(/^(\d{1})(\d{2})$/, '$1,$2')
+}
+const regexEntrada = () => {
+    let length = entradaInput.valor.length
+
+    entradaInput.valor = entradaInput.valor.replace(/[^0-9]/g, '')
+    if (length >= 11) return entradaInput.valor = entradaInput.valor.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3,$4')
+    if (length >= 10) return entradaInput.valor = entradaInput.valor.replace(/^(\d{3})(\d{3})(\d{2})$/, '$1.$2,$3')
+    if (length >= 9) return entradaInput.valor = entradaInput.valor.replace(/^(\d{2})(\d{3})(\d{2})$/, '$1.$2,$3')
+    if (length >= 7) return entradaInput.valor = entradaInput.valor.replace(/^(\d{1})(\d{3})(\d{2})$/, '$1.$2,$3')
+    if (length >= 6) return entradaInput.valor = entradaInput.valor.replace(/^(\d{3})(\d{2})$/, '$1,$2')
+    if (length >= 5) return entradaInput.valor = entradaInput.valor.replace(/^(\d{2})(\d{2})$/, '$1,$2')
+    if (length >= 3) return entradaInput.valor = entradaInput.valor.replace(/^(\d{1})(\d{2})$/, '$1,$2')
+}
 
 const handleSubmitDespesa = async () => {
     // if(!despesaInput.title || !despesaInput.note) return
@@ -49,7 +83,7 @@ const handleSubmitDespesa = async () => {
         categoria: despesaInput.categoria,
         fornecedor: despesaInput.fornecedor,
         produto: despesaInput.produto,
-        valor: despesaInput.valor,
+        valor: parseFloat(despesaInput.valor.replace(".", "").replace(",", ".")),
         user_id: user.value.id
     });
     saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
@@ -72,7 +106,7 @@ const handleSubmitEntrada = async () => {
         categoria: entradaInput.categoria,
         fornecedor: entradaInput.fornecedor,
         produto: entradaInput.produto,
-        valor: entradaInput.valor,
+        valor: parseFloat(entradaInput.valor.replace(".", "").replace(",", ".")),
         user_id: user.value.id
     });
     saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
@@ -96,24 +130,49 @@ const handleDetalheFluxo = (id, tipo_fluxo, categoria, fornecedor, produto, valo
     detalhe_Valor.value = valor
     showModal.value = true
 }
+
+const handlePagina = (i) => {
+    if(i === "proxima"){
+        pagina.atual++
+    }
+    if(i === "anterior"){
+        pagina.atual--
+    }
+}
+
+
+const testData = {
+    labels: ['Paris', 'Nîmes', 'Toulon', 'Perpignan', 'Autre'],
+    datasets: [
+        {
+            data: [30, 40, 60, 70, 5],
+            backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
+        },
+    ],
+};
 </script>
 
 <template>
     <div>
+
         <div class="flex flex-row justify-evenly">
             <div>
                 <h3>Fluxo de Entrada</h3>
-                <h1>R$ {{fluxoEntrada.data.toFixed(2)}}</h1>
+                <h1>{{fluxoEntrada.data.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</h1>
             </div>
             <div>
                 <h3>Fluxo de saida</h3>
-                <h1>R$ {{fluxoSaida.data.toFixed(2)}}</h1>
+                <h1>{{fluxoSaida.data.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</h1>
             </div>
             <div>
                 <h3>Saldo</h3>
-                <h1>R$ {{(parseFloat(fluxoEntrada.data) - parseFloat(fluxoSaida.data)).toFixed(2)}}</h1>
+                <h1>{{(parseFloat(fluxoEntrada.data) - parseFloat(fluxoSaida.data)).toLocaleString('pt-br',{style:
+                'currency', currency: 'BRL'})}}</h1>
             </div>
         </div>
+
+        <!-- <lineChart :chartData="testData" /> -->
+
         <div class="flex flex-row">
             <div class="flex flex-row">
 
@@ -134,7 +193,8 @@ const handleDetalheFluxo = (id, tipo_fluxo, categoria, fornecedor, produto, valo
                     <label for="produto">Produto</label>
                     <input v-model="despesaInput.produto" name="produto" type="text">
                     <label for="valor">Valor</label>
-                    <input v-model="despesaInput.valor" name="valor" type="number">
+                    <input placeholder="R$ 1.000,00" v-on:input="regexDespesa" v-model="despesaInput.valor" name="valor"
+                        type="text">
                     <button type='button' @click="handleSubmitDespesa">Criar</button>
                 </form>
             </div>
@@ -155,47 +215,92 @@ const handleDetalheFluxo = (id, tipo_fluxo, categoria, fornecedor, produto, valo
                     <label for="produto">Produto</label>
                     <input v-model="entradaInput.produto" name="produto" type="text">
                     <label for="valor">Valor</label>
-                    <input v-model="entradaInput.valor" name="valor" type="number">
+                    <input placeholder="R$ 1.000,00" v-on:input="regexEntrada" v-model="entradaInput.valor" name="valor"
+                        type="text">
                     <button type='button' @click="handleSubmitEntrada">Criar</button>
                 </form>
             </div>
         </div>
-        <table class="">
-            <th>Ação</th>
-            <th>Categoria</th>
-            <th>Fornecedor</th>
-            <th>Produto</th>
-            <th>Valor</th>
-            <th>Detalhes</th>
-            <tr v-for="fluxo in fluxoResponse.data" :key="fluxo.id">
-                <td>{{fluxo.tipo_fluxo}}</td>
-                <td>{{fluxo.categoria}}</td>
-                <td>{{fluxo.fornecedor}}</td>
-                <td>{{fluxo.produto}}</td>
-                <td>R$ {{fluxo.valor}}</td>
-                <td>
-                    <button
-                        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        type="button"
-                        @click="handleDetalheFluxo(fluxo.id, fluxo.tipo_fluxo, fluxo.categoria, fluxo.fornecedor, fluxo.produto,fluxo.valor)">
-                        Toggle modal
-                    </button>
-                </td>
-            </tr>
-
+        <div>
+            <select v-model="pagina.atual" >
+                <option  v-for="i in Math.ceil(fluxoResponse.data.length/pagina.tamanho)" v-bind:value="i-1">{{i}}</option>
+            </select>
+            <select v-model="pagina.tamanho" @input="pagina.atual = 0" >
+                <option  v-bind:value=5> 5 </option>
+                <option  v-bind:value=10> 10 </option>
+                <option  v-bind:value=250> 25 </option>
+            </select>
+            <button v-if="pagina.atual < (Math.ceil(fluxoResponse.data.length/pagina.tamanho) -1)" @click="handlePagina('proxima')"> prox </button><br>
+            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')"> ant </button>
+        </div>
+        <table >
+            <thead>
+                <th>Ação</th>
+                <th>Categoria</th>
+                <th>Fornecedor</th>
+                <th>Produto</th>
+                <th>Valor</th>
+                <th>Detalhes</th>
+            </thead>
+            <tbody>
+                <tr v-for="fluxo in fluxoResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho)" :key="fluxo.id"> 
+                    <td>{{fluxo.tipo_fluxo}}</td>
+                    <td>{{fluxo.categoria}}</td>
+                    <td>{{fluxo.fornecedor}}</td>
+                    <td>{{fluxo.produto}}</td>
+                    <td>{{fluxo.valor}}</td>
+                    <!-- <td>{{fluxo.valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> -->
+                    <td>
+                        <span class="cursor-pointer material-icons block   text-center hover:text-xl"
+                            @click="handleDetalheFluxo(fluxo.id, fluxo.tipo_fluxo, fluxo.categoria, fluxo.fornecedor, fluxo.produto,fluxo.valor)">
+                            manage_search
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
         </table>
+        <Transition name="pop">
+            <ModalFluxo v-if="showModal" @close="showModal = false">
+                {{detalhe_Tipo_fluxo}}
+                {{detalhe_Categoria }}
+                {{detalhe_Fornecedor}}
+                {{detalhe_Produto}}
+                {{detalhe_Valor}}
 
-
-        <ModalFluxo v-if="showModal" @close="showModal = false">
-            {{detalhe_Tipo_fluxo}}
-            {{detalhe_Categoria }}
-            {{detalhe_Fornecedor}}
-            {{detalhe_Produto}}
-            {{detalhe_Valor}}
-            
-        </ModalFluxo>
-
+            </ModalFluxo>
+        </Transition>
 
     </div>
 
 </template>
+
+<style>
+.pop-enter-from {
+    scale: 30%;
+    opacity: 0;
+}
+
+.pop-enter-to {
+    scale: 100%;
+}
+
+.pop-enter-active {
+    transition: all .2s ease-out;
+}
+
+.pop-leave-from {
+    scale: 100%;
+
+}
+
+.pop-leave-to {
+    scale: 30%;
+    opacity: 0;
+
+}
+
+.pop-leave-active {
+    transition: all .2s ease;
+
+}
+</style>
