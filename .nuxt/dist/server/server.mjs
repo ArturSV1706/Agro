@@ -3117,7 +3117,7 @@ __vite_ssr_exports__.default = (sfc, props) => {
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_brZccs1alj = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_qgCzXiE4IR = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/modalFluxo.vue");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
@@ -3172,6 +3172,10 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_4__.defineComponent({
     const regexDespesa = () => {
       let length = despesaInput.valor.length;
       despesaInput.valor = despesaInput.valor.replace(/[^0-9]/g, "");
+      if (length >= 14)
+        return despesaInput.valor = despesaInput.valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
+      if (length >= 13)
+        return despesaInput.valor = despesaInput.valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
       if (length >= 11)
         return despesaInput.valor = despesaInput.valor.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
       if (length >= 10)
@@ -3190,6 +3194,10 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_4__.defineComponent({
     const regexEntrada = () => {
       let length = entradaInput.valor.length;
       entradaInput.valor = entradaInput.valor.replace(/[^0-9]/g, "");
+      if (length >= 14)
+        return entradaInput.valor = entradaInput.valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
+      if (length >= 13)
+        return entradaInput.valor = entradaInput.valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
       if (length >= 11)
         return entradaInput.valor = entradaInput.valor.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
       if (length >= 10)
@@ -3783,7 +3791,7 @@ __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_4__.default(_sfc_m
 // - /pages/index2.vue?vue&type=style&index=0&lang.css ($id_hrbtwqewha)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_DiBy9AQOLO = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_dZXzhK9v6L = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/modalFluxo.vue");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
@@ -3838,6 +3846,10 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_4__.defineComponent({
     const regexDespesa = () => {
       let length = despesaInput.valor.length;
       despesaInput.valor = despesaInput.valor.replace(/[^0-9]/g, "");
+      if (length >= 14)
+        return despesaInput.valor = despesaInput.valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
+      if (length >= 13)
+        return despesaInput.valor = despesaInput.valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
       if (length >= 11)
         return despesaInput.valor = despesaInput.valor.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
       if (length >= 10)
@@ -3856,6 +3868,10 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_4__.defineComponent({
     const regexEntrada = () => {
       let length = entradaInput.valor.length;
       entradaInput.valor = entradaInput.valor.replace(/[^0-9]/g, "");
+      if (length >= 14)
+        return entradaInput.valor = entradaInput.valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
+      if (length >= 13)
+        return entradaInput.valor = entradaInput.valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
       if (length >= 11)
         return entradaInput.valor = entradaInput.valor.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
       if (length >= 10)
@@ -4902,7 +4918,7 @@ const __modules__ = {
   "vue/server-renderer": $id_aRHphPzMpI,
   "/components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css": $id_VMcb5MMrhc,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
-  "/pages/index2.vue?macro=true": $id_brZccs1alj,
+  "/pages/index2.vue?macro=true": $id_qgCzXiE4IR,
   "/components/modalFluxo.vue": $id_Oslbb4uoZw,
   "/composables/useSupabase.ts": $id_ldWZ8HPmjw,
   "@supabase/supabase-js": $id_9XNII2VSge,
@@ -4911,7 +4927,7 @@ const __modules__ = {
   "/components/Auth.vue": $id_srwFyTRhDe,
   "/components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": $id_hXyNCI6Ozm,
   "/pages/index.vue": $id_qJrOPQ5EaW,
-  "/pages/index2.vue": $id_DiBy9AQOLO,
+  "/pages/index2.vue": $id_dZXzhK9v6L,
   "/pages/index2.vue?vue&type=style&index=0&lang.css": $id_PtaNnJ9WoB,
   "/pages/login.vue": $id_zw9cVPKHCf,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/router.options.mjs": $id_nmhVZR4Lu2,

@@ -22,8 +22,6 @@ const detalhe_Valor = ref();
 const pagina = reactive({
     atual: 0,
     tamanho: 5
-
-
 })
 
 
@@ -54,6 +52,8 @@ const regexDespesa = () => {
     let length = despesaInput.valor.length
 
     despesaInput.valor = despesaInput.valor.replace(/[^0-9]/g, '')
+    if (length >= 14) return despesaInput.valor = despesaInput.valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3,$4')
+    if (length >= 13) return despesaInput.valor = despesaInput.valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3,$4')
     if (length >= 11) return despesaInput.valor = despesaInput.valor.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3,$4')
     if (length >= 10) return despesaInput.valor = despesaInput.valor.replace(/^(\d{3})(\d{3})(\d{2})$/, '$1.$2,$3')
     if (length >= 9) return despesaInput.valor = despesaInput.valor.replace(/^(\d{2})(\d{3})(\d{2})$/, '$1.$2,$3')
@@ -66,6 +66,8 @@ const regexEntrada = () => {
     let length = entradaInput.valor.length
 
     entradaInput.valor = entradaInput.valor.replace(/[^0-9]/g, '')
+    if (length >= 14) return entradaInput.valor = entradaInput.valor.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3,$4')
+    if (length >= 13) return entradaInput.valor = entradaInput.valor.replace(/^(\d{2})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3,$4')
     if (length >= 11) return entradaInput.valor = entradaInput.valor.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3,$4')
     if (length >= 10) return entradaInput.valor = entradaInput.valor.replace(/^(\d{3})(\d{3})(\d{2})$/, '$1.$2,$3')
     if (length >= 9) return entradaInput.valor = entradaInput.valor.replace(/^(\d{2})(\d{3})(\d{2})$/, '$1.$2,$3')
