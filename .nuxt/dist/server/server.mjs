@@ -3117,7 +3117,7 @@ __vite_ssr_exports__.default = (sfc, props) => {
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_qgCzXiE4IR = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_vlGiJWWsSf = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/modalFluxo.vue");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
@@ -3146,6 +3146,8 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_4__.defineComponent({
     const detalhe_Fornecedor = __vite_ssr_import_1__.ref();
     const detalhe_Produto = __vite_ssr_import_1__.ref();
     const detalhe_Valor = __vite_ssr_import_1__.ref();
+    const tipoOrdenar = __vite_ssr_import_1__.ref();
+    const reverterOrdenar = __vite_ssr_import_1__.ref();
     const pagina = __vite_ssr_import_1__.reactive({
       atual: 0,
       tamanho: 5
@@ -3269,16 +3271,105 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_4__.defineComponent({
         pagina.atual--;
       }
     };
-    const testData = {
-      labels: ["Paris", "N\xEEmes", "Toulon", "Perpignan", "Autre"],
-      datasets: [
-        {
-          data: [30, 40, 60, 70, 5],
-          backgroundColor: ["#77CEFF", "#0079AF", "#123E6B", "#97B0C4", "#A5C8ED"]
+    const handleOrdenar = (i) => {
+      if (i === "categoria") {
+        tipoOrdenar.value = porCategoria;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porCategoriaReverse;
+          reverterOrdenar.value = "";
+          return;
         }
-      ]
+        reverterOrdenar.value = i;
+      }
+      if (i === "fornecedor") {
+        tipoOrdenar.value = porFornecedor;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porFornecedorReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "produto") {
+        tipoOrdenar.value = porProduto;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porProdutoReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "valor") {
+        tipoOrdenar.value = porValor;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porValorReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
     };
-    const __returned__ = { showModal, supabase, user, saldoResponse, fluxoResponse, fluxoEntrada, fluxoSaida, saldoResult, detalhe_Tipo_fluxo, detalhe_Categoria, detalhe_Fornecedor, detalhe_Produto, detalhe_Valor, pagina, despesaInput, entradaInput, regexDespesa, regexEntrada, handleSubmitDespesa, handleSubmitEntrada, handleDetalheFluxo, handlePagina, testData };
+    function porCategoria(a, b) {
+      if (a.categoria > b.categoria) {
+        return 1;
+      } else if (b.categoria > a.categoria) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porFornecedor(a, b) {
+      if (a.fornecedor > b.fornecedor) {
+        return 1;
+      } else if (b.fornecedor > a.fornecedor) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porProduto(a, b) {
+      if (a.produto > b.produto) {
+        return 1;
+      } else if (b.produto > a.produto) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porValor(a, b) {
+      return parseFloat(a.valor) - parseFloat(b.valor);
+    }
+    function porCategoriaReverse(a, b) {
+      if (a.categoria > b.categoria) {
+        return -1;
+      } else if (b.categoria > a.categoria) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porFornecedorReverse(a, b) {
+      if (a.fornecedor > b.fornecedor) {
+        return -1;
+      } else if (b.fornecedor > a.fornecedor) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porProdutoReverse(a, b) {
+      if (a.produto > b.produto) {
+        return -1;
+      } else if (b.produto > a.produto) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porValorReverse(a, b) {
+      return parseFloat(b.valor) - parseFloat(a.valor);
+    }
+    const __returned__ = { showModal, supabase, user, saldoResponse, fluxoResponse, fluxoEntrada, fluxoSaida, saldoResult, detalhe_Tipo_fluxo, detalhe_Categoria, detalhe_Fornecedor, detalhe_Produto, detalhe_Valor, tipoOrdenar, reverterOrdenar, pagina, despesaInput, entradaInput, regexDespesa, regexEntrada, handleSubmitDespesa, handleSubmitEntrada, handleDetalheFluxo, handlePagina, handleOrdenar, porCategoria, porFornecedor, porProduto, porValor, porCategoriaReverse, porFornecedorReverse, porProdutoReverse, porValorReverse };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
   }
@@ -3306,7 +3397,7 @@ function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $op
     _push(`<!---->`);
   }
   _push(`</div><table><thead><th>A\xE7\xE3o</th><th>Categoria</th><th>Fornecedor</th><th>Produto</th><th>Valor</th><th>Detalhes</th></thead><tbody><!--[-->`);
-  __vite_ssr_import_6__.ssrRenderList($setup.fluxoResponse.data.slice($setup.pagina.atual * $setup.pagina.tamanho, $setup.pagina.tamanho * $setup.pagina.atual + $setup.pagina.tamanho), (fluxo) => {
+  __vite_ssr_import_6__.ssrRenderList($setup.fluxoResponse.data.slice($setup.pagina.atual * $setup.pagina.tamanho, $setup.pagina.tamanho * $setup.pagina.atual + $setup.pagina.tamanho).sort($setup.tipoOrdenar), (fluxo) => {
     _push(`<tr><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.tipo_fluxo)}</td><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.categoria)}</td><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.fornecedor)}</td><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.produto)}</td><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.valor)}</td><!-- <td>{{fluxo.valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> --><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> manage_search </span></td></tr>`);
   });
   _push(`<!--]--></tbody></table>`);
@@ -3791,7 +3882,7 @@ __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_4__.default(_sfc_m
 // - /pages/index2.vue?vue&type=style&index=0&lang.css ($id_hrbtwqewha)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_dZXzhK9v6L = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_q0S2nbRMZF = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/modalFluxo.vue");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
@@ -3820,6 +3911,8 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_4__.defineComponent({
     const detalhe_Fornecedor = __vite_ssr_import_1__.ref();
     const detalhe_Produto = __vite_ssr_import_1__.ref();
     const detalhe_Valor = __vite_ssr_import_1__.ref();
+    const tipoOrdenar = __vite_ssr_import_1__.ref();
+    const reverterOrdenar = __vite_ssr_import_1__.ref();
     const pagina = __vite_ssr_import_1__.reactive({
       atual: 0,
       tamanho: 5
@@ -3943,16 +4036,105 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_4__.defineComponent({
         pagina.atual--;
       }
     };
-    const testData = {
-      labels: ["Paris", "N\xEEmes", "Toulon", "Perpignan", "Autre"],
-      datasets: [
-        {
-          data: [30, 40, 60, 70, 5],
-          backgroundColor: ["#77CEFF", "#0079AF", "#123E6B", "#97B0C4", "#A5C8ED"]
+    const handleOrdenar = (i) => {
+      if (i === "categoria") {
+        tipoOrdenar.value = porCategoria;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porCategoriaReverse;
+          reverterOrdenar.value = "";
+          return;
         }
-      ]
+        reverterOrdenar.value = i;
+      }
+      if (i === "fornecedor") {
+        tipoOrdenar.value = porFornecedor;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porFornecedorReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "produto") {
+        tipoOrdenar.value = porProduto;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porProdutoReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "valor") {
+        tipoOrdenar.value = porValor;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porValorReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
     };
-    const __returned__ = { showModal, supabase, user, saldoResponse, fluxoResponse, fluxoEntrada, fluxoSaida, saldoResult, detalhe_Tipo_fluxo, detalhe_Categoria, detalhe_Fornecedor, detalhe_Produto, detalhe_Valor, pagina, despesaInput, entradaInput, regexDespesa, regexEntrada, handleSubmitDespesa, handleSubmitEntrada, handleDetalheFluxo, handlePagina, testData };
+    function porCategoria(a, b) {
+      if (a.categoria > b.categoria) {
+        return 1;
+      } else if (b.categoria > a.categoria) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porFornecedor(a, b) {
+      if (a.fornecedor > b.fornecedor) {
+        return 1;
+      } else if (b.fornecedor > a.fornecedor) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porProduto(a, b) {
+      if (a.produto > b.produto) {
+        return 1;
+      } else if (b.produto > a.produto) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porValor(a, b) {
+      return parseFloat(a.valor) - parseFloat(b.valor);
+    }
+    function porCategoriaReverse(a, b) {
+      if (a.categoria > b.categoria) {
+        return -1;
+      } else if (b.categoria > a.categoria) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porFornecedorReverse(a, b) {
+      if (a.fornecedor > b.fornecedor) {
+        return -1;
+      } else if (b.fornecedor > a.fornecedor) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porProdutoReverse(a, b) {
+      if (a.produto > b.produto) {
+        return -1;
+      } else if (b.produto > a.produto) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porValorReverse(a, b) {
+      return parseFloat(b.valor) - parseFloat(a.valor);
+    }
+    const __returned__ = { showModal, supabase, user, saldoResponse, fluxoResponse, fluxoEntrada, fluxoSaida, saldoResult, detalhe_Tipo_fluxo, detalhe_Categoria, detalhe_Fornecedor, detalhe_Produto, detalhe_Valor, tipoOrdenar, reverterOrdenar, pagina, despesaInput, entradaInput, regexDespesa, regexEntrada, handleSubmitDespesa, handleSubmitEntrada, handleDetalheFluxo, handlePagina, handleOrdenar, porCategoria, porFornecedor, porProduto, porValor, porCategoriaReverse, porFornecedorReverse, porProdutoReverse, porValorReverse };
     Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
     return __returned__;
   }
@@ -3980,7 +4162,7 @@ function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $op
     _push(`<!---->`);
   }
   _push(`</div><table><thead><th>A\xE7\xE3o</th><th>Categoria</th><th>Fornecedor</th><th>Produto</th><th>Valor</th><th>Detalhes</th></thead><tbody><!--[-->`);
-  __vite_ssr_import_6__.ssrRenderList($setup.fluxoResponse.data.slice($setup.pagina.atual * $setup.pagina.tamanho, $setup.pagina.tamanho * $setup.pagina.atual + $setup.pagina.tamanho), (fluxo) => {
+  __vite_ssr_import_6__.ssrRenderList($setup.fluxoResponse.data.slice($setup.pagina.atual * $setup.pagina.tamanho, $setup.pagina.tamanho * $setup.pagina.atual + $setup.pagina.tamanho).sort($setup.tipoOrdenar), (fluxo) => {
     _push(`<tr><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.tipo_fluxo)}</td><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.categoria)}</td><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.fornecedor)}</td><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.produto)}</td><td>${__vite_ssr_import_6__.ssrInterpolate(fluxo.valor)}</td><!-- <td>{{fluxo.valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> --><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> manage_search </span></td></tr>`);
   });
   _push(`<!--]--></tbody></table>`);
@@ -4918,7 +5100,7 @@ const __modules__ = {
   "vue/server-renderer": $id_aRHphPzMpI,
   "/components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css": $id_VMcb5MMrhc,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
-  "/pages/index2.vue?macro=true": $id_qgCzXiE4IR,
+  "/pages/index2.vue?macro=true": $id_vlGiJWWsSf,
   "/components/modalFluxo.vue": $id_Oslbb4uoZw,
   "/composables/useSupabase.ts": $id_ldWZ8HPmjw,
   "@supabase/supabase-js": $id_9XNII2VSge,
@@ -4927,7 +5109,7 @@ const __modules__ = {
   "/components/Auth.vue": $id_srwFyTRhDe,
   "/components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": $id_hXyNCI6Ozm,
   "/pages/index.vue": $id_qJrOPQ5EaW,
-  "/pages/index2.vue": $id_dZXzhK9v6L,
+  "/pages/index2.vue": $id_q0S2nbRMZF,
   "/pages/index2.vue?vue&type=style&index=0&lang.css": $id_PtaNnJ9WoB,
   "/pages/login.vue": $id_zw9cVPKHCf,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/router.options.mjs": $id_nmhVZR4Lu2,

@@ -18,6 +18,9 @@ const detalhe_Fornecedor = ref();
 const detalhe_Produto = ref();
 const detalhe_Valor = ref();
 
+const tipoOrdenar = ref();
+const reverterOrdenar = ref()
+
 // Paginação
 const pagina = reactive({
     atual: 0,
@@ -142,16 +145,110 @@ const handlePagina = (i) => {
     }
 }
 
+const handleOrdenar = (i) => { 
+    
 
-const testData = {
-    labels: ['Paris', 'Nîmes', 'Toulon', 'Perpignan', 'Autre'],
-    datasets: [
-        {
-            data: [30, 40, 60, 70, 5],
-            backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
-        },
-    ],
-};
+    if(i === "categoria"){
+        tipoOrdenar.value = porCategoria
+        if (reverterOrdenar.value === i){
+            tipoOrdenar.value = porCategoriaReverse
+            reverterOrdenar.value = ""
+            return
+        }
+        reverterOrdenar.value = i
+    }
+    if(i === "fornecedor"){
+        tipoOrdenar.value = porFornecedor
+        if (reverterOrdenar.value === i){
+            tipoOrdenar.value = porFornecedorReverse
+            reverterOrdenar.value = ""
+            return
+        }
+        reverterOrdenar.value = i
+    }
+    if(i === "produto"){
+        tipoOrdenar.value = porProduto
+        if (reverterOrdenar.value === i){
+            tipoOrdenar.value = porProdutoReverse
+            reverterOrdenar.value = ""
+            return
+        }
+        reverterOrdenar.value = i
+    }
+    if(i === "valor"){
+        tipoOrdenar.value = porValor
+        if (reverterOrdenar.value === i){
+            tipoOrdenar.value = porValorReverse
+            reverterOrdenar.value = ""
+            return
+        }
+        reverterOrdenar.value = i
+    }
+   
+}
+
+function porCategoria(a,b){
+if(a.categoria > b.categoria){
+    return 1;
+}else if (b.categoria > a.categoria) {
+    return -1
+}else{
+    return 0;
+}
+}
+function porFornecedor(a,b){
+if(a.fornecedor > b.fornecedor){
+    return 1;
+}else if (b.fornecedor > a.fornecedor) {
+    return -1
+}else{
+    return 0;
+}
+}
+function porProduto(a,b){
+if(a.produto > b.produto){
+    return 1;
+}else if (b.produto > a.produto) {
+    return -1
+}else{
+    return 0;
+}
+}
+function porValor(a,b){
+    return parseFloat(a.valor) - parseFloat(b.valor)
+}
+function porCategoriaReverse(a,b){
+if(a.categoria > b.categoria){
+    return -1;
+}else if (b.categoria > a.categoria) {
+    return 1
+}else{
+    return 0;
+}
+}
+function porFornecedorReverse(a,b){
+if(a.fornecedor > b.fornecedor){
+    return -1;
+}else if (b.fornecedor > a.fornecedor) {
+    return 1
+}else{
+    return 0;
+}
+}
+function porProdutoReverse(a,b){
+if(a.produto > b.produto){
+    return -1;
+}else if (b.produto > a.produto) {
+    return 1
+}else{
+    return 0;
+}
+}
+function porValorReverse(a,b){
+    return parseFloat(b.valor) - parseFloat(a.valor)
+}
+
+
 </script>
 
 <template>
@@ -238,14 +335,14 @@ const testData = {
         <table >
             <thead>
                 <th>Ação</th>
-                <th>Categoria</th>
-                <th>Fornecedor</th>
-                <th>Produto</th>
-                <th>Valor</th>
+                <th @click="handleOrdenar('categoria')">Categoria</th>
+                <th @click="handleOrdenar('fornecedor')" >Fornecedor</th>
+                <th @click="handleOrdenar('produto')">Produto</th>
+                <th @click="handleOrdenar('valor')">Valor</th>
                 <th>Detalhes</th>
             </thead>
             <tbody>
-                <tr v-for="fluxo in fluxoResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho)" :key="fluxo.id"> 
+                <tr v-for="fluxo in fluxoResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)" :key="fluxo.id"> 
                     <td>{{fluxo.tipo_fluxo}}</td>
                     <td>{{fluxo.categoria}}</td>
                     <td>{{fluxo.fornecedor}}</td>
