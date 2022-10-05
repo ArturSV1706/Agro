@@ -136,6 +136,7 @@ const handleDetalheFluxo = (id, tipo_fluxo, categoria, fornecedor, produto, valo
     showModal.value = true
 }
 
+// Paginação
 const handlePagina = (i) => {
     if(i === "proxima"){
         pagina.atual++

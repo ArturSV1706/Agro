@@ -114,12 +114,14 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /node_modules/nuxt/dist/pages/runtime/page.mjs ($id_X8FM3AG1sA)
 // - /node_modules/nuxt/dist/pages/runtime/utils.mjs ($id_gPQzqsnHwc)
 // - /node_modules/nuxt/dist/app/components/utils.mjs ($id_acUmhqj8VN)
+// - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
 // - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /components/modalFluxo.vue ($id_uhrvSGzYHX)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
@@ -2871,28 +2873,41 @@ Object.defineProperty(__vite_ssr_exports__, "_wrapIf", { enumerable: true, confi
 // Parents: 
 // - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // Dependencies: 
+// - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
 // --------------------
-const $id_V0G5Zn7mz9 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("/pages/index.vue?macro=true");
+const $id_TtM7S956oQ = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/pages/calculo.vue?macro=true");
 
-const __vite_ssr_import_1__ = await __vite_ssr_import__("/pages/index2.vue?macro=true");
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/pages/index.vue?macro=true");
 
-const __vite_ssr_import_2__ = await __vite_ssr_import__("/pages/login.vue?macro=true");
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/pages/index2.vue?macro=true");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/pages/login.vue?macro=true");
 
 __vite_ssr_exports__.default = [
+  {
+    name: "calculo",
+    path: "/calculo",
+    file: "C:/Users/Artur/Documents/nuxt/template/pages/calculo.vue",
+    children: [],
+    meta: __vite_ssr_import_0__.meta,
+    alias: __vite_ssr_import_0__.meta?.alias || [],
+    component: () => __vite_ssr_dynamic_import__("/pages/calculo.vue").then(m => m.default || m)
+  },
   {
     name: "index",
     path: "/",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/index.vue",
     children: [],
-    meta: __vite_ssr_import_0__.meta,
-    alias: __vite_ssr_import_0__.meta?.alias || [],
+    meta: __vite_ssr_import_1__.meta,
+    alias: __vite_ssr_import_1__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/index.vue").then(m => m.default || m)
   },
   {
@@ -2900,8 +2915,8 @@ __vite_ssr_exports__.default = [
     path: "/index2",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue",
     children: [],
-    meta: __vite_ssr_import_1__.meta,
-    alias: __vite_ssr_import_1__.meta?.alias || [],
+    meta: __vite_ssr_import_2__.meta,
+    alias: __vite_ssr_import_2__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/index2.vue").then(m => m.default || m)
   },
   {
@@ -2909,11 +2924,144 @@ __vite_ssr_exports__.default = [
     path: "/login",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/login.vue",
     children: [],
-    meta: __vite_ssr_import_2__.meta,
-    alias: __vite_ssr_import_2__.meta?.alias || [],
+    meta: __vite_ssr_import_3__.meta,
+    alias: __vite_ssr_import_3__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/login.vue").then(m => m.default || m)
   }
 ];
+}
+
+
+// --------------------
+// Request: /pages/calculo.vue?macro=true
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_yYOl8sS6Iw = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_1__.defineComponent({
+  __name: "calculo",
+  setup(__props, { expose }) {
+    expose();
+    const custo = __vite_ssr_import_0__.ref();
+    const quantidade = __vite_ssr_import_0__.ref();
+    const calculoInput = __vite_ssr_import_0__.reactive({
+      custo: "",
+      rendimento: "",
+      area: ""
+    });
+    const handleClick = () => {
+      quantidade.value = parseFloat(calculoInput.area) / parseFloat(calculoInput.rendimento);
+      custo.value = quantidade.value * parseFloat(calculoInput.custo);
+    };
+    const __returned__ = { custo, quantidade, calculoInput, handleClick };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${__vite_ssr_import_3__.ssrRenderAttrs(__vite_ssr_import_2__.mergeProps({ class: "flex flex-col" }, _attrs))}><label for="rendimento">Rendimento | Quantos m<sup>2</sup> rende 1L do produto</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.rendimento)} name="rendimento" type="text" placeholder="Ex: 100"><label for="custo">Custo por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.custo)} name="custo" type="text" placeholder="Ex: 100"><label for="area">area por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.area)} name="area" type="text" placeholder="10000"><button>Calcular</button><p>Custo:${__vite_ssr_import_3__.ssrInterpolate($setup.custo)}</p><p>Quantidade:${__vite_ssr_import_3__.ssrInterpolate($setup.quantidade)}</p></div>`);
+}
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_4__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/calculo.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_5__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_5__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/calculo.vue"]]);
+
+const meta = undefined
+Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
+}
+
+
+// --------------------
+// Request: vue/server-renderer
+// Parents: 
+// - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
+// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
+// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /components/modalFluxo.vue ($id_uhrvSGzYHX)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /components/Auth.vue ($id_bD8to5qKKa)
+// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/calculo.vue ($id_HWi9vOF4TZ)
+// - /pages/index.vue ($id_zKWOlz8EPO)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
+// - /pages/login.vue ($id_sJIhc9o139)
+// - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
+// - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
+// - /layouts/default.vue ($id_dononVQSck)
+// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
+// Dependencies: 
+
+// --------------------
+const $id_aRHphPzMpI = (global, module, _, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) =>
+import("vue/server-renderer")
+  .then(r => {
+    if (r.default && r.default.__esModule)
+      r = r.default
+    exports.default = r.default
+    ssrExportAll(r)
+  })
+  .catch(e => {
+    console.error(e)
+    throw new Error("[vite dev] Error loading external \"vue/server-renderer\".")
+  })
+
+
+// --------------------
+// Request: /@id/__x00__plugin-vue:export-helper
+// Parents: 
+// - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
+// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
+// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
+// - /components/modalFluxo.vue ($id_uhrvSGzYHX)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /components/Auth.vue ($id_bD8to5qKKa)
+// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/calculo.vue ($id_HWi9vOF4TZ)
+// - /pages/index.vue ($id_zKWOlz8EPO)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
+// - /pages/login.vue ($id_sJIhc9o139)
+// - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
+// - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
+// - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
+// - /layouts/default.vue ($id_dononVQSck)
+// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
+// Dependencies: 
+
+// --------------------
+const $id_mHD6riC5ol = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+
+__vite_ssr_exports__.default = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+}
+;
 }
 
 
@@ -3023,42 +3171,6 @@ __vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_5__.default(_sf
 
 
 // --------------------
-// Request: vue/server-renderer
-// Parents: 
-// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
-// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
-// - /components/modalFluxo.vue ($id_uhrvSGzYHX)
-// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
-// - /components/Auth.vue ($id_bD8to5qKKa)
-// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
-// - /pages/index.vue ($id_zKWOlz8EPO)
-// - /pages/index2.vue ($id_SOFbo5iYqU)
-// - /pages/login.vue ($id_sJIhc9o139)
-// - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
-// - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
-// - /layouts/default.vue ($id_dononVQSck)
-// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
-// Dependencies: 
-
-// --------------------
-const $id_aRHphPzMpI = (global, module, _, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) =>
-import("vue/server-renderer")
-  .then(r => {
-    if (r.default && r.default.__esModule)
-      r = r.default
-    exports.default = r.default
-    ssrExportAll(r)
-  })
-  .catch(e => {
-    console.error(e)
-    throw new Error("[vite dev] Error loading external \"vue/server-renderer\".")
-  })
-
-
-// --------------------
 // Request: /components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css
 // Parents: 
 // - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
@@ -3067,41 +3179,6 @@ import("vue/server-renderer")
 // --------------------
 const $id_VMcb5MMrhc = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 __vite_ssr_exports__.default = "\n*[data-v-94267614] {\n}\n.container-inputs[data-v-94267614] {\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: right;\r\n        flex-direction: column;\n}\ninput[data-v-94267614] {\r\n        border: 1px solid black;\r\n        width: 10vw;\r\n        margin-top: 1rem;\r\n        border-radius: 0.25rem;\r\n        outline: none;\n}\nbutton[data-v-94267614] {\r\n        background: grey;\r\n        color: white;\r\n        margin-top: 1rem;\r\n        padding: 0.2rem 0.7rem;\r\n        border-radius: 0.25rem;\n}\r\n";
-}
-
-
-// --------------------
-// Request: /@id/__x00__plugin-vue:export-helper
-// Parents: 
-// - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
-// - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
-// - /components/modalFluxo.vue ($id_uhrvSGzYHX)
-// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
-// - /components/Auth.vue ($id_bD8to5qKKa)
-// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
-// - /pages/index.vue ($id_zKWOlz8EPO)
-// - /pages/index2.vue ($id_SOFbo5iYqU)
-// - /pages/login.vue ($id_sJIhc9o139)
-// - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
-// - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-dev.vue ($id_vC10oUHchO)
-// - /node_modules/@nuxt/ui-templates/dist/templates/error-500.vue ($id_FMi1dBhUQk)
-// - /layouts/default.vue ($id_dononVQSck)
-// - /node_modules/nuxt/dist/pages/runtime/app.vue ($id_bGEBDyzLuq)
-// Dependencies: 
-
-// --------------------
-const $id_mHD6riC5ol = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-
-__vite_ssr_exports__.default = (sfc, props) => {
-  const target = sfc.__vccOpts || sfc;
-  for (const [key, val] of props) {
-    target[key] = val;
-  }
-  return target;
-}
-;
 }
 
 
@@ -3824,6 +3901,62 @@ __vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_8__.default(_sf
 // --------------------
 const $id_hXyNCI6Ozm = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 __vite_ssr_exports__.default = "\n.card[data-v-ee860cc1] {\r\n    padding: 2rem;\r\n    width: 25rem;\n}\n.card h3[data-v-ee860cc1] {\r\n    font-size: 1.75rem;\r\n    text-transform: capitalize;\n}\n.input-container[data-v-ee860cc1] {\r\n    display: flex;\r\n    flex-direction: column;\n}\n.input-container input[data-v-ee860cc1] {\r\n    margin-bottom: .3rem;\r\n    padding: .5rem;\r\n    outline: none;\r\n    border: .1rem solid rgba(0, 0, 0, .5);\r\n    border-radius: .2rem;\n}\np[data-v-ee860cc1] {\r\n    color: lightblue;\r\n    font-size: .8rem;\r\n    cursor: pointer;\n}\n.error[data-v-ee860cc1] {\r\n    color: red\n}\r\n";
+}
+
+
+// --------------------
+// Request: /pages/calculo.vue
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_4kr7YmWPFS = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_1__.defineComponent({
+  __name: "calculo",
+  setup(__props, { expose }) {
+    expose();
+    const custo = __vite_ssr_import_0__.ref();
+    const quantidade = __vite_ssr_import_0__.ref();
+    const calculoInput = __vite_ssr_import_0__.reactive({
+      custo: "",
+      rendimento: "",
+      area: ""
+    });
+    const handleClick = () => {
+      quantidade.value = parseFloat(calculoInput.area) / parseFloat(calculoInput.rendimento);
+      custo.value = quantidade.value * parseFloat(calculoInput.custo);
+    };
+    const __returned__ = { custo, quantidade, calculoInput, handleClick };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${__vite_ssr_import_3__.ssrRenderAttrs(__vite_ssr_import_2__.mergeProps({ class: "flex flex-col" }, _attrs))}><label for="rendimento">Rendimento | Quantos m<sup>2</sup> rende 1L do produto</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.rendimento)} name="rendimento" type="text" placeholder="Ex: 100"><label for="custo">Custo por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.custo)} name="custo" type="text" placeholder="Ex: 100"><label for="area">area por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.area)} name="area" type="text" placeholder="10000"><button>Calcular</button><p>Custo:${__vite_ssr_import_3__.ssrInterpolate($setup.custo)}</p><p>Quantidade:${__vite_ssr_import_3__.ssrInterpolate($setup.quantidade)}</p></div>`);
+}
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_4__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/calculo.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_5__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_5__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/calculo.vue"]]);
+;
 }
 
 
@@ -5094,12 +5227,13 @@ const __modules__ = {
   "/node_modules/nuxt/dist/pages/runtime/page.mjs": $id_L9I1eoE7dW,
   "/node_modules/nuxt/dist/pages/runtime/utils.mjs": $id_ZR0LUqwyer,
   "/node_modules/nuxt/dist/app/components/utils.mjs": $id_NgApSiB2xA,
-  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_V0G5Zn7mz9,
+  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_TtM7S956oQ,
+  "/pages/calculo.vue?macro=true": $id_yYOl8sS6Iw,
+  "vue/server-renderer": $id_aRHphPzMpI,
+  "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
   "/pages/index.vue?macro=true": $id_a81thUgcqy,
   "/components/Calculoplantio.vue": $id_FmKM2RLRZP,
-  "vue/server-renderer": $id_aRHphPzMpI,
   "/components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css": $id_VMcb5MMrhc,
-  "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
   "/pages/index2.vue?macro=true": $id_vlGiJWWsSf,
   "/components/modalFluxo.vue": $id_Oslbb4uoZw,
   "/composables/useSupabase.ts": $id_ldWZ8HPmjw,
@@ -5108,6 +5242,7 @@ const __modules__ = {
   "/pages/login.vue?macro=true": $id_24okfJ3TNH,
   "/components/Auth.vue": $id_srwFyTRhDe,
   "/components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": $id_hXyNCI6Ozm,
+  "/pages/calculo.vue": $id_4kr7YmWPFS,
   "/pages/index.vue": $id_qJrOPQ5EaW,
   "/pages/index2.vue": $id_q0S2nbRMZF,
   "/pages/index2.vue?vue&type=style&index=0&lang.css": $id_PtaNnJ9WoB,
