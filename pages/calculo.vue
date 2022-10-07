@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import { isSet } from 'util/types';
+
 const custo = ref()
 const quantidade = ref()
 const calculoInput = reactive({
     custo: "",
     rendimento: "",
     area: ""
-}) 
+})
 
-const handleClick = () =>{
+const handleClick = () => {
+    if (calculoInput.custo == "" || calculoInput.area == "" || calculoInput.rendimento == "") return
+
     quantidade.value = (parseFloat(calculoInput.area) / parseFloat(calculoInput.rendimento))
     custo.value = quantidade.value * parseFloat(calculoInput.custo)
 
@@ -19,7 +23,7 @@ const handleClick = () =>{
         <input v-model="calculoInput.rendimento" name="rendimento" type="text" placeholder="Ex: 100">
         <label for="custo">Custo por litro</label>
         <input v-model="calculoInput.custo" name="custo" type="text" placeholder="Ex: 100">
-        <label for="area">area por litro</label>
+        <label for="area">area por litro em m<sup>2</sup> (cada hectare possui 10.000m<sup>2</sup>)</label>
         <input v-model="calculoInput.area" name="area" type="text" placeholder="10000">
         <button @click="handleClick">Calcular</button>
         <p>Custo:{{custo}}</p>

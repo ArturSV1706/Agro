@@ -115,6 +115,7 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /node_modules/nuxt/dist/pages/runtime/utils.mjs ($id_gPQzqsnHwc)
 // - /node_modules/nuxt/dist/app/components/utils.mjs ($id_acUmhqj8VN)
 // - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
+// - /pages/estoque.vue?macro=true ($id_gpOUJzv8AJ)
 // - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /components/modalFluxo.vue ($id_uhrvSGzYHX)
@@ -122,6 +123,7 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
+// - /pages/estoque.vue ($id_GPiAxm07De)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
@@ -2874,22 +2876,26 @@ Object.defineProperty(__vite_ssr_exports__, "_wrapIf", { enumerable: true, confi
 // - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
 // Dependencies: 
 // - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
+// - /pages/estoque.vue?macro=true ($id_gpOUJzv8AJ)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
+// - /pages/estoque.vue ($id_GPiAxm07De)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
 // --------------------
-const $id_TtM7S956oQ = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_aqGxkhTfKQ = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/pages/calculo.vue?macro=true");
 
-const __vite_ssr_import_1__ = await __vite_ssr_import__("/pages/index.vue?macro=true");
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/pages/estoque.vue?macro=true");
 
-const __vite_ssr_import_2__ = await __vite_ssr_import__("/pages/index2.vue?macro=true");
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/pages/index.vue?macro=true");
 
-const __vite_ssr_import_3__ = await __vite_ssr_import__("/pages/login.vue?macro=true");
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/pages/index2.vue?macro=true");
+
+const __vite_ssr_import_4__ = await __vite_ssr_import__("/pages/login.vue?macro=true");
 
 __vite_ssr_exports__.default = [
   {
@@ -2902,12 +2908,21 @@ __vite_ssr_exports__.default = [
     component: () => __vite_ssr_dynamic_import__("/pages/calculo.vue").then(m => m.default || m)
   },
   {
+    name: "estoque",
+    path: "/estoque",
+    file: "C:/Users/Artur/Documents/nuxt/template/pages/estoque.vue",
+    children: [],
+    meta: __vite_ssr_import_1__.meta,
+    alias: __vite_ssr_import_1__.meta?.alias || [],
+    component: () => __vite_ssr_dynamic_import__("/pages/estoque.vue").then(m => m.default || m)
+  },
+  {
     name: "index",
     path: "/",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/index.vue",
     children: [],
-    meta: __vite_ssr_import_1__.meta,
-    alias: __vite_ssr_import_1__.meta?.alias || [],
+    meta: __vite_ssr_import_2__.meta,
+    alias: __vite_ssr_import_2__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/index.vue").then(m => m.default || m)
   },
   {
@@ -2915,8 +2930,8 @@ __vite_ssr_exports__.default = [
     path: "/index2",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue",
     children: [],
-    meta: __vite_ssr_import_2__.meta,
-    alias: __vite_ssr_import_2__.meta?.alias || [],
+    meta: __vite_ssr_import_3__.meta,
+    alias: __vite_ssr_import_3__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/index2.vue").then(m => m.default || m)
   },
   {
@@ -2924,8 +2939,8 @@ __vite_ssr_exports__.default = [
     path: "/login",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/login.vue",
     children: [],
-    meta: __vite_ssr_import_3__.meta,
-    alias: __vite_ssr_import_3__.meta?.alias || [],
+    meta: __vite_ssr_import_4__.meta,
+    alias: __vite_ssr_import_4__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/login.vue").then(m => m.default || m)
   }
 ];
@@ -2941,7 +2956,7 @@ __vite_ssr_exports__.default = [
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_yYOl8sS6Iw = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_37iDRbRaxx = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
@@ -2958,6 +2973,8 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_1__.defineComponent({
       area: ""
     });
     const handleClick = () => {
+      if (calculoInput.custo == "" || calculoInput.area == "" || calculoInput.rendimento == "")
+        return;
       quantidade.value = parseFloat(calculoInput.area) / parseFloat(calculoInput.rendimento);
       custo.value = quantidade.value * parseFloat(calculoInput.custo);
     };
@@ -2971,7 +2988,7 @@ const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
 const __vite_ssr_import_3__ = await __vite_ssr_import__("vue/server-renderer");
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${__vite_ssr_import_3__.ssrRenderAttrs(__vite_ssr_import_2__.mergeProps({ class: "flex flex-col" }, _attrs))}><label for="rendimento">Rendimento | Quantos m<sup>2</sup> rende 1L do produto</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.rendimento)} name="rendimento" type="text" placeholder="Ex: 100"><label for="custo">Custo por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.custo)} name="custo" type="text" placeholder="Ex: 100"><label for="area">area por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.area)} name="area" type="text" placeholder="10000"><button>Calcular</button><p>Custo:${__vite_ssr_import_3__.ssrInterpolate($setup.custo)}</p><p>Quantidade:${__vite_ssr_import_3__.ssrInterpolate($setup.quantidade)}</p></div>`);
+  _push(`<div${__vite_ssr_import_3__.ssrRenderAttrs(__vite_ssr_import_2__.mergeProps({ class: "flex flex-col" }, _attrs))}><label for="rendimento">Rendimento | Quantos m<sup>2</sup> rende 1L do produto</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.rendimento)} name="rendimento" type="text" placeholder="Ex: 100"><label for="custo">Custo por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.custo)} name="custo" type="text" placeholder="Ex: 100"><label for="area">area por litro em m<sup>2</sup> (cada hectare possui 10.000m<sup>2</sup>)</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.area)} name="area" type="text" placeholder="10000"><button>Calcular</button><p>Custo:${__vite_ssr_import_3__.ssrInterpolate($setup.custo)}</p><p>Quantidade:${__vite_ssr_import_3__.ssrInterpolate($setup.quantidade)}</p></div>`);
 }
 const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
 
@@ -2994,6 +3011,7 @@ Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configur
 // Request: vue/server-renderer
 // Parents: 
 // - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
+// - /pages/estoque.vue?macro=true ($id_gpOUJzv8AJ)
 // - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /components/modalFluxo.vue ($id_uhrvSGzYHX)
@@ -3001,6 +3019,7 @@ Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configur
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
+// - /pages/estoque.vue ($id_GPiAxm07De)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
@@ -3032,6 +3051,7 @@ import("vue/server-renderer")
 // Request: /@id/__x00__plugin-vue:export-helper
 // Parents: 
 // - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
+// - /pages/estoque.vue?macro=true ($id_gpOUJzv8AJ)
 // - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /components/modalFluxo.vue ($id_uhrvSGzYHX)
@@ -3039,6 +3059,7 @@ import("vue/server-renderer")
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
+// - /pages/estoque.vue ($id_GPiAxm07De)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
@@ -3062,6 +3083,41 @@ __vite_ssr_exports__.default = (sfc, props) => {
   return target;
 }
 ;
+}
+
+
+// --------------------
+// Request: /pages/estoque.vue?macro=true
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - vue/server-renderer ($id_UyJffsox60)
+// - vue ($id_VkOCJnUZrn)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_x8e8QyLdX9 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}><div class="">Sementes</div><div class="">Fertilizantes</div><div class="">Defensivos </div></div>`)
+}
+
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("pages/estoque.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/estoque.vue"]])
+const meta = undefined
+Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
 }
 
 
@@ -3913,7 +3969,7 @@ __vite_ssr_exports__.default = "\n.card[data-v-ee860cc1] {\r\n    padding: 2rem;
 // - vue/server-renderer ($id_UyJffsox60)
 // - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
 // --------------------
-const $id_4kr7YmWPFS = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_iQGoq5svl9 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
@@ -3930,6 +3986,8 @@ const _sfc_main = /* @__PURE__ */ __vite_ssr_import_1__.defineComponent({
       area: ""
     });
     const handleClick = () => {
+      if (calculoInput.custo == "" || calculoInput.area == "" || calculoInput.rendimento == "")
+        return;
       quantidade.value = parseFloat(calculoInput.area) / parseFloat(calculoInput.rendimento);
       custo.value = quantidade.value * parseFloat(calculoInput.custo);
     };
@@ -3943,7 +4001,7 @@ const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
 const __vite_ssr_import_3__ = await __vite_ssr_import__("vue/server-renderer");
 
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${__vite_ssr_import_3__.ssrRenderAttrs(__vite_ssr_import_2__.mergeProps({ class: "flex flex-col" }, _attrs))}><label for="rendimento">Rendimento | Quantos m<sup>2</sup> rende 1L do produto</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.rendimento)} name="rendimento" type="text" placeholder="Ex: 100"><label for="custo">Custo por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.custo)} name="custo" type="text" placeholder="Ex: 100"><label for="area">area por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.area)} name="area" type="text" placeholder="10000"><button>Calcular</button><p>Custo:${__vite_ssr_import_3__.ssrInterpolate($setup.custo)}</p><p>Quantidade:${__vite_ssr_import_3__.ssrInterpolate($setup.quantidade)}</p></div>`);
+  _push(`<div${__vite_ssr_import_3__.ssrRenderAttrs(__vite_ssr_import_2__.mergeProps({ class: "flex flex-col" }, _attrs))}><label for="rendimento">Rendimento | Quantos m<sup>2</sup> rende 1L do produto</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.rendimento)} name="rendimento" type="text" placeholder="Ex: 100"><label for="custo">Custo por litro</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.custo)} name="custo" type="text" placeholder="Ex: 100"><label for="area">area por litro em m<sup>2</sup> (cada hectare possui 10.000m<sup>2</sup>)</label><input${__vite_ssr_import_3__.ssrRenderAttr("value", $setup.calculoInput.area)} name="area" type="text" placeholder="10000"><button>Calcular</button><p>Custo:${__vite_ssr_import_3__.ssrInterpolate($setup.custo)}</p><p>Quantidade:${__vite_ssr_import_3__.ssrInterpolate($setup.quantidade)}</p></div>`);
 }
 const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
 
@@ -3957,6 +4015,39 @@ const __vite_ssr_import_5__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:
 
 __vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_5__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/calculo.vue"]]);
 ;
+}
+
+
+// --------------------
+// Request: /pages/estoque.vue
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - vue/server-renderer ($id_UyJffsox60)
+// - vue ($id_VkOCJnUZrn)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_ga3OsdUAiX = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${__vite_ssr_import_0__.ssrRenderAttrs(_attrs)}><div class="">Sementes</div><div class="">Fertilizantes</div><div class="">Defensivos </div></div>`)
+}
+
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_1__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("pages/estoque.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/estoque.vue"]]);
 }
 
 
@@ -5227,10 +5318,11 @@ const __modules__ = {
   "/node_modules/nuxt/dist/pages/runtime/page.mjs": $id_L9I1eoE7dW,
   "/node_modules/nuxt/dist/pages/runtime/utils.mjs": $id_ZR0LUqwyer,
   "/node_modules/nuxt/dist/app/components/utils.mjs": $id_NgApSiB2xA,
-  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_TtM7S956oQ,
-  "/pages/calculo.vue?macro=true": $id_yYOl8sS6Iw,
+  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_aqGxkhTfKQ,
+  "/pages/calculo.vue?macro=true": $id_37iDRbRaxx,
   "vue/server-renderer": $id_aRHphPzMpI,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
+  "/pages/estoque.vue?macro=true": $id_x8e8QyLdX9,
   "/pages/index.vue?macro=true": $id_a81thUgcqy,
   "/components/Calculoplantio.vue": $id_FmKM2RLRZP,
   "/components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css": $id_VMcb5MMrhc,
@@ -5242,7 +5334,8 @@ const __modules__ = {
   "/pages/login.vue?macro=true": $id_24okfJ3TNH,
   "/components/Auth.vue": $id_srwFyTRhDe,
   "/components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": $id_hXyNCI6Ozm,
-  "/pages/calculo.vue": $id_4kr7YmWPFS,
+  "/pages/calculo.vue": $id_iQGoq5svl9,
+  "/pages/estoque.vue": $id_ga3OsdUAiX,
   "/pages/index.vue": $id_qJrOPQ5EaW,
   "/pages/index2.vue": $id_q0S2nbRMZF,
   "/pages/index2.vue?vue&type=style&index=0&lang.css": $id_PtaNnJ9WoB,
