@@ -116,6 +116,9 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /node_modules/nuxt/dist/app/components/utils.mjs ($id_acUmhqj8VN)
 // - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
 // - /pages/estoque.vue?macro=true ($id_gpOUJzv8AJ)
+// - /components/modalNovoFuncionario.vue ($id_B85UhicDkg)
+// - /components/modalEditarFuncionario.vue ($id_OKsSQ72Lpa)
+// - /pages/funcionarios.vue?macro=true ($id_moCb0vVMGK)
 // - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /components/modalFluxo.vue ($id_uhrvSGzYHX)
@@ -124,6 +127,7 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/estoque.vue ($id_GPiAxm07De)
+// - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
@@ -2877,25 +2881,29 @@ Object.defineProperty(__vite_ssr_exports__, "_wrapIf", { enumerable: true, confi
 // Dependencies: 
 // - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
 // - /pages/estoque.vue?macro=true ($id_gpOUJzv8AJ)
+// - /pages/funcionarios.vue?macro=true ($id_moCb0vVMGK)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/estoque.vue ($id_GPiAxm07De)
+// - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
 // --------------------
-const $id_aqGxkhTfKQ = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_PU9ZeaXpOu = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/pages/calculo.vue?macro=true");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("/pages/estoque.vue?macro=true");
 
-const __vite_ssr_import_2__ = await __vite_ssr_import__("/pages/index.vue?macro=true");
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/pages/funcionarios.vue?macro=true");
 
-const __vite_ssr_import_3__ = await __vite_ssr_import__("/pages/index2.vue?macro=true");
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/pages/index.vue?macro=true");
 
-const __vite_ssr_import_4__ = await __vite_ssr_import__("/pages/login.vue?macro=true");
+const __vite_ssr_import_4__ = await __vite_ssr_import__("/pages/index2.vue?macro=true");
+
+const __vite_ssr_import_5__ = await __vite_ssr_import__("/pages/login.vue?macro=true");
 
 __vite_ssr_exports__.default = [
   {
@@ -2917,12 +2925,21 @@ __vite_ssr_exports__.default = [
     component: () => __vite_ssr_dynamic_import__("/pages/estoque.vue").then(m => m.default || m)
   },
   {
+    name: "funcionarios",
+    path: "/funcionarios",
+    file: "C:/Users/Artur/Documents/nuxt/template/pages/funcionarios.vue",
+    children: [],
+    meta: __vite_ssr_import_2__.meta,
+    alias: __vite_ssr_import_2__.meta?.alias || [],
+    component: () => __vite_ssr_dynamic_import__("/pages/funcionarios.vue").then(m => m.default || m)
+  },
+  {
     name: "index",
     path: "/",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/index.vue",
     children: [],
-    meta: __vite_ssr_import_2__.meta,
-    alias: __vite_ssr_import_2__.meta?.alias || [],
+    meta: __vite_ssr_import_3__.meta,
+    alias: __vite_ssr_import_3__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/index.vue").then(m => m.default || m)
   },
   {
@@ -2930,8 +2947,8 @@ __vite_ssr_exports__.default = [
     path: "/index2",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/index2.vue",
     children: [],
-    meta: __vite_ssr_import_3__.meta,
-    alias: __vite_ssr_import_3__.meta?.alias || [],
+    meta: __vite_ssr_import_4__.meta,
+    alias: __vite_ssr_import_4__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/index2.vue").then(m => m.default || m)
   },
   {
@@ -2939,8 +2956,8 @@ __vite_ssr_exports__.default = [
     path: "/login",
     file: "C:/Users/Artur/Documents/nuxt/template/pages/login.vue",
     children: [],
-    meta: __vite_ssr_import_4__.meta,
-    alias: __vite_ssr_import_4__.meta?.alias || [],
+    meta: __vite_ssr_import_5__.meta,
+    alias: __vite_ssr_import_5__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/login.vue").then(m => m.default || m)
   }
 ];
@@ -3012,6 +3029,9 @@ Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configur
 // Parents: 
 // - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
 // - /pages/estoque.vue?macro=true ($id_gpOUJzv8AJ)
+// - /components/modalNovoFuncionario.vue ($id_B85UhicDkg)
+// - /components/modalEditarFuncionario.vue ($id_OKsSQ72Lpa)
+// - /pages/funcionarios.vue?macro=true ($id_moCb0vVMGK)
 // - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /components/modalFluxo.vue ($id_uhrvSGzYHX)
@@ -3020,6 +3040,7 @@ Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configur
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/estoque.vue ($id_GPiAxm07De)
+// - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
@@ -3052,6 +3073,9 @@ import("vue/server-renderer")
 // Parents: 
 // - /pages/calculo.vue?macro=true ($id_NKugu5NdeY)
 // - /pages/estoque.vue?macro=true ($id_gpOUJzv8AJ)
+// - /components/modalNovoFuncionario.vue ($id_B85UhicDkg)
+// - /components/modalEditarFuncionario.vue ($id_OKsSQ72Lpa)
+// - /pages/funcionarios.vue?macro=true ($id_moCb0vVMGK)
 // - /components/Calculoplantio.vue ($id_WUGMUKzzoS)
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /components/modalFluxo.vue ($id_uhrvSGzYHX)
@@ -3060,6 +3084,7 @@ import("vue/server-renderer")
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/estoque.vue ($id_GPiAxm07De)
+// - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
@@ -3118,6 +3143,685 @@ const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:
 __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/estoque.vue"]])
 const meta = undefined
 Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
+}
+
+
+// --------------------
+// Request: /pages/funcionarios.vue?macro=true
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - /components/modalNovoFuncionario.vue ($id_B85UhicDkg)
+// - /components/modalEditarFuncionario.vue ($id_OKsSQ72Lpa)
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_aQC2y1HAL8 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/modalNovoFuncionario.vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/components/modalEditarFuncionario.vue");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/composables/useAuth.ts");
+
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_5__.defineComponent({
+  __name: "funcionarios",
+  async setup(__props, { expose }) {
+    expose();
+    let __temp, __restore;
+    const { supabase } = __vite_ssr_import_2__.default();
+    const { user } = __vite_ssr_import_3__.default();
+    const funcionariosResponse = __vite_ssr_import_4__.ref();
+    funcionariosResponse.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("funcionarios").select()), __temp = await __temp, __restore(), __temp);
+    const showModalAdicionar = __vite_ssr_import_4__.ref();
+    const showModalEditar = __vite_ssr_import_4__.ref();
+    const tipoOrdenar = __vite_ssr_import_4__.ref();
+    const reverterOrdenar = __vite_ssr_import_4__.ref();
+    const pagina = __vite_ssr_import_4__.reactive({
+      atual: 0,
+      tamanho: 5
+    });
+    const funcionarioInput = __vite_ssr_import_4__.reactive({
+      id: "",
+      nome: "",
+      numero: "",
+      cargo: "",
+      is_assalariado: false,
+      salario: "",
+      data_pagamento_salario: ""
+    });
+    const handleNovoFuncionario = () => {
+      showModalAdicionar.value = true;
+      funcionarioInput.nome = "";
+      funcionarioInput.cargo = "";
+      funcionarioInput.numero = "";
+      funcionarioInput.is_assalariado = false;
+      funcionarioInput.salario = "";
+      funcionarioInput.data_pagamento_salario = "";
+    };
+    const handleDeleteFuncionario = async (funcionarioId) => {
+      await supabase.from("funcionarios").delete().eq("id", funcionarioId);
+      funcionariosResponse.value = await supabase.from("funcionarios").select();
+    };
+    const handleSubmitNovoFuncionario = async () => {
+      await supabase.from("funcionarios").insert({
+        nome: funcionarioInput.nome,
+        numero: funcionarioInput.numero,
+        cargo: funcionarioInput.cargo,
+        is_assalariado: funcionarioInput.is_assalariado,
+        salario: parseFloat(funcionarioInput.salario.replace(".", "").replace(",", ".")),
+        data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
+      });
+      funcionariosResponse.value = await supabase.from("funcionarios").select();
+      funcionarioInput.nome = "", funcionarioInput.numero = "", funcionarioInput.cargo = "", funcionarioInput.is_assalariado = false, funcionarioInput.salario = "", funcionarioInput.data_pagamento_salario = "";
+      showModalAdicionar.value = false;
+    };
+    const handleSubmitEditarFuncionario = async () => {
+      await supabase.from("funcionarios").update({
+        nome: funcionarioInput.nome,
+        numero: funcionarioInput.numero,
+        cargo: funcionarioInput.cargo,
+        is_assalariado: funcionarioInput.is_assalariado,
+        salario: parseFloat(String(funcionarioInput.salario).replace(".", "").replace(",", ".")),
+        data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
+      }).eq("id", funcionarioInput.id);
+      funcionariosResponse.value = await supabase.from("funcionarios").select();
+      funcionarioInput.id = "", funcionarioInput.nome = "", funcionarioInput.numero = "", funcionarioInput.cargo = "", funcionarioInput.is_assalariado = false, funcionarioInput.salario = "", funcionarioInput.data_pagamento_salario = "";
+      showModalEditar.value = false;
+    };
+    const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
+      showModalEditar.value = true;
+      funcionarioInput.nome = nome;
+      funcionarioInput.cargo = cargo;
+      funcionarioInput.numero = numero;
+      funcionarioInput.is_assalariado = is_assalariado;
+      funcionarioInput.salario = salario;
+      funcionarioInput.data_pagamento_salario = diaPagamento;
+      funcionarioInput.id = id;
+    };
+    const handlePagina = (i) => {
+      if (i === "proxima") {
+        pagina.atual++;
+      }
+      if (i === "anterior") {
+        pagina.atual--;
+      }
+    };
+    const handleOrdenar = (i) => {
+      if (i === "nome") {
+        tipoOrdenar.value = porNome;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porNomeReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "cargo") {
+        tipoOrdenar.value = porCargo;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porCargoReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "salario") {
+        tipoOrdenar.value = porSalario;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porSalarioReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "dia") {
+        tipoOrdenar.value = porDia;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porDiaReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "data") {
+        tipoOrdenar.value = porData;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porDataReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+    };
+    function porNome(a, b) {
+      if (a.nome > b.nome) {
+        return 1;
+      } else if (b.nome > a.nome) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porCargo(a, b) {
+      if (a.cargo > b.cargo) {
+        return 1;
+      } else if (b.cargo > a.cargo) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porData(a, b) {
+      if (a.data > b.data) {
+        return 1;
+      } else if (b.data > a.data) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porSalario(a, b) {
+      return parseFloat(a.salario) - parseFloat(b.salario);
+    }
+    function porDia(a, b) {
+      return parseFloat(a.data_pagamento_salario) - parseFloat(b.data_pagamento_salario);
+    }
+    function porNomeReverse(a, b) {
+      if (a.nome > b.nome) {
+        return -1;
+      } else if (b.nome > a.nome) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porCargoReverse(a, b) {
+      if (a.cargo > b.cargo) {
+        return -1;
+      } else if (b.cargo > a.cargo) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porDataReverse(a, b) {
+      if (a.data_pagamento_salario > b.data_pagamento_salario) {
+        return -1;
+      } else if (b.data_pagamento_salario > a.data_pagamento_salario) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porSalarioReverse(a, b) {
+      return parseFloat(b.salario) - parseFloat(a.salario);
+    }
+    function porDiaReverse(a, b) {
+      return parseFloat(b.data_inicio) - parseFloat(a.data_inicio);
+    }
+    const __returned__ = { supabase, user, funcionariosResponse, showModalAdicionar, showModalEditar, tipoOrdenar, reverterOrdenar, pagina, funcionarioInput, handleNovoFuncionario, handleDeleteFuncionario, handleSubmitNovoFuncionario, handleSubmitEditarFuncionario, handleModalEditar, handlePagina, handleOrdenar, porNome, porCargo, porData, porSalario, porDia, porNomeReverse, porCargoReverse, porDataReverse, porSalarioReverse, porDiaReverse };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_6__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_7__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ModalNovoFuncionario = __vite_ssr_import_0__.default;
+  const _component_ModalEditarFuncionario = __vite_ssr_import_1__.default;
+  _push(`<div${__vite_ssr_import_7__.ssrRenderAttrs(_attrs)}><button> novo funcionario </button><!-- Modal Novo Funcion\xE1rio -->`);
+  if ($setup.showModalAdicionar) {
+    _push(__vite_ssr_import_7__.ssrRenderComponent(_component_ModalNovoFuncionario, {
+      onClose: ($event) => $setup.showModalAdicionar = false,
+      onAdicionarFuncionario: $setup.handleSubmitNovoFuncionario
+    }, {
+      default: __vite_ssr_import_6__.withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`<div class="flex flex-col"${_scopeId}><label for="nome"${_scopeId}>Nome</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.nome)} type="text" placeholder="Jo\xE3o da silva" name="nome"${_scopeId}><label for="numero"${_scopeId}>numero</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.numero)} type="text" placeholder="Jo\xE3o da silva" name="numero"${_scopeId}><label for="cargo"${_scopeId}>cargo</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.cargo)} type="text" placeholder="Jo\xE3o da silva" name="cargo"${_scopeId}><label for="recebe_salario"${_scopeId}>\xC9 assalariado?</label><input${__vite_ssr_import_7__.ssrIncludeBooleanAttr(Array.isArray($setup.funcionarioInput.is_assalariado) ? __vite_ssr_import_7__.ssrLooseContain($setup.funcionarioInput.is_assalariado, null) : $setup.funcionarioInput.is_assalariado) ? " checked" : ""} type="checkbox" placeholder="Jo\xE3o da silva" name="recebe_salario"${_scopeId}>`);
+          if ($setup.funcionarioInput.is_assalariado) {
+            _push2(`<div class="flex flex-col"${_scopeId}><label for="salario"${_scopeId}>sal\xE1rio</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.salario)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="data_pagamento_salario"${_scopeId}>dia do pagamento</label><select placeholder="Jo\xE3o da silva" name="data_pagamento_salario"${_scopeId}><!--[-->`);
+            __vite_ssr_import_7__.ssrRenderList(28, (i) => {
+              _push2(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i)}${_scopeId}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+            });
+            _push2(`<!--]--></select></div>`);
+          } else {
+            _push2(`<!---->`);
+          }
+          _push2(`</div>`);
+        } else {
+          return [
+            __vite_ssr_import_6__.createVNode("div", { class: "flex flex-col" }, [
+              __vite_ssr_import_6__.createVNode("label", { for: "nome" }, "Nome"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.funcionarioInput.nome = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva",
+                name: "nome"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.nome]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "numero" }, "numero"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.funcionarioInput.numero = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva",
+                name: "numero"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.numero]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "cargo" }, "cargo"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.funcionarioInput.cargo = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva",
+                name: "cargo"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.cargo]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "recebe_salario" }, "\xC9 assalariado?"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.funcionarioInput.is_assalariado = $event,
+                type: "checkbox",
+                placeholder: "Jo\xE3o da silva",
+                name: "recebe_salario"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelCheckbox, $setup.funcionarioInput.is_assalariado]
+              ]),
+              __vite_ssr_import_6__.createVNode(__vite_ssr_import_6__.Transition, { name: "pop" }, {
+                default: __vite_ssr_import_6__.withCtx(() => [
+                  $setup.funcionarioInput.is_assalariado ? (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock("div", {
+                    key: 0,
+                    class: "flex flex-col"
+                  }, [
+                    __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "sal\xE1rio"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                      "onUpdate:modelValue": ($event) => $setup.funcionarioInput.salario = $event,
+                      type: "text",
+                      placeholder: "Jo\xE3o da silva",
+                      name: "salario"
+                    }, null, 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.salario]
+                    ]),
+                    __vite_ssr_import_6__.createVNode("label", { for: "data_pagamento_salario" }, "dia do pagamento"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                      "onUpdate:modelValue": ($event) => $setup.funcionarioInput.data_pagamento_salario = $event,
+                      placeholder: "Jo\xE3o da silva",
+                      name: "data_pagamento_salario"
+                    }, [
+                      (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock(__vite_ssr_import_6__.Fragment, null, __vite_ssr_import_6__.renderList(28, (i) => {
+                        return __vite_ssr_import_6__.createVNode("option", { value: i }, __vite_ssr_import_6__.toDisplayString(i), 9, ["value"]);
+                      }), 64))
+                    ], 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelSelect, $setup.funcionarioInput.data_pagamento_salario]
+                    ])
+                  ])) : __vite_ssr_import_6__.createCommentVNode("v-if", true)
+                ]),
+                _: 1
+              })
+            ])
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`<div><select><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList(Math.ceil($setup.funcionariosResponse.data.length / $setup.pagina.tamanho), (i) => {
+    _push(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i - 1)}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+  });
+  _push(`<!--]--></select><select><option${__vite_ssr_import_7__.ssrRenderAttr("value", 5)}> 5 </option><option${__vite_ssr_import_7__.ssrRenderAttr("value", 10)}> 10 </option><option${__vite_ssr_import_7__.ssrRenderAttr("value", 250)}> 25 </option></select>`);
+  if ($setup.pagina.atual < Math.ceil($setup.funcionariosResponse.data.length / $setup.pagina.tamanho) - 1) {
+    _push(`<button> prox </button>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`<br>`);
+  if ($setup.pagina.atual > 0) {
+    _push(`<button> ant </button>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`</div><table><thead><th>Nome</th><th>Cargo</th><th>numero</th><th>Salario</th><th>Dia pagamento</th><th>Data cadasto</th><th>Detalhes</th><th>Deletar</th></thead><tbody><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList($setup.funcionariosResponse.data.slice($setup.pagina.atual * $setup.pagina.tamanho, $setup.pagina.tamanho * $setup.pagina.atual + $setup.pagina.tamanho).sort($setup.tipoOrdenar), (funcionario) => {
+    _push(`<tr><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.nome)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.cargo)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.numero)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.salario)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.data_pagamento_salario)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.data_inicio)}</td><!-- <td>{{fluxo.salario.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> --><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> edit </span></td><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> person_remove </span></td>`);
+    if ($setup.showModalEditar) {
+      _push(__vite_ssr_import_7__.ssrRenderComponent(_component_ModalEditarFuncionario, {
+        onClose: ($event) => $setup.showModalEditar = false,
+        onEditarFuncionario: $setup.handleSubmitEditarFuncionario
+      }, {
+        default: __vite_ssr_import_6__.withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<div class="flex flex-col"${_scopeId}><label for="nome"${_scopeId}>Nome</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.nome)} type="text" placeholder="Jo\xE3o da silva" name="nome"${_scopeId}><label for="numero"${_scopeId}>numero</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.numero)} type="text" placeholder="Jo\xE3o da silva" name="numero"${_scopeId}><label for="cargo"${_scopeId}>cargo</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.cargo)} type="text" placeholder="Jo\xE3o da silva" name="cargo"${_scopeId}><label for="recebe_salario"${_scopeId}>\xC9 assalariado?</label><input${__vite_ssr_import_7__.ssrIncludeBooleanAttr(Array.isArray($setup.funcionarioInput.is_assalariado) ? __vite_ssr_import_7__.ssrLooseContain($setup.funcionarioInput.is_assalariado, null) : $setup.funcionarioInput.is_assalariado) ? " checked" : ""} type="checkbox" disabled placeholder="Jo\xE3o da silva" name="recebe_salario"${_scopeId}>`);
+            if ($setup.funcionarioInput.is_assalariado) {
+              _push2(`<div class="flex flex-col"${_scopeId}><label for="salario"${_scopeId}>sal\xE1rio</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.salario)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="data_pagamento_salario"${_scopeId}>dia do pagamento</label><select placeholder="Jo\xE3o da silva" name="data_pagamento_salario"${_scopeId}><!--[-->`);
+              __vite_ssr_import_7__.ssrRenderList(28, (i) => {
+                _push2(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i)}${_scopeId}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+              });
+              _push2(`<!--]--></select></div>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`</div>`);
+          } else {
+            return [
+              __vite_ssr_import_6__.createVNode("div", { class: "flex flex-col" }, [
+                __vite_ssr_import_6__.createVNode("label", { for: "nome" }, "Nome"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.funcionarioInput.nome = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "nome"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.nome]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "numero" }, "numero"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.funcionarioInput.numero = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "numero"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.numero]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "cargo" }, "cargo"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.funcionarioInput.cargo = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "cargo"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.cargo]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "recebe_salario" }, "\xC9 assalariado?"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.funcionarioInput.is_assalariado = $event,
+                  type: "checkbox",
+                  disabled: "",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "recebe_salario"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelCheckbox, $setup.funcionarioInput.is_assalariado]
+                ]),
+                __vite_ssr_import_6__.createVNode(__vite_ssr_import_6__.Transition, { name: "pop" }, {
+                  default: __vite_ssr_import_6__.withCtx(() => [
+                    $setup.funcionarioInput.is_assalariado ? (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock("div", {
+                      key: 0,
+                      class: "flex flex-col"
+                    }, [
+                      __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "sal\xE1rio"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                        "onUpdate:modelValue": ($event) => $setup.funcionarioInput.salario = $event,
+                        type: "text",
+                        placeholder: "Jo\xE3o da silva",
+                        name: "salario"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.salario]
+                      ]),
+                      __vite_ssr_import_6__.createVNode("label", { for: "data_pagamento_salario" }, "dia do pagamento"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                        "onUpdate:modelValue": ($event) => $setup.funcionarioInput.data_pagamento_salario = $event,
+                        placeholder: "Jo\xE3o da silva",
+                        name: "data_pagamento_salario"
+                      }, [
+                        (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock(__vite_ssr_import_6__.Fragment, null, __vite_ssr_import_6__.renderList(28, (i) => {
+                          return __vite_ssr_import_6__.createVNode("option", { value: i }, __vite_ssr_import_6__.toDisplayString(i), 9, ["value"]);
+                        }), 64))
+                      ], 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelSelect, $setup.funcionarioInput.data_pagamento_salario]
+                      ])
+                    ])) : __vite_ssr_import_6__.createCommentVNode("v-if", true)
+                  ]),
+                  _: 1
+                })
+              ])
+            ];
+          }
+        }),
+        _: 2
+      }, _parent));
+    } else {
+      _push(`<!---->`);
+    }
+    _push(`</tr>`);
+  });
+  _push(`<!--]--></tbody></table></div>`);
+}
+const __vite_ssr_import_8__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_8__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/funcionarios.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_9__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_9__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/funcionarios.vue"]]);
+
+const meta = undefined
+Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
+}
+
+
+// --------------------
+// Request: /components/modalNovoFuncionario.vue
+// Parents: 
+// - /pages/funcionarios.vue?macro=true ($id_moCb0vVMGK)
+// - /pages/funcionarios.vue ($id_88Kugd218j)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_SoJ1RdmDLN = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<!--[--><div${__vite_ssr_import_1__.ssrRenderAttrs(__vite_ssr_import_0__.mergeProps({
+    id: "defaultModal",
+    tabindex: "-1",
+    "aria-hidden": "true",
+    class: "overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
+  }, _attrs))}><div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 w-full max-w-2xl h-full md:h-auto"><!-- Modal content --><div class="relative bg-white rounded-lg shadow dark:bg-gray-700"><!-- Modal header --><div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600"><h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Novo funcionário </h3><button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal"><svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="sr-only">Close modal</span></button></div><!-- Modal body --><div class="p-6 space-y-6">`)
+  __vite_ssr_import_1__.ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent)
+  _push(`</div><!-- Modal footer --><div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"><button data-modal-toggle="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Adicionar</button><button data-modal-toggle="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button></div></div></div></div><!-- Backdrop --><!--]-->`)
+}
+
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_2__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("components/modalNovoFuncionario.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_3__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/components/modalNovoFuncionario.vue"]]);
+}
+
+
+// --------------------
+// Request: /components/modalEditarFuncionario.vue
+// Parents: 
+// - /pages/funcionarios.vue?macro=true ($id_moCb0vVMGK)
+// - /pages/funcionarios.vue ($id_88Kugd218j)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_N886yx2xwZ = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<!--[--><div${__vite_ssr_import_1__.ssrRenderAttrs(__vite_ssr_import_0__.mergeProps({
+    id: "defaultModal",
+    tabindex: "-1",
+    "aria-hidden": "true",
+    class: "overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
+  }, _attrs))}><div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 w-full max-w-2xl h-full md:h-auto"><!-- Modal content --><div class="relative bg-white rounded-lg shadow dark:bg-gray-700"><!-- Modal header --><div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600"><h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Editar funcionário </h3><button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal"><svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="sr-only">Close modal</span></button></div><!-- Modal body --><div class="p-6 space-y-6">`)
+  __vite_ssr_import_1__.ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent)
+  _push(`</div><!-- Modal footer --><div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"><button data-modal-toggle="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Adicionar</button><button data-modal-toggle="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button></div></div></div></div><!-- Backdrop --><!--]-->`)
+}
+
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_2__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("components/modalEditarFuncionario.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_3__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/components/modalEditarFuncionario.vue"]]);
+}
+
+
+// --------------------
+// Request: /composables/useSupabase.ts
+// Parents: 
+// - /pages/funcionarios.vue?macro=true ($id_moCb0vVMGK)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/funcionarios.vue ($id_88Kugd218j)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
+// - /pages/login.vue ($id_sJIhc9o139)
+// Dependencies: 
+// - @supabase/supabase-js ($id_uQhgE3ya8u)
+// --------------------
+const $id_ldWZ8HPmjw = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("@supabase/supabase-js");
+
+const supabaseUrl = "https://nsorslktwhwctyyvrvcb.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zb3JzbGt0d2h3Y3R5eXZydmNiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY2MzEwMzAwMywiZXhwIjoxOTc4Njc5MDAzfQ.QWfQ1QtJRvidDaAEY1GdRKkkRN7XNxtwovzaVeL8qlo";
+const useSupabase = () => {
+  const supabase = __vite_ssr_import_0__.createClient(supabaseUrl, supabaseKey);
+  return {
+    supabase
+  };
+};
+__vite_ssr_exports__.default = useSupabase;
+;
+}
+
+
+// --------------------
+// Request: @supabase/supabase-js
+// Parents: 
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// Dependencies: 
+
+// --------------------
+const $id_9XNII2VSge = (global, module, _, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) =>
+import("@supabase/supabase-js")
+  .then(r => {
+    if (r.default && r.default.__esModule)
+      r = r.default
+    exports.default = r.default
+    ssrExportAll(r)
+  })
+  .catch(e => {
+    console.error(e)
+    throw new Error("[vite dev] Error loading external \"@supabase/supabase-js\".")
+  })
+
+
+// --------------------
+// Request: /composables/useAuth.ts
+// Parents: 
+// - /pages/funcionarios.vue?macro=true ($id_moCb0vVMGK)
+// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
+// - /components/Auth.vue ($id_bD8to5qKKa)
+// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/funcionarios.vue ($id_88Kugd218j)
+// - /pages/index2.vue ($id_SOFbo5iYqU)
+// - /pages/login.vue ($id_sJIhc9o139)
+// - /middleware/auth.ts ($id_e5KqhuTNzv)
+// Dependencies: 
+// - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// --------------------
+const $id_OqK7ZbuKel = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+
+const useAuth = () => {
+  const user = __vite_ssr_import_0__.useState("user", () => null, '$OWrSqFye87');
+  const router = __vite_ssr_import_0__.useRouter();
+  const { supabase } = __vite_ssr_import_1__.default();
+  supabase.auth.onAuthStateChange((e, session) => {
+    user.value = session?.user || null;
+  });
+  const signUp = async ({ email, password, ...metadata }) => {
+    const { user: u, error } = await supabase.auth.signUp(
+      {
+        email,
+        password
+      },
+      {
+        data: metadata,
+        redirectTo: `${window.location.origin}/myProfile?source=email`
+      }
+    );
+    if (error)
+      throw error;
+    return u;
+  };
+  const signIn = async ({ email, password }) => {
+    const { user: u, error } = await supabase.auth.signIn({
+      email,
+      password
+    });
+    if (error)
+      throw error;
+    return u;
+  };
+  const signOut = async ({}) => {
+    const { error } = await supabase.auth.signOut();
+    if (error)
+      throw error;
+    router.push("/");
+  };
+  const isLoggedIn = () => {
+    return !!user.value;
+  };
+  return {
+    user,
+    signUp,
+    signIn,
+    signOut,
+    isLoggedIn
+  };
+};
+__vite_ssr_exports__.default = useAuth;
+;
 }
 
 
@@ -3615,125 +4319,6 @@ __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_3__.default(_sfc_m
 
 
 // --------------------
-// Request: /composables/useSupabase.ts
-// Parents: 
-// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
-// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
-// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
-// - /pages/index2.vue ($id_SOFbo5iYqU)
-// - /pages/login.vue ($id_sJIhc9o139)
-// Dependencies: 
-// - @supabase/supabase-js ($id_uQhgE3ya8u)
-// --------------------
-const $id_ldWZ8HPmjw = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("@supabase/supabase-js");
-
-const supabaseUrl = "https://nsorslktwhwctyyvrvcb.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zb3JzbGt0d2h3Y3R5eXZydmNiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY2MzEwMzAwMywiZXhwIjoxOTc4Njc5MDAzfQ.QWfQ1QtJRvidDaAEY1GdRKkkRN7XNxtwovzaVeL8qlo";
-const useSupabase = () => {
-  const supabase = __vite_ssr_import_0__.createClient(supabaseUrl, supabaseKey);
-  return {
-    supabase
-  };
-};
-__vite_ssr_exports__.default = useSupabase;
-;
-}
-
-
-// --------------------
-// Request: @supabase/supabase-js
-// Parents: 
-// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
-// Dependencies: 
-
-// --------------------
-const $id_9XNII2VSge = (global, module, _, exports, importMeta, ssrImport, ssrDynamicImport, ssrExportAll) =>
-import("@supabase/supabase-js")
-  .then(r => {
-    if (r.default && r.default.__esModule)
-      r = r.default
-    exports.default = r.default
-    ssrExportAll(r)
-  })
-  .catch(e => {
-    console.error(e)
-    throw new Error("[vite dev] Error loading external \"@supabase/supabase-js\".")
-  })
-
-
-// --------------------
-// Request: /composables/useAuth.ts
-// Parents: 
-// - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
-// - /components/Auth.vue ($id_bD8to5qKKa)
-// - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
-// - /pages/index2.vue ($id_SOFbo5iYqU)
-// - /pages/login.vue ($id_sJIhc9o139)
-// - /middleware/auth.ts ($id_e5KqhuTNzv)
-// Dependencies: 
-// - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
-// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
-// --------------------
-const $id_OqK7ZbuKel = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-const __vite_ssr_import_0__ = await __vite_ssr_import__("/node_modules/nuxt/dist/app/index.mjs");
-
-const __vite_ssr_import_1__ = await __vite_ssr_import__("/composables/useSupabase.ts");
-
-const useAuth = () => {
-  const user = __vite_ssr_import_0__.useState("user", () => null, '$OWrSqFye87');
-  const router = __vite_ssr_import_0__.useRouter();
-  const { supabase } = __vite_ssr_import_1__.default();
-  supabase.auth.onAuthStateChange((e, session) => {
-    user.value = session?.user || null;
-  });
-  const signUp = async ({ email, password, ...metadata }) => {
-    const { user: u, error } = await supabase.auth.signUp(
-      {
-        email,
-        password
-      },
-      {
-        data: metadata,
-        redirectTo: `${window.location.origin}/myProfile?source=email`
-      }
-    );
-    if (error)
-      throw error;
-    return u;
-  };
-  const signIn = async ({ email, password }) => {
-    const { user: u, error } = await supabase.auth.signIn({
-      email,
-      password
-    });
-    if (error)
-      throw error;
-    return u;
-  };
-  const signOut = async ({}) => {
-    const { error } = await supabase.auth.signOut();
-    if (error)
-      throw error;
-    router.push("/");
-  };
-  const isLoggedIn = () => {
-    return !!user.value;
-  };
-  return {
-    user,
-    signUp,
-    signIn,
-    signOut,
-    isLoggedIn
-  };
-};
-__vite_ssr_exports__.default = useAuth;
-;
-}
-
-
-// --------------------
 // Request: /pages/login.vue?macro=true
 // Parents: 
 // - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
@@ -4048,6 +4633,474 @@ _sfc_main.setup = (props, ctx) => {
 const __vite_ssr_import_2__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
 
 __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_2__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/pages/estoque.vue"]]);
+}
+
+
+// --------------------
+// Request: /pages/funcionarios.vue
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - /components/modalNovoFuncionario.vue ($id_B85UhicDkg)
+// - /components/modalEditarFuncionario.vue ($id_OKsSQ72Lpa)
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_6EkVlFDrL2 = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/modalNovoFuncionario.vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/components/modalEditarFuncionario.vue");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/composables/useAuth.ts");
+
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_5__.defineComponent({
+  __name: "funcionarios",
+  async setup(__props, { expose }) {
+    expose();
+    let __temp, __restore;
+    const { supabase } = __vite_ssr_import_2__.default();
+    const { user } = __vite_ssr_import_3__.default();
+    const funcionariosResponse = __vite_ssr_import_4__.ref();
+    funcionariosResponse.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("funcionarios").select()), __temp = await __temp, __restore(), __temp);
+    const showModalAdicionar = __vite_ssr_import_4__.ref();
+    const showModalEditar = __vite_ssr_import_4__.ref();
+    const tipoOrdenar = __vite_ssr_import_4__.ref();
+    const reverterOrdenar = __vite_ssr_import_4__.ref();
+    const pagina = __vite_ssr_import_4__.reactive({
+      atual: 0,
+      tamanho: 5
+    });
+    const funcionarioInput = __vite_ssr_import_4__.reactive({
+      id: "",
+      nome: "",
+      numero: "",
+      cargo: "",
+      is_assalariado: false,
+      salario: "",
+      data_pagamento_salario: ""
+    });
+    const handleNovoFuncionario = () => {
+      showModalAdicionar.value = true;
+      funcionarioInput.nome = "";
+      funcionarioInput.cargo = "";
+      funcionarioInput.numero = "";
+      funcionarioInput.is_assalariado = false;
+      funcionarioInput.salario = "";
+      funcionarioInput.data_pagamento_salario = "";
+    };
+    const handleDeleteFuncionario = async (funcionarioId) => {
+      await supabase.from("funcionarios").delete().eq("id", funcionarioId);
+      funcionariosResponse.value = await supabase.from("funcionarios").select();
+    };
+    const handleSubmitNovoFuncionario = async () => {
+      await supabase.from("funcionarios").insert({
+        nome: funcionarioInput.nome,
+        numero: funcionarioInput.numero,
+        cargo: funcionarioInput.cargo,
+        is_assalariado: funcionarioInput.is_assalariado,
+        salario: parseFloat(funcionarioInput.salario.replace(".", "").replace(",", ".")),
+        data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
+      });
+      funcionariosResponse.value = await supabase.from("funcionarios").select();
+      funcionarioInput.nome = "", funcionarioInput.numero = "", funcionarioInput.cargo = "", funcionarioInput.is_assalariado = false, funcionarioInput.salario = "", funcionarioInput.data_pagamento_salario = "";
+      showModalAdicionar.value = false;
+    };
+    const handleSubmitEditarFuncionario = async () => {
+      await supabase.from("funcionarios").update({
+        nome: funcionarioInput.nome,
+        numero: funcionarioInput.numero,
+        cargo: funcionarioInput.cargo,
+        is_assalariado: funcionarioInput.is_assalariado,
+        salario: parseFloat(String(funcionarioInput.salario).replace(".", "").replace(",", ".")),
+        data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
+      }).eq("id", funcionarioInput.id);
+      funcionariosResponse.value = await supabase.from("funcionarios").select();
+      funcionarioInput.id = "", funcionarioInput.nome = "", funcionarioInput.numero = "", funcionarioInput.cargo = "", funcionarioInput.is_assalariado = false, funcionarioInput.salario = "", funcionarioInput.data_pagamento_salario = "";
+      showModalEditar.value = false;
+    };
+    const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
+      showModalEditar.value = true;
+      funcionarioInput.nome = nome;
+      funcionarioInput.cargo = cargo;
+      funcionarioInput.numero = numero;
+      funcionarioInput.is_assalariado = is_assalariado;
+      funcionarioInput.salario = salario;
+      funcionarioInput.data_pagamento_salario = diaPagamento;
+      funcionarioInput.id = id;
+    };
+    const handlePagina = (i) => {
+      if (i === "proxima") {
+        pagina.atual++;
+      }
+      if (i === "anterior") {
+        pagina.atual--;
+      }
+    };
+    const handleOrdenar = (i) => {
+      if (i === "nome") {
+        tipoOrdenar.value = porNome;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porNomeReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "cargo") {
+        tipoOrdenar.value = porCargo;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porCargoReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "salario") {
+        tipoOrdenar.value = porSalario;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porSalarioReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "dia") {
+        tipoOrdenar.value = porDia;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porDiaReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "data") {
+        tipoOrdenar.value = porData;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porDataReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+    };
+    function porNome(a, b) {
+      if (a.nome > b.nome) {
+        return 1;
+      } else if (b.nome > a.nome) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porCargo(a, b) {
+      if (a.cargo > b.cargo) {
+        return 1;
+      } else if (b.cargo > a.cargo) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porData(a, b) {
+      if (a.data > b.data) {
+        return 1;
+      } else if (b.data > a.data) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porSalario(a, b) {
+      return parseFloat(a.salario) - parseFloat(b.salario);
+    }
+    function porDia(a, b) {
+      return parseFloat(a.data_pagamento_salario) - parseFloat(b.data_pagamento_salario);
+    }
+    function porNomeReverse(a, b) {
+      if (a.nome > b.nome) {
+        return -1;
+      } else if (b.nome > a.nome) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porCargoReverse(a, b) {
+      if (a.cargo > b.cargo) {
+        return -1;
+      } else if (b.cargo > a.cargo) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porDataReverse(a, b) {
+      if (a.data_pagamento_salario > b.data_pagamento_salario) {
+        return -1;
+      } else if (b.data_pagamento_salario > a.data_pagamento_salario) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porSalarioReverse(a, b) {
+      return parseFloat(b.salario) - parseFloat(a.salario);
+    }
+    function porDiaReverse(a, b) {
+      return parseFloat(b.data_inicio) - parseFloat(a.data_inicio);
+    }
+    const __returned__ = { supabase, user, funcionariosResponse, showModalAdicionar, showModalEditar, tipoOrdenar, reverterOrdenar, pagina, funcionarioInput, handleNovoFuncionario, handleDeleteFuncionario, handleSubmitNovoFuncionario, handleSubmitEditarFuncionario, handleModalEditar, handlePagina, handleOrdenar, porNome, porCargo, porData, porSalario, porDia, porNomeReverse, porCargoReverse, porDataReverse, porSalarioReverse, porDiaReverse };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_6__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_7__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ModalNovoFuncionario = __vite_ssr_import_0__.default;
+  const _component_ModalEditarFuncionario = __vite_ssr_import_1__.default;
+  _push(`<div${__vite_ssr_import_7__.ssrRenderAttrs(_attrs)}><button> novo funcionario </button><!-- Modal Novo Funcion\xE1rio -->`);
+  if ($setup.showModalAdicionar) {
+    _push(__vite_ssr_import_7__.ssrRenderComponent(_component_ModalNovoFuncionario, {
+      onClose: ($event) => $setup.showModalAdicionar = false,
+      onAdicionarFuncionario: $setup.handleSubmitNovoFuncionario
+    }, {
+      default: __vite_ssr_import_6__.withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`<div class="flex flex-col"${_scopeId}><label for="nome"${_scopeId}>Nome</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.nome)} type="text" placeholder="Jo\xE3o da silva" name="nome"${_scopeId}><label for="numero"${_scopeId}>numero</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.numero)} type="text" placeholder="Jo\xE3o da silva" name="numero"${_scopeId}><label for="cargo"${_scopeId}>cargo</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.cargo)} type="text" placeholder="Jo\xE3o da silva" name="cargo"${_scopeId}><label for="recebe_salario"${_scopeId}>\xC9 assalariado?</label><input${__vite_ssr_import_7__.ssrIncludeBooleanAttr(Array.isArray($setup.funcionarioInput.is_assalariado) ? __vite_ssr_import_7__.ssrLooseContain($setup.funcionarioInput.is_assalariado, null) : $setup.funcionarioInput.is_assalariado) ? " checked" : ""} type="checkbox" placeholder="Jo\xE3o da silva" name="recebe_salario"${_scopeId}>`);
+          if ($setup.funcionarioInput.is_assalariado) {
+            _push2(`<div class="flex flex-col"${_scopeId}><label for="salario"${_scopeId}>sal\xE1rio</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.salario)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="data_pagamento_salario"${_scopeId}>dia do pagamento</label><select placeholder="Jo\xE3o da silva" name="data_pagamento_salario"${_scopeId}><!--[-->`);
+            __vite_ssr_import_7__.ssrRenderList(28, (i) => {
+              _push2(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i)}${_scopeId}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+            });
+            _push2(`<!--]--></select></div>`);
+          } else {
+            _push2(`<!---->`);
+          }
+          _push2(`</div>`);
+        } else {
+          return [
+            __vite_ssr_import_6__.createVNode("div", { class: "flex flex-col" }, [
+              __vite_ssr_import_6__.createVNode("label", { for: "nome" }, "Nome"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.funcionarioInput.nome = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva",
+                name: "nome"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.nome]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "numero" }, "numero"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.funcionarioInput.numero = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva",
+                name: "numero"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.numero]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "cargo" }, "cargo"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.funcionarioInput.cargo = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva",
+                name: "cargo"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.cargo]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "recebe_salario" }, "\xC9 assalariado?"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.funcionarioInput.is_assalariado = $event,
+                type: "checkbox",
+                placeholder: "Jo\xE3o da silva",
+                name: "recebe_salario"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelCheckbox, $setup.funcionarioInput.is_assalariado]
+              ]),
+              __vite_ssr_import_6__.createVNode(__vite_ssr_import_6__.Transition, { name: "pop" }, {
+                default: __vite_ssr_import_6__.withCtx(() => [
+                  $setup.funcionarioInput.is_assalariado ? (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock("div", {
+                    key: 0,
+                    class: "flex flex-col"
+                  }, [
+                    __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "sal\xE1rio"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                      "onUpdate:modelValue": ($event) => $setup.funcionarioInput.salario = $event,
+                      type: "text",
+                      placeholder: "Jo\xE3o da silva",
+                      name: "salario"
+                    }, null, 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.salario]
+                    ]),
+                    __vite_ssr_import_6__.createVNode("label", { for: "data_pagamento_salario" }, "dia do pagamento"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                      "onUpdate:modelValue": ($event) => $setup.funcionarioInput.data_pagamento_salario = $event,
+                      placeholder: "Jo\xE3o da silva",
+                      name: "data_pagamento_salario"
+                    }, [
+                      (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock(__vite_ssr_import_6__.Fragment, null, __vite_ssr_import_6__.renderList(28, (i) => {
+                        return __vite_ssr_import_6__.createVNode("option", { value: i }, __vite_ssr_import_6__.toDisplayString(i), 9, ["value"]);
+                      }), 64))
+                    ], 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelSelect, $setup.funcionarioInput.data_pagamento_salario]
+                    ])
+                  ])) : __vite_ssr_import_6__.createCommentVNode("v-if", true)
+                ]),
+                _: 1
+              })
+            ])
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`<div><select><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList(Math.ceil($setup.funcionariosResponse.data.length / $setup.pagina.tamanho), (i) => {
+    _push(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i - 1)}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+  });
+  _push(`<!--]--></select><select><option${__vite_ssr_import_7__.ssrRenderAttr("value", 5)}> 5 </option><option${__vite_ssr_import_7__.ssrRenderAttr("value", 10)}> 10 </option><option${__vite_ssr_import_7__.ssrRenderAttr("value", 250)}> 25 </option></select>`);
+  if ($setup.pagina.atual < Math.ceil($setup.funcionariosResponse.data.length / $setup.pagina.tamanho) - 1) {
+    _push(`<button> prox </button>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`<br>`);
+  if ($setup.pagina.atual > 0) {
+    _push(`<button> ant </button>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`</div><table><thead><th>Nome</th><th>Cargo</th><th>numero</th><th>Salario</th><th>Dia pagamento</th><th>Data cadasto</th><th>Detalhes</th><th>Deletar</th></thead><tbody><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList($setup.funcionariosResponse.data.slice($setup.pagina.atual * $setup.pagina.tamanho, $setup.pagina.tamanho * $setup.pagina.atual + $setup.pagina.tamanho).sort($setup.tipoOrdenar), (funcionario) => {
+    _push(`<tr><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.nome)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.cargo)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.numero)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.salario)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.data_pagamento_salario)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(funcionario.data_inicio)}</td><!-- <td>{{fluxo.salario.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> --><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> edit </span></td><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> person_remove </span></td>`);
+    if ($setup.showModalEditar) {
+      _push(__vite_ssr_import_7__.ssrRenderComponent(_component_ModalEditarFuncionario, {
+        onClose: ($event) => $setup.showModalEditar = false,
+        onEditarFuncionario: $setup.handleSubmitEditarFuncionario
+      }, {
+        default: __vite_ssr_import_6__.withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<div class="flex flex-col"${_scopeId}><label for="nome"${_scopeId}>Nome</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.nome)} type="text" placeholder="Jo\xE3o da silva" name="nome"${_scopeId}><label for="numero"${_scopeId}>numero</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.numero)} type="text" placeholder="Jo\xE3o da silva" name="numero"${_scopeId}><label for="cargo"${_scopeId}>cargo</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.cargo)} type="text" placeholder="Jo\xE3o da silva" name="cargo"${_scopeId}><label for="recebe_salario"${_scopeId}>\xC9 assalariado?</label><input${__vite_ssr_import_7__.ssrIncludeBooleanAttr(Array.isArray($setup.funcionarioInput.is_assalariado) ? __vite_ssr_import_7__.ssrLooseContain($setup.funcionarioInput.is_assalariado, null) : $setup.funcionarioInput.is_assalariado) ? " checked" : ""} type="checkbox" disabled placeholder="Jo\xE3o da silva" name="recebe_salario"${_scopeId}>`);
+            if ($setup.funcionarioInput.is_assalariado) {
+              _push2(`<div class="flex flex-col"${_scopeId}><label for="salario"${_scopeId}>sal\xE1rio</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.funcionarioInput.salario)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="data_pagamento_salario"${_scopeId}>dia do pagamento</label><select placeholder="Jo\xE3o da silva" name="data_pagamento_salario"${_scopeId}><!--[-->`);
+              __vite_ssr_import_7__.ssrRenderList(28, (i) => {
+                _push2(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i)}${_scopeId}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+              });
+              _push2(`<!--]--></select></div>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`</div>`);
+          } else {
+            return [
+              __vite_ssr_import_6__.createVNode("div", { class: "flex flex-col" }, [
+                __vite_ssr_import_6__.createVNode("label", { for: "nome" }, "Nome"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.funcionarioInput.nome = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "nome"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.nome]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "numero" }, "numero"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.funcionarioInput.numero = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "numero"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.numero]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "cargo" }, "cargo"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.funcionarioInput.cargo = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "cargo"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.cargo]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "recebe_salario" }, "\xC9 assalariado?"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.funcionarioInput.is_assalariado = $event,
+                  type: "checkbox",
+                  disabled: "",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "recebe_salario"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelCheckbox, $setup.funcionarioInput.is_assalariado]
+                ]),
+                __vite_ssr_import_6__.createVNode(__vite_ssr_import_6__.Transition, { name: "pop" }, {
+                  default: __vite_ssr_import_6__.withCtx(() => [
+                    $setup.funcionarioInput.is_assalariado ? (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock("div", {
+                      key: 0,
+                      class: "flex flex-col"
+                    }, [
+                      __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "sal\xE1rio"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                        "onUpdate:modelValue": ($event) => $setup.funcionarioInput.salario = $event,
+                        type: "text",
+                        placeholder: "Jo\xE3o da silva",
+                        name: "salario"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelText, $setup.funcionarioInput.salario]
+                      ]),
+                      __vite_ssr_import_6__.createVNode("label", { for: "data_pagamento_salario" }, "dia do pagamento"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                        "onUpdate:modelValue": ($event) => $setup.funcionarioInput.data_pagamento_salario = $event,
+                        placeholder: "Jo\xE3o da silva",
+                        name: "data_pagamento_salario"
+                      }, [
+                        (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock(__vite_ssr_import_6__.Fragment, null, __vite_ssr_import_6__.renderList(28, (i) => {
+                          return __vite_ssr_import_6__.createVNode("option", { value: i }, __vite_ssr_import_6__.toDisplayString(i), 9, ["value"]);
+                        }), 64))
+                      ], 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelSelect, $setup.funcionarioInput.data_pagamento_salario]
+                      ])
+                    ])) : __vite_ssr_import_6__.createCommentVNode("v-if", true)
+                  ]),
+                  _: 1
+                })
+              ])
+            ];
+          }
+        }),
+        _: 2
+      }, _parent));
+    } else {
+      _push(`<!---->`);
+    }
+    _push(`</tr>`);
+  });
+  _push(`<!--]--></tbody></table></div>`);
+}
+const __vite_ssr_import_8__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_8__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/funcionarios.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_9__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_9__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/funcionarios.vue"]]);
+;
 }
 
 
@@ -4434,8 +5487,8 @@ __vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_9__.default(_sf
 // Dependencies: 
 
 // --------------------
-const $id_PtaNnJ9WoB = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
-__vite_ssr_exports__.default = "\n.pop-enter-from {\r\n    scale: 30%;\r\n    opacity: 0;\n}\n.pop-enter-to {\r\n    scale: 100%;\n}\n.pop-enter-active {\r\n    transition: all .2s ease-out;\n}\n.pop-leave-from {\r\n    scale: 100%;\n}\n.pop-leave-to {\r\n    scale: 30%;\r\n    opacity: 0;\n}\n.pop-leave-active {\r\n    transition: all .2s ease;\n}\r\n";
+const $id_S4sAc354kM = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+__vite_ssr_exports__.default = "\n.pop-enter-from {\r\n    scale: 30%;\r\n    opacity: 0;\n}\n.pop-enter-to {\r\n    scale: 100%;\n}\n.pop-enter-active {\r\n    transition: all .2s cubic-bezier(0,1.15,.47,1.15);\n}\n.pop-leave-from {\r\n    scale: 100%;\n}\n.pop-leave-to {\r\n    scale: 30%;\r\n    opacity: 0;\n}\n.pop-leave-active {\r\n    transition: all .2s cubic-bezier(0,1.15,.47,1.15);\n}\r\n";
 }
 
 
@@ -5318,27 +6371,31 @@ const __modules__ = {
   "/node_modules/nuxt/dist/pages/runtime/page.mjs": $id_L9I1eoE7dW,
   "/node_modules/nuxt/dist/pages/runtime/utils.mjs": $id_ZR0LUqwyer,
   "/node_modules/nuxt/dist/app/components/utils.mjs": $id_NgApSiB2xA,
-  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_aqGxkhTfKQ,
+  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_PU9ZeaXpOu,
   "/pages/calculo.vue?macro=true": $id_37iDRbRaxx,
   "vue/server-renderer": $id_aRHphPzMpI,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
   "/pages/estoque.vue?macro=true": $id_x8e8QyLdX9,
+  "/pages/funcionarios.vue?macro=true": $id_aQC2y1HAL8,
+  "/components/modalNovoFuncionario.vue": $id_SoJ1RdmDLN,
+  "/components/modalEditarFuncionario.vue": $id_N886yx2xwZ,
+  "/composables/useSupabase.ts": $id_ldWZ8HPmjw,
+  "@supabase/supabase-js": $id_9XNII2VSge,
+  "/composables/useAuth.ts": $id_OqK7ZbuKel,
   "/pages/index.vue?macro=true": $id_a81thUgcqy,
   "/components/Calculoplantio.vue": $id_FmKM2RLRZP,
   "/components/Calculoplantio.vue?vue&type=style&index=0&scoped=94267614&lang.css": $id_VMcb5MMrhc,
   "/pages/index2.vue?macro=true": $id_vlGiJWWsSf,
   "/components/modalFluxo.vue": $id_Oslbb4uoZw,
-  "/composables/useSupabase.ts": $id_ldWZ8HPmjw,
-  "@supabase/supabase-js": $id_9XNII2VSge,
-  "/composables/useAuth.ts": $id_OqK7ZbuKel,
   "/pages/login.vue?macro=true": $id_24okfJ3TNH,
   "/components/Auth.vue": $id_srwFyTRhDe,
   "/components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": $id_hXyNCI6Ozm,
   "/pages/calculo.vue": $id_iQGoq5svl9,
   "/pages/estoque.vue": $id_ga3OsdUAiX,
+  "/pages/funcionarios.vue": $id_6EkVlFDrL2,
   "/pages/index.vue": $id_qJrOPQ5EaW,
   "/pages/index2.vue": $id_q0S2nbRMZF,
-  "/pages/index2.vue?vue&type=style&index=0&lang.css": $id_PtaNnJ9WoB,
+  "/pages/index2.vue?vue&type=style&index=0&lang.css": $id_S4sAc354kM,
   "/pages/login.vue": $id_zw9cVPKHCf,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/router.options.mjs": $id_nmhVZR4Lu2,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/middleware.mjs": $id_fDirMoZFok,

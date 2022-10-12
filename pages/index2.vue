@@ -385,7 +385,7 @@ function porValorReverse(a,b){
 }
 
 .pop-enter-active {
-    transition: all .2s ease-out;
+    transition: all .2s cubic-bezier(0,1.15,.47,1.15);
 }
 
 .pop-leave-from {
@@ -400,7 +400,7 @@ function porValorReverse(a,b){
 }
 
 .pop-leave-active {
-    transition: all .2s ease;
+    transition: all .2s cubic-bezier(0,1.15,.47,1.15);
 
 }
 </style>
