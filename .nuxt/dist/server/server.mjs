@@ -125,12 +125,16 @@ __vite_ssr_exports__.default = (ctx) => entry(ctx);
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /components/modalNovoMaquina.vue ($id_oPoWcnQYB4)
+// - /components/modalEditarMaquina.vue ($id_qdsBO9tp1o)
+// - /pages/maquinas.vue?macro=true ($id_DVPKMjx96J)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/estoque.vue ($id_GPiAxm07De)
 // - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
+// - /pages/maquinas.vue ($id_cVjqSraWNu)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
 // - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
@@ -2885,14 +2889,16 @@ Object.defineProperty(__vite_ssr_exports__, "_wrapIf", { enumerable: true, confi
 // - /pages/index.vue?macro=true ($id_XdcCQB7w7V)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/maquinas.vue?macro=true ($id_DVPKMjx96J)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/estoque.vue ($id_GPiAxm07De)
 // - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
+// - /pages/maquinas.vue ($id_cVjqSraWNu)
 // --------------------
-const $id_PU9ZeaXpOu = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const $id_LKm8AR0uRD = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 const __vite_ssr_import_0__ = await __vite_ssr_import__("/pages/calculo.vue?macro=true");
 
 const __vite_ssr_import_1__ = await __vite_ssr_import__("/pages/estoque.vue?macro=true");
@@ -2904,6 +2910,8 @@ const __vite_ssr_import_3__ = await __vite_ssr_import__("/pages/index.vue?macro=
 const __vite_ssr_import_4__ = await __vite_ssr_import__("/pages/index2.vue?macro=true");
 
 const __vite_ssr_import_5__ = await __vite_ssr_import__("/pages/login.vue?macro=true");
+
+const __vite_ssr_import_6__ = await __vite_ssr_import__("/pages/maquinas.vue?macro=true");
 
 __vite_ssr_exports__.default = [
   {
@@ -2959,6 +2967,15 @@ __vite_ssr_exports__.default = [
     meta: __vite_ssr_import_5__.meta,
     alias: __vite_ssr_import_5__.meta?.alias || [],
     component: () => __vite_ssr_dynamic_import__("/pages/login.vue").then(m => m.default || m)
+  },
+  {
+    name: "maquinas",
+    path: "/maquinas",
+    file: "C:/Users/Artur/Documents/nuxt/template/pages/maquinas.vue",
+    children: [],
+    meta: __vite_ssr_import_6__.meta,
+    alias: __vite_ssr_import_6__.meta?.alias || [],
+    component: () => __vite_ssr_dynamic_import__("/pages/maquinas.vue").then(m => m.default || m)
   }
 ];
 }
@@ -3038,12 +3055,16 @@ Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configur
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /components/modalNovoMaquina.vue ($id_oPoWcnQYB4)
+// - /components/modalEditarMaquina.vue ($id_qdsBO9tp1o)
+// - /pages/maquinas.vue?macro=true ($id_DVPKMjx96J)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/estoque.vue ($id_GPiAxm07De)
 // - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
+// - /pages/maquinas.vue ($id_cVjqSraWNu)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
 // - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
@@ -3082,12 +3103,16 @@ import("vue/server-renderer")
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /components/modalNovoMaquina.vue ($id_oPoWcnQYB4)
+// - /components/modalEditarMaquina.vue ($id_qdsBO9tp1o)
+// - /pages/maquinas.vue?macro=true ($id_DVPKMjx96J)
 // - /pages/calculo.vue ($id_HWi9vOF4TZ)
 // - /pages/estoque.vue ($id_GPiAxm07De)
 // - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index.vue ($id_zKWOlz8EPO)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
+// - /pages/maquinas.vue ($id_cVjqSraWNu)
 // - /node_modules/nuxt/dist/app/components/nuxt-root.vue ($id_6btoGdWLJh)
 // - /node_modules/nuxt/dist/app/components/nuxt-error-page.vue ($id_jMbXP0vyaY)
 // - /node_modules/@nuxt/ui-templates/dist/templates/error-404.vue ($id_uQ1ND2iuUo)
@@ -3709,9 +3734,11 @@ __vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_3__.default(_sfc_m
 // - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/maquinas.vue?macro=true ($id_DVPKMjx96J)
 // - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
+// - /pages/maquinas.vue ($id_cVjqSraWNu)
 // Dependencies: 
 // - @supabase/supabase-js ($id_uQhgE3ya8u)
 // --------------------
@@ -3759,9 +3786,11 @@ import("@supabase/supabase-js")
 // - /pages/index2.vue?macro=true ($id_NZzLC1HuMH)
 // - /components/Auth.vue ($id_bD8to5qKKa)
 // - /pages/login.vue?macro=true ($id_ITuqivn9Dh)
+// - /pages/maquinas.vue?macro=true ($id_DVPKMjx96J)
 // - /pages/funcionarios.vue ($id_88Kugd218j)
 // - /pages/index2.vue ($id_SOFbo5iYqU)
 // - /pages/login.vue ($id_sJIhc9o139)
+// - /pages/maquinas.vue ($id_cVjqSraWNu)
 // - /middleware/auth.ts ($id_e5KqhuTNzv)
 // Dependencies: 
 // - /node_modules/nuxt/dist/app/index.mjs ($id_NpJ0d20vMd)
@@ -4542,6 +4571,612 @@ __vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_8__.default(_sf
 // --------------------
 const $id_hXyNCI6Ozm = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
 __vite_ssr_exports__.default = "\n.card[data-v-ee860cc1] {\r\n    padding: 2rem;\r\n    width: 25rem;\n}\n.card h3[data-v-ee860cc1] {\r\n    font-size: 1.75rem;\r\n    text-transform: capitalize;\n}\n.input-container[data-v-ee860cc1] {\r\n    display: flex;\r\n    flex-direction: column;\n}\n.input-container input[data-v-ee860cc1] {\r\n    margin-bottom: .3rem;\r\n    padding: .5rem;\r\n    outline: none;\r\n    border: .1rem solid rgba(0, 0, 0, .5);\r\n    border-radius: .2rem;\n}\np[data-v-ee860cc1] {\r\n    color: lightblue;\r\n    font-size: .8rem;\r\n    cursor: pointer;\n}\n.error[data-v-ee860cc1] {\r\n    color: red\n}\r\n";
+}
+
+
+// --------------------
+// Request: /pages/maquinas.vue?macro=true
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - /components/modalNovoMaquina.vue ($id_oPoWcnQYB4)
+// - /components/modalEditarMaquina.vue ($id_qdsBO9tp1o)
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_GPxxkHGDrR = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/modalNovoMaquina.vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/components/modalEditarMaquina.vue");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/composables/useAuth.ts");
+
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_5__.defineComponent({
+  __name: "maquinas",
+  async setup(__props, { expose }) {
+    expose();
+    let __temp, __restore;
+    const { supabase } = __vite_ssr_import_2__.default();
+    const { user } = __vite_ssr_import_3__.default();
+    const maquinasResponse = __vite_ssr_import_4__.ref();
+    maquinasResponse.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("maquinas").select()), __temp = await __temp, __restore(), __temp);
+    const showModalAdicionar = __vite_ssr_import_4__.ref();
+    const showModalEditar = __vite_ssr_import_4__.ref();
+    const tipoOrdenar = __vite_ssr_import_4__.ref();
+    const reverterOrdenar = __vite_ssr_import_4__.ref();
+    const pagina = __vite_ssr_import_4__.reactive({
+      atual: 0,
+      tamanho: 5
+    });
+    const maquinaInput = __vite_ssr_import_4__.reactive({
+      id: "",
+      categoria: "",
+      modelo: "",
+      ano: "",
+      is_pago: false,
+      valor_parcelas: "",
+      num_parcelas: "",
+      data_pagamento_parcelas: ""
+    });
+    const handleNovoMaquina = () => {
+      showModalAdicionar.value = true;
+      maquinaInput.categoria = "";
+      maquinaInput.modelo = "";
+      maquinaInput.ano = "";
+      maquinaInput.is_pago = false;
+      maquinaInput.valor_parcelas = "";
+      maquinaInput.num_parcelas = "";
+      maquinaInput.data_pagamento_parcelas = "";
+    };
+    const handleDeleteMaquina = async (maquinaId) => {
+      await supabase.from("maquinas").delete().eq("id", maquinaId);
+      maquinasResponse.value = await supabase.from("maquinas").select();
+    };
+    const handleSubmitNovoMaquina = async () => {
+      await supabase.from("maquinas").insert({
+        categoria: maquinaInput.categoria,
+        modelo: maquinaInput.modelo,
+        ano: maquinaInput.ano,
+        is_pago: maquinaInput.is_pago,
+        valor_parcelas: parseFloat(maquinaInput.valor_parcelas.replace(".", "").replace(",", ".")),
+        num_parcelas: parseInt(maquinaInput.num_parcelas),
+        data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas)
+      });
+      maquinasResponse.value = await supabase.from("maquinas").select();
+      maquinaInput.categoria = "", maquinaInput.ano = "", maquinaInput.modelo = "", maquinaInput.is_pago = false, maquinaInput.valor_parcelas = "", maquinaInput.num_parcelas = "";
+      showModalAdicionar.value = false;
+    };
+    const handleSubmitEditarMaquina = async () => {
+      if (!maquinaInput.is_pago) {
+        await supabase.from("maquinas").update({
+          categoria: maquinaInput.categoria,
+          modelo: maquinaInput.modelo,
+          ano: maquinaInput.ano,
+          is_pago: maquinaInput.is_pago,
+          valor_parcelas: parseFloat(maquinaInput.valor_parcelas.replace(".", "").replace(",", ".")),
+          num_parcelas: parseInt(maquinaInput.num_parcelas),
+          data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas)
+        }).eq("id", maquinaInput.id);
+      } else {
+        await supabase.from("maquinas").update({
+          categoria: maquinaInput.categoria,
+          modelo: maquinaInput.modelo,
+          ano: maquinaInput.ano,
+          is_pago: maquinaInput.is_pago,
+          valor_parcelas: 0,
+          num_parcelas: 0,
+          data_parcelas: 0
+        }).eq("id", maquinaInput.id);
+      }
+      maquinasResponse.value = await supabase.from("maquinas").select();
+      maquinaInput.id = "", maquinaInput.categoria = "", maquinaInput.ano = "", maquinaInput.modelo = "", maquinaInput.is_pago = false, maquinaInput.valor_parcelas = "", maquinaInput.num_parcelas = "";
+      showModalEditar.value = false;
+    };
+    const handleModalEditar = (categoria, modelo, ano, is_pago, valor_parcelas, num_parcelas, data_pagamento_parcelas, id) => {
+      showModalEditar.value = true;
+      maquinaInput.categoria = categoria;
+      maquinaInput.modelo = modelo;
+      maquinaInput.ano = ano;
+      maquinaInput.is_pago = is_pago;
+      maquinaInput.valor_parcelas = valor_parcelas;
+      maquinaInput.num_parcelas = num_parcelas;
+      maquinaInput.data_pagamento_parcelas = data_pagamento_parcelas;
+      maquinaInput.id = id;
+    };
+    const handlePagina = (i) => {
+      if (i === "proxima") {
+        pagina.atual++;
+      }
+      if (i === "anterior") {
+        pagina.atual--;
+      }
+    };
+    const handleOrdenar = (i) => {
+      if (i === "nome") {
+        tipoOrdenar.value = porNome;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porNomeReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "cargo") {
+        tipoOrdenar.value = porCargo;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porCargoReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "salario") {
+        tipoOrdenar.value = porSalario;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porSalarioReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "dia") {
+        tipoOrdenar.value = porDia;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porDiaReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "data") {
+        tipoOrdenar.value = porData;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porDataReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+    };
+    function porNome(a, b) {
+      if (a.nome > b.nome) {
+        return 1;
+      } else if (b.nome > a.nome) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porCargo(a, b) {
+      if (a.cargo > b.cargo) {
+        return 1;
+      } else if (b.cargo > a.cargo) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porData(a, b) {
+      if (a.data > b.data) {
+        return 1;
+      } else if (b.data > a.data) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porSalario(a, b) {
+      return parseFloat(a.salario) - parseFloat(b.salario);
+    }
+    function porDia(a, b) {
+      return parseFloat(a.data_pagamento_salario) - parseFloat(b.data_pagamento_salario);
+    }
+    function porNomeReverse(a, b) {
+      if (a.nome > b.nome) {
+        return -1;
+      } else if (b.nome > a.nome) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porCargoReverse(a, b) {
+      if (a.cargo > b.cargo) {
+        return -1;
+      } else if (b.cargo > a.cargo) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porDataReverse(a, b) {
+      if (a.data_pagamento_salario > b.data_pagamento_salario) {
+        return -1;
+      } else if (b.data_pagamento_salario > a.data_pagamento_salario) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porSalarioReverse(a, b) {
+      return parseFloat(b.salario) - parseFloat(a.salario);
+    }
+    function porDiaReverse(a, b) {
+      return parseFloat(b.data_inicio) - parseFloat(a.data_inicio);
+    }
+    const __returned__ = { supabase, user, maquinasResponse, showModalAdicionar, showModalEditar, tipoOrdenar, reverterOrdenar, pagina, maquinaInput, handleNovoMaquina, handleDeleteMaquina, handleSubmitNovoMaquina, handleSubmitEditarMaquina, handleModalEditar, handlePagina, handleOrdenar, porNome, porCargo, porData, porSalario, porDia, porNomeReverse, porCargoReverse, porDataReverse, porSalarioReverse, porDiaReverse };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_6__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_7__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ModalNovoMaquina = __vite_ssr_import_0__.default;
+  const _component_ModalEditarMaquina = __vite_ssr_import_1__.default;
+  _push(`<div${__vite_ssr_import_7__.ssrRenderAttrs(_attrs)}>${__vite_ssr_import_7__.ssrInterpolate($setup.maquinaInput.categoria)} <button> novo maquina </button><!-- Modal Novo Funcion\xE1rio -->`);
+  if ($setup.showModalAdicionar) {
+    _push(__vite_ssr_import_7__.ssrRenderComponent(_component_ModalNovoMaquina, {
+      onClose: ($event) => $setup.showModalAdicionar = false,
+      onAdicionarMaquina: $setup.handleSubmitNovoMaquina
+    }, {
+      default: __vite_ssr_import_6__.withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`<div class="flex flex-col"${_scopeId}><label for="nome"${_scopeId}>Categoria do m\xE1quina</label><select type="text" placeholder="Jo\xE3o da silva"${_scopeId}><option value="tratores"${_scopeId}>Tratores</option><option value="ceifadeira/colheitadeira"${_scopeId}>Ceifadeira ou Colheitadeira</option><option value="atv/utv"${_scopeId}>ATVs ou UTVs</option><option value="acessorios/trator"${_scopeId}>Assess\xF3rios para trator</option><option value="arados"${_scopeId}>Arados</option><option value="distribuidores_de_fertilizante"${_scopeId}>Distribuidores De Fertilizante</option><option value="semeadores"${_scopeId}>Semeadores</option><option value="enfardadeiras"${_scopeId}>Enfardadeiras</option><option value="vagoes/reboque"${_scopeId}>Vag\xF5es ou reboque</option><option value="outro"${_scopeId}>Outro</option></select><label for="cargo"${_scopeId}>Modelo</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.modelo)} type="text" placeholder="Jo\xE3o da silva"${_scopeId}><label for="numero"${_scopeId}>numero</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.ano)} type="text" placeholder="Jo\xE3o da silva"${_scopeId}><label for="recebe_salario"${_scopeId}>Est\xE1 Pago?</label><input${__vite_ssr_import_7__.ssrIncludeBooleanAttr(Array.isArray($setup.maquinaInput.is_pago) ? __vite_ssr_import_7__.ssrLooseContain($setup.maquinaInput.is_pago, null) : $setup.maquinaInput.is_pago) ? " checked" : ""} type="checkbox" placeholder="Jo\xE3o da silva" name="recebe_salario"${_scopeId}>`);
+          if (!$setup.maquinaInput.is_pago) {
+            _push2(`<div class="flex flex-col"${_scopeId}><label for="salario"${_scopeId}>Parcelas Restantes</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.num_parcelas)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="salario"${_scopeId}>Valor da parcela</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.valor_parcelas)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="data_pagamento_salario"${_scopeId}>Dia de pagamento parcela</label><select placeholder="Jo\xE3o da silva" name="data_pagamento_salario"${_scopeId}><!--[-->`);
+            __vite_ssr_import_7__.ssrRenderList(28, (i) => {
+              _push2(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i)}${_scopeId}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+            });
+            _push2(`<!--]--></select></div>`);
+          } else {
+            _push2(`<!---->`);
+          }
+          _push2(`</div>`);
+        } else {
+          return [
+            __vite_ssr_import_6__.createVNode("div", { class: "flex flex-col" }, [
+              __vite_ssr_import_6__.createVNode("label", { for: "nome" }, "Categoria do m\xE1quina"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                "onUpdate:modelValue": ($event) => $setup.maquinaInput.categoria = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva"
+              }, [
+                __vite_ssr_import_6__.createVNode("option", { value: "tratores" }, "Tratores"),
+                __vite_ssr_import_6__.createVNode("option", { value: "ceifadeira/colheitadeira" }, "Ceifadeira ou Colheitadeira"),
+                __vite_ssr_import_6__.createVNode("option", { value: "atv/utv" }, "ATVs ou UTVs"),
+                __vite_ssr_import_6__.createVNode("option", { value: "acessorios/trator" }, "Assess\xF3rios para trator"),
+                __vite_ssr_import_6__.createVNode("option", { value: "arados" }, "Arados"),
+                __vite_ssr_import_6__.createVNode("option", { value: "distribuidores_de_fertilizante" }, "Distribuidores De Fertilizante"),
+                __vite_ssr_import_6__.createVNode("option", { value: "semeadores" }, "Semeadores"),
+                __vite_ssr_import_6__.createVNode("option", { value: "enfardadeiras" }, "Enfardadeiras"),
+                __vite_ssr_import_6__.createVNode("option", { value: "vagoes/reboque" }, "Vag\xF5es ou reboque"),
+                __vite_ssr_import_6__.createVNode("option", { value: "outro" }, "Outro")
+              ], 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelSelect, $setup.maquinaInput.categoria]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "cargo" }, "Modelo"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.maquinaInput.modelo = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.modelo]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "numero" }, "numero"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.maquinaInput.ano = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.ano]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "recebe_salario" }, "Est\xE1 Pago?"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.maquinaInput.is_pago = $event,
+                type: "checkbox",
+                placeholder: "Jo\xE3o da silva",
+                name: "recebe_salario"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelCheckbox, $setup.maquinaInput.is_pago]
+              ]),
+              __vite_ssr_import_6__.createVNode(__vite_ssr_import_6__.Transition, { name: "pop" }, {
+                default: __vite_ssr_import_6__.withCtx(() => [
+                  !$setup.maquinaInput.is_pago ? (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock("div", {
+                    key: 0,
+                    class: "flex flex-col"
+                  }, [
+                    __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "Parcelas Restantes"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                      "onUpdate:modelValue": ($event) => $setup.maquinaInput.num_parcelas = $event,
+                      type: "text",
+                      placeholder: "Jo\xE3o da silva",
+                      name: "salario"
+                    }, null, 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.num_parcelas]
+                    ]),
+                    __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "Valor da parcela"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                      "onUpdate:modelValue": ($event) => $setup.maquinaInput.valor_parcelas = $event,
+                      type: "text",
+                      placeholder: "Jo\xE3o da silva",
+                      name: "salario"
+                    }, null, 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.valor_parcelas]
+                    ]),
+                    __vite_ssr_import_6__.createVNode("label", { for: "data_pagamento_salario" }, "Dia de pagamento parcela"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                      "onUpdate:modelValue": ($event) => $setup.maquinaInput.data_pagamento_parcelas = $event,
+                      placeholder: "Jo\xE3o da silva",
+                      name: "data_pagamento_salario"
+                    }, [
+                      (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock(__vite_ssr_import_6__.Fragment, null, __vite_ssr_import_6__.renderList(28, (i) => {
+                        return __vite_ssr_import_6__.createVNode("option", { value: i }, __vite_ssr_import_6__.toDisplayString(i), 9, ["value"]);
+                      }), 64))
+                    ], 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelSelect, $setup.maquinaInput.data_pagamento_parcelas]
+                    ])
+                  ])) : __vite_ssr_import_6__.createCommentVNode("v-if", true)
+                ]),
+                _: 1
+              })
+            ])
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`<div><select><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList(Math.ceil($setup.maquinasResponse.data.length / $setup.pagina.tamanho), (i) => {
+    _push(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i - 1)}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+  });
+  _push(`<!--]--></select><select><option${__vite_ssr_import_7__.ssrRenderAttr("value", 5)}> 5 </option><option${__vite_ssr_import_7__.ssrRenderAttr("value", 10)}> 10 </option><option${__vite_ssr_import_7__.ssrRenderAttr("value", 250)}> 25 </option></select>`);
+  if ($setup.pagina.atual < Math.ceil($setup.maquinasResponse.data.length / $setup.pagina.tamanho) - 1) {
+    _push(`<button> prox </button>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`<br>`);
+  if ($setup.pagina.atual > 0) {
+    _push(`<button> ant </button>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`</div><table><thead><th>Categoria</th><th>Modelo</th><th>Ano</th><th>Pago</th><th>valor_parcelas</th><th>num_parcelas</th><th>data_pagamento_parcelas</th><th>Detalhes</th><th>Deletar</th></thead><tbody><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList($setup.maquinasResponse.data.slice($setup.pagina.atual * $setup.pagina.tamanho, $setup.pagina.tamanho * $setup.pagina.atual + $setup.pagina.tamanho).sort($setup.tipoOrdenar), (maquina) => {
+    _push(`<tr><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.categoria)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.modelo)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.ano)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.is_pago)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.valor_parcelas)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.num_parcelas)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.data_parcelas)}</td><!-- <td>{{fluxo.salario.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> --><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> edit </span></td><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> delete </span></td>`);
+    if ($setup.showModalEditar) {
+      _push(__vite_ssr_import_7__.ssrRenderComponent(_component_ModalEditarMaquina, {
+        onClose: ($event) => $setup.showModalEditar = false,
+        onEditarMaquina: $setup.handleSubmitEditarMaquina
+      }, {
+        default: __vite_ssr_import_6__.withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<div class="flex flex-col"${_scopeId}><label for="nome"${_scopeId}>Categoria do m\xE1quina</label><select type="text" placeholder="Jo\xE3o da silva"${_scopeId}><option value="tratores"${_scopeId}>Tratores</option><option value="ceifadeira/colheitadeira"${_scopeId}>Ceifadeira ou Colheitadeira</option><option value="atv/utv"${_scopeId}>ATVs ou UTVs</option><option value="acessorios/trator"${_scopeId}>Assess\xF3rios para trator</option><option value="arados"${_scopeId}>Arados</option><option value="distribuidores_de_fertilizante"${_scopeId}>Distribuidores De Fertilizante </option><option value="semeadores"${_scopeId}>Semeadores</option><option value="enfardadeiras"${_scopeId}>Enfardadeiras</option><option value="vagoes/reboque"${_scopeId}>Vag\xF5es ou reboque</option><option value="outro"${_scopeId}>Outro</option></select><label for="cargo"${_scopeId}>Modelo</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.modelo)} type="text" placeholder="Jo\xE3o da silva"${_scopeId}><label for="numero"${_scopeId}>numero</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.ano)} type="text" placeholder="Jo\xE3o da silva"${_scopeId}><label for="recebe_salario"${_scopeId}>Est\xE1 Pago?</label><input${__vite_ssr_import_7__.ssrIncludeBooleanAttr(Array.isArray($setup.maquinaInput.is_pago) ? __vite_ssr_import_7__.ssrLooseContain($setup.maquinaInput.is_pago, null) : $setup.maquinaInput.is_pago) ? " checked" : ""} type="checkbox" placeholder="Jo\xE3o da silva" name="recebe_salario"${_scopeId}>`);
+            if (!$setup.maquinaInput.is_pago) {
+              _push2(`<div class="flex flex-col"${_scopeId}><label for="salario"${_scopeId}>Parcelas Restantes</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.num_parcelas)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="salario"${_scopeId}>Valor da parcela</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.valor_parcelas)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="data_pagamento_salario"${_scopeId}>Dia de pagamento parcela</label><select placeholder="Jo\xE3o da silva" name="data_pagamento_salario"${_scopeId}><!--[-->`);
+              __vite_ssr_import_7__.ssrRenderList(28, (i) => {
+                _push2(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i)}${_scopeId}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+              });
+              _push2(`<!--]--></select></div>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`</div>`);
+          } else {
+            return [
+              __vite_ssr_import_6__.createVNode("div", { class: "flex flex-col" }, [
+                __vite_ssr_import_6__.createVNode("label", { for: "nome" }, "Categoria do m\xE1quina"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                  "onUpdate:modelValue": ($event) => $setup.maquinaInput.categoria = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva"
+                }, [
+                  __vite_ssr_import_6__.createVNode("option", { value: "tratores" }, "Tratores"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "ceifadeira/colheitadeira" }, "Ceifadeira ou Colheitadeira"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "atv/utv" }, "ATVs ou UTVs"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "acessorios/trator" }, "Assess\xF3rios para trator"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "arados" }, "Arados"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "distribuidores_de_fertilizante" }, "Distribuidores De Fertilizante "),
+                  __vite_ssr_import_6__.createVNode("option", { value: "semeadores" }, "Semeadores"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "enfardadeiras" }, "Enfardadeiras"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "vagoes/reboque" }, "Vag\xF5es ou reboque"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "outro" }, "Outro")
+                ], 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelSelect, $setup.maquinaInput.categoria]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "cargo" }, "Modelo"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.maquinaInput.modelo = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.modelo]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "numero" }, "numero"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.maquinaInput.ano = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.ano]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "recebe_salario" }, "Est\xE1 Pago?"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.maquinaInput.is_pago = $event,
+                  type: "checkbox",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "recebe_salario"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelCheckbox, $setup.maquinaInput.is_pago]
+                ]),
+                __vite_ssr_import_6__.createVNode(__vite_ssr_import_6__.Transition, { name: "pop" }, {
+                  default: __vite_ssr_import_6__.withCtx(() => [
+                    !$setup.maquinaInput.is_pago ? (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock("div", {
+                      key: 0,
+                      class: "flex flex-col"
+                    }, [
+                      __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "Parcelas Restantes"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                        "onUpdate:modelValue": ($event) => $setup.maquinaInput.num_parcelas = $event,
+                        type: "text",
+                        placeholder: "Jo\xE3o da silva",
+                        name: "salario"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.num_parcelas]
+                      ]),
+                      __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "Valor da parcela"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                        "onUpdate:modelValue": ($event) => $setup.maquinaInput.valor_parcelas = $event,
+                        type: "text",
+                        placeholder: "Jo\xE3o da silva",
+                        name: "salario"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.valor_parcelas]
+                      ]),
+                      __vite_ssr_import_6__.createVNode("label", { for: "data_pagamento_salario" }, "Dia de pagamento parcela"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                        "onUpdate:modelValue": ($event) => $setup.maquinaInput.data_pagamento_parcelas = $event,
+                        placeholder: "Jo\xE3o da silva",
+                        name: "data_pagamento_salario"
+                      }, [
+                        (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock(__vite_ssr_import_6__.Fragment, null, __vite_ssr_import_6__.renderList(28, (i) => {
+                          return __vite_ssr_import_6__.createVNode("option", { value: i }, __vite_ssr_import_6__.toDisplayString(i), 9, ["value"]);
+                        }), 64))
+                      ], 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelSelect, $setup.maquinaInput.data_pagamento_parcelas]
+                      ])
+                    ])) : __vite_ssr_import_6__.createCommentVNode("v-if", true)
+                  ]),
+                  _: 1
+                })
+              ])
+            ];
+          }
+        }),
+        _: 2
+      }, _parent));
+    } else {
+      _push(`<!---->`);
+    }
+    _push(`</tr>`);
+  });
+  _push(`<!--]--></tbody></table></div>`);
+}
+const __vite_ssr_import_8__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_8__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/maquinas.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_9__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_9__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/maquinas.vue"]]);
+
+const meta = undefined
+Object.defineProperty(__vite_ssr_exports__, "meta", { enumerable: true, configurable: true, get(){ return meta }});;
+}
+
+
+// --------------------
+// Request: /components/modalNovoMaquina.vue
+// Parents: 
+// - /pages/maquinas.vue?macro=true ($id_DVPKMjx96J)
+// - /pages/maquinas.vue ($id_cVjqSraWNu)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_KhEOW9Unsa = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<!--[--><div${__vite_ssr_import_1__.ssrRenderAttrs(__vite_ssr_import_0__.mergeProps({
+    id: "defaultModal",
+    tabindex: "-1",
+    "aria-hidden": "true",
+    class: "overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
+  }, _attrs))}><div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 w-full max-w-2xl h-full md:h-auto"><!-- Modal content --><div class="relative bg-white rounded-lg shadow dark:bg-gray-700"><!-- Modal header --><div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600"><h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Nova Máquina </h3><button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal"><svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="sr-only">Close modal</span></button></div><!-- Modal body --><div class="p-6 space-y-6">`)
+  __vite_ssr_import_1__.ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent)
+  _push(`</div><!-- Modal footer --><div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"><button data-modal-toggle="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Adicionar</button><button data-modal-toggle="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button></div></div></div></div><!-- Backdrop --><!--]-->`)
+}
+
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_2__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("components/modalNovoMaquina.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_3__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/components/modalNovoMaquina.vue"]]);
+}
+
+
+// --------------------
+// Request: /components/modalEditarMaquina.vue
+// Parents: 
+// - /pages/maquinas.vue?macro=true ($id_DVPKMjx96J)
+// - /pages/maquinas.vue ($id_cVjqSraWNu)
+// Dependencies: 
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_U9co9LMSVr = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const _sfc_main = {}
+const __vite_ssr_import_0__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("vue/server-renderer");
+
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<!--[--><div${__vite_ssr_import_1__.ssrRenderAttrs(__vite_ssr_import_0__.mergeProps({
+    id: "defaultModal",
+    tabindex: "-1",
+    "aria-hidden": "true",
+    class: "overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
+  }, _attrs))}><div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 w-full max-w-2xl h-full md:h-auto"><!-- Modal content --><div class="relative bg-white rounded-lg shadow dark:bg-gray-700"><!-- Modal header --><div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600"><h3 class="text-xl font-semibold text-gray-900 dark:text-white"> Editar Máquina </h3><button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal"><svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg><span class="sr-only">Close modal</span></button></div><!-- Modal body --><div class="p-6 space-y-6">`)
+  __vite_ssr_import_1__.ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent)
+  _push(`</div><!-- Modal footer --><div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600"><button data-modal-toggle="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Adicionar</button><button data-modal-toggle="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Decline</button></div></div></div></div><!-- Backdrop --><!--]-->`)
+}
+
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_2__.useSSRContext()
+  ;(ssrContext.modules || (ssrContext.modules = new Set())).add("components/modalEditarMaquina.vue")
+  return _sfc_setup ? _sfc_setup(props, ctx) : undefined
+}
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /*#__PURE__*/__vite_ssr_import_3__.default(_sfc_main, [['ssrRender',_sfc_ssrRender],['__file',"C:/Users/Artur/Documents/nuxt/template/components/modalEditarMaquina.vue"]]);
 }
 
 
@@ -5553,6 +6188,524 @@ __vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_8__.default(_sf
 
 
 // --------------------
+// Request: /pages/maquinas.vue
+// Parents: 
+// - /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs ($id_hgTMwVPhJw)
+// Dependencies: 
+// - /components/modalNovoMaquina.vue ($id_oPoWcnQYB4)
+// - /components/modalEditarMaquina.vue ($id_qdsBO9tp1o)
+// - /composables/useSupabase.ts ($id_yN6LjTobpZ)
+// - /composables/useAuth.ts ($id_ugW7Jl6Lz5)
+// - vue ($id_VkOCJnUZrn)
+// - vue/server-renderer ($id_UyJffsox60)
+// - /@id/__x00__plugin-vue:export-helper ($id_eFZ80lXORx)
+// --------------------
+const $id_XOf7fSBOfu = async function (global, module, exports, __vite_ssr_exports__, __vite_ssr_import_meta__, __vite_ssr_import__, __vite_ssr_dynamic_import__, __vite_ssr_exportAll__) {
+const __vite_ssr_import_0__ = await __vite_ssr_import__("/components/modalNovoMaquina.vue");
+
+const __vite_ssr_import_1__ = await __vite_ssr_import__("/components/modalEditarMaquina.vue");
+
+const __vite_ssr_import_2__ = await __vite_ssr_import__("/composables/useSupabase.ts");
+
+const __vite_ssr_import_3__ = await __vite_ssr_import__("/composables/useAuth.ts");
+
+const __vite_ssr_import_4__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_5__ = await __vite_ssr_import__("vue");
+
+const _sfc_main = /* @__PURE__ */ __vite_ssr_import_5__.defineComponent({
+  __name: "maquinas",
+  async setup(__props, { expose }) {
+    expose();
+    let __temp, __restore;
+    const { supabase } = __vite_ssr_import_2__.default();
+    const { user } = __vite_ssr_import_3__.default();
+    const maquinasResponse = __vite_ssr_import_4__.ref();
+    maquinasResponse.value = ([__temp, __restore] = __vite_ssr_import_5__.withAsyncContext(() => supabase.from("maquinas").select()), __temp = await __temp, __restore(), __temp);
+    const showModalAdicionar = __vite_ssr_import_4__.ref();
+    const showModalEditar = __vite_ssr_import_4__.ref();
+    const tipoOrdenar = __vite_ssr_import_4__.ref();
+    const reverterOrdenar = __vite_ssr_import_4__.ref();
+    const pagina = __vite_ssr_import_4__.reactive({
+      atual: 0,
+      tamanho: 5
+    });
+    const maquinaInput = __vite_ssr_import_4__.reactive({
+      id: "",
+      categoria: "",
+      modelo: "",
+      ano: "",
+      is_pago: false,
+      valor_parcelas: "",
+      num_parcelas: "",
+      data_pagamento_parcelas: ""
+    });
+    const handleNovoMaquina = () => {
+      showModalAdicionar.value = true;
+      maquinaInput.categoria = "";
+      maquinaInput.modelo = "";
+      maquinaInput.ano = "";
+      maquinaInput.is_pago = false;
+      maquinaInput.valor_parcelas = "";
+      maquinaInput.num_parcelas = "";
+      maquinaInput.data_pagamento_parcelas = "";
+    };
+    const handleDeleteMaquina = async (maquinaId) => {
+      await supabase.from("maquinas").delete().eq("id", maquinaId);
+      maquinasResponse.value = await supabase.from("maquinas").select();
+    };
+    const handleSubmitNovoMaquina = async () => {
+      await supabase.from("maquinas").insert({
+        categoria: maquinaInput.categoria,
+        modelo: maquinaInput.modelo,
+        ano: maquinaInput.ano,
+        is_pago: maquinaInput.is_pago,
+        valor_parcelas: parseFloat(maquinaInput.valor_parcelas.replace(".", "").replace(",", ".")),
+        num_parcelas: parseInt(maquinaInput.num_parcelas),
+        data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas)
+      });
+      maquinasResponse.value = await supabase.from("maquinas").select();
+      maquinaInput.categoria = "", maquinaInput.ano = "", maquinaInput.modelo = "", maquinaInput.is_pago = false, maquinaInput.valor_parcelas = "", maquinaInput.num_parcelas = "";
+      showModalAdicionar.value = false;
+    };
+    const handleSubmitEditarMaquina = async () => {
+      if (!maquinaInput.is_pago) {
+        await supabase.from("maquinas").update({
+          categoria: maquinaInput.categoria,
+          modelo: maquinaInput.modelo,
+          ano: maquinaInput.ano,
+          is_pago: maquinaInput.is_pago,
+          valor_parcelas: parseFloat(maquinaInput.valor_parcelas.replace(".", "").replace(",", ".")),
+          num_parcelas: parseInt(maquinaInput.num_parcelas),
+          data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas)
+        }).eq("id", maquinaInput.id);
+      } else {
+        await supabase.from("maquinas").update({
+          categoria: maquinaInput.categoria,
+          modelo: maquinaInput.modelo,
+          ano: maquinaInput.ano,
+          is_pago: maquinaInput.is_pago,
+          valor_parcelas: 0,
+          num_parcelas: 0,
+          data_parcelas: 0
+        }).eq("id", maquinaInput.id);
+      }
+      maquinasResponse.value = await supabase.from("maquinas").select();
+      maquinaInput.id = "", maquinaInput.categoria = "", maquinaInput.ano = "", maquinaInput.modelo = "", maquinaInput.is_pago = false, maquinaInput.valor_parcelas = "", maquinaInput.num_parcelas = "";
+      showModalEditar.value = false;
+    };
+    const handleModalEditar = (categoria, modelo, ano, is_pago, valor_parcelas, num_parcelas, data_pagamento_parcelas, id) => {
+      showModalEditar.value = true;
+      maquinaInput.categoria = categoria;
+      maquinaInput.modelo = modelo;
+      maquinaInput.ano = ano;
+      maquinaInput.is_pago = is_pago;
+      maquinaInput.valor_parcelas = valor_parcelas;
+      maquinaInput.num_parcelas = num_parcelas;
+      maquinaInput.data_pagamento_parcelas = data_pagamento_parcelas;
+      maquinaInput.id = id;
+    };
+    const handlePagina = (i) => {
+      if (i === "proxima") {
+        pagina.atual++;
+      }
+      if (i === "anterior") {
+        pagina.atual--;
+      }
+    };
+    const handleOrdenar = (i) => {
+      if (i === "nome") {
+        tipoOrdenar.value = porNome;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porNomeReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "cargo") {
+        tipoOrdenar.value = porCargo;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porCargoReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "salario") {
+        tipoOrdenar.value = porSalario;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porSalarioReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "dia") {
+        tipoOrdenar.value = porDia;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porDiaReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+      if (i === "data") {
+        tipoOrdenar.value = porData;
+        if (reverterOrdenar.value === i) {
+          tipoOrdenar.value = porDataReverse;
+          reverterOrdenar.value = "";
+          return;
+        }
+        reverterOrdenar.value = i;
+      }
+    };
+    function porNome(a, b) {
+      if (a.nome > b.nome) {
+        return 1;
+      } else if (b.nome > a.nome) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porCargo(a, b) {
+      if (a.cargo > b.cargo) {
+        return 1;
+      } else if (b.cargo > a.cargo) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porData(a, b) {
+      if (a.data > b.data) {
+        return 1;
+      } else if (b.data > a.data) {
+        return -1;
+      } else {
+        return 0;
+      }
+    }
+    function porSalario(a, b) {
+      return parseFloat(a.salario) - parseFloat(b.salario);
+    }
+    function porDia(a, b) {
+      return parseFloat(a.data_pagamento_salario) - parseFloat(b.data_pagamento_salario);
+    }
+    function porNomeReverse(a, b) {
+      if (a.nome > b.nome) {
+        return -1;
+      } else if (b.nome > a.nome) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porCargoReverse(a, b) {
+      if (a.cargo > b.cargo) {
+        return -1;
+      } else if (b.cargo > a.cargo) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porDataReverse(a, b) {
+      if (a.data_pagamento_salario > b.data_pagamento_salario) {
+        return -1;
+      } else if (b.data_pagamento_salario > a.data_pagamento_salario) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    function porSalarioReverse(a, b) {
+      return parseFloat(b.salario) - parseFloat(a.salario);
+    }
+    function porDiaReverse(a, b) {
+      return parseFloat(b.data_inicio) - parseFloat(a.data_inicio);
+    }
+    const __returned__ = { supabase, user, maquinasResponse, showModalAdicionar, showModalEditar, tipoOrdenar, reverterOrdenar, pagina, maquinaInput, handleNovoMaquina, handleDeleteMaquina, handleSubmitNovoMaquina, handleSubmitEditarMaquina, handleModalEditar, handlePagina, handleOrdenar, porNome, porCargo, porData, porSalario, porDia, porNomeReverse, porCargoReverse, porDataReverse, porSalarioReverse, porDiaReverse };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+const __vite_ssr_import_6__ = await __vite_ssr_import__("vue");
+
+const __vite_ssr_import_7__ = await __vite_ssr_import__("vue/server-renderer");
+
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ModalNovoMaquina = __vite_ssr_import_0__.default;
+  const _component_ModalEditarMaquina = __vite_ssr_import_1__.default;
+  _push(`<div${__vite_ssr_import_7__.ssrRenderAttrs(_attrs)}>${__vite_ssr_import_7__.ssrInterpolate($setup.maquinaInput.categoria)} <button> novo maquina </button><!-- Modal Novo Funcion\xE1rio -->`);
+  if ($setup.showModalAdicionar) {
+    _push(__vite_ssr_import_7__.ssrRenderComponent(_component_ModalNovoMaquina, {
+      onClose: ($event) => $setup.showModalAdicionar = false,
+      onAdicionarMaquina: $setup.handleSubmitNovoMaquina
+    }, {
+      default: __vite_ssr_import_6__.withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`<div class="flex flex-col"${_scopeId}><label for="nome"${_scopeId}>Categoria do m\xE1quina</label><select type="text" placeholder="Jo\xE3o da silva"${_scopeId}><option value="tratores"${_scopeId}>Tratores</option><option value="ceifadeira/colheitadeira"${_scopeId}>Ceifadeira ou Colheitadeira</option><option value="atv/utv"${_scopeId}>ATVs ou UTVs</option><option value="acessorios/trator"${_scopeId}>Assess\xF3rios para trator</option><option value="arados"${_scopeId}>Arados</option><option value="distribuidores_de_fertilizante"${_scopeId}>Distribuidores De Fertilizante</option><option value="semeadores"${_scopeId}>Semeadores</option><option value="enfardadeiras"${_scopeId}>Enfardadeiras</option><option value="vagoes/reboque"${_scopeId}>Vag\xF5es ou reboque</option><option value="outro"${_scopeId}>Outro</option></select><label for="cargo"${_scopeId}>Modelo</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.modelo)} type="text" placeholder="Jo\xE3o da silva"${_scopeId}><label for="numero"${_scopeId}>numero</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.ano)} type="text" placeholder="Jo\xE3o da silva"${_scopeId}><label for="recebe_salario"${_scopeId}>Est\xE1 Pago?</label><input${__vite_ssr_import_7__.ssrIncludeBooleanAttr(Array.isArray($setup.maquinaInput.is_pago) ? __vite_ssr_import_7__.ssrLooseContain($setup.maquinaInput.is_pago, null) : $setup.maquinaInput.is_pago) ? " checked" : ""} type="checkbox" placeholder="Jo\xE3o da silva" name="recebe_salario"${_scopeId}>`);
+          if (!$setup.maquinaInput.is_pago) {
+            _push2(`<div class="flex flex-col"${_scopeId}><label for="salario"${_scopeId}>Parcelas Restantes</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.num_parcelas)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="salario"${_scopeId}>Valor da parcela</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.valor_parcelas)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="data_pagamento_salario"${_scopeId}>Dia de pagamento parcela</label><select placeholder="Jo\xE3o da silva" name="data_pagamento_salario"${_scopeId}><!--[-->`);
+            __vite_ssr_import_7__.ssrRenderList(28, (i) => {
+              _push2(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i)}${_scopeId}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+            });
+            _push2(`<!--]--></select></div>`);
+          } else {
+            _push2(`<!---->`);
+          }
+          _push2(`</div>`);
+        } else {
+          return [
+            __vite_ssr_import_6__.createVNode("div", { class: "flex flex-col" }, [
+              __vite_ssr_import_6__.createVNode("label", { for: "nome" }, "Categoria do m\xE1quina"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                "onUpdate:modelValue": ($event) => $setup.maquinaInput.categoria = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva"
+              }, [
+                __vite_ssr_import_6__.createVNode("option", { value: "tratores" }, "Tratores"),
+                __vite_ssr_import_6__.createVNode("option", { value: "ceifadeira/colheitadeira" }, "Ceifadeira ou Colheitadeira"),
+                __vite_ssr_import_6__.createVNode("option", { value: "atv/utv" }, "ATVs ou UTVs"),
+                __vite_ssr_import_6__.createVNode("option", { value: "acessorios/trator" }, "Assess\xF3rios para trator"),
+                __vite_ssr_import_6__.createVNode("option", { value: "arados" }, "Arados"),
+                __vite_ssr_import_6__.createVNode("option", { value: "distribuidores_de_fertilizante" }, "Distribuidores De Fertilizante"),
+                __vite_ssr_import_6__.createVNode("option", { value: "semeadores" }, "Semeadores"),
+                __vite_ssr_import_6__.createVNode("option", { value: "enfardadeiras" }, "Enfardadeiras"),
+                __vite_ssr_import_6__.createVNode("option", { value: "vagoes/reboque" }, "Vag\xF5es ou reboque"),
+                __vite_ssr_import_6__.createVNode("option", { value: "outro" }, "Outro")
+              ], 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelSelect, $setup.maquinaInput.categoria]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "cargo" }, "Modelo"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.maquinaInput.modelo = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.modelo]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "numero" }, "numero"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.maquinaInput.ano = $event,
+                type: "text",
+                placeholder: "Jo\xE3o da silva"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.ano]
+              ]),
+              __vite_ssr_import_6__.createVNode("label", { for: "recebe_salario" }, "Est\xE1 Pago?"),
+              __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                "onUpdate:modelValue": ($event) => $setup.maquinaInput.is_pago = $event,
+                type: "checkbox",
+                placeholder: "Jo\xE3o da silva",
+                name: "recebe_salario"
+              }, null, 8, ["onUpdate:modelValue"]), [
+                [__vite_ssr_import_6__.vModelCheckbox, $setup.maquinaInput.is_pago]
+              ]),
+              __vite_ssr_import_6__.createVNode(__vite_ssr_import_6__.Transition, { name: "pop" }, {
+                default: __vite_ssr_import_6__.withCtx(() => [
+                  !$setup.maquinaInput.is_pago ? (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock("div", {
+                    key: 0,
+                    class: "flex flex-col"
+                  }, [
+                    __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "Parcelas Restantes"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                      "onUpdate:modelValue": ($event) => $setup.maquinaInput.num_parcelas = $event,
+                      type: "text",
+                      placeholder: "Jo\xE3o da silva",
+                      name: "salario"
+                    }, null, 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.num_parcelas]
+                    ]),
+                    __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "Valor da parcela"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                      "onUpdate:modelValue": ($event) => $setup.maquinaInput.valor_parcelas = $event,
+                      type: "text",
+                      placeholder: "Jo\xE3o da silva",
+                      name: "salario"
+                    }, null, 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.valor_parcelas]
+                    ]),
+                    __vite_ssr_import_6__.createVNode("label", { for: "data_pagamento_salario" }, "Dia de pagamento parcela"),
+                    __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                      "onUpdate:modelValue": ($event) => $setup.maquinaInput.data_pagamento_parcelas = $event,
+                      placeholder: "Jo\xE3o da silva",
+                      name: "data_pagamento_salario"
+                    }, [
+                      (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock(__vite_ssr_import_6__.Fragment, null, __vite_ssr_import_6__.renderList(28, (i) => {
+                        return __vite_ssr_import_6__.createVNode("option", { value: i }, __vite_ssr_import_6__.toDisplayString(i), 9, ["value"]);
+                      }), 64))
+                    ], 8, ["onUpdate:modelValue"]), [
+                      [__vite_ssr_import_6__.vModelSelect, $setup.maquinaInput.data_pagamento_parcelas]
+                    ])
+                  ])) : __vite_ssr_import_6__.createCommentVNode("v-if", true)
+                ]),
+                _: 1
+              })
+            ])
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`<div><select><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList(Math.ceil($setup.maquinasResponse.data.length / $setup.pagina.tamanho), (i) => {
+    _push(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i - 1)}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+  });
+  _push(`<!--]--></select><select><option${__vite_ssr_import_7__.ssrRenderAttr("value", 5)}> 5 </option><option${__vite_ssr_import_7__.ssrRenderAttr("value", 10)}> 10 </option><option${__vite_ssr_import_7__.ssrRenderAttr("value", 250)}> 25 </option></select>`);
+  if ($setup.pagina.atual < Math.ceil($setup.maquinasResponse.data.length / $setup.pagina.tamanho) - 1) {
+    _push(`<button> prox </button>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`<br>`);
+  if ($setup.pagina.atual > 0) {
+    _push(`<button> ant </button>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`</div><table><thead><th>Categoria</th><th>Modelo</th><th>Ano</th><th>Pago</th><th>valor_parcelas</th><th>num_parcelas</th><th>data_pagamento_parcelas</th><th>Detalhes</th><th>Deletar</th></thead><tbody><!--[-->`);
+  __vite_ssr_import_7__.ssrRenderList($setup.maquinasResponse.data.slice($setup.pagina.atual * $setup.pagina.tamanho, $setup.pagina.tamanho * $setup.pagina.atual + $setup.pagina.tamanho).sort($setup.tipoOrdenar), (maquina) => {
+    _push(`<tr><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.categoria)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.modelo)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.ano)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.is_pago)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.valor_parcelas)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.num_parcelas)}</td><td>${__vite_ssr_import_7__.ssrInterpolate(maquina.data_parcelas)}</td><!-- <td>{{fluxo.salario.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> --><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> edit </span></td><td><span class="cursor-pointer material-icons block text-center hover:text-xl"> delete </span></td>`);
+    if ($setup.showModalEditar) {
+      _push(__vite_ssr_import_7__.ssrRenderComponent(_component_ModalEditarMaquina, {
+        onClose: ($event) => $setup.showModalEditar = false,
+        onEditarMaquina: $setup.handleSubmitEditarMaquina
+      }, {
+        default: __vite_ssr_import_6__.withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<div class="flex flex-col"${_scopeId}><label for="nome"${_scopeId}>Categoria do m\xE1quina</label><select type="text" placeholder="Jo\xE3o da silva"${_scopeId}><option value="tratores"${_scopeId}>Tratores</option><option value="ceifadeira/colheitadeira"${_scopeId}>Ceifadeira ou Colheitadeira</option><option value="atv/utv"${_scopeId}>ATVs ou UTVs</option><option value="acessorios/trator"${_scopeId}>Assess\xF3rios para trator</option><option value="arados"${_scopeId}>Arados</option><option value="distribuidores_de_fertilizante"${_scopeId}>Distribuidores De Fertilizante </option><option value="semeadores"${_scopeId}>Semeadores</option><option value="enfardadeiras"${_scopeId}>Enfardadeiras</option><option value="vagoes/reboque"${_scopeId}>Vag\xF5es ou reboque</option><option value="outro"${_scopeId}>Outro</option></select><label for="cargo"${_scopeId}>Modelo</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.modelo)} type="text" placeholder="Jo\xE3o da silva"${_scopeId}><label for="numero"${_scopeId}>numero</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.ano)} type="text" placeholder="Jo\xE3o da silva"${_scopeId}><label for="recebe_salario"${_scopeId}>Est\xE1 Pago?</label><input${__vite_ssr_import_7__.ssrIncludeBooleanAttr(Array.isArray($setup.maquinaInput.is_pago) ? __vite_ssr_import_7__.ssrLooseContain($setup.maquinaInput.is_pago, null) : $setup.maquinaInput.is_pago) ? " checked" : ""} type="checkbox" placeholder="Jo\xE3o da silva" name="recebe_salario"${_scopeId}>`);
+            if (!$setup.maquinaInput.is_pago) {
+              _push2(`<div class="flex flex-col"${_scopeId}><label for="salario"${_scopeId}>Parcelas Restantes</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.num_parcelas)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="salario"${_scopeId}>Valor da parcela</label><input${__vite_ssr_import_7__.ssrRenderAttr("value", $setup.maquinaInput.valor_parcelas)} type="text" placeholder="Jo\xE3o da silva" name="salario"${_scopeId}><label for="data_pagamento_salario"${_scopeId}>Dia de pagamento parcela</label><select placeholder="Jo\xE3o da silva" name="data_pagamento_salario"${_scopeId}><!--[-->`);
+              __vite_ssr_import_7__.ssrRenderList(28, (i) => {
+                _push2(`<option${__vite_ssr_import_7__.ssrRenderAttr("value", i)}${_scopeId}>${__vite_ssr_import_7__.ssrInterpolate(i)}</option>`);
+              });
+              _push2(`<!--]--></select></div>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`</div>`);
+          } else {
+            return [
+              __vite_ssr_import_6__.createVNode("div", { class: "flex flex-col" }, [
+                __vite_ssr_import_6__.createVNode("label", { for: "nome" }, "Categoria do m\xE1quina"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                  "onUpdate:modelValue": ($event) => $setup.maquinaInput.categoria = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva"
+                }, [
+                  __vite_ssr_import_6__.createVNode("option", { value: "tratores" }, "Tratores"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "ceifadeira/colheitadeira" }, "Ceifadeira ou Colheitadeira"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "atv/utv" }, "ATVs ou UTVs"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "acessorios/trator" }, "Assess\xF3rios para trator"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "arados" }, "Arados"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "distribuidores_de_fertilizante" }, "Distribuidores De Fertilizante "),
+                  __vite_ssr_import_6__.createVNode("option", { value: "semeadores" }, "Semeadores"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "enfardadeiras" }, "Enfardadeiras"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "vagoes/reboque" }, "Vag\xF5es ou reboque"),
+                  __vite_ssr_import_6__.createVNode("option", { value: "outro" }, "Outro")
+                ], 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelSelect, $setup.maquinaInput.categoria]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "cargo" }, "Modelo"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.maquinaInput.modelo = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.modelo]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "numero" }, "numero"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.maquinaInput.ano = $event,
+                  type: "text",
+                  placeholder: "Jo\xE3o da silva"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.ano]
+                ]),
+                __vite_ssr_import_6__.createVNode("label", { for: "recebe_salario" }, "Est\xE1 Pago?"),
+                __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                  "onUpdate:modelValue": ($event) => $setup.maquinaInput.is_pago = $event,
+                  type: "checkbox",
+                  placeholder: "Jo\xE3o da silva",
+                  name: "recebe_salario"
+                }, null, 8, ["onUpdate:modelValue"]), [
+                  [__vite_ssr_import_6__.vModelCheckbox, $setup.maquinaInput.is_pago]
+                ]),
+                __vite_ssr_import_6__.createVNode(__vite_ssr_import_6__.Transition, { name: "pop" }, {
+                  default: __vite_ssr_import_6__.withCtx(() => [
+                    !$setup.maquinaInput.is_pago ? (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock("div", {
+                      key: 0,
+                      class: "flex flex-col"
+                    }, [
+                      __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "Parcelas Restantes"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                        "onUpdate:modelValue": ($event) => $setup.maquinaInput.num_parcelas = $event,
+                        type: "text",
+                        placeholder: "Jo\xE3o da silva",
+                        name: "salario"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.num_parcelas]
+                      ]),
+                      __vite_ssr_import_6__.createVNode("label", { for: "salario" }, "Valor da parcela"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("input", {
+                        "onUpdate:modelValue": ($event) => $setup.maquinaInput.valor_parcelas = $event,
+                        type: "text",
+                        placeholder: "Jo\xE3o da silva",
+                        name: "salario"
+                      }, null, 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelText, $setup.maquinaInput.valor_parcelas]
+                      ]),
+                      __vite_ssr_import_6__.createVNode("label", { for: "data_pagamento_salario" }, "Dia de pagamento parcela"),
+                      __vite_ssr_import_6__.withDirectives(__vite_ssr_import_6__.createVNode("select", {
+                        "onUpdate:modelValue": ($event) => $setup.maquinaInput.data_pagamento_parcelas = $event,
+                        placeholder: "Jo\xE3o da silva",
+                        name: "data_pagamento_salario"
+                      }, [
+                        (__vite_ssr_import_6__.openBlock(), __vite_ssr_import_6__.createBlock(__vite_ssr_import_6__.Fragment, null, __vite_ssr_import_6__.renderList(28, (i) => {
+                          return __vite_ssr_import_6__.createVNode("option", { value: i }, __vite_ssr_import_6__.toDisplayString(i), 9, ["value"]);
+                        }), 64))
+                      ], 8, ["onUpdate:modelValue"]), [
+                        [__vite_ssr_import_6__.vModelSelect, $setup.maquinaInput.data_pagamento_parcelas]
+                      ])
+                    ])) : __vite_ssr_import_6__.createCommentVNode("v-if", true)
+                  ]),
+                  _: 1
+                })
+              ])
+            ];
+          }
+        }),
+        _: 2
+      }, _parent));
+    } else {
+      _push(`<!---->`);
+    }
+    _push(`</tr>`);
+  });
+  _push(`<!--]--></tbody></table></div>`);
+}
+const __vite_ssr_import_8__ = await __vite_ssr_import__("vue");
+
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = __vite_ssr_import_8__.useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/maquinas.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const __vite_ssr_import_9__ = await __vite_ssr_import__("/@id/__x00__plugin-vue:export-helper");
+
+__vite_ssr_exports__.default = /* @__PURE__ */ __vite_ssr_import_9__.default(_sfc_main, [["ssrRender", _sfc_ssrRender], ["__file", "C:/Users/Artur/Documents/nuxt/template/pages/maquinas.vue"]]);
+;
+}
+
+
+// --------------------
 // Request: /@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/router.options.mjs
 // Parents: 
 // - /node_modules/nuxt/dist/pages/runtime/router.mjs ($id_oJCXe6nyyh)
@@ -6371,7 +7524,7 @@ const __modules__ = {
   "/node_modules/nuxt/dist/pages/runtime/page.mjs": $id_L9I1eoE7dW,
   "/node_modules/nuxt/dist/pages/runtime/utils.mjs": $id_ZR0LUqwyer,
   "/node_modules/nuxt/dist/app/components/utils.mjs": $id_NgApSiB2xA,
-  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_PU9ZeaXpOu,
+  "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/routes.mjs": $id_LKm8AR0uRD,
   "/pages/calculo.vue?macro=true": $id_37iDRbRaxx,
   "vue/server-renderer": $id_aRHphPzMpI,
   "/@id/__x00__plugin-vue:export-helper": $id_mHD6riC5ol,
@@ -6390,6 +7543,9 @@ const __modules__ = {
   "/pages/login.vue?macro=true": $id_24okfJ3TNH,
   "/components/Auth.vue": $id_srwFyTRhDe,
   "/components/Auth.vue?vue&type=style&index=0&scoped=ee860cc1&lang.css": $id_hXyNCI6Ozm,
+  "/pages/maquinas.vue?macro=true": $id_GPxxkHGDrR,
+  "/components/modalNovoMaquina.vue": $id_KhEOW9Unsa,
+  "/components/modalEditarMaquina.vue": $id_U9co9LMSVr,
   "/pages/calculo.vue": $id_iQGoq5svl9,
   "/pages/estoque.vue": $id_ga3OsdUAiX,
   "/pages/funcionarios.vue": $id_6EkVlFDrL2,
@@ -6397,6 +7553,7 @@ const __modules__ = {
   "/pages/index2.vue": $id_q0S2nbRMZF,
   "/pages/index2.vue?vue&type=style&index=0&lang.css": $id_S4sAc354kM,
   "/pages/login.vue": $id_zw9cVPKHCf,
+  "/pages/maquinas.vue": $id_XOf7fSBOfu,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/router.options.mjs": $id_nmhVZR4Lu2,
   "/@id/virtual:nuxt:C:/Users/Artur/Documents/nuxt/template/.nuxt/middleware.mjs": $id_fDirMoZFok,
   "/middleware/auth.ts": $id_eYTDozfLHd,
