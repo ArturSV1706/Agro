@@ -1,0 +1,515 @@
+<script setup>
+
+definePageMeta({
+    middleware: "auth"
+})
+
+const { supabase } = useSupabase()
+const { user } = useAuth()
+const { formatar, paraReal, corLucro } = useUtils()
+
+// Evita erro de carregamento
+const usuarioResponse = ref();
+usuarioResponse.value = await supabase.from("usuario").select()
+// ----//----
+
+const safrasAtivasResponse = ref();
+const safrasFinalizadasResponse = ref();
+const safraResponse_qnt = ref();
+
+const fluxoEntrada = ref();
+const fluxoSaida = ref();
+
+const showModalNovo = ref()
+const showModalColheita = ref()
+const showModalDeletar = ref()
+const showModalEncerrar = ref()
+
+
+
+if (process.client) {
+    safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+    safrasFinalizadasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "completa" })
+}
+
+const redirectSafra = (id) => {
+    window.location.href = "/safra/" + id
+}
+
+const safraInput = reactive({
+    id: "",
+    safra: "",
+    data_inicio: "",
+    data_fim: "",
+    area: "",
+    grandeza: "",
+    valor_unitario: "",
+    quantidade: "",
+    despeza: "",
+    receita_estimada: ""
+})
+
+const abrirModalNovaSafra = () => {
+    showModalNovo.value = true
+    safraInput.id = ""
+    safraInput.safra = ""
+    safraInput.data_inicio = ""
+    safraInput.data_fim = ""
+    safraInput.area = ""
+    safraInput.grandeza = ""
+    safraInput.valor_unitario = ""
+    safraInput.quantidade = ""
+    safraInput.despeza = ""
+    safraInput.receita_estimada = ""
+}
+const fecharModalNovaSafra = () => {
+    showModalNovo.value = false
+    safraInput.id = "",
+        safraInput.safra = "",
+        safraInput.data_inicio = "",
+        safraInput.data_fim = "",
+        safraInput.area = "",
+        safraInput.grandeza = "",
+        safraInput.valor_unitario = "",
+        safraInput.quantidade = "",
+        safraInput.despeza = "",
+        safraInput.receita_estimada = ""
+}
+
+const handleSubmitNovaSafra = async () => {
+    let receita_estimada_calc = parseFloat(safraInput.quantidade) * parseFloat(safraInput.valor_unitario)
+    if (process.client) {
+        await supabase.from("safras").insert({
+            cultivo: safraInput.safra,
+            area: parseFloat(safraInput.area),
+            user_id: user.value.id,
+            grandeza: safraInput.grandeza,
+            despeza_estimada: parseFloat(safraInput.despeza),
+            valor_venda_estimado: parseFloat(safraInput.valor_unitario),
+            quantidade_estimada: parseFloat(safraInput.quantidade),
+            receita_estimada: receita_estimada_calc,
+            data_inicio: safraInput.data_inicio,
+            data_fim: safraInput.data_fim,
+            status: "ativa",
+
+        });
+
+
+
+
+        safraInput.id = "";
+        safraInput.safra = "";
+        safraInput.data_inicio = "";
+        safraInput.data_fim = "";
+        safraInput.area = "";
+        safraInput.grandeza = "";
+        safraInput.valor_unitario = "";
+        safraInput.quantidade = "";
+        safraInput.despeza = "";
+        safraInput.receita_estimada = "";
+
+        showModalNovo.value = false
+        if (process.client) {
+            safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+        }
+    }
+}
+
+const abrirModalDeletarSafra = (id, cultivo, inicio, fim) => {
+    showModalDeletar.value = true
+    safraInput.id = id
+    safraInput.safra = cultivo
+    safraInput.data_inicio = inicio
+    safraInput.data_fim = fim
+}
+const abrirModalAdicionarColheita = async (id, cultivo, grandeza) => {
+    showModalColheita.value = true
+    safraInput.id = id
+    safraInput.safra = cultivo
+    safraInput.grandeza = grandeza
+    safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', parseInt(safraInput.id))
+}
+const handleAdicionarColheita = async () => {
+
+    if (parseFloat(safraInput.quantidade) > 0) {
+        await supabase.from("safras").update({
+            quantidade_real: parseFloat(safraResponse_qnt.value.data[0].quantidade_real) + parseFloat(safraInput.quantidade)
+        }).eq('id', parseInt(safraInput.id));
+    }
+
+    if (process.client) {
+        safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+    }
+
+    safraInput.id = "",
+        safraInput.safra = "",
+        safraInput.data_inicio = "",
+        safraInput.data_fim = "",
+        safraInput.area = "",
+        safraInput.grandeza = "",
+        safraInput.valor_unitario = "",
+        safraInput.quantidade = "",
+        safraInput.despeza = "",
+        safraInput.receita_estimada = ""
+
+    showModalColheita.value = false
+}
+const handleDeletarSafra = async () => {
+    await supabase.from("safras").delete().eq('id', safraInput.id)
+
+    if (process.client) {
+        safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+        safrasFinalizadasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "completa" })
+    }
+
+    showModalDeletar.value = false
+}
+const abrirModalEncerrarSafra = (id, cultivo, inicio, fim) => {
+    showModalEncerrar.value = true
+    safraInput.id = id
+    safraInput.safra = cultivo
+    safraInput.data_inicio = inicio
+    safraInput.data_fim = fim
+}
+const handleEncerrarSafra = async () => {
+
+    // Pega a data de hoje e formata
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+
+    // Request para supabase 
+    if (process.client) {
+        fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safraInput.id })
+        fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safraInput.id })
+    }
+    await supabase.from("safras").update({
+        status: "completa",
+        data_fim: formattedDate,
+        despeza_real: fluxoSaida.value.data,
+        receita_bruta: fluxoEntrada.value.data,
+        lucro_real: fluxoEntrada.value.data - fluxoSaida.value.data
+    }).eq('id', safraInput.id)
+
+    if (process.client) {
+        safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+        safrasFinalizadasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "completa" })
+    }
+
+    showModalEncerrar.value = false
+
+
+
+}
+
+</script>
+
+<template>
+    <div>
+        <!-- Título -->
+        <div class="flex flex-row items-center absolute ml-[-4%] ">
+            <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Safras | </h1>
+            <h1 class="text-3xl">{{ String.fromCodePoint(0x1F33E) }}</h1>
+        </div>
+        <!-- ------------------------------------------------------------------------------ -->
+        <div class="flex flex-col w-full items-center">
+
+
+            <div class=" self-center w-[70%] ml-[-100px] ">
+
+                <button @click="abrirModalNovaSafra"
+                    class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
+                    Nova Safra
+                </button>
+                <div class="flex items-center">
+                    <p class="whitespace-nowrap text-escuro font-bold text-2xl">Safras Ativas</p>
+                    <div class="flex w-full h-1 bg-escuro ml-4"></div>
+                </div>
+                <div v-if="!safrasAtivasResponse">
+                    <Loader />
+                </div>
+                <div v-if="safrasAtivasResponse" class="max-h-[360px] overflow-y-scroll pr-3">
+                    <div v-if="safrasAtivasResponse.data == ''">
+                        <p class="text-verde text-xl font-semibold "> &#x1F33F Nenhuma safra encontrada, clique no botão de
+                            Nova safra e adicone uma &#x1F600 </p>
+                    </div>
+                    <div v-else v-for="safra in safrasAtivasResponse.data" :key="safra.id">
+                        <div class="w-full flex justify-end ">
+                            <div @click="abrirModalDeletarSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim)"
+                                class="group/alerta flex  bg-vermelho text-claro cursor-pointer rounded-tr-xl h-9 items-center transition-all hover:bg-white hover:text-vermelho ">
+                                <button class=" px-3  font-semibold ">Deletar safra</button>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"
+                                    class="transition-all fill-claro scale-50  group-hover/alerta:fill-vermelho">
+                                    <path
+                                        d="M2 42 24 4l22 38Zm5.2-3h33.6L24 10Zm17-2.85q.65 0 1.075-.425.425-.425.425-1.075 0-.65-.425-1.075-.425-.425-1.075-.425-.65 0-1.075.425Q22.7 34 22.7 34.65q0 .65.425 1.075.425.425 1.075.425Zm-1.5-5.55h3V19.4h-3Zm1.3-6.1Z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div
+                            class="flex  px-12 items-end justify-between  w-full h-[130px] bg-white rounded-xl rounded-r-none mb-5">
+                            <div class="flex flex-col items-start h-[80%]">
+                                <h1 class="text-3xl font-bold capitalize">{{ safra.cultivo }}</h1>
+                                <h2> <b> Início:</b> {{ safra.data_inicio }}</h2>
+                                <h2><b>Fim:</b> {{ safra.data_fim }}</h2>
+                            </div>
+                            <div class="flex flex-col items-center h-[80%]">
+                                <h1 class="text-3xl font-bold">Despezas</h1>
+                                <h1 class="text-2xl font-bold text-vermelho ">{{ paraReal(safra.despeza_real) }}</h1>
+                            </div>
+                            <div class="flex flex-col item-center h-[80%]">
+                                <h1 class="text-3xl font-bold">Colhido</h1>
+                                <h1 class="text-2xl font-bold text-verde_claro">{{ safra.quantidade_real }}</h1>
+                                <h3 class="text-verde">[{{ formatar(safra.grandeza) }}]</h3>
+                            </div>
+                            <div class="flex flex-col items-center h-[100%]">
+
+                                <div class="flex flex-col justify-evenly self-center h-[100%]">
+                                    <button
+                                        @click="abrirModalEncerrarSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim)"
+                                        class="self-start bg-escuro px-3 py-2 rounded-md text-md text-claro font-bold transition-all hover:bg-verde ">Encerrar
+                                        Safra
+                                    </button>
+                                    <button @click="abrirModalAdicionarColheita(safra.id, safra.cultivo, safra.grandeza)"
+                                        class="self-start bg-escuro px-3 py-2 rounded-md text-md text-claro font-bold transition-all hover:bg-verde ">Registrar
+                                        colheita
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" self-center w-[70%] ml-[-100px] ">
+
+                <div class="flex items-center ">
+                    <p class="whitespace-nowrap text-escuro font-bold text-2xl">Safras Finalizadas</p>
+                    <div class="flex w-full h-1 bg-escuro ml-4"></div>
+                </div>
+                <div v-if="!safrasFinalizadasResponse">
+                    <Loader />
+                </div>
+                <div v-if="safrasFinalizadasResponse" class="max-h-[360px] overflow-y-scroll pr-3">
+                    <div v-if="safrasFinalizadasResponse.data == ''">
+                        <p class="text-verde text-xl font-semibold "> &#x274C Nenhuma safra Finalizada encontrada, encerre
+                            uma safra para ver seu relatório aqui &#x1F4C4 </p>
+                    </div>
+                    <div v-else v-for="safra in safrasFinalizadasResponse.data" :key="safra.id">
+                        <div class="w-full flex justify-end ">
+                            <div @click="abrirModalDeletarSafra(safra.id, safra.safra, safra.data_inicio, safra.data_fim)"
+                                class="group/alerta flex  bg-vermelho text-claro cursor-pointer rounded-tr-xl h-9 items-center transition-all hover:bg-white hover:text-vermelho ">
+                                <button class=" px-3  font-semibold ">Deletar safra</button>
+                                <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"
+                                    class="transition-all fill-claro scale-50  group-hover/alerta:fill-vermelho">
+                                    <path
+                                        d="M2 42 24 4l22 38Zm5.2-3h33.6L24 10Zm17-2.85q.65 0 1.075-.425.425-.425.425-1.075 0-.65-.425-1.075-.425-.425-1.075-.425-.65 0-1.075.425Q22.7 34 22.7 34.65q0 .65.425 1.075.425.425 1.075.425Zm-1.5-5.55h3V19.4h-3Zm1.3-6.1Z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div
+                            class="flex  px-12 items-end justify-between  w-full h-[130px] bg-white rounded-xl rounded-r-none mb-5">
+                            <div class="flex flex-col items-start h-[80%]">
+                                <h1 class="text-3xl font-bold capitalize">{{ safra.cultivo }}</h1>
+                                <h2> <b> Início:</b> {{ safra.data_inicio }}</h2>
+                                <h2><b>Fim:</b> {{ safra.data_fim }}</h2>
+                            </div>
+                            <div class="flex flex-col items-center h-[80%]">
+                                <h1 class="text-3xl font-bold">Despezas</h1>
+                                <h1 class="text-2xl font-bold text-vermelho ">{{ paraReal(safra.despeza_real) }}</h1>
+                            </div>
+                            <div class="flex flex-col item-center h-[80%]">
+                                <h1 class="text-3xl font-bold">Colhido</h1>
+                                <h1 class="text-2xl font-bold text-verde_claro">{{ safra.quantidade_real }}</h1>
+                                <h3 class="text-verde">[{{ formatar(safra.grandeza) }}]</h3>
+                            </div>
+                            <div class="flex flex-col items-center h-[80%]">
+
+                                <div class="flex flex-col self-center h-[25%]">
+
+                                    <button @click="redirectSafra(safra.id)"
+                                        class="self-start bg-escuro px-8 py-4 rounded-md text-xl text-claro font-bold transition-all hover:bg-verde ">
+                                        Ver relatório
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <Transition name="pop">
+
+                <ModalNovaSafra v-if="showModalNovo" @novaSafra="handleSubmitNovaSafra" @close="fecharModalNovaSafra">
+                    <div class="flex justify-evenly w-full">
+                        <div class="flex flex-col w-[40%]">
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="text" v-model="safraInput.safra" name="floating_email" id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Cultivo</label>
+                            </div>
+
+                            <div class="relative z-0 w-full mb-6 group">
+                                <input type="date" v-model="safraInput.data_inicio"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Início</label>
+                            </div>
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="date" v-model="safraInput.data_fim"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Fim
+                                    (aproximado)</label>
+                            </div>
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="number" v-model="safraInput.area"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Área
+                                    total do
+                                    plantio
+                                    (em ha.)</label>
+
+
+                            </div>
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <select placeholder="ex: 110" v-model="safraInput.grandeza"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                    <option value=" " disabled selected hidden class="bg-verde font-bold ">Métricas de
+                                        produção</option>
+                                    <option value="unidade" class="bg-verde font-bold">Un. - unidade</option>
+                                    <option value="kilograma" class="bg-verde font-bold">Kg. - Kilograma</option>
+                                    <option value="tonelada" class="bg-verde font-bold">T. - tonelada</option>
+                                    <option value="bins" class="bg-verde font-bold">Caixa / Bins / Pallet</option>
+                                    <option value="saca10" class="bg-verde font-bold">Saca de 10kg</option>
+                                    <option value="saca20" class="bg-verde font-bold">Saca de 20kg</option>
+                                    <option value="saca30" class="bg-verde font-bold">Saca de 30kg</option>
+                                    <option value="saca40" class="bg-verde font-bold">Saca de 40kg</option>
+                                    <option value="saca50" class="bg-verde font-bold">Saca de 50kg</option>
+                                    <option value="saca60" class="bg-verde font-bold">Saca de 60kg</option>
+                                </select>
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Métrica
+                                    de
+                                    produção</label>
+                            </div>
+                        </div>
+                        <div class="flex flex-col w-[40%]">
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="number" v-model="safraInput.quantidade"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    Quantidade
+                                    estimada<b v-if="safraInput.grandeza"> | {{
+                                        formatar(safraInput.grandeza)
+                                    }}</b></label>
+                            </div>
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="number" v-model="safraInput.valor_unitario"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    Preço estimado
+                                    <b v-if="safraInput.grandeza"> por {{ formatar(safraInput.grandeza) }}</b></label>
+                            </div>
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="number" v-model="safraInput.despeza"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    Despesas
+                                    estimadas</label>
+                            </div>
+                            <div class="flex flex-col h-full justify-evenly">
+
+                                <p class="text-md text-claro">| Lucro estimado: <br>
+                                    <b
+                                        v-if="safraInput.quantidade != '' && safraInput.valor_unitario != '' && safraInput.despeza != ''">
+                                        <span :class="`text-${corLucro(parseFloat(safraInput.quantidade) * parseFloat(safraInput.valor_unitario) -
+                                            parseFloat(safraInput.despeza))}`">
+                                            {{
+                                                paraReal(parseFloat(safraInput.quantidade) *
+                                                    parseFloat(safraInput.valor_unitario) -
+                                                    parseFloat(safraInput.despeza)) }}
+                                        </span>
+                                    </b>
+                                </p>
+                                <p class="text-md text-claro">| Receita estimada: <br> <b
+                                        v-if="safraInput.quantidade && safraInput.valor_unitario"
+                                        class="text-verde_claro">{{ paraReal(parseFloat(safraInput.quantidade) *
+                                            parseFloat(safraInput.valor_unitario)) }}
+                                    </b> </p>
+                                <p class="text-md text-claro">| Despezas estimadas: <br> <b v-if="safraInput.despeza != ''"
+                                        class="text-vermelho"> -{{
+                                            paraReal(parseFloat(safraInput.despeza)) }}</b></p>
+                            </div>
+                        </div>
+                    </div>
+                </ModalNovaSafra>
+            </Transition>
+
+            <Transition name="pop">
+                <ModalDeletarSafra v-if="showModalDeletar" @close="showModalDeletar = false"
+                    @deletarSafra="handleDeletarSafra">
+                    <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar esta safra?</h1>
+                    <h1 class="text-center text-xl text-claro capitalize font-bold">{{
+                        safraInput.safra + " | " +
+                        safraInput.data_inicio + " - " + safraInput.data_fim
+                    }}</h1>
+                    <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                                desfeita.</u> </b></h2>
+                </ModalDeletarSafra>
+            </Transition>
+            <Transition name="pop">
+                <ModalAdicionarColheita v-if="showModalColheita" @close="showModalColheita = false"
+                    @adicionarColheita="handleAdicionarColheita">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="number" v-model="safraInput.quantidade"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                            Quantidade Colhida em:
+                            <b v-if="safraInput.grandeza"> {{ formatar(safraInput.grandeza) }}</b></label>
+                    </div>
+                </ModalAdicionarColheita>
+            </Transition>
+            <Transition name="pop">
+                <ModalEncerrarSafra v-if="showModalEncerrar" @close="showModalEncerrar = false"
+                    @encerrarSafra="handleEncerrarSafra">
+                    <h1 class="text-center text-xl text-claro light">Deseja encerrar e gerar o relatório desta safra?</h1>
+                    <h1 class="text-center text-xl text-claro capitalize font-bold">{{
+                        safraInput.safra + " | " +
+                        safraInput.data_inicio + " - " + safraInput.data_fim
+                    }}</h1>
+                    <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                                desfeita.</u> </b></h2>
+                </ModalEncerrarSafra>
+            </Transition>
+        </div>
+    </div>
+</template>

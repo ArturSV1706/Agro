@@ -1,14 +1,30 @@
-<script setup lang="ts">
+<script setup>
+
+definePageMeta({
+        middleware: "auth"
+    })
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
+const { paraReal, paraRealInput } = useUtils()
 
 const funcionariosResponse = ref();
-funcionariosResponse.value = await supabase.from("funcionarios").select()
+
+
+// Evita erro de carregamento
+const usuarioResponse = ref();
+usuarioResponse.value = await supabase.from("usuario").select()
+// ----//----
+
+if (process.client) {
+    funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
+}
+
 
 
 const showModalAdicionar = ref()
 const showModalEditar = ref()
+const showModalDeletar = ref()
 const tipoOrdenar = ref();
 const reverterOrdenar = ref()
 
@@ -36,58 +52,80 @@ const handleNovoFuncionario = () => {
     funcionarioInput.salario = ""
     funcionarioInput.data_pagamento_salario = ""
 }
+const abrirModalDeletarFuncionario = (id, nome) => {
+    showModalDeletar.value = true
+    funcionarioInput.id = id
+    funcionarioInput.nome = nome
+}
+
 const handleDeleteFuncionario = async (funcionarioId) => {
     await supabase.from("funcionarios").delete().eq('id', funcionarioId)
     funcionariosResponse.value = await supabase.from("funcionarios").select()
+    showModalDeletar.value = false
+    pagina.atual = 0
 
 }
 const handleSubmitNovoFuncionario = async () => {
 
+    if (process.client) {
+        await supabase.from("funcionarios").insert({
+            id_fazenda: user.value.id,
+            nome: funcionarioInput.nome,
+            numero: funcionarioInput.numero,
+            cargo: funcionarioInput.cargo,
+            funcionario_login: funcionarioInput.numero,
+            funcionario_pass: generateRandomString(10),
+            is_assalariado: funcionarioInput.is_assalariado,
+            salario: parseFloat(funcionarioInput.salario.replace("R$", "").replace(".", "").replace(",", ".")),
+            data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
 
-    await supabase.from("funcionarios").insert({
-        nome: funcionarioInput.nome,
-        numero: funcionarioInput.numero,
-        cargo: funcionarioInput.cargo,
-        is_assalariado: funcionarioInput.is_assalariado,
-        salario: parseFloat(funcionarioInput.salario.replace(".", "").replace(",", ".")),
-        data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
-
-    });
-    funcionariosResponse.value = await supabase.from("funcionarios").select()
+        });
+        funcionariosResponse.value = await supabase.from("funcionarios").select()
 
 
-    funcionarioInput.nome = "",
-        funcionarioInput.numero = "",
-        funcionarioInput.cargo = "",
-        funcionarioInput.is_assalariado = false,
-        funcionarioInput.salario = "",
-        funcionarioInput.data_pagamento_salario = ""
-    showModalAdicionar.value = false
+        funcionarioInput.nome = "",
+            funcionarioInput.numero = "",
+            funcionarioInput.cargo = "",
+            funcionarioInput.is_assalariado = false,
+            funcionarioInput.salario = "",
+            funcionarioInput.data_pagamento_salario = ""
+        showModalAdicionar.value = false
+    }
 }
 const handleSubmitEditarFuncionario = async () => {
 
+    if (funcionarioInput.is_assalariado) {
+        await supabase.from("funcionarios").update({
+            nome: funcionarioInput.nome,
+            numero: funcionarioInput.numero,
+            cargo: funcionarioInput.cargo,
+            is_assalariado: funcionarioInput.is_assalariado,
+            salario: parseFloat(String(funcionarioInput.salario).replace(".", "").replace(",", ".")),
+            data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
 
-    await supabase.from("funcionarios").update({
-        nome: funcionarioInput.nome,
-        numero: funcionarioInput.numero,
-        cargo: funcionarioInput.cargo,
-        is_assalariado: funcionarioInput.is_assalariado,
-        salario: parseFloat(String(funcionarioInput.salario).replace(".", "").replace(",", ".")),
-        data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
+        }).eq('id', funcionarioInput.id);
+    } else {
+        await supabase.from("funcionarios").update({
+            nome: funcionarioInput.nome,
+            numero: funcionarioInput.numero,
+            cargo: funcionarioInput.cargo,
+            is_assalariado: funcionarioInput.is_assalariado,
+            salario: null,
+            data_pagamento_salario: null
 
-    }).eq('id', funcionarioInput.id);
-
+        }).eq('id', funcionarioInput.id);
+    }
     funcionariosResponse.value = await supabase.from("funcionarios").select()
 
 
-        funcionarioInput.id = "",
+    funcionarioInput.id = "",
         funcionarioInput.nome = "",
         funcionarioInput.numero = "",
         funcionarioInput.cargo = "",
         funcionarioInput.is_assalariado = false,
         funcionarioInput.salario = "",
         funcionarioInput.data_pagamento_salario = ""
-        showModalEditar.value = false
+    showModalEditar.value = false
 }
 const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
     showModalEditar.value = true
@@ -102,6 +140,11 @@ const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPaga
 
 
 }
+
+const salárioFormatar = (valor) => {
+    funcionarioInput.salario = paraRealInput(valor)
+}
+
 // Paginação
 const handlePagina = (i) => {
     if (i === "proxima") {
@@ -229,124 +272,275 @@ function porDiaReverse(a, b) {
     return parseFloat(b.data_inicio) - parseFloat(a.data_inicio)
 }
 // <-------->
+function generateRandomString(length) {
+    var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%^&*()';
+    var random_string = '';
+    if (length > 0) {
+        for (var i = 0; i < length; i++) {
+            random_string += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+    }
 
+
+    return random_string;
+}
 </script>
+
 <template>
     <div>
-        <button @click="handleNovoFuncionario">
-            novo funcionario
-        </button>
+        <div>
+            <!-- Título -->
+            <div class="flex flex-row items-center absolute ml-[-4%] ">
+                <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Funcionários | </h1>
+                <h1 class="text-3xl"> 👨‍🌾 </h1>
+                <!-- 1F468 U+200D U+1F33E	 -->
+            </div>
+            <!-- ------------------------------------------------------------------------------ -->
+            <Loader v-if="!funcionariosResponse" />
+            <div v-if="funcionariosResponse" class="flex flex-col w-full items-center ">
+
+
+
+                <div class="flex flex-col w-[70%] mt-[5%]">
+                    <button @click="handleNovoFuncionario"
+                        class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verdeself-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
+                        Novo funcionário
+                    </button>
+                    <table class="bg-white shadow-xl w-full">
+                        <thead class="bg-verde text-claro">
+                            <th class="p-2 " @click="handleOrdenar('cargo')">Nome</th>
+                            <th class="p-2 " @click="handleOrdenar('cargo')">Cargo</th>
+                            <th class="p-2 ">numero</th>
+                            <th class="p-2 " @click="handleOrdenar('salario')">Salario</th>
+                            <th class="p-2 " @click="handleOrdenar('dia')">Dia pagamento</th>
+                            <th class="p-2 ">Detalhes</th>
+                            <th class="p-2 ">Deletar</th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="funcionario in funcionariosResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)
+                " class=" even:bg-gray-100" :key="funcionario.id">
+                                <td class="p-2 capitalize">{{ funcionario.nome }}</td>
+                                <td class="p-2">{{ funcionario.cargo }}</td>
+                                <td class="p-2">{{ funcionario.numero }}</td>
+                                <td class="p-2">{{ paraReal(funcionario.salario) }}</td>
+                                <td class="p-2" v-if="funcionario.data_pagamento_salario"> {{
+                                    funcionario.data_pagamento_salario
+                                }}</td>
+                                <td class="p-2" v-else>------</td>
+                                <td class="p-2">
+                                    <span
+                                        class="cursor-pointer material-icons block text-center hover:text-xl transition-all"
+                                        @click="handleModalEditar(funcionario.nome, funcionario.cargo, funcionario.numero, funcionario.is_assalariado, funcionario.salario, funcionario.data_pagamento_salario, funcionario.id)"
+                                        @close="showModalEditar = false">
+                                        &#x270F
+                                    </span>
+                                </td>
+                                <td class="p-2">
+                                    <span
+                                        class="cursor-pointer material-icons block text-center hover:text-xl transition-all"
+                                        @click="abrirModalDeletarFuncionario(funcionario.id, funcionario.nome)">
+                                        &#x274C
+                                    </span>
+
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div v-if="funcionariosResponse"
+                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl ">
+                        <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
+                            &lt-
+                            Anterior </button>
+                        <div class="flex flex-col items-center">
+
+                            <p class="text-claro font-semibold">Pág.</p>
+                            <select v-model="pagina.atual"
+                                class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                                <option v-for="i in Math.ceil(funcionariosResponse.data.length / pagina.tamanho)"
+                                    v-bind:value="i - 1">
+                                    {{
+                                        i
+                                    }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <p class="text-claro font-semibold">Items por Pág.</p>
+                            <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                                class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                                <option v-bind:value=5> 5 </option>
+                                <option v-bind:value=10> 10 </option>
+                                <option v-bind:value=250> 25 </option>
+                            </select>
+                        </div>
+                        <button v-if="pagina.atual < (Math.ceil(funcionariosResponse.data.length / pagina.tamanho) - 1)"
+                            @click="handlePagina('proxima')" class="text-claro font-bold"> Próximo ->
+                        </button><br>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Modal Novo Funcionário -->
         <Transition name="pop">
             <ModalNovoFuncionario v-if="showModalAdicionar" @close="showModalAdicionar = false"
                 @adicionarFuncionario="handleSubmitNovoFuncionario">
                 <div class="flex flex-col">
 
-                    <label for="nome">Nome</label>
-                    <input v-model="funcionarioInput.nome" type="text" placeholder="João da silva" name="nome">
-                    <label for="numero">numero</label>
-                    <input v-model="funcionarioInput.numero" type="text" placeholder="João da silva" name="numero">
-                    <label for="cargo">cargo</label>
-                    <input v-model="funcionarioInput.cargo" type="text" placeholder="João da silva" name="cargo">
-                    <label for="recebe_salario">É assalariado?</label>
-                    <input v-model="funcionarioInput.is_assalariado" type="checkbox" placeholder="João da silva"
-                        name="recebe_salario">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.nome" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.numero" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número
+                            de telefone (celular)</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.cargo" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Cargo</label>
+                    </div>
+
+
+
+
+                    <div class="flex items-center mb-4">
+
+                        <input
+                            class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                            v-model="funcionarioInput.is_assalariado" type="checkbox" placeholder="João da silva"
+                            name="recebe_salario">
+                        <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">É assalariado?</label>
+                    </div>
+
                     <Transition name="pop">
                         <div v-if="funcionarioInput.is_assalariado" class="flex flex-col">
-                            <label for="salario">salário</label>
-                            <input v-model="funcionarioInput.salario" type="text" placeholder="João da silva"
-                                name="salario">
-                            <label for="data_pagamento_salario">dia do pagamento</label>
-                            <select v-model="funcionarioInput.data_pagamento_salario" placeholder="João da silva"
-                                name="data_pagamento_salario">
-                                <option v-for="i in 28" v-bind:value=i>{{i}}</option>
-                            </select>
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input v-on:input="salárioFormatar(funcionarioInput.salario)" type="text"
+                                    v-model="funcionarioInput.salario" name="floating_email" id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">salário</label>
+                            </div>
+
+                            <div class="relative z-0 w-full mt-6 group">
+
+                                <label for=""
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dia
+                                    de pagamento</label>
+                                <select v-model="funcionarioInput.data_pagamento_salario" placeholder="João da silva"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                    <option class="bg-verde font-semibold" v-for="i in 28" v-bind:value=i>{{ i }}
+                                    </option>
+                                    >
+                                </select>
+                            </div>
+
+
                         </div>
                     </Transition>
                 </div>
             </ModalNovoFuncionario>
         </Transition>
-        <div>
-            <select v-model="pagina.atual">
-                <option v-for="i in Math.ceil(funcionariosResponse.data.length/pagina.tamanho)" v-bind:value="i-1">{{i}}
-                </option>
-            </select>
-            <select v-model="pagina.tamanho" @input="pagina.atual = 0">
-                <option v-bind:value=5> 5 </option>
-                <option v-bind:value=10> 10 </option>
-                <option v-bind:value=250> 25 </option>
-            </select>
-            <button v-if="pagina.atual < (Math.ceil(funcionariosResponse.data.length/pagina.tamanho) -1)"
-                @click="handlePagina('proxima')"> prox </button><br>
-            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')"> ant </button>
-        </div>
-        <table>
-            <thead>
-                <th @click="handleOrdenar('nome')">Nome</th>
-                <th @click="handleOrdenar('cargo')">Cargo</th>
-                <th>numero</th>
-                <th @click="handleOrdenar('salario')">Salario</th>
-                <th @click="handleOrdenar('dia')">Dia pagamento</th>
-                <th @click="handleOrdenar('data')">Data cadasto</th>
-                <th>Detalhes</th>
-                <th>Deletar</th>
-            </thead>
-            <tbody>
-                <tr v-for="funcionario in funcionariosResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
-                    :key="funcionario.id">
-                    <td>{{funcionario.nome}}</td>
-                    <td>{{funcionario.cargo}}</td>
-                    <td>{{funcionario.numero}}</td>
-                    <td>{{funcionario.salario}}</td>
-                    <td>{{funcionario.data_pagamento_salario}}</td>
-                    <td>{{funcionario.data_inicio}}</td>
-                    <!-- <td>{{fluxo.salario.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> -->
-                    <td>
-                        <span class="cursor-pointer material-icons block text-center hover:text-xl"
-                            @click="handleModalEditar(funcionario.nome, funcionario.cargo, funcionario.numero, funcionario.is_assalariado, funcionario.salario, funcionario.data_pagamento_salario, funcionario.id)"
-                            @close="showModalEditar = false">
-                            edit
-                        </span>
-                    </td>
-                    <td>
-                        <span class="cursor-pointer material-icons block text-center hover:text-xl"
-                            @click="handleDeleteFuncionario(funcionario.id)">
-                            person_remove
-                        </span>
+        <Transition name="pop">
+            <ModalEditarFuncionario v-if="showModalEditar" @close="showModalEditar = false"
+                @editarFuncionario="handleSubmitEditarFuncionario">
+                <div class="flex flex-col">
+                    <div class="relative z-0 w-full mb-6 group">
 
-                    </td>
+                        <input type="text" v-model="funcionarioInput.nome" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.numero" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número
+                            de telefone (celular)</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.cargo" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Cargo</label>
+                    </div>
+
+
+
+
+                    <div class="flex items-center mb-4">
+
+                        <input
+                            class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                            v-model="funcionarioInput.is_assalariado" type="checkbox" placeholder="João da silva"
+                            name="recebe_salario">
+                        <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">É assalariado?</label>
+                    </div>
+
                     <Transition name="pop">
-                        <ModalEditarFuncionario v-if="showModalEditar" @close="showModalEditar = false" @editarFuncionario="handleSubmitEditarFuncionario">
-                            <div class="flex flex-col">
-                                <label for="nome">Nome</label>
-                                <input v-model="funcionarioInput.nome" type="text" placeholder="João da silva"
-                                    name="nome">
-                                <label for="numero">numero</label>
-                                <input v-model="funcionarioInput.numero" type="text" placeholder="João da silva"
-                                    name="numero">
-                                <label for="cargo">cargo</label>
-                                <input v-model="funcionarioInput.cargo" type="text" placeholder="João da silva"
-                                    name="cargo">
-                                <label for="recebe_salario">É assalariado?</label>
-                                <input v-model="funcionarioInput.is_assalariado" type="checkbox" disabled
-                                    placeholder="João da silva" name="recebe_salario">
-                                <Transition name="pop">
-                                    <div v-if="funcionarioInput.is_assalariado" class="flex flex-col">
-                                        <label for="salario">salário</label>
-                                        <input v-model="funcionarioInput.salario" type="text"
-                                            placeholder="João da silva" name="salario">
-                                        <label for="data_pagamento_salario">dia do pagamento</label>
-                                        <select v-model="funcionarioInput.data_pagamento_salario"
-                                            placeholder="João da silva" name="data_pagamento_salario">
-                                            <option v-for="i in 28" v-bind:value=i>{{i}}</option>
-                                        </select>
-                                    </div>
-                                </Transition>
+                        <div v-if="funcionarioInput.is_assalariado" class="flex flex-col">
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input v-on:input="salárioFormatar(funcionarioInput.salario)" type="text"
+                                    v-model="funcionarioInput.salario" name="floating_email" id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">salário</label>
                             </div>
-                        </ModalEditarFuncionario>
+
+                            <div class="relative z-0 w-full mt-6 group">
+
+                                <label for=""
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dia
+                                    de pagamento</label>
+                                <select v-model="funcionarioInput.data_pagamento_salario" placeholder="João da silva"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                    <option class="bg-verde font-semibold" v-for="i in 28" v-bind:value=i>{{ i }}
+                                    </option>
+                                    >
+                                </select>
+                            </div>
+
+
+                        </div>
                     </Transition>
-                </tr>
-            </tbody>
-        </table>
+                </div>
+            </ModalEditarFuncionario>
+        </Transition>
+        <Transition name="pop">
+            <ModalDeletarFuncionario v-if="showModalDeletar" @close="showModalDeletar = false"
+                @deletarFuncionario="handleDeleteFuncionario(funcionarioInput.id)">
+                <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este funcionário?</h1>
+                <h1 class="text-center text-xl text-claro capitalize font-bold">{{
+                    funcionarioInput.nome
+                }}</h1>
+                <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                            desfeita.</u> </b></h2>
+            </ModalDeletarFuncionario>
+        </Transition>
     </div>
 </template>

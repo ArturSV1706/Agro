@@ -25,11 +25,16 @@ const useAuth = () => {
   const signIn = async ({ email, password }) => {
     const { user: u, error } = await supabase.auth.signIn({
       email,
-      password,
+      password
     });
     if(error) throw error;
     return u;
-
+  };
+  const recover = async ({ email, password }) => {
+    const { user: u, error } = await supabase.auth.update({password: password})
+    if(error) throw error;
+    router.push("/login")
+    return u;
   };
   const signOut = async({}) => {
     const {error} = await supabase.auth.signOut();
@@ -37,12 +42,14 @@ const useAuth = () => {
     router.push("/")
   }
   const isLoggedIn = () =>{
-    return !!user.value
+    const u = supabase.auth.user()
+    return u
   }
   return {
     user,
     signUp,
     signIn,
+    recover,
     signOut,
     isLoggedIn
   };

@@ -1,5 +1,4 @@
-<script setup lang="ts">
-import { isSet } from 'util/types';
+<script setup>
 
 const custo = ref()
 const quantidade = ref()
