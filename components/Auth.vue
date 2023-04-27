@@ -41,24 +41,24 @@ const handleSubmit = async () => {
     <div>
         <div v-if="!showConfirmEmailMessage">
             <div :class="`flex flex-col justify-evenly h-full w-full p-4 border-2 border-escuro`">
-                <h3 class="text-escuro text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}</h3>
+                <h3 class="text-escuro mb-11 text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}</h3>
                 <div class="flex flex-col items-center ">
                     <div class="relative z-0 w-[80%] mb-9 group">
 
                         <input type="text" v-model="input.email" name="floating_email" id="floating_email"
-                            class="block py-3.5 px-2  w-full text-lg bg-[rgb(15,42,37)] text-claro bg-transparent transition-all border-0 border-b-4 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            class="block py-1.5 px-2  w-full text-lg bg-verde text-claro bg-transparent transition-all border-0 border-b-4 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                             placeholder=" " required>
                         <label for="floating_email"
-                            class="pl-2 peer-focus:font-medium absolute text-sm text-verde_claro  duration-300 transform -translate-y-11 scale-75 top-[1.2rem]  origin-[0] peer-focus:left-0 peer-focus:text-escuro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-11 peer-focus:-pl-0">Email
+                            class="pl-2 peer-focus:font-medium absolute text-sm text-verde_claro  duration-300 transform -translate-y-9 scale-75 top-[.7rem]  origin-[0] peer-focus:left-0 peer-focus:text-escuro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-9 peer-focus:-pl-0">Email
                         </label>
                     </div>
                     <div class="relative z-0 w-[80%] mb-9 group">
 
                         <input type="password" v-model="input.password" name="floating_email" id="floating_email"
-                            class=" block py-3.5 px-2 w-full text-lg bg-[rgb(15,42,37)] text-claro bg-transparent transition-all border-0 border-b-4 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            class=" block py-1.5 px-2 w-full text-lg bg-verde text-claro bg-transparent transition-all border-0 border-b-4 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                             placeholder=" " required>
                         <label for="floating_email"
-                            class="pl-2 peer-focus:font-medium absolute text-sm text-verde_claro  duration-300 transform -translate-y-11 scale-75 top-[1.2rem] origin-[0] peer-focus:left-0 peer-focus:text-escuro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-11 peer-focus:-pl-0">Senha
+                            class="pl-2 peer-focus:font-medium absolute text-sm text-verde_claro  duration-300 transform -translate-y-9 scale-75 top-[.7rem]  origin-[0] peer-focus:left-0 peer-focus:text-escuro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-9 peer-focus:-pl-0">Senha
                         </label>
                     </div>
 
