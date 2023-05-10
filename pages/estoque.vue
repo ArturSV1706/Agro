@@ -7,6 +7,8 @@ definePageMeta({
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
+const { paraRealInput, paraFloat } = useUtils()
+
 
 const sementesResponse = ref();
 const fertilizantesResponse = ref();
@@ -15,8 +17,8 @@ const outrosResponse = ref();
 const colheitaResponse = ref();
 const safraResponse = ref();
 
+
 const showModalAdicionar = ref()
-const showModalAdicionarColheita = ref()
 const showModalEditar = ref()
 const showModalDeletar = ref()
 const showModalDeletarNegado = ref()
@@ -25,6 +27,9 @@ const showTabelaSementes = ref(); showTabelaSementes.value = true
 const showTabelaFetilizantes = ref()
 const showTabelaDefensivos = ref()
 const showTabelaOutros = ref()
+const limitarForm = ref()
+const showPreencha = ref()
+
 
 
 const margemTabelaSelector = ref()
@@ -63,22 +68,19 @@ const estoqueInput = reactive({
 
 
 const handleNovoEstoque = (categoria) => {
+    showPreencha.value = false
+    limitarForm.value = true
     showModalAdicionar.value = true
     estoqueInput.item = ""
     estoqueInput.categoria = categoria
     estoqueInput.quantidade = ""
     estoqueInput.grandeza = ""
-}
-const handleNovoColheita = (categoria) => {
-    showModalAdicionarColheita.value = true
-    estoqueInput.item = ""
-    estoqueInput.categoria = categoria
-    estoqueInput.quantidade = ""
-    estoqueInput.grandeza = ""
+    estoqueInput.custo = ""
 }
 const handleModalEditar = (item, categoria, quantidade, grandeza, id) => {
+    showPreencha.value = false
+    limitarForm.value = true
     showModalEditar.value = true
-
     estoqueInput.item = item
     estoqueInput.categoria = categoria
     estoqueInput.quantidade = quantidade
@@ -87,21 +89,25 @@ const handleModalEditar = (item, categoria, quantidade, grandeza, id) => {
 
 
 }
-const handleModalRepor = (item, categoria, quantidade, grandeza, id, safra_id) => {
+const handleModalRepor = (item, categoria, quantidade, grandeza, id) => {
+    showPreencha.value = false
+    limitarForm.value = true
     showModalRepor.value = true
     estoqueInput.item = item
     estoqueInput.categoria = categoria
     estoqueInput.quantidade = quantidade
     estoqueInput.grandeza = grandeza
     estoqueInput.id = id
-    estoqueInput.safra = safra_id
+    estoqueInput.custo = ""
+
 
 
 }
 const handleDeleteEstoque = async (estoqueId) => {
+    limitarForm.value = true
     estoqueInput.id = estoqueId
     let testarChaveEstrangeira = await supabase.from("tarefas").select('estoque_utilizado_item').eq('estoque_utilizado_item', estoqueId)
-    
+
     if (testarChaveEstrangeira.data[0]) {
         showModalDeletarNegado.value = true
     } else {
@@ -109,6 +115,8 @@ const handleDeleteEstoque = async (estoqueId) => {
     }
 }
 const handleSubmitDeleteEstoque = async () => {
+    if (!limitarForm.value) return
+    limitarForm.value = false
 
     await supabase.from("estoque").delete().eq('id', estoqueInput.id)
 
@@ -125,6 +133,10 @@ const handleSubmitDeleteEstoque = async () => {
 }
 
 const handleSubmitNovoEstoque = async () => {
+    if(estoqueInput.item && estoqueInput.categoria && estoqueInput.quantidade && estoqueInput.grandeza && estoqueInput.safra  ){
+
+    if (!limitarForm.value) return
+    limitarForm.value = false
 
     if (process.client) {
         await supabase.from("estoque").insert({
@@ -139,12 +151,12 @@ const handleSubmitNovoEstoque = async () => {
 
     }
 
-    if (parseFloat(estoqueInput.custo) > 0) {
+    if (paraFloat(estoqueInput.custo) > 0) {
         if (process.client) {
             await supabase.from("fluxo").insert({
                 categoria: estoqueInput.categoria,
                 produto: estoqueInput.item,
-                valor: parseFloat(estoqueInput.custo),
+                valor: paraFloat(estoqueInput.custo),
                 tipo_fluxo: "saida",
                 safra_id: estoqueInput.safra,
                 user_id: user.value.id,
@@ -160,34 +172,24 @@ const handleSubmitNovoEstoque = async () => {
     estoqueInput.safra = ""
     estoqueInput.custo = ""
     showModalAdicionar.value = false
+    showPreencha.value = false
+
 
     sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
     fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
     defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
     outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
+    }else{
+        showPreencha.value = true
+    }
 }
 
-const handleSubmitNovoEstoqueColheita = async () => {
-    await supabase.from("safras").update({
-        quantidade_real: parseFloat(estoqueInput.quantidade),
-
-    }).eq('id', parseInt(estoqueInput.safra));
-
-
-    estoqueInput.id = ""
-    estoqueInput.item = ""
-    estoqueInput.categoria = ""
-    estoqueInput.quantidade = ""
-    estoqueInput.grandeza = ""
-    estoqueInput.safra = ""
-    estoqueInput.custo = ""
-    showModalAdicionarColheita.value = false
-
-    colheitaResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
-}
 
 const handleSubmitEditarEstoque = async (id) => {
+    if(estoqueInput.item && estoqueInput.quantidade &&  estoqueInput.grandeza ){
 
+    if (!limitarForm.value) return
+    limitarForm.value = false
 
     await supabase.from("estoque").update({
         item: estoqueInput.item,
@@ -196,12 +198,12 @@ const handleSubmitEditarEstoque = async (id) => {
 
     }).eq('id', id);
 
-    if (parseFloat(estoqueInput.custo) > 0) {
+    if (paraFloat(estoqueInput.custo) > 0) {
         if (process.client) {
             await supabase.from("fluxo").insert({
                 categoria: estoqueInput.categoria,
                 produto: estoqueInput.item,
-                valor: parseFloat(estoqueInput.custo),
+                valor: paraFloat(estoqueInput.custo),
                 tipo_fluxo: "saida",
                 safra_id: estoqueInput.safra,
                 user_id: user.value.id
@@ -225,8 +227,19 @@ const handleSubmitEditarEstoque = async (id) => {
     estoqueInput.safra = ""
     estoqueInput.custo = ""
     showModalEditar.value = false
+    showPreencha.value = false
+}else{
+    showPreencha.value = true
+}
 }
 const handleSubmitReporEstoque = async (id) => {
+    console.log(estoqueInput.safra)
+    if(estoqueInput.quantidade && estoqueInput.custo &&  estoqueInput.safra ){
+        console.log(estoqueInput.safra)
+
+
+    if (!limitarForm.value) return
+    limitarForm.value = false
 
     if (estoqueInput.categoria == "colheita") {
         await supabase.from("safras").update({
@@ -240,12 +253,12 @@ const handleSubmitReporEstoque = async (id) => {
         }).eq('id', id);
     }
 
-    if (parseFloat(estoqueInput.custo) > 0) {
+    if (paraFloat(estoqueInput.custo) > 0) {
         if (process.client) {
             await supabase.from("fluxo").insert({
                 categoria: estoqueInput.categoria,
                 produto: estoqueInput.item,
-                valor: parseFloat(estoqueInput.custo),
+                valor: paraFloat(estoqueInput.custo),
                 tipo_fluxo: "saida",
                 safra_id: estoqueInput.safra,
                 user_id: user.value.id
@@ -266,7 +279,13 @@ const handleSubmitReporEstoque = async (id) => {
     estoqueInput.quantidade = ""
     estoqueInput.grandeza = ""
     estoqueInput.custo = ""
+    estoqueInput.safra = ""
+    estoqueInput.custo = ""
     showModalRepor.value = false
+    showPreencha.value = false
+}else{
+    showPreencha.value = true
+}
 }
 
 
@@ -423,7 +442,9 @@ const trocarTabela = (i) => {
             break;
     }
 }
-
+const precoFormatar = (valor) => {
+    estoqueInput.custo = paraRealInput(valor)
+}
 
 </script>
 
@@ -438,7 +459,7 @@ const trocarTabela = (i) => {
         <div class="flex flex-col w-full items-center ">
 
             <!-- Ícones -->
-            <div class="flex w-[90%] justify-evenly">
+            <div class="sm:scale-75 2xl:scale-100 flex w-[90%] justify-evenly">
                 <div class="flex items-center space-x-4">
                     <img src="../assets/icons/semente.svg" alt="" class="h-[80px]">
                     <div>
@@ -536,7 +557,7 @@ const trocarTabela = (i) => {
                                 <td class="p-2">
                                     <span
                                         class="transition-all cursor-pointer material-icons block text-center hover:text-xl"
-                                        @click="handleModalRepor(semente.item, semente.categoria, semente.quantidade, semente.grandeza, semente.id, semente.safra_id)">
+                                        @click="handleModalRepor(semente.item, semente.categoria, semente.quantidade, semente.grandeza, semente.id)">
                                         &#x2795
                                     </span>
                                 </td>
@@ -544,7 +565,7 @@ const trocarTabela = (i) => {
                         </tbody>
                     </table>
                     <div v-if="sementesResponse"
-                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl ">
+                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
                         <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
                             &lt-
                             Anterior </button>
@@ -629,7 +650,7 @@ const trocarTabela = (i) => {
                         </tbody>
                     </table>
                     <div v-if="fertilizantesResponse"
-                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl ">
+                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
                         <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
                             &lt-
                             Anterior </button>
@@ -714,7 +735,7 @@ const trocarTabela = (i) => {
                         </tbody>
                     </table>
                     <div v-if="defensivosResponse"
-                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl ">
+                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
                         <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
                             &lt-
                             Anterior </button>
@@ -799,7 +820,7 @@ const trocarTabela = (i) => {
                         </tbody>
                     </table>
                     <div v-if="outrosResponse"
-                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl ">
+                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
                         <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
                             &lt-
                             Anterior </button>
@@ -836,6 +857,10 @@ const trocarTabela = (i) => {
             <Transition name="pop">
                 <ModalNovoEstoque v-if="showModalAdicionar" @close="showModalAdicionar = false"
                     @adicionarItem="handleSubmitNovoEstoque()">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                            campos obrigatórios</h1>
+                    </Transition>
                     <div class="flex flex-col">
 
                         <input v-model="estoqueInput.categoria" type="hidden" default="semente/muda"
@@ -879,7 +904,7 @@ const trocarTabela = (i) => {
                         <div v-if="safraResponse.data != ''">
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-model="estoqueInput.custo" name="floating_email" id="floating_email"
+                                <input type="text" v-on:input="precoFormatar(estoqueInput.custo)" v-model="estoqueInput.custo" name="floating_email" id="floating_email"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label for="floating_email"
@@ -917,35 +942,19 @@ const trocarTabela = (i) => {
 
             <Transition name="pop">
                 <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
-                    <h2 class="text-center text-claro text-2xl font-semibold">Este Item está registrado em uma tarefa, não pode ser
+                    <h2 class="text-center text-claro text-2xl font-semibold">Este Item está registrado em uma tarefa, não
+                        pode ser
                         deletado.</h2>
                 </ModalDeletarNegado>
             </Transition>
 
             <Transition name="pop">
-                <ModalNovoColheita v-if="showModalAdicionarColheita" @close="showModalAdicionarColheita = false"
-                    @adicionarItem="handleSubmitNovoEstoqueColheita()">
-                    <div class="flex flex-col">
-                        <label for="numero"
-                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Colheita:</label>
-
-                        <select v-model="estoqueInput.safra"
-                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
-                            <option v-for="safra in safraResponse.data" :key="safra.id" v-bind:value=safra.id>{{
-                                safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
-                            }}
-                            </option>
-                        </select>
-                        <label for="cargo">quantidade</label>
-                        <input v-model="estoqueInput.quantidade" type="text" placeholder="João da silva" name="cargo">
-
-                    </div>
-                </ModalNovoColheita>
-            </Transition>
-
-            <Transition name="pop">
                 <ModalEditarEstoque v-if="showModalEditar" @close="showModalEditar = false"
-                    @deletarItem="handleSubmitEditarEstoque(estoqueInput.id)">
+                    @editarItem="handleSubmitEditarEstoque(estoqueInput.id)">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                            campos obrigatórios</h1>
+                    </Transition>
                     <div class="flex flex-col">
 
 
@@ -989,6 +998,11 @@ const trocarTabela = (i) => {
                 <ModalAdicionarItemEstoque v-if="showModalRepor" @close="showModalRepor = false"
                     @reporItem="handleSubmitReporEstoque(estoqueInput.id)">
                     <div class="flex flex-col">
+                        <Transition name="pop">
+                            <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
+                                os
+                                campos obrigatórios</h1>
+                        </Transition>
 
                         <p class="text-lg text-claro mb-4">Quantidade atual: <b>{{
                             estoqueInput.quantidade +
@@ -1008,7 +1022,7 @@ const trocarTabela = (i) => {
                         <div v-if="safraResponse.data != ''">
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-model="estoqueInput.custo" name="floating_email" id="floating_email"
+                                <input type="text" v-on:input="precoFormatar(estoqueInput.custo)" v-model="estoqueInput.custo" name="floating_email" id="floating_email"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label for="floating_email"

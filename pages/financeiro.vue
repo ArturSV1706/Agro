@@ -1,18 +1,17 @@
 <script setup>
 
 definePageMeta({
-        middleware: "auth"
-    })
+    middleware: "auth"
+})
 
 import { reactive, ref } from 'vue';
-import { LineChart } from 'vue-chart-3';
 
 
 
 const showModal = ref()
 const { supabase } = useSupabase()
 const { user } = useAuth()
-const { formatar, formatarData, paraReal, corLucro } = useUtils()
+const { formatar, formatarData, paraReal, paraFloat, corLucro, paraRealInput } = useUtils()
 const route = useRoute()
 
 
@@ -38,6 +37,15 @@ const reverterOrdenar = ref()
 
 const showFluxo = ref()
 const showModalDeletar = ref()
+const showModalEditar = ref()
+const limitarForm = ref()
+
+function limitarFormFunc() {
+    if (!limitarForm.value) {
+        limitarForm.value = true
+    }
+}
+
 // Paginação
 
 // Evita erro de carregamento
@@ -115,7 +123,10 @@ const fluxoInput = reactive({
 //     despesaInput.produto = ""
 //     despesaInput.valor = ""
 // }
+
 const handleSubmitEntrada = async () => {
+    if (parseFloat(entradaInput.valor_unitario) <= 0 || parseFloat(entradaInput.valor_quantidade) <= 0) return
+
     // if(!entradaInput.title || !entradaInput.note) return
     // remover pontos do regex: .replace(".", "").replace(",", ".")
 
@@ -124,7 +135,7 @@ const handleSubmitEntrada = async () => {
         categoria: "safra",
         // fornecedor: entradaInput.fornecedor,
         produto: safraSelecionadaResponse.value.data[0].cultivo,
-        valor: parseFloat(entradaInput.valor_unitario) * parseFloat(entradaInput.valor_quantidade),
+        valor: paraFloat(entradaInput.valor_unitario) * parseFloat(entradaInput.valor_quantidade),
         safra_id: safra_escolhida.value,
         user_id: user.value.id
     });
@@ -158,7 +169,8 @@ const handleSubmitEntrada = async () => {
 }
 
 const handleSubmitDeleteFluxo = async () => {
-    console.log(fluxoInput.id)
+    if (!limitarForm.value) return
+    limitarForm.value = false
     await supabase.from("fluxo").delete().eq('id', fluxoInput.id)
 
     if (process.client) {
@@ -171,14 +183,37 @@ const handleSubmitDeleteFluxo = async () => {
     }
     showModalDeletar.value = false
 }
+const handleSubmitEditarFluxo = async () => {
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
+    await supabase.from("fluxo").update({
+        valor: paraFloat(fluxoInput.valor),
+    }).eq('id', fluxoInput.id);
+
+    if (process.client) {
+        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: true })
+        safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
+    }
+    showModalEditar.value = false
+}
 
 const handleDeleteFluxo = (id, produto, valor) => {
+    limitarForm.value = true
+
     fluxoInput.id = id
     fluxoInput.produto = produto
     fluxoInput.valor = valor
     showModalDeletar.value = true
 }
+const handleEditarFluxo = (id, valor) => {
+    limitarForm.value = true
+    fluxoInput.id = id
+    fluxoInput.valor = valor
+    showModalEditar.value = true
+}
 const handleDetalheFluxo = (id, tipo_fluxo, categoria, fornecedor, produto, valor) => {
+    limitarForm.value = true
     detalhe_Tipo_fluxo.value = tipo_fluxo
     detalhe_Categoria.value = categoria
     detalhe_Fornecedor.value = fornecedor
@@ -336,7 +371,12 @@ function porValorReverse(a, b) {
     return parseFloat(b.valor) - parseFloat(a.valor)
 }
 
-
+const precoFormatar = (valor) => {
+    entradaInput.valor_unitario = paraRealInput(valor)
+}
+const valorFormatar = (valor) => {
+    fluxoInput.valor = paraRealInput(valor)
+}
 </script>
 
 <template>
@@ -447,7 +487,8 @@ function porValorReverse(a, b) {
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="number" v-model="entradaInput.valor_unitario"
+                                <input type="text" v-on:input="precoFormatar(entradaInput.valor_unitario)"
+                                    v-model="entradaInput.valor_unitario"
                                     class="block py-2.5 px-0 w-full text-sm text-verde  bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label
@@ -479,7 +520,8 @@ function porValorReverse(a, b) {
                                 <!-- <th class="p-2 " @click="handleOrdenar('fornecedor')">Comprador/Vendedor</th> -->
                                 <th class="p-2 " @click="handleOrdenar('produto')">Produto</th>
                                 <th class="p-2 " @click="handleOrdenar('valor')">Valor</th>
-                                <th>Detalhes</th>
+                                <th>Editar</th>
+                                <th>Deletar</th>
                             </thead>
                             <tbody>
                                 <tr v-for="fluxo in fluxoResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
@@ -495,15 +537,18 @@ function porValorReverse(a, b) {
                                     <td class="p-2 text-center"> {{ fluxo.produto }}</td>
                                     <td class="p-2 text-center">{{ paraReal(fluxo.valor) }}</td>
                                     <!-- <td>{{fluxo.valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> -->
-                                    <td @click="handleDeleteFluxo(fluxo.id, fluxo.produto, fluxo.valor)"
+                                    <td @click="handleEditarFluxo(fluxo.id, fluxo.valor)"
                                         class="p-2 cursor-pointer material-icons block text-center hover:text-xl transition-all">
                                         ✏
                                     </td>
+                                    <td @click="handleDeleteFluxo(fluxo.id, fluxo.produto, fluxo.valor)"
+                                        class="p-2 cursor-pointer material-icons  text-center hover:text-xl transition-all">
+                                        ❌</td>
                                 </tr>
                             </tbody>
                         </table>
                         <div v-if="fluxoResponse"
-                            class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl ">
+                            class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
                             <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
                                 &lt-
                                 Anterior </button>
@@ -549,6 +594,22 @@ function porValorReverse(a, b) {
                                     desfeita.</u> </b></h2>
                     </ModalDeletarFluxo>
                 </Transition>
+                <Transition name="pop">
+                    <ModalEditarFinanceiro v-if="showModalEditar" @close="showModalEditar = false"
+                        @editarFinanceiro="handleSubmitEditarFluxo">
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="text" v-on:input="valorFormatar(   fluxoInput.valor)" v-model="fluxoInput.valor" name="floating_email"
+                                id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
+                                
+                            </label>
+                        </div>
+                    </ModalEditarFinanceiro>
+                </Transition>
 
             </div>
         </div>
@@ -583,5 +644,4 @@ function porValorReverse(a, b) {
 .pop-leave-active {
     transition: all .4s cubic-bezier(0, 1.15, .47, 1.15);
 
-}
-</style>
+}</style>

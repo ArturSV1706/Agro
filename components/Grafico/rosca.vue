@@ -62,7 +62,7 @@ const options = ref({
             labels: {
                 color: "#0F2A25",
                 font: {
-                    size: 14,
+                    size: 11,
                     weight: 550,
 
                 }

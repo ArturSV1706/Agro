@@ -6,7 +6,7 @@ definePageMeta({
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
-const { paraReal, paraRealInput } = useUtils()
+const { paraReal, paraRealInput, paraFloat } = useUtils()
 
 const funcionariosResponse = ref();
 
@@ -27,6 +27,9 @@ const showModalEditar = ref()
 const showModalDeletar = ref()
 const tipoOrdenar = ref();
 const reverterOrdenar = ref()
+const limitarForm = ref()
+const showPreencha = ref()
+
 
 const pagina = reactive({
     atual: 0,
@@ -44,6 +47,8 @@ const funcionarioInput = reactive({
 })
 
 const handleNovoFuncionario = () => {
+    limitarForm.value = true
+    showPreencha.value = false
     showModalAdicionar.value = true
     funcionarioInput.nome = ""
     funcionarioInput.cargo = ""
@@ -53,12 +58,16 @@ const handleNovoFuncionario = () => {
     funcionarioInput.data_pagamento_salario = ""
 }
 const abrirModalDeletarFuncionario = (id, nome) => {
+    limitarForm.value = true
+
     showModalDeletar.value = true
     funcionarioInput.id = id
     funcionarioInput.nome = nome
 }
 
 const handleDeleteFuncionario = async (funcionarioId) => {
+    if(!limitarForm.value) return
+    limitarForm.value = false
     await supabase.from("funcionarios").delete().eq('id', funcionarioId)
     funcionariosResponse.value = await supabase.from("funcionarios").select()
     showModalDeletar.value = false
@@ -66,17 +75,27 @@ const handleDeleteFuncionario = async (funcionarioId) => {
 
 }
 const handleSubmitNovoFuncionario = async () => {
+    if(funcionarioInput.nome && funcionarioInput.numero && funcionarioInput.cargo){
+    if(funcionarioInput.is_assalariado){
+        if(isNaN(paraFloat(funcionarioInput.salario)) || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$"){
+            showPreencha.value = true
+            return 
+        }
+    }
+
+    if(!limitarForm.value) return
+    limitarForm.value = false
 
     if (process.client) {
         await supabase.from("funcionarios").insert({
-            id_fazenda: user.value.id,
+            user_id: user.value.id,
             nome: funcionarioInput.nome,
             numero: funcionarioInput.numero,
             cargo: funcionarioInput.cargo,
             funcionario_login: funcionarioInput.numero,
             funcionario_pass: generateRandomString(10),
             is_assalariado: funcionarioInput.is_assalariado,
-            salario: parseFloat(funcionarioInput.salario.replace("R$", "").replace(".", "").replace(",", ".")),
+            salario: paraFloat(funcionarioInput.salario),
             data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
 
         });
@@ -91,8 +110,24 @@ const handleSubmitNovoFuncionario = async () => {
             funcionarioInput.data_pagamento_salario = ""
         showModalAdicionar.value = false
     }
+    showPreencha.value = false
+}else{
+    showPreencha.value = true
+}
 }
 const handleSubmitEditarFuncionario = async () => {
+
+    if(funcionarioInput.nome && funcionarioInput.numero && funcionarioInput.cargo){
+    if(funcionarioInput.is_assalariado){
+        if(isNaN(paraFloat(funcionarioInput.salario)) || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$"){
+            showPreencha.value = true
+            return 
+        }
+    }
+
+    
+if(!limitarForm.value) return
+    limitarForm.value = false
 
     if (funcionarioInput.is_assalariado) {
         await supabase.from("funcionarios").update({
@@ -100,7 +135,7 @@ const handleSubmitEditarFuncionario = async () => {
             numero: funcionarioInput.numero,
             cargo: funcionarioInput.cargo,
             is_assalariado: funcionarioInput.is_assalariado,
-            salario: parseFloat(String(funcionarioInput.salario).replace(".", "").replace(",", ".")),
+            salario: paraFloat(funcionarioInput.salario),
             data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
 
         }).eq('id', funcionarioInput.id);
@@ -126,10 +161,15 @@ const handleSubmitEditarFuncionario = async () => {
         funcionarioInput.salario = "",
         funcionarioInput.data_pagamento_salario = ""
     showModalEditar.value = false
+    showPreencha.value = false
+}else{
+    showPreencha.value = true
+}
 }
 const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
+    showPreencha.value = false
+    limitarForm.value = true
     showModalEditar.value = true
-
     funcionarioInput.nome = nome
     funcionarioInput.cargo = cargo
     funcionarioInput.numero = numero
@@ -137,8 +177,6 @@ const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPaga
     funcionarioInput.salario = salario
     funcionarioInput.data_pagamento_salario = diaPagamento
     funcionarioInput.id = id
-
-
 }
 
 const salárioFormatar = (valor) => {
@@ -348,7 +386,7 @@ function generateRandomString(length) {
                         </tbody>
                     </table>
                     <div v-if="funcionariosResponse"
-                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl ">
+                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px] ">
                         <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
                             &lt-
                             Anterior </button>
@@ -385,6 +423,10 @@ function generateRandomString(length) {
         <Transition name="pop">
             <ModalNovoFuncionario v-if="showModalAdicionar" @close="showModalAdicionar = false"
                 @adicionarFuncionario="handleSubmitNovoFuncionario">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
                 <div class="flex flex-col">
 
                     <div class="relative z-0 w-full mb-6 group">
@@ -460,6 +502,10 @@ function generateRandomString(length) {
         <Transition name="pop">
             <ModalEditarFuncionario v-if="showModalEditar" @close="showModalEditar = false"
                 @editarFuncionario="handleSubmitEditarFuncionario">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
                 <div class="flex flex-col">
                     <div class="relative z-0 w-full mb-6 group">
 

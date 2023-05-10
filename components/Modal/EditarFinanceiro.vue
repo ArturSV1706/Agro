@@ -1,6 +1,6 @@
 
 <template>
-   <div id="defaultModal" tabindex="-1" aria-hidden="true"
+    <div id="defaultModal" tabindex="-1" aria-hidden="true"
         class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center  ">
         <div class="absolute filter backdrop-blur-[3px] w-full h-full bg-[rgba(42,77,65,.1)] z-10 "></div>
         <div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 p-4 w-full max-w-xl h-full md:h-auto">
@@ -8,10 +8,9 @@
             <div class="relative bg-escuro rounded-lg shadow ">
                 <!-- Modal header -->
 
-
                 <div class="flex justify-between items-start p-4 rounded-t border-b border-verde">
                     <h3 class="text-xl font-semibold text-claro">
-                        Editar Máquina
+                        Editar Registro
                     </h3>
                     <button @click="$emit('close')" type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -31,9 +30,9 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-6 space-x-2 rounded-b border-t  border-verde">
-                    <button @click="$emit('editarMaquina')" data-modal-toggle="defaultModal" type="button"
+                    <button @click="$emit('editarFinanceiro')" data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
-                        Editar Máquina</button>
+                        Editar Registro</button>
                     <button @click="$emit('close')" data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">Cancelar</button>
                 </div>

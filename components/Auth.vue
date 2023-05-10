@@ -35,13 +35,23 @@ const handleSubmit = async () => {
         authError.value = err.message
     }
 }
+
+if(process.client){
+document.addEventListener("keydown", function(event) {
+  if (event.keyCode === 13) {
+    handleSubmit()
+  }
+})
+}
+
 </script>
 
 <template>
     <div>
         <div v-if="!showConfirmEmailMessage">
             <div :class="`flex flex-col justify-evenly h-full w-full p-4 border-2 border-escuro`">
-                <h3 class="text-escuro mb-11 text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}</h3>
+                <h3 class="text-escuro mb-11 text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}
+                </h3>
                 <div class="flex flex-col items-center ">
                     <div class="relative z-0 w-[80%] mb-9 group">
 
@@ -73,7 +83,8 @@ const handleSubmit = async () => {
                 </div>
                 <div class="w-[320px] mt-4">
                     <p class="error" v-if="authError">{{ authError }}</p>
-                    <p class="text-sm font-bold text-escuro text-center cursor-pointer" @click="toggleAuthState">{{ authState === "entrar" ? "Não possui uma conta? Clique para se registrar"
+                    <p class="text-sm font-bold text-escuro text-center cursor-pointer" @click="toggleAuthState">{{
+                        authState === "entrar" ? "Não possui uma conta? Clique para se registrar"
                         :
                         "Já possui uma conta? Clique para entrar"
                     }}</p>
@@ -81,7 +92,13 @@ const handleSubmit = async () => {
             </div>
         </div>
         <div v-else>
-            <h3>Cheque seu email por uma confirmação</h3>
+            <div :class="`flex flex-col justify-evenly h-full w-full p-4 border-2 border-escuro text-center`">
+                <h1 class="text-center text-5xl">📨</h1>
+                <h1 class="text-2xl text-center font-bold text-escuro animate-bounce">Cheque o seu email</h1>
+                <h3 class="text-xl font-semibold text-center text-verde">Enviamos um email de confirmação do registro da conta, basta clicar no
+                    link enviado. 😉</h3>
+                <button @click="showConfirmEmailMessage = false, authState = 'entrar'" class="px-8 py-2 w-[80%] self-center rounded transition-all capitalize border-2 bg-escuro text-claro font-bold hover:bg-verde hover:border-verde_claro hover:text-verde_claro">Já confirmei</button>
+            </div>
         </div>
     </div>
 </template>

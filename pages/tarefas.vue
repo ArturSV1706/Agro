@@ -1,8 +1,8 @@
 <script setup>
 
 definePageMeta({
-        middleware: "auth"
-    })
+    middleware: "auth"
+})
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
@@ -12,6 +12,7 @@ const showModalConfirmar = ref()
 const showModaldescricao = ref()
 const showModalCancelar = ref()
 const showCorrigirEstoque = ref()
+const limitarForm = ref()
 
 const funcionariosResponse = ref();
 const tarefaResponse = ref();
@@ -20,6 +21,8 @@ const maquinas_nomeResponse = ref();
 const maquinas_anoResponse = ref();
 const estoqueResponse = ref();
 const estoqueResponse_qnt = ref();
+const showPreencha = ref()
+
 
 // Evita erro de carregamento
 const usuarioResponse = ref();
@@ -88,12 +91,21 @@ const handleVerDescricao = (descricao) => {
     tarefaInput.descricao = descricao
     showModaldescricao.value = true
 }
+const handleNovaTarefa = () => {
+    showPreencha.value = false
+    limitarForm.value = true
+    showModalAdicionar.value = true
+}
 const handleDeletarTarefa = (id, titulo) => {
+    limitarForm.value = true
     tarefaInput.id = id
     tarefaInput.titulo = titulo
     showModalCancelar.value = true
 }
 const handleSubmitDeletarTarefa = async () => {
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
     await supabase.from("tarefas").update({
         status: "cancelada"
     }).eq('id', tarefaInput.id);
@@ -106,78 +118,104 @@ const handleSubmitDeletarTarefa = async () => {
 }
 
 const handleSubmitNovoTarefa = async () => {
-    if (process.client) {
-        if (tarefaInput.maquina_id > 0 && tarefaInput.estoque_id > 0) {
-            await supabase.from("tarefas").insert({
-                user_id: user.value.id,
-                funcionario_id: tarefaInput.funcionario_id,
-                titulo: tarefaInput.titulo,
-                descricao: tarefaInput.descricao,
-                prazo: tarefaInput.prazo,
-                prazo_hora: tarefaInput.prazo_hora + ":00.000000+00",
-                maquina_utilizada: tarefaInput.maquina_id,
-                estoque_utilizado_item: tarefaInput.estoque_id,
-                estoque_utilizado_quantidade: parseFloat(tarefaInput.estoque_quantidade),
-                status: "pendente"
-            });
-            await supabase.from("maquinas").update({
-                status: "em uso"
 
-            }).eq('id', tarefaInput.maquina_id);
+    if (tarefaInput.funcionario_id && tarefaInput.titulo && tarefaInput.descricao && tarefaInput.prazo && tarefaInput.prazo_hora) {
+        if (tarefaInput.possui_maquina) {
+            if (!tarefaInput.maquina_id) {
+                showPreencha.value = true
+                return
+            }
         }
-        else if (tarefaInput.maquina_id > 0) {
-            await supabase.from("tarefas").insert({
-                user_id: user.value.id,
-                funcionario_id: tarefaInput.funcionario_id,
-                titulo: tarefaInput.titulo,
-                descricao: tarefaInput.descricao,
-                prazo: tarefaInput.prazo,
-                prazo_hora: tarefaInput.prazo_hora + ":00.000000+00",
-                maquina_utilizada: tarefaInput.maquina_id,
-                status: "pendente"
-            });
-            await supabase.from("maquinas").update({
-                status: "em uso"
-
-            }).eq('id', tarefaInput.maquina_id);
-        }
-
-        else if (tarefaInput.estoque_id > 0) {
-            await supabase.from("tarefas").insert({
-                user_id: user.value.id,
-                funcionario_id: tarefaInput.funcionario_id,
-                titulo: tarefaInput.titulo,
-                descricao: tarefaInput.descricao,
-                prazo: tarefaInput.prazo,
-                prazo_hora: tarefaInput.prazo_hora + ":00.000000+00",
-                estoque_utilizado_item: tarefaInput.estoque_id,
-                estoque_utilizado_quantidade: tarefaInput.estoque_quantidade,
-                status: "pendente"
-            });
-        }
-        else if (tarefaInput.estoque_id == 0 && tarefaInput.maquina_id == 0) {
-            await supabase.from("tarefas").insert({
-                user_id: user.value.id,
-                funcionario_id: tarefaInput.funcionario_id,
-                titulo: tarefaInput.titulo,
-                descricao: tarefaInput.descricao,
-                prazo: tarefaInput.prazo,
-                prazo_hora: tarefaInput.prazo_hora + ":00.000000+00",
-                status: "pendente"
-            });
+        if (tarefaInput.possui_estoque) {
+            if (!tarefaInput.estoque_id || !tarefaInput.estoque_quantidade) {
+                showPreencha.value = true
+                return
+            }
         }
 
 
 
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+        if (process.client) {
+            if (tarefaInput.maquina_id > 0 && tarefaInput.estoque_id > 0) {
+                await supabase.from("tarefas").insert({
+                    user_id: user.value.id,
+                    funcionario_id: tarefaInput.funcionario_id,
+                    titulo: tarefaInput.titulo,
+                    descricao: tarefaInput.descricao,
+                    prazo: tarefaInput.prazo,
+                    prazo_hora: tarefaInput.prazo_hora + ":00.000000+00",
+                    maquina_utilizada: tarefaInput.maquina_id,
+                    estoque_utilizado_item: tarefaInput.estoque_id,
+                    estoque_utilizado_quantidade: parseFloat(tarefaInput.estoque_quantidade),
+                    status: "pendente"
+                });
+                await supabase.from("maquinas").update({
+                    status: "em uso"
+
+                }).eq('id', tarefaInput.maquina_id);
+            }
+            else if (tarefaInput.maquina_id > 0) {
+                await supabase.from("tarefas").insert({
+                    user_id: user.value.id,
+                    funcionario_id: tarefaInput.funcionario_id,
+                    titulo: tarefaInput.titulo,
+                    descricao: tarefaInput.descricao,
+                    prazo: tarefaInput.prazo,
+                    prazo_hora: tarefaInput.prazo_hora + ":00.000000+00",
+                    maquina_utilizada: tarefaInput.maquina_id,
+                    status: "pendente"
+                });
+                await supabase.from("maquinas").update({
+                    status: "em uso"
+
+                }).eq('id', tarefaInput.maquina_id);
+            }
+
+            else if (tarefaInput.estoque_id > 0) {
+                await supabase.from("tarefas").insert({
+                    user_id: user.value.id,
+                    funcionario_id: tarefaInput.funcionario_id,
+                    titulo: tarefaInput.titulo,
+                    descricao: tarefaInput.descricao,
+                    prazo: tarefaInput.prazo,
+                    prazo_hora: tarefaInput.prazo_hora + ":00.000000+00",
+                    estoque_utilizado_item: tarefaInput.estoque_id,
+                    estoque_utilizado_quantidade: tarefaInput.estoque_quantidade,
+                    status: "pendente"
+                });
+            }
+            else if (tarefaInput.estoque_id == 0 && tarefaInput.maquina_id == 0) {
+                await supabase.from("tarefas").insert({
+                    user_id: user.value.id,
+                    funcionario_id: tarefaInput.funcionario_id,
+                    titulo: tarefaInput.titulo,
+                    descricao: tarefaInput.descricao,
+                    prazo: tarefaInput.prazo,
+                    prazo_hora: tarefaInput.prazo_hora + ":00.000000+00",
+                    status: "pendente"
+                });
+            }
+
+
+
+        }
+        tarefaResponse.value = await supabase.from("tarefas").select("*, funcionarios(*), estoque(*), maquinas(*)").eq('user_id', user.value.id).order('prazo', { ascending: false }).order('prazo_hora', { ascending: false })
+        showModalAdicionar.value = false
+        tarefaInput.titulo = "",
+            tarefaInput.descricao = "",
+            tarefaInput.prazo = ""
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
     }
-    tarefaResponse.value = await supabase.from("tarefas").select("*, funcionarios(*), estoque(*), maquinas(*)").eq('user_id', user.value.id).order('prazo', { ascending: false }).order('prazo_hora', { ascending: false })
-    showModalAdicionar.value = false
-    tarefaInput.titulo = "",
-        tarefaInput.descricao = "",
-        tarefaInput.prazo = ""
 }
 
 const handleModalConfirmar = async (id, titulo, descricao, funcionario, maquina_utilizada, maquina_id, estoque_id, estoque_utilizado_item, estoque_utilizado_quantidade, estoque_utilizado_grandeza, prazo, prazo_hora, status) => {
+
+    limitarForm.value = true
 
     maquinas_nomeResponse.value = await supabase.from("tarefas").select("maquinas(modelo)").eq('id', id)
     maquinas_anoResponse.value = await supabase.from("tarefas").select("maquinas(ano)").eq('id', id)
@@ -201,6 +239,16 @@ const handleModalConfirmar = async (id, titulo, descricao, funcionario, maquina_
 }
 
 const handleSubmitConfirmar = async () => {
+    if (showCorrigirEstoque.value) {
+        if(!tarefaInput.estoque_quantidade){
+            showPreencha.value = true
+            return
+        }
+    }
+
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
     await supabase.from("tarefas").update({
         status: "completa"
     }).eq('id', tarefaInput.id);
@@ -230,7 +278,9 @@ const handleSubmitConfirmar = async () => {
     if (process.client) {
         tarefaResponse.value = await supabase.from("tarefas").select("*, funcionarios(*), estoque(*), maquinas(*)").eq('user_id', user.value.id).order('prazo', { ascending: false }).order('prazo_hora', { ascending: false })
     }
+    tarefaInput.estoque_quantidade = ""
     showModalConfirmar.value = false
+    showPreencha.value = false
 }
 
 
@@ -272,7 +322,7 @@ const handlePagina = (i) => {
         <div class="flex flex-col  w-full items-center mt-[5%]">
             <div class="w-[80%]">
                 <div class=" flex justify-between">
-                    <button @click="showModalAdicionar = true"
+                    <button @click="handleNovaTarefa()"
                         class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
                         Adicionar tarefa
                     </button>
@@ -280,29 +330,29 @@ const handlePagina = (i) => {
                         <div class="flex">
                             <li class="flex items-center space-x-3 mr-3">
                                 <div class="w-4 h-4 rounded-full bg-verde"></div>
-                                <div class="text-xl text-escuro font-bold"> Pendente</div>
-                                <div class="text-xl text-escuro font-bold"> |</div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> Pendente</div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> |</div>
                             </li>
                             <li class="flex items-center space-x-3 mr-3">
                                 <div class="w-4 h-4 rounded-full bg-azul"></div>
-                                <div class="text-xl text-escuro font-bold"> Esperando confirmação</div>
-                                <div class="text-xl text-escuro font-bold"> |</div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> Esperando confirmação</div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> |</div>
                             </li>
                         </div>
                         <div class="flex">
                             <li class="flex items-center space-x-3 mr-3">
                                 <div class="w-4 h-4 rounded-full bg-verde_claro"></div>
-                                <div class="text-xl text-escuro font-bold"> Completa</div>
-                                <div class="text-xl text-escuro font-bold"> |</div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> Completa</div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> |</div>
                             </li>
                             <li class="flex items-center space-x-3 mr-3">
                                 <div class="w-4 h-4 rounded-full bg-amarelo"></div>
-                                <div class="text-xl text-escuro font-bold"> Atrasada</div>
-                                <div class="text-xl text-escuro font-bold"> |</div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> Atrasada</div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> |</div>
                             </li>
                             <li class="flex items-center space-x-3">
                                 <div class="w-4 h-4 rounded-full bg-vermelho"></div>
-                                <div class="text-xl text-escuro font-bold"> Cancelada </div>
+                                <div class="sm:text-smtext-xl text-escuro font-bold"> Cancelada </div>
                             </li>
                         </div>
                     </ul>
@@ -347,21 +397,21 @@ const handlePagina = (i) => {
                         :class="`flex  justify-between h-[100px] bg-escuro bg-opacity-90  border-${corTarefa(tarefa.status)} border-t-[8px] mb-3 rounded rounded-b-xl`">
 
                         <div class="flex flex-1 flex-col items-center justify-evenly text-left h-full">
-                            <p class="capitalize text-claro font-bold text-xl"> {{ tarefa.titulo }}</p>
-                            <p class="capitalize text-claro text-lg font-semibold"><b>👤|</b> {{
+                            <p class="capitalize text-claro font-bold sm:text-md 2xl:text-xl"> {{ tarefa.titulo }}</p>
+                            <p class="capitalize text-claro sm:text-sm 2xl:text-lg font-semibold"><b>👤|</b> {{
                                 tarefa.funcionarios.nome
                             }}
                             </p>
 
                         </div>
                         <div class="flex flex-1 flex-col h-full items-center justify-evenly">
-                            <p class="capitalize text-verde_claro text-lg font-semibold"><b>📦|</b> <span
+                            <p class="capitalize text-verde_claro sm:text-sm 2xl:text-lg font-semibold"><b>📦|</b> <span
                                     v-if="tarefa.estoque">{{
                                         tarefa.estoque.item + " " + tarefa.estoque_utilizado_quantidade
                                     }} <span class="text-sm">({{
     tarefa.estoque.grandeza
 }})</span> </span> <span v-else>--------</span></p>
-                            <p class="capitalize text-verde_claro text-lg font-semibold"><b>🚜|</b> <span
+                            <p class="capitalize text-verde_claro text-sm font-semibold"><b>🚜|</b> <span
                                     v-if="tarefa.maquinas">{{
                                         tarefa.maquinas.modelo + " - " + tarefa.maquinas.ano
                                     }}</span> <span v-else>--------</span></p>
@@ -369,21 +419,21 @@ const handlePagina = (i) => {
                         </div>
                         <div class="flex flex-1 flex-col h-full items-center justify-evenly">
                             <p @click="handleVerDescricao(tarefa.descricao)"
-                                class="capitalize text-claro text-lg font-semibold hover:text-xl transition-all cursor-pointer">
+                                class="capitalize text-claro sm:text-sm 2xl:text-lg font-semibold hover:text-xl transition-all cursor-pointer">
                                 <b>📑|</b>Ver
                                 Descrição
                             </p>
-                            <p class="capitalize text-verde_claro text-lg font-semibold"> <b>⏱|</b>{{
+                            <p class="capitalize text-verde_claro sm:text-sm 2xl:text-lg font-semibold"> <b>⏱|</b>{{
                                 tarefa.prazo + "-" +
                                 tarefa.prazo_hora
                             }} </p>
                         </div>
-                        <div class="flex flex-1 text-3xl h-full items-center justify-evenly">
+                        <div class="flex flex-1 sm:text-xl 2xl:text-3xl h-full items-center justify-evenly">
                             <div v-if="tarefa.status == 'cancelada' || tarefa.status == 'completa'">
-                                <h1 v-if="tarefa.status == 'cancelada'" class="text-vermelho font-bold text-2xl">
+                                <h1 v-if="tarefa.status == 'cancelada'" class="text-vermelho font-bold sm:text-lg 2xl:text-2xl">
                                     Cancelada
                                 </h1>
-                                <h1 v-if="tarefa.status == 'completa'" class="text-verde_claro font-bold text-2xl">
+                                <h1 v-if="tarefa.status == 'completa'" class="text-verde_claro font-bold sm:text-lg 2xl:text-2xl">
                                     Completa
                                 </h1>
                             </div>
@@ -416,6 +466,10 @@ const handlePagina = (i) => {
             <Transition name="pop">
                 <ModalAdicionarTarefa v-if="showModalAdicionar" @close="showModalAdicionar = false"
                     @adicionarTarefa="handleSubmitNovoTarefa">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                            campos obrigatórios</h1>
+                    </Transition>
 
                     <div class="flex justify-evenly w-full space-x-4">
                         <div class="flex flex-col flex-1">
@@ -566,6 +620,11 @@ const handlePagina = (i) => {
                 <ModalConfirmarTarefa v-if="showModalConfirmar" @close="showModalConfirmar = false"
                     @confirmarTarefa="handleSubmitConfirmar">
 
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                            campos obrigatórios</h1>
+                    </Transition>
+
                     <h2 class="text-claro text-lg">Atribuída à: <b class="text-verde_claro"> {{
                         tarefaInput.funcionario_nome + " "
                     }} </b> com prazo limite até <b class=" text-xs">{{
@@ -573,14 +632,16 @@ const handlePagina = (i) => {
     + " - " +
     tarefaInput.prazo_hora
 }}</b></h2>
-                    <h2 class="text-claro text-lg" v-if="tarefaInput.maquina_utilizada"> A máquina {{ tarefaInput.maquina_utilizada }} foi
+                    <h2 class="text-claro text-lg" v-if="tarefaInput.maquina_utilizada"> A máquina {{
+                        tarefaInput.maquina_utilizada }} foi
                         utilizada
                     </h2>
                     <div v-if="tarefaInput.estoque_nome">
                         <h2 class="text-verde font-semibold"> De acordo com <b class="text-claro font-bold">{{
                             tarefaInput.funcionario_nome + ", "
                         }}</b> <b class="text-verde_claro font-bold"> {{
-    tarefaInput.estoque_utilizado_quantidade_reportada + "(" + tarefaInput.estoque_grandeza + ")" }}
+    tarefaInput.estoque_utilizado_quantidade_reportada + "(" + tarefaInput.estoque_grandeza +
+    ")" }}
                             </b> de <b class="text-verde_claro font-bold">{{ tarefaInput.estoque_nome }}</b> foi
                             utilizado</h2>
                         <div>

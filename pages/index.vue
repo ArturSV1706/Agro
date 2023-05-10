@@ -34,6 +34,9 @@ if (process.client) {
 const corTarefa = (status) => {
     let cor = "laranja"
     switch (status) {
+        case "criada":
+            cor = "";
+            break;
         case "pendente":
             cor = "escuro";
             break;
@@ -77,7 +80,7 @@ function formatarTipoFluxoCor(a) {
 </script>
 
 <template>
-    <div class="flex flex-col pb-2 ml-[5%] mt-[.8%]">
+    <div class=" flex flex-col pb-2 ml-[5%] mt-[.8%]">
         <!-- Título -->
         <div class="flex flex-row items-center fixed top-4 left-4">
             <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Painel</h1>
@@ -90,40 +93,40 @@ function formatarTipoFluxoCor(a) {
                     <div class="  h-[75%] w-[80%] rounded-2xl   ">
                         <div class="flex w-full h-full justify-start items-center font-semibold">
                             <div class="bg-escuro w-2 h-[80%]"></div>
-                            <p class="text-5xl">🌾</p>
+                            <p class="sm:text-4xl 2xl:text-5xl">🌾</p>
                             <div class="">
-                                <p v-if="safrasAtivasResponse" class="font-bold text-5xl">{{ safrasAtivasResponse.data.length }}</p>
-                                <p class=" text-xl">Safras Atvias</p>
+                                <p v-if="safrasAtivasResponse" class="font-bold sm:text-4xl 2xl:text-5xl">{{ safrasAtivasResponse.data.length }}</p>
+                                <p class=" sm:text-sm 2xl:text-xl">Safras Atvias</p>
                             </div>
                         </div>
                     </div>
                     <div class="  h-[75%] w-[80%] rounded-2xl  ">
                         <div class="flex w-full h-full justify-start items-center font-semibold">
                             <div class="bg-escuro w-2 h-[80%]"></div>
-                            <p class="text-5xl">👨‍🌾</p>
+                            <p class="sm:text-4xl 2xl:text-5xl">👨‍🌾</p>
                             <div class="">
-                                <p v-if="funcionariosResponse" class="font-bold text-5xl">{{funcionariosResponse.data.length }}</p>
-                                <p class=" text-xl">Funcionários</p>
+                                <p v-if="funcionariosResponse" class="font-bold sm:text-4xl 2xl:text-5xl">{{funcionariosResponse.data.length }}</p>
+                                <p class=" sm:text-sm 2xl:text-xl">Funcionários</p>
                             </div>
                         </div>
                     </div>
                     <div class="  h-[75%] w-[80%] rounded-2xl   ">
                         <div class="flex w-full h-full justify-start items-center font-semibold">
                             <div class="bg-escuro w-2 h-[80%]"></div>
-                            <p class="text-5xl">🚜</p>
+                            <p class="sm:text-4xl 2xl:text-5xl">🚜</p>
                             <div class="">
-                                <p v-if="maquinasResponse" class="font-bold text-5xl">{{ maquinasResponse.data.length }}</p>
-                                <p class=" text-xl">Máquinas/Veículos</p>
+                                <p v-if="maquinasResponse" class="font-bold sm:text-4xl 2xl:text-5xl">{{ maquinasResponse.data.length }}</p>
+                                <p class=" sm:text-sm 2xl:text-xl">Máquinas/Veículos</p>
                             </div>
                         </div>
                     </div>
                     <div class="  h-[75%] w-[80%] rounded-2xl  ">
                         <div class="flex w-full h-full justify-start items-center font-semibold">
                             <div class="bg-escuro w-2 h-[80%]"></div>
-                            <p class="text-5xl">📦</p>
+                            <p class="sm:text-4xl 2xl:text-5xl">📦</p>
                             <div class="">
-                                <p v-if="estoqueResponse" class="font-bold text-5xl">{{ estoqueResponse.data.length }}</p>
-                                <p class=" text-xl">Itens no estoque</p>
+                                <p v-if="estoqueResponse" class="font-bold sm:text-4xl 2xl:text-5xl">{{ estoqueResponse.data.length }}</p>
+                                <p class=" sm:text-sm 2xl:text-xl">Itens no estoque</p>
                             </div>
                         </div>
                     </div>
@@ -135,21 +138,21 @@ function formatarTipoFluxoCor(a) {
                 <div class="flex flex-col max-h-full w-full overflow-y-scroll mt-7">
                     <!-- <p class="text-center">Tarefas Recentes</p> -->
                     <Loader v-if="!tarefaResponse"></Loader>
-                    <div v-if="tarefaResponse" class="w-1 h-[92vh] absolute left-[55%] bg-escuro z-[1] "></div>
+                    <div v-if="tarefaResponse" class="w-1 sm:h-[88vh] 2xl:h-[92vh] absolute left-[55%] bg-escuro z-[1] "></div>
                     <h1 class="ml-[5%] text-xl text-escuro font-bold"> <span class="text-2xl">🧾</span>| Últimas tarefas - <NuxtLink to="/tarefas" class="text-verde cursor-pointer transition-all hover:text-[1.5rem]">Ver Todas</NuxtLink></h1>
                     <div v-if="tarefaResponse" v-for="tarefa in tarefaResponse.data" :key="tarefa.id"
                         class=" mt-4 h-full w-full">
-                        <p class=" ml-[6%] px-2 rounded-tr-xl  text-claro mb-[2px] bg-escuro w-fit text-md font-semibold">{{tarefa.prazo}}</p>
-                        <div class="flex justify-between w-[90%]   mb-3  ml-[6%]   bg-verde p-2 rounded-tr-3xl rounded-bl-3xl ">
+                        <p class=" ml-[6%] px-2 rounded-tr-xl  text-claro mb-[2px] bg-escuro w-fit sm:text-sm 2xl:text-md font-semibold">{{tarefa.prazo}}</p>
+                        <div class="flex justify-between w-[90%]  mb-3 ml-[6%]   bg-verde p-2 rounded-tr-3xl rounded-bl-3xl ">
                             <div class="">
-                                <p class="text-xl font-medium text-claro">{{ tarefa.titulo }}</p>
-                                <p class="text-sm  text-claro">{{ tarefa.descricao }}</p>
-                                <p class="capitalize text-claro text-md font-thin"><b>🚜|</b> <span
+                                <p class="sm:text-md 2xl:text-xl font-medium text-claro">{{ tarefa.titulo }}</p>
+                                <p class="sm:text-xs 2xl:text-sm break-words text-claro">{{ tarefa.descricao }}</p>
+                                <p class="capitalize text-claro sm:text-xs 2xl:text-md font-thin"><b>🚜|</b> <span
                                         v-if="tarefa.maquinas">{{
                                             tarefa.maquinas.modelo + " - " + tarefa.maquinas.ano
                                         }}</span> <span v-else>--------</span>
                                 </p>
-                                <p class="capitalize text-claro text-md font-thin"><b>📦|</b> <span
+                                <p class="capitalize text-claro sm:text-xs 2xl:text-md font-thin"><b>📦|</b> <span
                                         v-if="tarefa.estoque">{{
                                             tarefa.estoque.item + " " + tarefa.estoque_utilizado_quantidade
                                         }} <span class="text-sm">({{ tarefa.estoque.grandeza }})</span></span> <span
@@ -157,8 +160,8 @@ function formatarTipoFluxoCor(a) {
                                 </p>
                             </div>
                             <div class="flex flex-col justify-between items-end text-right">
-                                <div :class="`bg-${corTarefa(tarefa.status)} px-3 py-1 max-w-[100px] rounded-full text-claro font-semibold capitalize`">{{tarefa.status}}</div>
-                                <p class="text-claro text-md font-semibold">{{tarefa.funcionarios.nome}}</p>
+                                <div :class="`bg-${corTarefa(tarefa.status)} sm:text-xs 2xl:text-md px-3 py-1 max-w-[100px] rounded-full text-claro font-semibold capitalize`">{{tarefa.status}}</div>
+                                <p class="text-claro sm:text-xs 2xl:text-md font-semibold">{{tarefa.funcionarios.nome}}</p>
                             </div>
                         </div>
                     </div>
@@ -175,11 +178,11 @@ function formatarTipoFluxoCor(a) {
                 
                 <div v-if="fluxoResponse" v-for="fluxo in fluxoResponse.data" :key="fluxo.id"
                 class="flex justify-evenly w-[90%] h-[10%] bg-claro border-l-8 border-escuro">
-                    <p class="p-2 text-left font-semibold"> {{ formatarData(fluxo.data_criacao) }}</p>
+                    <p class="sm:text-xs 2xl:text-lg p-2 text-left font-semibold"> {{ formatarData(fluxo.data_criacao) }}</p>
                     <p>---</p>
-                    <p class="p-2 text-center font-semibold">{{ fluxo.safras.cultivo + " (" + fluxo.safras.data_inicio + " - " + fluxo.safras.data_fim + ")"}}</p>
+                    <p class="sm:text-xs 2xl:text-lg  p-2 text-center font-semibold">{{ fluxo.safras.cultivo + " (" + fluxo.safras.data_inicio + " - " + fluxo.safras.data_fim + ")"}}</p>
                     <p>---</p>
-                    <p :class="`p-2 text-center font-semibold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">{{paraReal(fluxo.valor) + formatarTipoFluxo(fluxo.tipo_fluxo) }}</p>
+                    <p :class="`sm:text-xs 2xl:text-lg  p-2 text-center font-semibold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">{{paraReal(fluxo.valor) + formatarTipoFluxo(fluxo.tipo_fluxo) }}</p>
                 </div>
             </div>
         </div>

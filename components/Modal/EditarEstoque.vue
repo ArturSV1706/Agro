@@ -32,7 +32,7 @@
                 <div class="flex items-center p-6 space-x-2 rounded-b border-t  border-verde">
                     <button @click="$emit('editarItem')" data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
-                        Adicionar Item</button>
+                        Editar Item</button>
                     <button @click="$emit('close')" data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">Cancelar</button>
                 </div>

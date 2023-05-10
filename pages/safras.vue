@@ -6,7 +6,9 @@ definePageMeta({
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
-const { formatar, paraReal, corLucro } = useUtils()
+const { formatar, paraReal, paraRealInput, paraFloat, corLucro } = useUtils()
+const router = useRouter()
+
 
 // Evita erro de carregamento
 const usuarioResponse = ref();
@@ -24,6 +26,10 @@ const showModalNovo = ref()
 const showModalColheita = ref()
 const showModalDeletar = ref()
 const showModalEncerrar = ref()
+const limitarForm = ref()
+const showPreencha = ref()
+
+
 
 
 
@@ -33,7 +39,8 @@ if (process.client) {
 }
 
 const redirectSafra = (id) => {
-    window.location.href = "/safra/" + id
+    router.push({ path: "/safra/" + id });
+    // window.location.href = "/safra/" + id
 }
 
 const safraInput = reactive({
@@ -50,6 +57,7 @@ const safraInput = reactive({
 })
 
 const abrirModalNovaSafra = () => {
+    limitarForm.value = true
     showModalNovo.value = true
     safraInput.id = ""
     safraInput.safra = ""
@@ -77,16 +85,21 @@ const fecharModalNovaSafra = () => {
 }
 
 const handleSubmitNovaSafra = async () => {
-    let receita_estimada_calc = parseFloat(safraInput.quantidade) * parseFloat(safraInput.valor_unitario)
+    if(safraInput.safra && safraInput.area && safraInput.grandeza && safraInput.despeza && safraInput.valor_unitario && safraInput.quantidade && safraInput.data_inicio && safraInput.data_fim){
+
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
+    let receita_estimada_calc = parseFloat(safraInput.quantidade) * paraFloat(safraInput.valor_unitario)
     if (process.client) {
         await supabase.from("safras").insert({
             cultivo: safraInput.safra,
             area: parseFloat(safraInput.area),
             user_id: user.value.id,
             grandeza: safraInput.grandeza,
-            despeza_estimada: parseFloat(safraInput.despeza),
-            valor_venda_estimado: parseFloat(safraInput.valor_unitario),
-            quantidade_estimada: parseFloat(safraInput.quantidade),
+            despeza_estimada: paraFloat(safraInput.despeza),
+            valor_venda_estimado: paraFloat(safraInput.valor_unitario),
+            quantidade_estimada: parseFloat(safraInput.quantidade) * parseFloat(safraInput.area),
             receita_estimada: receita_estimada_calc,
             data_inicio: safraInput.data_inicio,
             data_fim: safraInput.data_fim,
@@ -107,15 +120,21 @@ const handleSubmitNovaSafra = async () => {
         safraInput.quantidade = "";
         safraInput.despeza = "";
         safraInput.receita_estimada = "";
+        showPreencha.value = false
 
         showModalNovo.value = false
         if (process.client) {
             safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
         }
     }
+}else{
+    showPreencha.value = true
+}
 }
 
 const abrirModalDeletarSafra = (id, cultivo, inicio, fim) => {
+    limitarForm.value = true
+
     showModalDeletar.value = true
     safraInput.id = id
     safraInput.safra = cultivo
@@ -123,6 +142,8 @@ const abrirModalDeletarSafra = (id, cultivo, inicio, fim) => {
     safraInput.data_fim = fim
 }
 const abrirModalAdicionarColheita = async (id, cultivo, grandeza) => {
+    limitarForm.value = true
+
     showModalColheita.value = true
     safraInput.id = id
     safraInput.safra = cultivo
@@ -130,6 +151,10 @@ const abrirModalAdicionarColheita = async (id, cultivo, grandeza) => {
     safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', parseInt(safraInput.id))
 }
 const handleAdicionarColheita = async () => {
+    if(safraInput.quantidade){
+
+    if (!limitarForm.value) return
+    limitarForm.value = false
 
     if (parseFloat(safraInput.quantidade) > 0) {
         await supabase.from("safras").update({
@@ -151,10 +176,17 @@ const handleAdicionarColheita = async () => {
         safraInput.quantidade = "",
         safraInput.despeza = "",
         safraInput.receita_estimada = ""
+        showPreencha.value = false
 
     showModalColheita.value = false
+}else{
+    showPreencha.value = true
+}
 }
 const handleDeletarSafra = async () => {
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
     await supabase.from("safras").delete().eq('id', safraInput.id)
 
     if (process.client) {
@@ -165,6 +197,8 @@ const handleDeletarSafra = async () => {
     showModalDeletar.value = false
 }
 const abrirModalEncerrarSafra = (id, cultivo, inicio, fim) => {
+    limitarForm.value = true
+
     showModalEncerrar.value = true
     safraInput.id = id
     safraInput.safra = cultivo
@@ -172,6 +206,9 @@ const abrirModalEncerrarSafra = (id, cultivo, inicio, fim) => {
     safraInput.data_fim = fim
 }
 const handleEncerrarSafra = async () => {
+
+    if (!limitarForm.value) return
+    limitarForm.value = false
 
     // Pega a data de hoje e formata
     const today = new Date();
@@ -204,10 +241,18 @@ const handleEncerrarSafra = async () => {
 
 }
 
+const precoFormatar = (valor) => {
+    safraInput.valor_unitario = paraRealInput(valor)
+}
+const despesasFormatar = (valor) => {
+    safraInput.despeza = paraRealInput(valor)
+}
+
+
 </script>
 
 <template>
-    <div>
+    <div class="overflow-y-hidden">
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
             <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Safras | </h1>
@@ -345,6 +390,10 @@ const handleEncerrarSafra = async () => {
             <Transition name="pop">
 
                 <ModalNovaSafra v-if="showModalNovo" @novaSafra="handleSubmitNovaSafra" @close="fecharModalNovaSafra">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                            campos obrigatórios</h1>
+                    </Transition>
                     <div class="flex justify-evenly w-full">
                         <div class="flex flex-col w-[40%]">
 
@@ -418,13 +467,13 @@ const handleEncerrarSafra = async () => {
                                 <label
                                     class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                                     Quantidade
-                                    estimada<b v-if="safraInput.grandeza"> | {{
-                                        formatar(safraInput.grandeza)
+                                    estimada<b class="text-[.7rem]" v-if="safraInput.grandeza"> | {{
+                                        formatar(safraInput.grandeza) + ' / por hectare'
                                     }}</b></label>
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="number" v-model="safraInput.valor_unitario"
+                                <input type="text" v-on:input="precoFormatar(safraInput.valor_unitario)" v-model="safraInput.valor_unitario"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label
@@ -434,7 +483,7 @@ const handleEncerrarSafra = async () => {
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="number" v-model="safraInput.despeza"
+                                <input type="text" v-on:input="despesasFormatar(safraInput.despeza)" v-model="safraInput.despeza"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
 
@@ -448,23 +497,23 @@ const handleEncerrarSafra = async () => {
                                 <p class="text-md text-claro">| Lucro estimado: <br>
                                     <b
                                         v-if="safraInput.quantidade != '' && safraInput.valor_unitario != '' && safraInput.despeza != ''">
-                                        <span :class="`text-${corLucro(parseFloat(safraInput.quantidade) * parseFloat(safraInput.valor_unitario) -
-                                            parseFloat(safraInput.despeza))}`">
+                                        <span :class="`text-${corLucro(parseFloat(safraInput.quantidade) * paraFloat(safraInput.valor_unitario) -
+                                                paraFloat(safraInput.despeza))}`">
                                             {{
                                                 paraReal(parseFloat(safraInput.quantidade) *
-                                                    parseFloat(safraInput.valor_unitario) -
-                                                    parseFloat(safraInput.despeza)) }}
+                                                    paraFloat(safraInput.valor_unitario) -
+                                                    paraFloat(safraInput.despeza)) }}
                                         </span>
                                     </b>
                                 </p>
                                 <p class="text-md text-claro">| Receita estimada: <br> <b
                                         v-if="safraInput.quantidade && safraInput.valor_unitario"
                                         class="text-verde_claro">{{ paraReal(parseFloat(safraInput.quantidade) *
-                                            parseFloat(safraInput.valor_unitario)) }}
+                                            paraFloat(safraInput.valor_unitario)) }}
                                     </b> </p>
                                 <p class="text-md text-claro">| Despezas estimadas: <br> <b v-if="safraInput.despeza != ''"
                                         class="text-vermelho"> -{{
-                                            paraReal(parseFloat(safraInput.despeza)) }}</b></p>
+                                            paraReal(paraFloat(safraInput.despeza)) }}</b></p>
                             </div>
                         </div>
                     </div>
@@ -486,6 +535,10 @@ const handleEncerrarSafra = async () => {
             <Transition name="pop">
                 <ModalAdicionarColheita v-if="showModalColheita" @close="showModalColheita = false"
                     @adicionarColheita="handleAdicionarColheita">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                            campos obrigatórios</h1>
+                    </Transition>
                     <div class="relative z-0 w-full mb-6 group">
 
                         <input type="number" v-model="safraInput.quantidade"

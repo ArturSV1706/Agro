@@ -14,6 +14,7 @@ const usuarioResponse = ref();
 usuarioResponse.value = await supabase.from("usuario").select()
 // ----//----
 
+const limitarForm = ref();
 const maquinasResponse = ref();
 const combustiveisResponse = ref();
 const safraResponse = ref();
@@ -32,6 +33,7 @@ const showModalDeletar = ref()
 const showModalMaquinaEmUso = ref()
 const showModalAbastecer = ref()
 const showModalManutencao = ref()
+const showPreencha = ref()
 
 
 const showModalAdicionarCombustivel = ref()
@@ -77,6 +79,9 @@ const handleNovoMaquina = () => {
     maquinaInput.valor_parcelas = ""
     maquinaInput.num_parcelas = ""
     maquinaInput.data_pagamento_parcelas = ""
+    limitarForm.value = true
+    showPreencha.value = false
+
 }
 const handleDeleteMaquina = async (id, modelo, ano, status) => {
     maquinaInput.id = id
@@ -104,6 +109,9 @@ const handleDeleteMaquina = async (id, modelo, ano, status) => {
 
 }
 const handleSubmitDeleteMaquina = async () => {
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
     await supabase.from("maquinas").delete().eq('id', maquinaInput.id)
     if (process.client) {
         maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id)
@@ -115,16 +123,21 @@ const handleSubmitDeleteMaquina = async () => {
 }
 
 const handleNovoCombustivel = () => {
+    showPreencha.value = false
+    limitarForm.value = true
     showModalAdicionarCombustivel.value = true
     combustivelInput.nome = ""
     combustivelInput.quantidade = ""
 }
 const handleDeleteCombustivel = (id) => {
+    limitarForm.value = true
     combustivelInput.id = id
     showModalDeletarCombustivel.value = true
 }
 
 const handleReporCombustivel = (id, quantidade, nome) => {
+    showPreencha.value = false
+    limitarForm.value = true
     combustivelInput.id = id
     combustivelInput.quantidade = quantidade
     combustivelInput.nome = nome
@@ -143,6 +156,9 @@ const limitarCombustivelInput = async () => {
 
 }
 const handleSubmitDeletarCombustivel = async () => {
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
     await supabase.from("combustiveis").delete().eq('id', combustivelInput.id)
     showModalDeletarCombustivel.value = false
     if (process.client) {
@@ -151,6 +167,8 @@ const handleSubmitDeletarCombustivel = async () => {
 
 }
 const handleAbastecer = async (id, modelo, ano) => {
+    showPreencha.value = false
+    limitarForm.value = true
     if (process.client) {
         combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
     }
@@ -161,7 +179,8 @@ const handleAbastecer = async (id, modelo, ano) => {
 
 }
 const handleManutencao = async (id, modelo, ano) => {
-
+    showPreencha.value = false
+    limitarForm.value = true
     maquinaInput.id = id
     maquinaInput.modelo = modelo
     maquinaInput.ano = ano
@@ -169,6 +188,11 @@ const handleManutencao = async (id, modelo, ano) => {
 
 }
 const handleSubmitAbastecer = async () => {
+    if(combustivelInput.quantidade_repor && combustivelInput.id){
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
+
     if (process.client) {
         if (parseFloat(combustivelInput.quantidade_repor) > 0) {
             await supabase.from("combustiveis").update({
@@ -188,9 +212,19 @@ const handleSubmitAbastecer = async () => {
 
 
     showModalAbastecer.value = false
+    showPreencha.value = false
+}else{
+    showPreencha.value = true
+}
 
 }
 const handleSubmitManutencao = async () => {
+    if(maquinaInput.valor_manutencao && combustivelInput.safra_id){
+        console.log(paraFloat(maquinaInput.valor_manutencao)+ " " + combustivelInput.safra_id)
+
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
     if (process.client) {
         if (paraFloat(maquinaInput.valor_manutencao) > 0) {
             await supabase.from("fluxo").insert({
@@ -206,19 +240,28 @@ const handleSubmitManutencao = async () => {
         combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
     }
 
-    combustivelInput.id = ""
-    combustivelInput.nome = ""
-    combustivelInput.quantidade = ""
-    combustivelInput.quantidade_repor = ""
-    maquinaInput.id = ""
-    maquinaInput.modelo = ""
-    maquinaInput.ano = ""
+    maquinaInput.valor_manutencao = ''
+    combustivelInput.safra_id = ''
+    maquinaInput.id = ''
 
 
-    showModalAbastecer.value = false
+    showModalManutencao.value = false
+    showPreencha.value = false
+}else{
+    showPreencha.value = true
+}
 
 }
 const handleSubmitNovoMaquina = async () => {
+    if(maquinaInput.categoria && maquinaInput.modelo && maquinaInput.ano){
+    if(!maquinaInput.is_pago){
+        if(!maquinaInput.valor_parcelas || !maquinaInput.num_parcelas || !maquinaInput.data_pagamento_parcelas){
+            showPreencha.value = true
+            return 
+        }
+    }
+    if (!limitarForm.value) return
+    limitarForm.value = false
 
     if (process.client) {
 
@@ -228,7 +271,7 @@ const handleSubmitNovoMaquina = async () => {
             modelo: maquinaInput.modelo,
             ano: maquinaInput.ano,
             is_pago: maquinaInput.is_pago,
-            valor_parcelas: parseFloat(maquinaInput.valor_parcelas.replace(".", "").replace(",", ".")),
+            valor_parcelas: paraFloat(maquinaInput.valor_parcelas),
             num_parcelas: parseInt(maquinaInput.num_parcelas),
             data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas),
             user_id: user.value.id
@@ -244,26 +287,41 @@ const handleSubmitNovoMaquina = async () => {
         maquinaInput.valor_parcelas = "",
         maquinaInput.num_parcelas = ""
     showModalAdicionar.value = false
+    showPreencha.value = false
+
+}else{
+    showPreencha.value = true
 }
-const handleSubmitNovoCombustivel = async () => {
+}
+const handleSubmitNovoCombustivel = async (event) => {
+    if (!limitarForm.value) return
+    limitarForm.value = false
 
-    if (process.client) {
+    if (combustivelInput.nome && combustivelInput.quantidade) {
 
-        await supabase.from("combustiveis").insert({
-            nome: combustivelInput.nome,
-            quantidade: parseFloat(combustivelInput.quantidade),
-            user_id: user.value.id
-        });
-        combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+        if (process.client) {
+
+            await supabase.from("combustiveis").insert({
+                nome: combustivelInput.nome,
+                quantidade: parseFloat(combustivelInput.quantidade),
+                user_id: user.value.id
+            });
+            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+        }
+
+        combustivelInput.id = "",
+            combustivelInput.nome = "",
+            combustivelInput.quantidade = "",
+            showModalAdicionarCombustivel.value = false
+    }else{
+        showPreencha.value = true
     }
 
-    combustivelInput.id = "",
-        combustivelInput.nome = "",
-        combustivelInput.quantidade = "",
-
-        showModalAdicionarCombustivel.value = false
 }
 const handleSubmitReporCombustivel = async () => {
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
     if (process.client) {
 
         await supabase.from("combustiveis").update({
@@ -272,12 +330,12 @@ const handleSubmitReporCombustivel = async () => {
         }).eq('id', combustivelInput.id);
 
 
-        if (parseFloat(combustivelInput.custo) > 0) {
+        if (paraFloat(combustivelInput.custo) > 0) {
             if (process.client) {
                 await supabase.from("fluxo").insert({
                     categoria: "combustivel",
                     produto: combustivelInput.nome,
-                    valor: parseFloat(combustivelInput.custo),
+                    valor: paraFloat(combustivelInput.custo),
                     tipo_fluxo: "saida",
                     safra_id: combustivelInput.safra_id,
                     user_id: user.value.id
@@ -299,13 +357,25 @@ const handleSubmitReporCombustivel = async () => {
 }
 const handleSubmitEditarMaquina = async () => {
 
+    if(maquinaInput.categoria && maquinaInput.modelo && maquinaInput.ano){
+    if(!maquinaInput.is_pago){
+        if(!maquinaInput.valor_parcelas || !maquinaInput.num_parcelas || !maquinaInput.data_pagamento_parcelas){
+            showPreencha.value = true
+            return 
+        }
+    }
+    
+    if (!limitarForm.value) return
+    limitarForm.value = false
+
+
     if (!maquinaInput.is_pago) {
         await supabase.from("maquinas").update({
             categoria: maquinaInput.categoria,
             modelo: maquinaInput.modelo,
             ano: maquinaInput.ano,
             is_pago: maquinaInput.is_pago,
-            valor_parcelas: parseFloat(maquinaInput.valor_parcelas.replace(".", "").replace(",", ".")),
+            valor_parcelas: paraFloat(maquinaInput.valor_parcelas),
             num_parcelas: parseInt(maquinaInput.num_parcelas),
             data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas),
 
@@ -336,6 +406,11 @@ const handleSubmitEditarMaquina = async () => {
         maquinaInput.valor_parcelas = "",
         maquinaInput.num_parcelas = ""
     showModalEditar.value = false
+    showPreencha.value = false
+
+}else{
+    showPreencha.value = true
+}
 }
 const handleModalEditar = (categoria,
     modelo,
@@ -346,7 +421,8 @@ const handleModalEditar = (categoria,
     data_pagamento_parcelas, id) => {
 
     showModalEditar.value = true
-
+    showPreencha.value = false
+    limitarForm.value = true
     maquinaInput.categoria = categoria
     maquinaInput.modelo = modelo
     maquinaInput.ano = ano
@@ -477,6 +553,13 @@ const valorManutencaoFormatar = (valor) => {
     maquinaInput.valor_manutencao = paraRealInput(valor)
 }
 
+const valorParcelaFormatar = (valor) => {
+    maquinaInput.valor_parcelas = paraRealInput(valor)
+}
+const valorCombustivelFormatar = (valor) => {
+    combustivelInput.custo = paraRealInput(valor)
+}
+
 </script>
 <template>
     <div>
@@ -492,8 +575,8 @@ const valorManutencaoFormatar = (valor) => {
 
         <loader class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             v-if="!maquinasResponse || !combustiveisResponse" />
-        <div v-if="maquinasResponse && combustiveisResponse" class="flex flex-col w-full items-center first:items-start">
-            <div class="flex flex-col w-[70%] mt-[5%]">
+        <div v-if="maquinasResponse && combustiveisResponse" class="sm:scale-[80%] 2xl:scale-100 flex flex-col w-full items-center first:items-start">
+            <div class="flex flex-col w-[70%] sm:mt-[-6%] 2xl:mt-[1%]">
                 <div class="flex items-center">
                     <p class="whitespace-nowrap text-escuro font-bold text-2xl">Veículos e Máquinas 🚜 </p>
                     <div class="flex w-full h-1 bg-escuro ml-4"></div>
@@ -552,54 +635,7 @@ const valorManutencaoFormatar = (valor) => {
                                     </span>
 
                                 </td>
-                                <Transition name="pop">
-                                    <ModalEditarMaquina v-if="showModalEditar" @close="showModalEditar = false"
-                                        @editarMaquina="handleSubmitEditarMaquina">
-                                        <div class="flex flex-col">
-
-                                            <label for="nome">Categoria do máquina</label>
-                                            <select v-model="maquinaInput.categoria" type="text"
-                                                placeholder="João da silva">
-                                                <option value="tratores">Tratores</option>
-                                                <option value="ceifadeira/colheitadeira">Ceifadeira ou Colheitadeira
-                                                </option>
-                                                <option value="atv/utv">ATVs ou UTVs</option>
-                                                <option value="acessorios/trator">Assessórios para trator</option>
-                                                <option value="arados">Arados</option>
-                                                <option value="distribuidores_de_fertilizante">Distribuidores De
-                                                    Fertilizante
-                                                </option>
-                                                <option value="semeadores">Semeadores</option>
-                                                <option value="enfardadeiras">Enfardadeiras</option>
-                                                <option value="vagoes/reboque">Vagões ou reboque</option>
-                                                <option value="outro">Outro</option>
-                                            </select>
-                                            <label for="cargo">Modelo</label>
-                                            <input v-model="maquinaInput.modelo" type="text" placeholder="João da silva">
-                                            <label for="numero">numero</label>
-                                            <input v-model="maquinaInput.ano" type="text" placeholder="João da silva">
-                                            <label for="recebe_salario">Está Pago?</label>
-                                            <input v-model="maquinaInput.is_pago" type="checkbox"
-                                                placeholder="João da silva" name="recebe_salario">
-
-                                            <Transition name="pop">
-                                                <div v-if="!maquinaInput.is_pago" class="flex flex-col">
-                                                    <label for="salario">Parcelas Restantes</label>
-                                                    <input v-model="maquinaInput.num_parcelas" type="text"
-                                                        placeholder="João da silva" name="salario">
-                                                    <label for="salario">Valor da parcela</label>
-                                                    <input v-model="maquinaInput.valor_parcelas" type="text"
-                                                        placeholder="João da silva" name="salario">
-                                                    <label for="data_pagamento_salario">Dia de pagamento parcela</label>
-                                                    <select v-model="maquinaInput.data_pagamento_parcelas"
-                                                        placeholder="João da silva" name="data_pagamento_salario">
-                                                        <option v-for="i in 28" v-bind:value=i>{{ i }} </option>
-                                                    </select>
-                                                </div>
-                                            </Transition>
-                                        </div>
-                                    </ModalEditarMaquina>
-                                </Transition>
+                                <!--  -->
                             </tr>
                         </tbody>
                     </table>
@@ -680,7 +716,7 @@ const valorManutencaoFormatar = (valor) => {
                         </tbody>
                     </table>
                     <div v-if="maquinasResponse"
-                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl ">
+                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
                         <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
                             &lt-
                             Anterior </button>
@@ -718,6 +754,10 @@ const valorManutencaoFormatar = (valor) => {
         <Transition name="pop">
             <ModalNovoMaquina v-if="showModalAdicionar" @close="showModalAdicionar = false"
                 @adicionarMaquina="handleSubmitNovoMaquina">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
                 <div class="flex flex-col">
                     <div class="relative z-0 w-full mb-6 group">
 
@@ -791,7 +831,7 @@ const valorManutencaoFormatar = (valor) => {
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-model="maquinaInput.valor_parcelas" name="floating_email"
+                                <input type="text" v-on:input="valorParcelaFormatar(maquinaInput.valor_parcelas)" v-model="maquinaInput.valor_parcelas" name="floating_email"
                                     id="floating_email"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
@@ -821,6 +861,11 @@ const valorManutencaoFormatar = (valor) => {
         <Transition name="pop">
             <ModalEditarMaquina v-if="showModalEditar" @close="showModalEditar = false"
                 @editarMaquina="handleSubmitEditarMaquina">
+
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
                 <div class="flex flex-col">
                     <div class="relative z-0 w-full mb-6 group">
 
@@ -894,7 +939,7 @@ const valorManutencaoFormatar = (valor) => {
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-model="maquinaInput.valor_parcelas" name="floating_email"
+                                <input type="text" v-on:input="valorParcelaFormatar(maquinaInput.valor_parcelas)" v-model="maquinaInput.valor_parcelas" name="floating_email"
                                     id="floating_email"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
@@ -923,9 +968,12 @@ const valorManutencaoFormatar = (valor) => {
         </Transition>
         <Transition name="pop">
             <ModalAdicionarCombustivel v-if="showModalAdicionarCombustivel" @close="showModalAdicionarCombustivel = false"
-                @adicionarCombustivel="handleSubmitNovoCombustivel">
+                @adicionarCombustivel="handleSubmitNovoCombustivel($event)">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
                 <div class="flex flex-col">
-
                     <div class="relative z-0 w-full mb-6 group">
 
                         <input type="text" v-model="combustivelInput.nome" name="floating_email" id="floating_email"
@@ -948,6 +996,7 @@ const valorManutencaoFormatar = (valor) => {
                     <h1 class="text-claro font-medium">❗ Obs: O combustível adicionado aqui <b class="text-vermelho">não
                             criará uma entrada de despesa</b> , caso seja uma compra adicione a quantidade <b
                             class="text-vermelho">0</b> e posteriormente a compra</h1>
+
                 </div>
             </ModalAdicionarCombustivel>
         </Transition>
@@ -963,13 +1012,13 @@ const valorManutencaoFormatar = (valor) => {
             </ModalDeletarMaquina>
         </Transition>
 
-            <Transition name="pop">
-                <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
-                    <h2 class="text-center text-claro text-2xl font-semibold">Este Item está registrado em uma tarefa, não
-                        pode ser
-                        deletado.</h2>
-                </ModalDeletarNegado>
-            </Transition>
+        <Transition name="pop">
+            <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
+                <h2 class="text-center text-claro text-2xl font-semibold">Este Item está registrado em uma tarefa, não
+                    pode ser
+                    deletado.</h2>
+            </ModalDeletarNegado>
+        </Transition>
 
         <Transition name="pop">
             <ModalAlerta v-if="showModalMaquinaEmUso" @close="showModalMaquinaEmUso = false">
@@ -989,6 +1038,10 @@ const valorManutencaoFormatar = (valor) => {
         <Transition name="pop">
             <ModalReporCombustivel v-if="showModalReporCombustivel" @close="showModalReporCombustivel = false"
                 @reporCombustivel="handleSubmitReporCombustivel">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
                 <h1 class="text-xl text-claro">Quantidade atual: {{ combustivelInput.quantidade }}</h1>
                 <div class="relative z-0 w-full mb-6 group">
                     <input type="text" v-model="combustivelInput.quantidade_repor" name="floating_email" id="floating_email"
@@ -1002,7 +1055,7 @@ const valorManutencaoFormatar = (valor) => {
                 <div v-else-if="safraResponse.data != ''">
                     <div class="relative z-0 w-full mb-6 group">
 
-                        <input type="text" v-model="combustivelInput.custo" name="floating_email" id="floating_email"
+                        <input type="text" v-on:input="valorCombustivelFormatar(combustivelInput.custo)" v-model="combustivelInput.custo" name="floating_email" id="floating_email"
                             class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                             placeholder=" " required>
                         <label for="floating_email"
@@ -1030,6 +1083,11 @@ const valorManutencaoFormatar = (valor) => {
         <Transition name="pop">
             <ModalAbastecerMaquina v-if="showModalAbastecer" @close="showModalAbastecer = false"
                 @abastecerMaquina="handleSubmitAbastecer">
+
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
 
                 <h1 class="capitalize text-center text-2xl text-claro font-bold">{{
                     maquinaInput.modelo + " - " +
@@ -1063,6 +1121,11 @@ const valorManutencaoFormatar = (valor) => {
         <Transition name="pop">
             <ModalAdicionarManutencao v-if="showModalManutencao" @close="showModalManutencao = false"
                 @adicionarManutencao="handleSubmitManutencao">
+
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
 
                 <h1 class="capitalize text-center text-2xl text-claro font-bold">{{
                     maquinaInput.modelo + " - " +
@@ -1099,4 +1162,5 @@ const valorManutencaoFormatar = (valor) => {
 
             </ModalAdicionarManutencao>
         </Transition>
-</div></template>
+    </div>
+</template>

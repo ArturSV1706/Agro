@@ -91,8 +91,15 @@ const useUtils = () => {
     // replace decimal separator with dot
     const dotValue = strippedValue.replace(/\./g, "");
 
+
+  
+
+    // if (dotValue.slice(-2) === '00') {
+    //   dotValue = dotValue.slice(0, -2)   
+    //  }
+    
     // convert to float
-    const floatValue = parseFloat(dotValue);
+    const floatValue = parseFloat(dotValue) /100;
 
     return floatValue
   }
