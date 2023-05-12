@@ -56,20 +56,21 @@ const data = {
 };
 const options = ref({
     responsive: true,
-    plugins: {
+    maintainAspectRatio: true,
+        plugins: {
         legend: {
-            position: 'bottom',
+            position: 'top',
             labels: {
                 color: "#0F2A25",
                 font: {
-                    size: 11,
+                    size: 9,
                     weight: 550,
 
                 }
             }
         },
         layout: {
-            autoPadding: false
+            autoPadding: true,
         }
     },
 });

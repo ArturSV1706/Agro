@@ -39,12 +39,9 @@ const showFluxo = ref()
 const showModalDeletar = ref()
 const showModalEditar = ref()
 const limitarForm = ref()
+const showPreencha = ref()
 
-function limitarFormFunc() {
-    if (!limitarForm.value) {
-        limitarForm.value = true
-    }
-}
+
 
 // Paginação
 

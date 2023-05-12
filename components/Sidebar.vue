@@ -2,7 +2,7 @@
 
 </script>
 <template>
-    <div class=" group/main flex flex-col align-middle fixed z-20 w-[85px] sm:h-[80%] 2xl:h-[70%] ml-[15px] rounded-2xl bg-escuro top-1/2 transform -translate-y-1/2 transition-all
+    <div class=" group/main flex flex-col align-middle fixed z-20 w-[85px] sm:h-[90%] 2xl:h-[70%] ml-[15px] rounded-2xl bg-escuro top-1/2 transform -translate-y-1/2 transition-all
     hover:w-[230px] hover:justify-start hover:border-claro hover:border-[1px]">
         <div class="flex items-center justify-start mt-6 ml-[2px] ">
             <img src="../assets/icons/saffron.svg" alt="" class=" scale-[55%] max-w-[80px]">
@@ -13,7 +13,7 @@
                     group-hover/main:items-start group-hover/main:ml-[16px]">
             <li class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
-                <NuxtLink to="/" class="flex items-center">
+                <NuxtLink to="/" class="flex items-center  group-hover/main:w-full">
 
                     <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                         xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -26,7 +26,7 @@
             </li>
             <li id="test" class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
-                <NuxtLink to="/safras" class="flex items-center">
+                <NuxtLink to="/safras" class="flex items-center group-hover/main:w-full">
 
                     <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                         xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -39,7 +39,7 @@
             </li>
             <li id="test" class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
-                <NuxtLink to="/estoque" class="flex items-center">
+                <NuxtLink to="/estoque" class="flex items-center group-hover/main:w-full">
                     <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                         xmlns="http://www.w3.org/2000/svg" height="48" width="48">
                         <path
@@ -51,7 +51,7 @@
             </li>
             <li id="test" class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
-                <NuxtLink to="/tarefas" class="flex items-center">
+                <NuxtLink to="/tarefas" class="flex items-center group-hover/main:w-full">
 
                     <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                         xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -64,7 +64,7 @@
             </li>
             <li id="test" class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
-                <NuxtLink to="/financeiro" class="flex items-center">
+                <NuxtLink to="/financeiro" class="flex items-center group-hover/main:w-full">
 
                     <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                         xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -77,7 +77,7 @@
             </li>
             <li id="test" class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
-                <NuxtLink to="/funcionarios" class="flex items-center">
+                <NuxtLink to="/funcionarios" class="flex items-center group-hover/main:w-full">
 
                     <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                         xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -90,7 +90,7 @@
             </li>
             <li id="test" class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
-                <NuxtLink to="/maquinas" class="flex items-center">
+                <NuxtLink to="/maquinas" class="flex items-center group-hover/main:w-full">
 
                     <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                         xmlns="http://www.w3.org/2000/svg" height="48" width="48">

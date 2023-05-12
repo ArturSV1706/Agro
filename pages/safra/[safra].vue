@@ -103,26 +103,27 @@ const calcMargemDeLucro = (receita, lucro) => {
     <div v-if="safraResponse" class="flex w-full h-screen  justify-center overflow-hidden mt-[-30px]">
         <div class="flex flex-col justify-evenly h-full w-[30%]  p-3 ">
             
-            <div  class="bg-white w-full  rounded-xl shadow-xl">
+            <div  class="bg-white sm:scale-90 2xl:scale-100 sm:w-[110%] 2xl:w-full self-center  rounded-xl shadow-xl">
                 <Loader v-if="!sementesResponse" />
                 <div class="flex flex-col items-center justify-around" v-if="sementesResponse"
                 v-for="safra in safraResponse.data" :key="safra.id">
                 <div class="flex flex-col leading- items-center mt-6 ">
-                    <h1 class="text-xl text-escuro font-semibold "> <b class="text-vermelho font-bold  text-2xl"> {{
-                        paraReal(safra.despeza_real)
-                    }} </b></h1>
-                    <h3 class="text-escuro text-lg font-semibold">Despesas (total)</h3>
+                    
                     <ClientOnly >
                         <GraficoRosca class="" :sementes=sementesResponse.data :fertilizantes=fertilizantesResponse.data
                         :defensivos=defensivosResponse.data :outros=outrosResponse.data
                         :funcionarios=funcionariosResponse.data :combustiveis=combustiveisResponse.data :manutencoes=manutencoesResponse.data />
                     </ClientOnly>
+                    <h1 class="text-xl text-escuro font-semibold "> <b class="text-vermelho font-bold  sm:text-lg 2xl:text-2xl"> {{
+                        paraReal(safra.despeza_real)
+                    }} </b></h1>
+                    <h3 class="text-escuro sm:text-sm 2xl:text-lg font-semibold">Despesas (total)</h3>
                 </div>
                 </div>
             </div>
             <Loader v-if="!safraResponse" />
             <div v-if="safraResponse" v-for="safra in safraResponse.data" :key="safra.id"
-                class="flex flex-col justify-evenly bg-white w-full h-[40%] p-5 rounded-xl shadow-xl ">
+                class="flex flex-col justify-evenly bg-white w-full sm:h-[35%] 2xl:h-[40%] sm:p-2 2xl:p-5 rounded-xl shadow-xl ">
                 <h1 class="sm:text-lg 2xl:text-2xl font-bold text-escuro self-center">Estimativas</h1>
                 <div class="flex w-full justify-evenly">
                     <button @click="mostrarEstimativas('despesas')"

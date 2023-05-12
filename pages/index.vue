@@ -173,16 +173,16 @@ function formatarTipoFluxoCor(a) {
             </div>
 
 
-            <div class="flex flex-col items-center pt-[1%] bg-white rounded-2xl shadow row-span-2 h-[45vh] space-y-2">
-                <h1 class=" text-xl text-escuro font-bold text-center"> <span class="text-2xl">📈</span>| Últimas movimentações - <NuxtLink to="/financeiro" class="text-verde cursor-pointer transition-all hover:text-[1.5rem]">Ver Todas</NuxtLink></h1>
+            <div class="flex flex-col  items-center pt-[1%] bg-white rounded-2xl shadow row-span-2 h-[45vh] space-y-2">
+                <h1 class=" sm:text-md 2xl:text-xl text-escuro font-bold text-center"> <span class="sm:text-lg 2xl:text-2xl">📈</span>| Últimas movimentações - <NuxtLink to="/financeiro" class="text-verde cursor-pointer transition-all hover:text-[1.5rem]">Ver Todas</NuxtLink></h1>
                 
                 <div v-if="fluxoResponse" v-for="fluxo in fluxoResponse.data" :key="fluxo.id"
-                class="flex justify-evenly w-[90%] h-[10%] bg-claro border-l-8 border-escuro">
-                    <p class="sm:text-xs 2xl:text-lg p-2 text-left font-semibold"> {{ formatarData(fluxo.data_criacao) }}</p>
+                class="flex justify-evenly w-[90%] sm:h-[8%] 2xl:h-[10%] bg-claro border-l-8 border-escuro">
+                    <p class="sm:text-[10px] 2xl:text-lg p-2 text-left font-semibold"> {{ formatarData(fluxo.data_criacao) }}</p>
                     <p>---</p>
-                    <p class="sm:text-xs 2xl:text-lg  p-2 text-center font-semibold">{{ fluxo.safras.cultivo + " (" + fluxo.safras.data_inicio + " - " + fluxo.safras.data_fim + ")"}}</p>
+                    <p class="sm:text-[10px] 2xl:text-lg  p-2 text-center font-semibold">{{ fluxo.safras.cultivo + " (" + fluxo.safras.data_inicio + " - " + fluxo.safras.data_fim + ")"}}</p>
                     <p>---</p>
-                    <p :class="`sm:text-xs 2xl:text-lg  p-2 text-center font-semibold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">{{paraReal(fluxo.valor) + formatarTipoFluxo(fluxo.tipo_fluxo) }}</p>
+                    <p :class="`sm:text-[10px] 2xl:text-lg  p-2 text-center font-semibold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">{{paraReal(fluxo.valor) + formatarTipoFluxo(fluxo.tipo_fluxo) }}</p>
                 </div>
             </div>
         </div>
