@@ -1,5 +1,7 @@
 <script setup>
 
+
+
 definePageMeta({
         middleware: "auth"
     })
@@ -14,6 +16,11 @@ const maquinasResponse = ref();
 const estoqueResponse = ref();
 const safrasAtivasResponse = ref();
 const fluxoResponse = ref();
+
+
+
+
+
 
 
 
@@ -81,10 +88,11 @@ function formatarTipoFluxoCor(a) {
 
 <template>
     <div class=" flex flex-col pb-2 ml-[5%] mt-[.8%]">
+
         <!-- Título -->
         <div class="flex flex-row items-center fixed top-4 left-4">
-            <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Painel</h1>
-            <h1 class="text-3xl">📊</h1>
+            <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Painel |</h1>
+            <h1 class="sm:text-lg 2xl:text-3xl">📊</h1>
         </div>
 
         <div class="grid grid-cols-2 grid-rows-2 gap-4  w-[97%]">

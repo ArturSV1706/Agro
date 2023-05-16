@@ -63,23 +63,45 @@ const useUtils = () => {
   }
   function paraRealInput(valor) {
     let x = valor;
-    let length = valor.length;
 
-    x = x.replace(/[^0-9]/g, "");
-    if (length >= 14)
-      x = x.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
-    if (length >= 13)
-      x = x.replace(/^(\d{2})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
-    if (length >= 11)
-      x = x.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
-    if (length >= 10) x = x.replace(/^(\d{3})(\d{3})(\d{2})$/, "$1.$2,$3");
-    if (length >= 9) x = x.replace(/^(\d{2})(\d{3})(\d{2})$/, "$1.$2,$3");
-    if (length >= 7) x = x.replace(/^(\d{1})(\d{3})(\d{2})$/, "$1.$2,$3");
-    if (length >= 6) x = x.replace(/^(\d{3})(\d{2})$/, "$1,$2");
-    if (length >= 5) x = x.replace(/^(\d{2})(\d{2})$/, "$1,$2");
-    if (length >= 3) x = x.replace(/^(\d{1})(\d{2})$/, "$1,$2");
+    // remove currency symbol and thousands separator
+    const strippedValue = x.replace(/[R$,]/g, ".");
 
-    return "R$" + x;
+    // replace decimal separator with dot
+    const dotValue = strippedValue.replace(/\./g, "");
+    
+    const floatValue = parseFloat(dotValue)/100;
+    if (isNaN(floatValue)) {
+      return '';
+    }
+
+    const formatoMoeda = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+    });
+
+    return formatoMoeda.format(floatValue);
+
+
+
+    // let length = valor.length;
+
+    // x = x.replace(/[^0-9]/g, "");
+    // if (length >= 14)
+    //   x = x.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
+    // if (length >= 13)
+    //   x = x.replace(/^(\d{2})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
+    // if (length >= 11)
+    //   x = x.replace(/^(\d{1})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3,$4");
+    // if (length >= 10) x = x.replace(/^(\d{3})(\d{3})(\d{2})$/, "$1.$2,$3");
+    // if (length >= 9) x = x.replace(/^(\d{2})(\d{3})(\d{2})$/, "$1.$2,$3");
+    // if (length >= 7) x = x.replace(/^(\d{1})(\d{3})(\d{2})$/, "$1.$2,$3");
+    // if (length >= 6) x = x.replace(/^(\d{3})(\d{2})$/, "$1,$2");
+    // if (length >= 5) x = x.replace(/^(\d{2})(\d{2})$/, "$1,$2");
+    // if (length >= 3) x = x.replace(/^(\d{1})(\d{2})$/, "$1,$2");
+
+    // return "R$" + x;
   }
   function paraFloat(valor) {
     // input value
@@ -91,14 +113,6 @@ const useUtils = () => {
     // replace decimal separator with dot
     const dotValue = strippedValue.replace(/\./g, "");
 
-
-  
-
-    // if (dotValue.slice(-2) === '00') {
-    //   dotValue = dotValue.slice(0, -2)   
-    //  }
-    
-    // convert to float
     const floatValue = parseFloat(dotValue) /100;
 
     return floatValue

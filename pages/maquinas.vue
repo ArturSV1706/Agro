@@ -6,7 +6,7 @@ definePageMeta({
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
-const { paraRealInput, paraFloat } = useUtils()
+const { paraRealInput, paraFloat, paraReal } = useUtils()
 
 
 // Evita erro de carregamento
@@ -22,7 +22,7 @@ const abastecerCombustivelResponse = ref();
 
 
 if (process.client) {
-    maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id)
+    maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id).order('modelo', { ascending: true })
     combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
     safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
 }
@@ -33,6 +33,7 @@ const showModalDeletar = ref()
 const showModalMaquinaEmUso = ref()
 const showModalAbastecer = ref()
 const showModalManutencao = ref()
+const showModalPagarParcela = ref()
 const showPreencha = ref()
 
 
@@ -187,111 +188,162 @@ const handleManutencao = async (id, modelo, ano) => {
     showModalManutencao.value = true
 
 }
-const handleSubmitAbastecer = async () => {
-    if(combustivelInput.quantidade_repor && combustivelInput.id){
-    if (!limitarForm.value) return
-    limitarForm.value = false
-
-
-    if (process.client) {
-        if (parseFloat(combustivelInput.quantidade_repor) > 0) {
-            await supabase.from("combustiveis").update({
-                quantidade: (parseFloat(combustivelInput.quantidade) - parseFloat(combustivelInput.quantidade_repor))
-
-            }).eq('id', combustivelInput.id);
-        }
-        combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
-    }
-    combustivelInput.id = ""
-    combustivelInput.nome = ""
-    combustivelInput.quantidade = ""
-    combustivelInput.quantidade_repor = ""
-    maquinaInput.id = ""
-    maquinaInput.modelo = ""
-    maquinaInput.ano = ""
-
-
-    showModalAbastecer.value = false
+const handlePagarParceclas = async (id, modelo, ano, valor, parcelas_restantes) => {
     showPreencha.value = false
-}else{
-    showPreencha.value = true
+    limitarForm.value = true
+    maquinaInput.id = id
+    maquinaInput.modelo = modelo
+    maquinaInput.ano = ano
+    maquinaInput.valor_parcelas = valor
+    maquinaInput.num_parcelas = parcelas_restantes
+    showModalPagarParcela.value = true
+
 }
+const handleSubmitAbastecer = async () => {
+    if (combustivelInput.quantidade_repor && combustivelInput.id) {
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+
+        if (process.client) {
+            if (parseFloat(combustivelInput.quantidade_repor) > 0) {
+                await supabase.from("combustiveis").update({
+                    quantidade: (parseFloat(combustivelInput.quantidade) - parseFloat(combustivelInput.quantidade_repor))
+
+                }).eq('id', combustivelInput.id);
+            }
+            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+        }
+        combustivelInput.id = ""
+        combustivelInput.nome = ""
+        combustivelInput.quantidade = ""
+        combustivelInput.quantidade_repor = ""
+        maquinaInput.id = ""
+        maquinaInput.modelo = ""
+        maquinaInput.ano = ""
+
+
+        showModalAbastecer.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
+    }
 
 }
 const handleSubmitManutencao = async () => {
-    if(maquinaInput.valor_manutencao && combustivelInput.safra_id){
-        console.log(paraFloat(maquinaInput.valor_manutencao)+ " " + combustivelInput.safra_id)
+    if (maquinaInput.valor_manutencao && combustivelInput.safra_id) {
+        console.log(paraFloat(maquinaInput.valor_manutencao) + " " + combustivelInput.safra_id)
 
-    if (!limitarForm.value) return
-    limitarForm.value = false
+        if (!limitarForm.value) return
+        limitarForm.value = false
 
-    if (process.client) {
-        if (paraFloat(maquinaInput.valor_manutencao) > 0) {
-            await supabase.from("fluxo").insert({
-                tipo_fluxo: "saida",
-                categoria: "manutencao",
-                // fornecedor: entradaInput.fornecedor,
-                produto: parseInt(maquinaInput.id),
-                valor: paraFloat(maquinaInput.valor_manutencao),
-                safra_id: combustivelInput.safra_id,
-                user_id: user.value.id
-            });
+        if (process.client) {
+            if (paraFloat(maquinaInput.valor_manutencao) > 0) {
+                await supabase.from("fluxo").insert({
+                    tipo_fluxo: "saida",
+                    categoria: "manutencao",
+                    // fornecedor: entradaInput.fornecedor,
+                    produto: parseInt(maquinaInput.id),
+                    valor: paraFloat(maquinaInput.valor_manutencao),
+                    safra_id: combustivelInput.safra_id,
+                    user_id: user.value.id
+                });
+            }
+            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
         }
-        combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+
+        maquinaInput.valor_manutencao = ''
+        combustivelInput.safra_id = ''
+        maquinaInput.id = ''
+
+
+        showModalManutencao.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
     }
-
-    maquinaInput.valor_manutencao = ''
-    combustivelInput.safra_id = ''
-    maquinaInput.id = ''
-
-
-    showModalManutencao.value = false
-    showPreencha.value = false
-}else{
-    showPreencha.value = true
-}
 
 }
 const handleSubmitNovoMaquina = async () => {
-    if(maquinaInput.categoria && maquinaInput.modelo && maquinaInput.ano){
-    if(!maquinaInput.is_pago){
-        if(!maquinaInput.valor_parcelas || !maquinaInput.num_parcelas || !maquinaInput.data_pagamento_parcelas){
-            showPreencha.value = true
-            return 
+    if (maquinaInput.categoria && maquinaInput.modelo && maquinaInput.ano) {
+        if (!maquinaInput.is_pago) {
+            if (!maquinaInput.valor_parcelas || !maquinaInput.num_parcelas || !maquinaInput.data_pagamento_parcelas) {
+                showPreencha.value = true
+                return
+            }
         }
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+        if (process.client) {
+
+            await supabase.from("maquinas").insert({
+                // id_fazenda: "",
+                categoria: maquinaInput.categoria,
+                modelo: maquinaInput.modelo,
+                ano: maquinaInput.ano,
+                is_pago: maquinaInput.is_pago,
+                valor_parcelas: paraFloat(maquinaInput.valor_parcelas),
+                num_parcelas: parseInt(maquinaInput.num_parcelas),
+                data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas),
+                user_id: user.value.id
+            });
+            maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id)
+        }
+
+
+        maquinaInput.categoria = "",
+            maquinaInput.ano = "",
+            maquinaInput.modelo = "",
+            maquinaInput.is_pago = false,
+            maquinaInput.valor_parcelas = "",
+            maquinaInput.num_parcelas = ""
+        showModalAdicionar.value = false
+        showPreencha.value = false
+
+    } else {
+        showPreencha.value = true
     }
-    if (!limitarForm.value) return
-    limitarForm.value = false
+}
+const handleSubmitPagarParcela = async (event) => {
+    
+    if (maquinaInput.safra_id) {
+
+if (!limitarForm.value) return
+limitarForm.value = false
+
+if (process.client) {
+
 
     if (process.client) {
-
-        await supabase.from("maquinas").insert({
-            // id_fazenda: "",
-            categoria: maquinaInput.categoria,
-            modelo: maquinaInput.modelo,
-            ano: maquinaInput.ano,
-            is_pago: maquinaInput.is_pago,
-            valor_parcelas: paraFloat(maquinaInput.valor_parcelas),
-            num_parcelas: parseInt(maquinaInput.num_parcelas),
-            data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas),
+        await supabase.from("fluxo").insert({
+            categoria: "parcela_maquina",
+            produto: "Parcela de : " + maquinaInput.modelo + " - " + maquinaInput.ano,
+            valor: maquinaInput.valor_parcelas,
+            tipo_fluxo: "saida",
+            safra_id: maquinaInput.safra_id,
             user_id: user.value.id
         });
-        maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id)
+
+        await supabase.from("maquinas").update({
+            num_parcelas: parseFloat(maquinaInput.num_parcelas) - 1
+        }).eq('id', maquinaInput.id);
+
+        maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id).order('modelo', { ascending: true })
+
     }
 
 
-    maquinaInput.categoria = "",
-        maquinaInput.ano = "",
-        maquinaInput.modelo = "",
-        maquinaInput.is_pago = false,
-        maquinaInput.valor_parcelas = "",
-        maquinaInput.num_parcelas = ""
-    showModalAdicionar.value = false
-    showPreencha.value = false
-
-}else{
-    showPreencha.value = true
 }
+
+maquinaInput.safra_id = ""
+
+showModalPagarParcela.value = false
+showPreencha.value = false
+}else{
+showPreencha.value = true
+}
+
 }
 const handleSubmitNovoCombustivel = async (event) => {
     if (!limitarForm.value) return
@@ -313,104 +365,110 @@ const handleSubmitNovoCombustivel = async (event) => {
             combustivelInput.nome = "",
             combustivelInput.quantidade = "",
             showModalAdicionarCombustivel.value = false
-    }else{
+    } else {
         showPreencha.value = true
     }
 
 }
 const handleSubmitReporCombustivel = async () => {
-    if (!limitarForm.value) return
-    limitarForm.value = false
+    if (combustivelInput.quantidade_repor && combustivelInput.custo && combustivelInput.safra_id) {
 
-    if (process.client) {
+        if (!limitarForm.value) return
+        limitarForm.value = false
 
-        await supabase.from("combustiveis").update({
-            quantidade: (parseFloat(combustivelInput.quantidade) + parseFloat(combustivelInput.quantidade_repor))
+        if (process.client) {
 
-        }).eq('id', combustivelInput.id);
+            await supabase.from("combustiveis").update({
+                quantidade: (parseFloat(combustivelInput.quantidade) + parseFloat(combustivelInput.quantidade_repor))
+
+            }).eq('id', combustivelInput.id);
 
 
-        if (paraFloat(combustivelInput.custo) > 0) {
-            if (process.client) {
-                await supabase.from("fluxo").insert({
-                    categoria: "combustivel",
-                    produto: combustivelInput.nome,
-                    valor: paraFloat(combustivelInput.custo),
-                    tipo_fluxo: "saida",
-                    safra_id: combustivelInput.safra_id,
-                    user_id: user.value.id
-                });
+            if (paraFloat(combustivelInput.custo) > 0) {
+                if (process.client) {
+                    await supabase.from("fluxo").insert({
+                        categoria: "combustivel",
+                        produto: combustivelInput.nome,
+                        valor: paraFloat(combustivelInput.custo),
+                        tipo_fluxo: "saida",
+                        safra_id: combustivelInput.safra_id,
+                        user_id: user.value.id
+                    });
+                }
             }
+
+
+            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
         }
+        combustivelInput.id = ""
+        combustivelInput.nome = ""
+        combustivelInput.quantidade = ""
+        combustivelInput.quantidade_repor = ""
+        combustivelInput.custo = ""
+        combustivelInput.safra_id = ""
 
-
-        combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+        showModalReporCombustivel.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
     }
-    combustivelInput.id = ""
-    combustivelInput.nome = ""
-    combustivelInput.quantidade = ""
-    combustivelInput.quantidade_repor = ""
-    combustivelInput.custo = ""
-    combustivelInput.safra_id = ""
-
-    showModalReporCombustivel.value = false
 }
 const handleSubmitEditarMaquina = async () => {
 
-    if(maquinaInput.categoria && maquinaInput.modelo && maquinaInput.ano){
-    if(!maquinaInput.is_pago){
-        if(!maquinaInput.valor_parcelas || !maquinaInput.num_parcelas || !maquinaInput.data_pagamento_parcelas){
-            showPreencha.value = true
-            return 
+    if (maquinaInput.categoria && maquinaInput.modelo && maquinaInput.ano) {
+        if (!maquinaInput.is_pago) {
+            if (!maquinaInput.valor_parcelas || !maquinaInput.num_parcelas || !maquinaInput.data_pagamento_parcelas) {
+                showPreencha.value = true
+                return
+            }
         }
-    }
-    
-    if (!limitarForm.value) return
-    limitarForm.value = false
+
+        if (!limitarForm.value) return
+        limitarForm.value = false
 
 
-    if (!maquinaInput.is_pago) {
-        await supabase.from("maquinas").update({
-            categoria: maquinaInput.categoria,
-            modelo: maquinaInput.modelo,
-            ano: maquinaInput.ano,
-            is_pago: maquinaInput.is_pago,
-            valor_parcelas: paraFloat(maquinaInput.valor_parcelas),
-            num_parcelas: parseInt(maquinaInput.num_parcelas),
-            data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas),
+        if (!maquinaInput.is_pago) {
+            await supabase.from("maquinas").update({
+                categoria: maquinaInput.categoria,
+                modelo: maquinaInput.modelo,
+                ano: maquinaInput.ano,
+                is_pago: maquinaInput.is_pago,
+                valor_parcelas: paraFloat(maquinaInput.valor_parcelas),
+                num_parcelas: parseInt(maquinaInput.num_parcelas),
+                data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas),
 
-        }).eq('id', maquinaInput.id);
+            }).eq('id', maquinaInput.id);
+        } else {
+
+            await supabase.from("maquinas").update({
+                categoria: maquinaInput.categoria,
+                modelo: maquinaInput.modelo,
+                ano: maquinaInput.ano,
+                is_pago: maquinaInput.is_pago,
+                valor_parcelas: 0,
+                num_parcelas: 0,
+                data_parcelas: 0
+
+            }).eq('id', maquinaInput.id);
+        }
+
+
+        maquinasResponse.value = await supabase.from("maquinas").select()
+
+
+        maquinaInput.id = "",
+            maquinaInput.categoria = "",
+            maquinaInput.ano = "",
+            maquinaInput.modelo = "",
+            maquinaInput.is_pago = false,
+            maquinaInput.valor_parcelas = "",
+            maquinaInput.num_parcelas = ""
+        showModalEditar.value = false
+        showPreencha.value = false
+
     } else {
-
-        await supabase.from("maquinas").update({
-            categoria: maquinaInput.categoria,
-            modelo: maquinaInput.modelo,
-            ano: maquinaInput.ano,
-            is_pago: maquinaInput.is_pago,
-            valor_parcelas: 0,
-            num_parcelas: 0,
-            data_parcelas: 0
-
-        }).eq('id', maquinaInput.id);
+        showPreencha.value = true
     }
-
-
-    maquinasResponse.value = await supabase.from("maquinas").select()
-
-
-    maquinaInput.id = "",
-        maquinaInput.categoria = "",
-        maquinaInput.ano = "",
-        maquinaInput.modelo = "",
-        maquinaInput.is_pago = false,
-        maquinaInput.valor_parcelas = "",
-        maquinaInput.num_parcelas = ""
-    showModalEditar.value = false
-    showPreencha.value = false
-
-}else{
-    showPreencha.value = true
-}
 }
 const handleModalEditar = (categoria,
     modelo,
@@ -565,8 +623,8 @@ const valorCombustivelFormatar = (valor) => {
     <div>
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
-            <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Máquinas | </h1>
-            <h1 class="text-3xl"> 🚜 </h1>
+            <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica  ">Máquinas | </h1>
+            <h1 class="sm:text-xl 2xl:text-3xl"> 🚜 </h1>
             <!-- 1F468 U+200D U+1F33E	 -->
         </div>
         <!-- ------------------------------------------------------------------------------ -->
@@ -575,7 +633,8 @@ const valorCombustivelFormatar = (valor) => {
 
         <loader class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
             v-if="!maquinasResponse || !combustiveisResponse" />
-        <div v-if="maquinasResponse && combustiveisResponse" class="sm:scale-[80%] 2xl:scale-100 flex flex-col w-full items-center first:items-start">
+        <div v-if="maquinasResponse && combustiveisResponse"
+            class="sm:scale-[80%] 2xl:scale-100 flex flex-col w-full items-center first:items-start">
             <div class="flex flex-col w-[70%] sm:mt-[-6%] 2xl:mt-[1%]">
                 <div class="flex items-center">
                     <p class="whitespace-nowrap text-escuro font-bold text-2xl">Veículos e Máquinas 🚜 </p>
@@ -596,6 +655,7 @@ const valorCombustivelFormatar = (valor) => {
 
                             <th class="p-2 ">Abastecer</th>
                             <th class="p-2 ">Manutenção</th>
+                            <th class="p-2 ">Pagar Parcela</th>
                             <th class="p-2 ">Detalhes</th>
                             <th class="p-2 ">Deletar</th>
                         </thead>
@@ -619,6 +679,13 @@ const valorCombustivelFormatar = (valor) => {
                                         @click="handleManutencao(maquina.id, maquina.modelo, maquina.ano)"
                                         @close="showModalManutencao = false">
                                         🛠
+                                    </span>
+                                </td>
+                                <td class="p-2">
+                                    <span v-if="maquina.num_parcelas > 0" class="cursor-pointer material-icons block text-center hover:text-xl"
+                                        @click="handlePagarParceclas(maquina.id, maquina.modelo, maquina.ano, maquina.valor_parcelas, maquina.num_parcelas)"
+                                        @close="showModalPagarParcela = false">
+                                        💵
                                     </span>
                                 </td>
                                 <td class="p-2">
@@ -831,8 +898,8 @@ const valorCombustivelFormatar = (valor) => {
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-on:input="valorParcelaFormatar(maquinaInput.valor_parcelas)" v-model="maquinaInput.valor_parcelas" name="floating_email"
-                                    id="floating_email"
+                                <input type="text" v-on:input="valorParcelaFormatar(maquinaInput.valor_parcelas)"
+                                    v-model="maquinaInput.valor_parcelas" name="floating_email" id="floating_email"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label for="floating_email"
@@ -939,8 +1006,8 @@ const valorCombustivelFormatar = (valor) => {
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-on:input="valorParcelaFormatar(maquinaInput.valor_parcelas)" v-model="maquinaInput.valor_parcelas" name="floating_email"
-                                    id="floating_email"
+                                <input type="text" v-on:input="valorParcelaFormatar(maquinaInput.valor_parcelas)"
+                                    v-model="maquinaInput.valor_parcelas" name="floating_email" id="floating_email"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label for="floating_email"
@@ -1035,6 +1102,40 @@ const valorCombustivelFormatar = (valor) => {
                             desfeita.</u> </b></h2>
             </ModalDeletarCombustivel>
         </Transition>
+
+        <Transition name="pop">
+            <ModalPagarParcela v-if="showModalPagarParcela" @close="showModalPagarParcela = false"
+                @pagarParcela="handleSubmitPagarParcela">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <h1 class="text-center text-xl text-claro">Parcela do veículo: {{ maquinaInput.modelo + " - " + maquinaInput.ano }}</h1>
+                <h1 class="text-center text-xl text-claro light">Valor da parcela: <b class="text-vermelho">{{ paraReal(maquinaInput.valor_parcelas)}} </b></h1>
+                <h1 class="text-center text-md text-claro light">({{ maquinaInput.num_parcelas + " Restantes" }}) </h1>
+
+                <div v-if="!safraResponse"></div>
+                <div v-else-if="safraResponse.data != ''">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            De qual safra será descontado o valor do pagamento?</label>
+                        <select v-model="maquinaInput.safra_id"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
+                                v-bind:value=safra.id>{{
+                                    safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                                }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </ModalPagarParcela>
+        </Transition>
+
         <Transition name="pop">
             <ModalReporCombustivel v-if="showModalReporCombustivel" @close="showModalReporCombustivel = false"
                 @reporCombustivel="handleSubmitReporCombustivel">
@@ -1055,7 +1156,8 @@ const valorCombustivelFormatar = (valor) => {
                 <div v-else-if="safraResponse.data != ''">
                     <div class="relative z-0 w-full mb-6 group">
 
-                        <input type="text" v-on:input="valorCombustivelFormatar(combustivelInput.custo)" v-model="combustivelInput.custo" name="floating_email" id="floating_email"
+                        <input type="text" v-on:input="valorCombustivelFormatar(combustivelInput.custo)"
+                            v-model="combustivelInput.custo" name="floating_email" id="floating_email"
                             class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                             placeholder=" " required>
                         <label for="floating_email"
@@ -1162,5 +1264,4 @@ const valorCombustivelFormatar = (valor) => {
 
             </ModalAdicionarManutencao>
         </Transition>
-    </div>
-</template>
+</div></template>

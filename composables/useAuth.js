@@ -41,8 +41,9 @@ const useAuth = () => {
     if(error) throw error
     router.push("/")
   }
-  const isLoggedIn = () =>{
-    const u = supabase.auth.user()
+  const isLoggedIn = async() =>{
+  const u = await supabase.auth.session()
+  console.log(u)
     return u
   }
   return {

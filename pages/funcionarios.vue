@@ -1,8 +1,8 @@
 <script setup>
 
 definePageMeta({
-        middleware: "auth"
-    })
+    middleware: "auth"
+})
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
@@ -16,19 +16,25 @@ const usuarioResponse = ref();
 usuarioResponse.value = await supabase.from("usuario").select()
 // ----//----
 
-if (process.client) {
-    funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
-}
 
 
 
 const showModalAdicionar = ref()
 const showModalEditar = ref()
 const showModalDeletar = ref()
+const showModalPagarFuncionario = ref()
 const tipoOrdenar = ref();
 const reverterOrdenar = ref()
 const limitarForm = ref()
 const showPreencha = ref()
+const safraResponse = ref();
+
+if (process.client) {
+    funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
+    safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+
+}
+
 
 
 const pagina = reactive({
@@ -56,6 +62,7 @@ const handleNovoFuncionario = () => {
     funcionarioInput.is_assalariado = false
     funcionarioInput.salario = ""
     funcionarioInput.data_pagamento_salario = ""
+    funcionarioInput.safra_id = ""
 }
 const abrirModalDeletarFuncionario = (id, nome) => {
     limitarForm.value = true
@@ -64,9 +71,16 @@ const abrirModalDeletarFuncionario = (id, nome) => {
     funcionarioInput.id = id
     funcionarioInput.nome = nome
 }
+const abrirModalPagarFuncionario = (id, nome) => {
+    limitarForm.value = true
+
+    showModalPagarFuncionario.value = true
+    funcionarioInput.id = id
+    funcionarioInput.nome = nome
+}
 
 const handleDeleteFuncionario = async (funcionarioId) => {
-    if(!limitarForm.value) return
+    if (!limitarForm.value) return
     limitarForm.value = false
     await supabase.from("funcionarios").delete().eq('id', funcionarioId)
     funcionariosResponse.value = await supabase.from("funcionarios").select()
@@ -75,114 +89,148 @@ const handleDeleteFuncionario = async (funcionarioId) => {
 
 }
 const handleSubmitNovoFuncionario = async () => {
-    if(funcionarioInput.nome && funcionarioInput.numero && funcionarioInput.cargo){
-    if(funcionarioInput.is_assalariado){
-        if(isNaN(paraFloat(funcionarioInput.salario)) || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$"){
-            showPreencha.value = true
-            return 
+    if (funcionarioInput.nome && funcionarioInput.numero && funcionarioInput.cargo) {
+        if (funcionarioInput.is_assalariado) {
+            if (isNaN(paraFloat(funcionarioInput.salario)) || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$") {
+                showPreencha.value = true
+                return
+            }
         }
+
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+        if (process.client) {
+            await supabase.from("funcionarios").insert({
+                user_id: user.value.id,
+                nome: funcionarioInput.nome,
+                numero: funcionarioInput.numero,
+                cargo: funcionarioInput.cargo,
+                funcionario_login: funcionarioInput.numero,
+                funcionario_pass: generateRandomString(10),
+                is_assalariado: funcionarioInput.is_assalariado,
+                salario: paraFloat(funcionarioInput.salario),
+                data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
+
+            });
+            funcionariosResponse.value = await supabase.from("funcionarios").select()
+
+
+            funcionarioInput.nome = "",
+                funcionarioInput.numero = "",
+                funcionarioInput.cargo = "",
+                funcionarioInput.is_assalariado = false,
+                funcionarioInput.salario = "",
+                funcionarioInput.data_pagamento_salario = ""
+            showModalAdicionar.value = false
+        }
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
     }
+}
+const handleSubmitEditarFuncionario = async () => {
+    
+    if (funcionarioInput.nome && funcionarioInput.numero && funcionarioInput.cargo) {
+        if (funcionarioInput.is_assalariado) {
+            if (isNaN(paraFloat(funcionarioInput.salario)) || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$") {
+                showPreencha.value = true
+                return
+            }
+        }
+        
 
-    if(!limitarForm.value) return
-    limitarForm.value = false
-
-    if (process.client) {
-        await supabase.from("funcionarios").insert({
-            user_id: user.value.id,
-            nome: funcionarioInput.nome,
-            numero: funcionarioInput.numero,
-            cargo: funcionarioInput.cargo,
-            funcionario_login: funcionarioInput.numero,
-            funcionario_pass: generateRandomString(10),
-            is_assalariado: funcionarioInput.is_assalariado,
-            salario: paraFloat(funcionarioInput.salario),
-            data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
-
-        });
+        if (!limitarForm.value) return
+        limitarForm.value = false
+        
+        if (funcionarioInput.is_assalariado) {
+            await supabase.from("funcionarios").update({
+                nome: funcionarioInput.nome,
+                numero: funcionarioInput.numero,
+                cargo: funcionarioInput.cargo,
+                is_assalariado: funcionarioInput.is_assalariado,
+                salario: paraFloat(funcionarioInput.salario),
+                data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
+                
+            }).eq('id', funcionarioInput.id);
+        } else {
+            await supabase.from("funcionarios").update({
+                nome: funcionarioInput.nome,
+                numero: funcionarioInput.numero,
+                cargo: funcionarioInput.cargo,
+                is_assalariado: funcionarioInput.is_assalariado,
+                salario: null,
+                data_pagamento_salario: null
+                
+            }).eq('id', funcionarioInput.id);
+        }
         funcionariosResponse.value = await supabase.from("funcionarios").select()
-
-
+        
+        
+        funcionarioInput.id = "",
         funcionarioInput.nome = "",
             funcionarioInput.numero = "",
             funcionarioInput.cargo = "",
             funcionarioInput.is_assalariado = false,
             funcionarioInput.salario = "",
             funcionarioInput.data_pagamento_salario = ""
-        showModalAdicionar.value = false
-    }
-    showPreencha.value = false
-}else{
-    showPreencha.value = true
-}
-}
-const handleSubmitEditarFuncionario = async () => {
-
-    if(funcionarioInput.nome && funcionarioInput.numero && funcionarioInput.cargo){
-    if(funcionarioInput.is_assalariado){
-        if(isNaN(paraFloat(funcionarioInput.salario)) || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$"){
+            showModalEditar.value = false
+            showPreencha.value = false
+        } else {
             showPreencha.value = true
-            return 
         }
     }
+    const handleSubmitPagarFuncionario = async () => {
+        if (funcionarioInput.salario && funcionarioInput.safra_id) {
 
-    
-if(!limitarForm.value) return
+        if (!limitarForm.value) return
     limitarForm.value = false
 
-    if (funcionarioInput.is_assalariado) {
-        await supabase.from("funcionarios").update({
-            nome: funcionarioInput.nome,
-            numero: funcionarioInput.numero,
-            cargo: funcionarioInput.cargo,
-            is_assalariado: funcionarioInput.is_assalariado,
-            salario: paraFloat(funcionarioInput.salario),
-            data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
+    if (process.client) {
 
-        }).eq('id', funcionarioInput.id);
-    } else {
-        await supabase.from("funcionarios").update({
-            nome: funcionarioInput.nome,
-            numero: funcionarioInput.numero,
-            cargo: funcionarioInput.cargo,
-            is_assalariado: funcionarioInput.is_assalariado,
-            salario: null,
-            data_pagamento_salario: null
 
-        }).eq('id', funcionarioInput.id);
+        if (paraFloat(funcionarioInput.salario) > 0) {
+            if (process.client) {
+                await supabase.from("fluxo").insert({
+                    categoria: "salario",
+                    produto: "Pagamento à: " + funcionarioInput.nome,
+                    valor: paraFloat(funcionarioInput.salario),
+                    tipo_fluxo: "saida",
+                    safra_id: funcionarioInput.safra_id,
+                    user_id: user.value.id
+                });
+            }
+        }
+
     }
-    funcionariosResponse.value = await supabase.from("funcionarios").select()
+    funcionarioInput.id = ""
+    funcionarioInput.nome = ""
+    funcionarioInput.salario = ""
+    funcionarioInput.safra_id = ""
 
-
-    funcionarioInput.id = "",
-        funcionarioInput.nome = "",
-        funcionarioInput.numero = "",
-        funcionarioInput.cargo = "",
-        funcionarioInput.is_assalariado = false,
-        funcionarioInput.salario = "",
-        funcionarioInput.data_pagamento_salario = ""
-    showModalEditar.value = false
+    showModalPagarFuncionario.value = false
     showPreencha.value = false
-}else{
-    showPreencha.value = true
+    }else{
+        showPreencha.value = true
+    }
 }
-}
-const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
-    showPreencha.value = false
-    limitarForm.value = true
-    showModalEditar.value = true
-    funcionarioInput.nome = nome
-    funcionarioInput.cargo = cargo
-    funcionarioInput.numero = numero
-    funcionarioInput.is_assalariado = is_assalariado
-    funcionarioInput.salario = salario
-    funcionarioInput.data_pagamento_salario = diaPagamento
-    funcionarioInput.id = id
-}
-
-const salárioFormatar = (valor) => {
-    funcionarioInput.salario = paraRealInput(valor)
-}
-
+    const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
+        showPreencha.value = false
+        limitarForm.value = true
+        showModalEditar.value = true
+        funcionarioInput.nome = nome
+        funcionarioInput.cargo = cargo
+        funcionarioInput.numero = numero
+        funcionarioInput.is_assalariado = is_assalariado
+        funcionarioInput.salario = salario
+        funcionarioInput.data_pagamento_salario = diaPagamento
+        funcionarioInput.id = id
+    }
+    
+    const salárioFormatar = (valor) => {
+        funcionarioInput.salario = paraRealInput(valor)
+    }
+    
 // Paginação
 const handlePagina = (i) => {
     if (i === "proxima") {
@@ -329,8 +377,8 @@ function generateRandomString(length) {
         <div>
             <!-- Título -->
             <div class="flex flex-row items-center absolute ml-[-4%] ">
-                <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Funcionários | </h1>
-                <h1 class="text-3xl"> 👨‍🌾 </h1>
+                <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Funcionários | </h1>
+                <h1 class="sm:text-xl 2xl:text-3xl"> 👨‍🌾 </h1>
                 <!-- 1F468 U+200D U+1F33E	 -->
             </div>
             <!-- ------------------------------------------------------------------------------ -->
@@ -351,6 +399,7 @@ function generateRandomString(length) {
                             <th class="p-2 ">numero</th>
                             <th class="p-2 " @click="handleOrdenar('salario')">Salario</th>
                             <th class="p-2 " @click="handleOrdenar('dia')">Dia pagamento</th>
+                            <th class="p-2 ">Pagar</th>
                             <th class="p-2 ">Detalhes</th>
                             <th class="p-2 ">Deletar</th>
                         </thead>
@@ -365,6 +414,14 @@ function generateRandomString(length) {
                                     funcionario.data_pagamento_salario
                                 }}</td>
                                 <td class="p-2" v-else>------</td>
+                                <td class="p-2">
+                                    <span
+                                        class="cursor-pointer material-icons block text-center hover:text-xl transition-all"
+                                        @click="abrirModalPagarFuncionario(funcionario.id, funcionario.nome)"
+                                        @close="showModalEditar = false">
+                                        💵
+                                    </span>
+                                </td>
                                 <td class="p-2">
                                     <span
                                         class="cursor-pointer material-icons block text-center hover:text-xl transition-all"
@@ -587,6 +644,44 @@ function generateRandomString(length) {
                 <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
                             desfeita.</u> </b></h2>
             </ModalDeletarFuncionario>
+        </Transition>
+        <Transition name="pop">
+            <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="showModalPagarFuncionario = false"
+                @pagarFuncionario="handleSubmitPagarFuncionario">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <h1 class="text-xl text-claro">Realizar pagamento à: {{ funcionarioInput.nome }}</h1>
+                <div class="relative z-0 w-full mb-6 group">
+
+                    <input type="text" v-on:input="salárioFormatar(funcionarioInput.salario)"
+                        v-model="funcionarioInput.salario" name="floating_email" id="floating_email"
+                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                        placeholder=" " required>
+                    <label for="floating_email"
+                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Valor do pagamento</label>
+                </div>
+                <div v-if="!safraResponse"></div>
+                <div v-else-if="safraResponse.data != ''">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            De qual safra será descontado o valor do pagamento?</label>
+                        <select v-model="funcionarioInput.safra_id"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
+                                v-bind:value=safra.id>{{
+                                    safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                                }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </ModalPagarFuncionario>
         </Transition>
     </div>
 </template>

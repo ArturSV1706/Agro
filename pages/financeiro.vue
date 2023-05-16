@@ -380,8 +380,8 @@ const valorFormatar = (valor) => {
     <div>
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
-            <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Financeiro | </h1>
-            <h1 class="text-3xl">💵</h1>
+            <h1 class="sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Financeiro | </h1>
+            <h1 class="sm:text-xl 2xl:text-3xl">💵</h1>
         </div>
         <!-- ------------------------------------------------------------------------------ -->
         <h1 v-if="!showFluxo"

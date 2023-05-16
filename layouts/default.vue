@@ -1,8 +1,10 @@
 <script setup>
 
-const titulo = ref()
-const icone = ref()
-const route = useRoute()
+const loading = ref(true);
+
+if(process.client){
+    loading.value = false
+}
 
 const showBackdrop = ref()
 
@@ -15,7 +17,11 @@ const desativarBackdrop = () => {
 
 </script>
 <template>
-    <div class="h-[100vh] w-screen bg-claro">
+    <div v-if="loading" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <img class="w-[10vw] animate-ping" src="../assets/icons/saffron_alt.svg" alt="">
+
+    </div>
+    <div v-if="!loading" class="h-[100vh] w-screen bg-claro">
         <Transition name="open">
             <section v-if="showBackdrop"
                 class="left-[-20%] fixed z-10 h-screen w-1/3 skew-x-12 bg-[rgba(42,77,65,.9)]">

@@ -452,8 +452,8 @@ const precoFormatar = (valor) => {
     <div>
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
-            <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Estoque | </h1>
-            <h1 class="text-3xl">{{ String.fromCodePoint(0x1F4E6) }}</h1>
+            <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Estoque | </h1>
+            <h1 class="sm:text-xl 2xl:text-3xl">{{ String.fromCodePoint(0x1F4E6) }}</h1>
         </div>
         <!-- ------------------------------------------------------------------------------ -->
         <div class="flex flex-col w-full items-center ">
@@ -899,7 +899,7 @@ const precoFormatar = (valor) => {
                                 class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                 placeholder=" " required>
                             <label for="floating_email"
-                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quatidade</label>
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade</label>
                         </div>
                         <div v-if="safraResponse.data != ''">
                             <div class="relative z-0 w-full mb-6 group">

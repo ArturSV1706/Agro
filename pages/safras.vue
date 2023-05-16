@@ -90,7 +90,7 @@ const handleSubmitNovaSafra = async () => {
     if (!limitarForm.value) return
     limitarForm.value = false
 
-    let receita_estimada_calc = parseFloat(safraInput.quantidade) * paraFloat(safraInput.valor_unitario)
+    let receita_estimada_calc = parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)
     if (process.client) {
         await supabase.from("safras").insert({
             cultivo: safraInput.safra,
@@ -255,8 +255,8 @@ const despesasFormatar = (valor) => {
     <div class="overflow-y-hidden">
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
-            <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Safras | </h1>
-            <h1 class="text-3xl">{{ String.fromCodePoint(0x1F33E) }}</h1>
+            <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Safras | </h1>
+            <h1 class="sm:text-xl 2xl:text-3xl">{{ String.fromCodePoint(0x1F33E) }}</h1>
         </div>
         <!-- ------------------------------------------------------------------------------ -->
         <div class="flex flex-col w-full items-center">
@@ -497,19 +497,16 @@ const despesasFormatar = (valor) => {
                                 <p class="text-md text-claro">| Lucro estimado: <br>
                                     <b
                                         v-if="safraInput.quantidade != '' && safraInput.valor_unitario != '' && safraInput.despeza != ''">
-                                        <span :class="`text-${corLucro(parseFloat(safraInput.quantidade) * paraFloat(safraInput.valor_unitario) -
-                                                paraFloat(safraInput.despeza))}`">
+                                        <span :class="`text-${corLucro((parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)) - paraFloat(safraInput.despeza))}`">
                                             {{
-                                                paraReal(parseFloat(safraInput.quantidade) *
-                                                    paraFloat(safraInput.valor_unitario) -
-                                                    paraFloat(safraInput.despeza)) }}
+                                                   paraReal((parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)) - paraFloat(safraInput.despeza))}}
                                         </span>
                                     </b>
                                 </p>
                                 <p class="text-md text-claro">| Receita estimada: <br> <b
                                         v-if="safraInput.quantidade && safraInput.valor_unitario"
-                                        class="text-verde_claro">{{ paraReal(parseFloat(safraInput.quantidade) *
-                                            paraFloat(safraInput.valor_unitario)) }}
+                                        class="text-verde_claro">
+                                        {{ paraReal(parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)) }}
                                     </b> </p>
                                 <p class="text-md text-claro">| Despezas estimadas: <br> <b v-if="safraInput.despeza != ''"
                                         class="text-vermelho"> -{{

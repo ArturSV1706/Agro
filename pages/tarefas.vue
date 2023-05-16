@@ -314,8 +314,8 @@ const handlePagina = (i) => {
     <div class="flex flex-col  w-full">
         <!-- Título -->
         <div class=" ml-[-4%] flex flex-row items-center absolute">
-            <h1 class=" pt-2 text-4xl text-escuro font-aristotelica ">Tarefas | </h1>
-            <h1 class="text-3xl"> 🧾 </h1>
+            <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Tarefas | </h1>
+            <h1 class="sm:text-xl 2xl:text-3xl"> 🧾 </h1>
             <!-- 1F468 U+200D U+1F33E	 -->
         </div>
         <!-- ------------------------------------------------------------------------------ -->
