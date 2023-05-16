@@ -82,8 +82,10 @@ const abrirModalPagarFuncionario = (id, nome) => {
 const handleDeleteFuncionario = async (funcionarioId) => {
     if (!limitarForm.value) return
     limitarForm.value = false
-    await supabase.from("funcionarios").delete().eq('id', funcionarioId)
-    funcionariosResponse.value = await supabase.from("funcionarios").select()
+    if (process.client) {
+        await supabase.from("funcionarios").delete().eq('id', funcionarioId)
+        funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
+    }
     showModalDeletar.value = false
     pagina.atual = 0
 
@@ -113,7 +115,7 @@ const handleSubmitNovoFuncionario = async () => {
                 data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
 
             });
-            funcionariosResponse.value = await supabase.from("funcionarios").select()
+            funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
 
 
             funcionarioInput.nome = "",
@@ -130,7 +132,7 @@ const handleSubmitNovoFuncionario = async () => {
     }
 }
 const handleSubmitEditarFuncionario = async () => {
-    
+
     if (funcionarioInput.nome && funcionarioInput.numero && funcionarioInput.cargo) {
         if (funcionarioInput.is_assalariado) {
             if (isNaN(paraFloat(funcionarioInput.salario)) || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$") {
@@ -138,11 +140,11 @@ const handleSubmitEditarFuncionario = async () => {
                 return
             }
         }
-        
+
 
         if (!limitarForm.value) return
         limitarForm.value = false
-        
+
         if (funcionarioInput.is_assalariado) {
             await supabase.from("funcionarios").update({
                 nome: funcionarioInput.nome,
@@ -151,7 +153,7 @@ const handleSubmitEditarFuncionario = async () => {
                 is_assalariado: funcionarioInput.is_assalariado,
                 salario: paraFloat(funcionarioInput.salario),
                 data_pagamento_salario: parseInt(funcionarioInput.data_pagamento_salario)
-                
+
             }).eq('id', funcionarioInput.id);
         } else {
             await supabase.from("funcionarios").update({
@@ -161,76 +163,77 @@ const handleSubmitEditarFuncionario = async () => {
                 is_assalariado: funcionarioInput.is_assalariado,
                 salario: null,
                 data_pagamento_salario: null
-                
+
             }).eq('id', funcionarioInput.id);
         }
-        funcionariosResponse.value = await supabase.from("funcionarios").select()
-        
-        
+        if(process.client){
+        funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
+    }
+
         funcionarioInput.id = "",
-        funcionarioInput.nome = "",
+            funcionarioInput.nome = "",
             funcionarioInput.numero = "",
             funcionarioInput.cargo = "",
             funcionarioInput.is_assalariado = false,
             funcionarioInput.salario = "",
             funcionarioInput.data_pagamento_salario = ""
-            showModalEditar.value = false
-            showPreencha.value = false
-        } else {
-            showPreencha.value = true
-        }
-    }
-    const handleSubmitPagarFuncionario = async () => {
-        if (funcionarioInput.salario && funcionarioInput.safra_id) {
-
-        if (!limitarForm.value) return
-    limitarForm.value = false
-
-    if (process.client) {
-
-
-        if (paraFloat(funcionarioInput.salario) > 0) {
-            if (process.client) {
-                await supabase.from("fluxo").insert({
-                    categoria: "salario",
-                    produto: "Pagamento à: " + funcionarioInput.nome,
-                    valor: paraFloat(funcionarioInput.salario),
-                    tipo_fluxo: "saida",
-                    safra_id: funcionarioInput.safra_id,
-                    user_id: user.value.id
-                });
-            }
-        }
-
-    }
-    funcionarioInput.id = ""
-    funcionarioInput.nome = ""
-    funcionarioInput.salario = ""
-    funcionarioInput.safra_id = ""
-
-    showModalPagarFuncionario.value = false
-    showPreencha.value = false
-    }else{
+        showModalEditar.value = false
+        showPreencha.value = false
+    } else {
         showPreencha.value = true
     }
 }
-    const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
+const handleSubmitPagarFuncionario = async () => {
+    if (funcionarioInput.salario && funcionarioInput.safra_id) {
+
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+        if (process.client) {
+
+
+            if (paraFloat(funcionarioInput.salario) > 0) {
+                if (process.client) {
+                    await supabase.from("fluxo").insert({
+                        categoria: "salario",
+                        produto: "Pagamento à: " + funcionarioInput.nome,
+                        valor: paraFloat(funcionarioInput.salario),
+                        tipo_fluxo: "saida",
+                        safra_id: funcionarioInput.safra_id,
+                        user_id: user.value.id
+                    });
+                }
+            }
+
+        }
+        funcionarioInput.id = ""
+        funcionarioInput.nome = ""
+        funcionarioInput.salario = ""
+        funcionarioInput.safra_id = ""
+
+        showModalPagarFuncionario.value = false
         showPreencha.value = false
-        limitarForm.value = true
-        showModalEditar.value = true
-        funcionarioInput.nome = nome
-        funcionarioInput.cargo = cargo
-        funcionarioInput.numero = numero
-        funcionarioInput.is_assalariado = is_assalariado
-        funcionarioInput.salario = salario
-        funcionarioInput.data_pagamento_salario = diaPagamento
-        funcionarioInput.id = id
+    } else {
+        showPreencha.value = true
     }
-    
-    const salárioFormatar = (valor) => {
-        funcionarioInput.salario = paraRealInput(valor)
-    }
-    
+}
+const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
+    showPreencha.value = false
+    limitarForm.value = true
+    showModalEditar.value = true
+    funcionarioInput.nome = nome
+    funcionarioInput.cargo = cargo
+    funcionarioInput.numero = numero
+    funcionarioInput.is_assalariado = is_assalariado
+    funcionarioInput.salario = salario
+    funcionarioInput.data_pagamento_salario = diaPagamento
+    funcionarioInput.id = id
+}
+
+const salárioFormatar = (valor) => {
+    funcionarioInput.salario = paraRealInput(valor)
+}
+
 // Paginação
 const handlePagina = (i) => {
     if (i === "proxima") {
@@ -660,7 +663,8 @@ function generateRandomString(length) {
                         class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                         placeholder=" " required>
                     <label for="floating_email"
-                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Valor do pagamento</label>
+                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Valor
+                        do pagamento</label>
                 </div>
                 <div v-if="!safraResponse"></div>
                 <div v-else-if="safraResponse.data != ''">
