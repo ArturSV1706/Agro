@@ -118,6 +118,8 @@
             </li>
             <li id="test" class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
+                     <a href="https://www.youtube.com/watch?v=9EuLwHoX1Po&list=PLvUJTkiYrMAOjIV3abwvV1Uf4Mkc0fVjh" target="_blank" class="flex items-center group-hover/main:w-full">
+
                 <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                     xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 96 960 960" width="48">
                     <path
@@ -125,6 +127,8 @@
                 </svg>
                 <p class="text-verde hidden font-bold transition-all whitespace-nowrap 
                             group-hover/main:block group-hover:text-claro">Como utilizar</p>
+                        </a>
+
             </li>
 
         </ul>
