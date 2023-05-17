@@ -58,7 +58,7 @@ if (process.client) {
 const handleSafraSelecioanda = async () => {
     showFluxo.value = true
     if (process.client) {
-        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: true })
+        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
         fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
         fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
         safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
@@ -132,7 +132,7 @@ const handleSubmitEntrada = async () => {
         categoria: "safra",
         // fornecedor: entradaInput.fornecedor,
         produto: safraSelecionadaResponse.value.data[0].cultivo,
-        valor: paraFloat(entradaInput.valor_unitario) * parseFloat(entradaInput.valor_quantidade),
+        valor: paraFloat(entradaInput.valor_unitario),
         safra_id: safra_escolhida.value,
         user_id: user.value.id
     });
@@ -143,7 +143,7 @@ const handleSubmitEntrada = async () => {
         }).eq('id', safra_escolhida.value);
     }
     saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
-    fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) })
+    fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
     fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
     fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
     saldoResult.value = parseFloat(fluxoEntrada.value) * parseFloat(fluxoSaida.value)
@@ -156,7 +156,7 @@ const handleSubmitEntrada = async () => {
     entradaInput.valor_quantidade = ""
 
     if (process.client) {
-        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: true })
+        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
         fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
         fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
         safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
@@ -171,7 +171,7 @@ const handleSubmitDeleteFluxo = async () => {
     await supabase.from("fluxo").delete().eq('id', fluxoInput.id)
 
     if (process.client) {
-        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: true })
+        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
         fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
         fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
         safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
@@ -189,8 +189,7 @@ const handleSubmitEditarFluxo = async () => {
     }).eq('id', fluxoInput.id);
 
     if (process.client) {
-        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: true })
-        safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
+        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
     }
     showModalEditar.value = false
 }
