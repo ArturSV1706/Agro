@@ -129,6 +129,14 @@ const useUtils = () => {
     }
     return x;
   }
+
+  function loadPageSet(bool) {
+    localStorage.setItem('loading', bool);
+  }
+  function loadPageGet() {
+    const value = localStorage.getItem('loading');
+    return value
+  }
   return {
     formatar,
     formatarData,
@@ -136,6 +144,8 @@ const useUtils = () => {
     paraRealInput,
     paraFloat,
     corLucro,
+    loadPageSet,
+    loadPageGet
   };
 };
 

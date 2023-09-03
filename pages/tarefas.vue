@@ -1,7 +1,7 @@
 <script setup>
 
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth","subscription"]
 })
 
 const { supabase } = useSupabase()

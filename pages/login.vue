@@ -1,19 +1,12 @@
 <script setup>
 import useSupabase from '~~/composables/useSupabase';
 
-definePageMeta({
-    layout: "login"
-})
+
 
     const {supabase} = useSupabase()
         
-    // if(process.client){
-    //     notesResponse.value = await supabase.from("notes").select().eq("user_id", user.value.id)
-    // }
-    
-    // definePageMeta({
-    //     middleware: "auth"
-    // })
+    definePageMeta({ layout: 'login' })
+
     
     </script>
 

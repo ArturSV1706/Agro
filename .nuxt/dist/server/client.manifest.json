@@ -6,10 +6,10 @@
     "module": true,
     "resourceType": "script"
   },
-  "C:/Users/Artur/Documents/nuxt/template/node_modules/nuxt/dist/app/entry.mjs": {
+  "C:/Users/Artur/Documents/nuxt/template/node_modules/nuxt/dist/app/entry.js": {
     "resourceType": "script",
     "module": true,
     "isEntry": true,
-    "file": "C:/Users/Artur/Documents/nuxt/template/node_modules/nuxt/dist/app/entry.mjs"
+    "file": "C:/Users/Artur/Documents/nuxt/template/node_modules/nuxt/dist/app/entry.js"
   }
 }

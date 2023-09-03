@@ -3,8 +3,8 @@
 
 
 definePageMeta({
-        middleware: "auth"
-    })
+    middleware: ["auth"]
+})
     
 const { supabase } = useSupabase()
 const { user } = useAuth()
@@ -29,6 +29,7 @@ const usuarioResponse = ref();
 usuarioResponse.value = await supabase.from("usuario").select()
 // ----//----
 
+console.log('user' + user.value)
 if (process.client) {
     tarefaResponse.value = await supabase.from("tarefas").select("*, funcionarios(*), estoque(*), maquinas(*)").eq('user_id', user.value.id).order('prazo', { ascending: false }).order('prazo_hora', { ascending: false }).limit(10)
     estoqueResponse.value = await supabase.from("estoque").select().eq('user_id', user.value.id)
@@ -70,12 +71,18 @@ function formatarTipoFluxo(a) {
     if (a === 'saida') {
         return '▼';
     }
+    if (a === 'saida_emprestimo') {
+        return '▼';
+    }
     if (a === 'entrada') {
         return '▲';
     }
 }
 function formatarTipoFluxoCor(a) {
     if (a === 'saida') {
+        return 'vermelho';
+    }
+    if (a === 'saida_emprestimo') {
         return 'vermelho';
     }
     if (a === 'entrada') {

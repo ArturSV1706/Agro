@@ -118,3 +118,28 @@ transform: translateX(100%);
 .zoom{
   zoom: .5
 }
+
+.alert-enter-from {
+  transform: translateX(30%)
+}
+
+.alert-enter-to {
+  transform: translateX(0%)
+}
+
+.alert-enter-active {
+  transition: all 0.4s cubic-bezier(0, 1.15, 0.47, 1.15);
+}
+
+.alert-leave-from {
+  transform: translateX(0%)
+
+}
+
+.alert-leave-to {
+  transform: translateX(120%)
+}
+
+.alert-leave-active {
+  transition: all 0.4s cubic-bezier(0, 1.15, 0.47, 1.15);
+}

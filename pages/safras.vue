@@ -1,7 +1,7 @@
 <script setup>
 
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth","subscription"]
 })
 
 const { supabase } = useSupabase()
@@ -23,7 +23,7 @@ const fluxoEntrada = ref();
 const fluxoSaida = ref();
 
 const showModalNovo = ref()
-const showModalColheita = ref()
+const showModalPagarTaxa = ref()
 const showModalDeletar = ref()
 const showModalEncerrar = ref()
 const limitarForm = ref()
@@ -49,6 +49,7 @@ const safraInput = reactive({
     data_inicio: "",
     data_fim: "",
     area: "",
+    taxa_arrendo: "",
     grandeza: "",
     valor_unitario: "",
     quantidade: "",
@@ -64,6 +65,7 @@ const abrirModalNovaSafra = () => {
     safraInput.data_inicio = ""
     safraInput.data_fim = ""
     safraInput.area = ""
+    safraInput.taxa_arrendo = ""
     safraInput.grandeza = ""
     safraInput.valor_unitario = ""
     safraInput.quantidade = ""
@@ -85,51 +87,53 @@ const fecharModalNovaSafra = () => {
 }
 
 const handleSubmitNovaSafra = async () => {
-    if(safraInput.safra && safraInput.area && safraInput.grandeza && safraInput.despeza && safraInput.valor_unitario && safraInput.quantidade && safraInput.data_inicio && safraInput.data_fim){
+    if (safraInput.safra && safraInput.area && safraInput.taxa_arrendo && safraInput.grandeza && safraInput.despeza && safraInput.valor_unitario && safraInput.quantidade && safraInput.data_inicio && safraInput.data_fim) {
 
-    if (!limitarForm.value) return
-    limitarForm.value = false
+        if (!limitarForm.value) return
+        limitarForm.value = false
 
-    let receita_estimada_calc = parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)
-    if (process.client) {
-        await supabase.from("safras").insert({
-            cultivo: safraInput.safra,
-            area: parseFloat(safraInput.area),
-            user_id: user.value.id,
-            grandeza: safraInput.grandeza,
-            despeza_estimada: paraFloat(safraInput.despeza),
-            valor_venda_estimado: paraFloat(safraInput.valor_unitario),
-            quantidade_estimada: parseFloat(safraInput.quantidade) * parseFloat(safraInput.area),
-            receita_estimada: receita_estimada_calc,
-            data_inicio: safraInput.data_inicio,
-            data_fim: safraInput.data_fim,
-            status: "ativa",
-
-        });
-
-
-
-
-        safraInput.id = "";
-        safraInput.safra = "";
-        safraInput.data_inicio = "";
-        safraInput.data_fim = "";
-        safraInput.area = "";
-        safraInput.grandeza = "";
-        safraInput.valor_unitario = "";
-        safraInput.quantidade = "";
-        safraInput.despeza = "";
-        safraInput.receita_estimada = "";
-        showPreencha.value = false
-
-        showModalNovo.value = false
+        let receita_estimada_calc = parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)
+        if (safraInput.taxa_arrendo < 0) safraInput.taxa_arrendo = 0
         if (process.client) {
-            safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+            await supabase.from("safras").insert({
+                cultivo: safraInput.safra,
+                area: parseFloat(safraInput.area),
+                taxa_arrendo: parseFloat(safraInput.taxa_arrendo),
+                user_id: user.value.id,
+                grandeza: safraInput.grandeza,
+                despeza_estimada: paraFloat(safraInput.despeza),
+                valor_venda_estimado: paraFloat(safraInput.valor_unitario),
+                quantidade_estimada: parseFloat(safraInput.quantidade) * parseFloat(safraInput.area),
+                receita_estimada: receita_estimada_calc,
+                data_inicio: safraInput.data_inicio,
+                data_fim: safraInput.data_fim,
+                status: "ativa",
+
+            });
+
+
+
+
+            safraInput.id = "";
+            safraInput.safra = "";
+            safraInput.data_inicio = "";
+            safraInput.data_fim = "";
+            safraInput.area = "";
+            safraInput.grandeza = "";
+            safraInput.valor_unitario = "";
+            safraInput.quantidade = "";
+            safraInput.despeza = "";
+            safraInput.receita_estimada = "";
+            showPreencha.value = false
+
+            showModalNovo.value = false
+            if (process.client) {
+                safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+            }
         }
+    } else {
+        showPreencha.value = true
     }
-}else{
-    showPreencha.value = true
-}
 }
 
 const abrirModalDeletarSafra = (id, cultivo, inicio, fim) => {
@@ -141,47 +145,48 @@ const abrirModalDeletarSafra = (id, cultivo, inicio, fim) => {
     safraInput.data_inicio = inicio
     safraInput.data_fim = fim
 }
-const abrirModalAdicionarColheita = async (id, cultivo, grandeza) => {
+const abrirModalPagarTaxa = async (id, cultivo, grandeza, start, end) => {
     limitarForm.value = true
-
-    showModalColheita.value = true
+    showModalPagarTaxa.value = true
     safraInput.id = id
     safraInput.safra = cultivo
     safraInput.grandeza = grandeza
-    safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', parseInt(safraInput.id))
+    safraInput.data_inicio = start
+    safraInput.data_fim = end
+    safraResponse_qnt.value = await supabase.from("safras").select("taxa_arrendo").eq('id', parseInt(safraInput.id))
 }
-const handleAdicionarColheita = async () => {
-    if(safraInput.quantidade){
+const handlePagarTaxaSubmit = async () => {
+    if (safraInput.quantidade) {
 
-    if (!limitarForm.value) return
-    limitarForm.value = false
+        if (!limitarForm.value) return
+        limitarForm.value = false
 
-    if (parseFloat(safraInput.quantidade) > 0) {
-        await supabase.from("safras").update({
-            quantidade_real: parseFloat(safraResponse_qnt.value.data[0].quantidade_real) + parseFloat(safraInput.quantidade)
-        }).eq('id', parseInt(safraInput.id));
-    }
+        if (process.client) {
+            safrasAtivasResponse.value = await supabase.from("safras").update({
+            taxa_arrendo: safraResponse_qnt.value.data[0].taxa_arrendo - parseFloat(safraInput.quantidade)
+        }).eq('id', safraInput.id);
 
-    if (process.client) {
-        safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
-    }
+    safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+    
+        }
 
-    safraInput.id = "",
-        safraInput.safra = "",
-        safraInput.data_inicio = "",
-        safraInput.data_fim = "",
-        safraInput.area = "",
-        safraInput.grandeza = "",
-        safraInput.valor_unitario = "",
-        safraInput.quantidade = "",
-        safraInput.despeza = "",
-        safraInput.receita_estimada = ""
+        safraInput.id = "",
+            safraInput.safra = "",
+            safraInput.data_inicio = "",
+            safraInput.data_fim = "",
+            safraInput.area = "",
+            safraInput.grandeza = "",
+            safraInput.valor_unitario = "",
+            safraInput.taxa_arrendo = "",
+            safraInput.quantidade = "",
+            safraInput.despeza = "",
+            safraInput.receita_estimada = ""
         showPreencha.value = false
 
-    showModalColheita.value = false
-}else{
-    showPreencha.value = true
-}
+        showModalPagarTaxa.value = false
+    } else {
+        showPreencha.value = true
+    }
 }
 const handleDeletarSafra = async () => {
     if (!limitarForm.value) return
@@ -247,6 +252,13 @@ const precoFormatar = (valor) => {
 const despesasFormatar = (valor) => {
     safraInput.despeza = paraRealInput(valor)
 }
+const limitarTaxa = (valor) => {
+    if(valor > safraResponse_qnt.value.data[0].taxa_arrendo){
+        safraInput.quantidade = safraResponse_qnt.value.data[0].taxa_arrendo
+    }
+}
+
+
 
 
 </script>
@@ -293,20 +305,32 @@ const despesasFormatar = (valor) => {
                             </div>
                         </div>
                         <div
-                            class="flex  px-12 items-end justify-between  w-full h-[130px] bg-white rounded-xl rounded-r-none mb-5">
+                            class="flex  px-12 items-end justify-between  w-full h-[130px] bg-white rounded-tl-xl rounded-r-none ">
                             <div class="flex flex-col items-start h-[80%]">
                                 <h1 class="text-3xl font-bold capitalize">{{ safra.cultivo }}</h1>
                                 <h2> <b> Início:</b> {{ safra.data_inicio }}</h2>
                                 <h2><b>Fim:</b> {{ safra.data_fim }}</h2>
                             </div>
                             <div class="flex flex-col items-center h-[80%]">
-                                <h1 class="text-3xl font-bold">Despezas</h1>
-                                <h1 class="text-2xl font-bold text-vermelho ">{{ paraReal(safra.despeza_real) }}</h1>
+                                <h1 class="text-xl font-bold">Área colhida (ha)</h1>
+                                <h1 class="text-2xl font-bold text-vermelho ">{{ ((safra.area_colhida / safra.area) *
+                                    100).toFixed(2) }}%</h1>
+                                <h3 class="text-verde">[{{ safra.area_colhida + "/" + safra.area }}]</h3>
                             </div>
                             <div class="flex flex-col item-center h-[80%]">
-                                <h1 class="text-3xl font-bold">Colhido</h1>
+                                <h1 class="text-xl font-bold">Em estoque</h1>
                                 <h1 class="text-2xl font-bold text-verde_claro">{{ safra.quantidade_real }}</h1>
                                 <h3 class="text-verde">[{{ formatar(safra.grandeza) }}]</h3>
+                            </div>
+                            <div v-if="safra.taxa_arrendo > 0" class="flex flex-col item-center h-[80%]">
+                                <h1 class="text-xl font-bold">Aluguel restante do terreno</h1>
+                                <h1 class="text-2xl font-bold text-escuro">{{ safra.taxa_arrendo }} |  <span class="text-sm">{{
+                                    formatar(safra.grandeza) }}</span></h1>
+                                <h1 @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"  
+                                class="text-verde_claro text-[1.2rem] font-bold underline cursor-pointer">Pagar taxa</h1>
+                            </div>
+                            <div v-else class="flex flex-col item-center justify-center h-[100%]">
+                                <h1 class="text-sm font-bold">Nenhuma dívida pendente do terreno</h1>
                             </div>
                             <div class="flex flex-col items-center h-[100%]">
 
@@ -316,14 +340,11 @@ const despesasFormatar = (valor) => {
                                         class="self-start bg-escuro px-3 py-2 rounded-md text-md text-claro font-bold transition-all hover:bg-verde ">Encerrar
                                         Safra
                                     </button>
-                                    <button @click="abrirModalAdicionarColheita(safra.id, safra.cultivo, safra.grandeza)"
-                                        class="self-start bg-escuro px-3 py-2 rounded-md text-md text-claro font-bold transition-all hover:bg-verde ">Registrar
-                                        colheita
-                                    </button>
 
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -457,6 +478,19 @@ const despesasFormatar = (valor) => {
                                     de
                                     produção</label>
                             </div>
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="number" v-model="safraInput.taxa_arrendo"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label
+                                    class="peer-focus:font-medium absolute whitespace-nowrap text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    Taxa de aluguel | arrendo <b class="text-[.7rem]" v-if="safraInput.grandeza"> | {{
+                                        formatar(safraInput.grandeza) + ' por hectare'
+                                    }}</b></label>
+
+                                <p class="text-claro text-xs opacity-80 font-semibold">(Colocar 0 se o terreno for seu)</p>
+                            </div>
                         </div>
                         <div class="flex flex-col w-[40%]">
                             <div class="relative z-0 w-full mb-6 group">
@@ -473,7 +507,8 @@ const despesasFormatar = (valor) => {
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-on:input="precoFormatar(safraInput.valor_unitario)" v-model="safraInput.valor_unitario"
+                                <input type="text" v-on:input="precoFormatar(safraInput.valor_unitario)"
+                                    v-model="safraInput.valor_unitario"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label
@@ -483,7 +518,8 @@ const despesasFormatar = (valor) => {
                             </div>
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-on:input="despesasFormatar(safraInput.despeza)" v-model="safraInput.despeza"
+                                <input type="text" v-on:input="despesasFormatar(safraInput.despeza)"
+                                    v-model="safraInput.despeza"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
 
@@ -497,16 +533,18 @@ const despesasFormatar = (valor) => {
                                 <p class="text-md text-claro">| Lucro estimado: <br>
                                     <b
                                         v-if="safraInput.quantidade != '' && safraInput.valor_unitario != '' && safraInput.despeza != ''">
-                                        <span :class="`text-${corLucro((parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)) - paraFloat(safraInput.despeza))}`">
+                                        <span
+                                            :class="`text-${corLucro((parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)) - paraFloat(safraInput.despeza))}`">
                                             {{
-                                                   paraReal((parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)) - paraFloat(safraInput.despeza))}}
+                                                paraReal((parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) *
+                                                    paraFloat(safraInput.valor_unitario)) - paraFloat(safraInput.despeza)) }}
                                         </span>
                                     </b>
                                 </p>
                                 <p class="text-md text-claro">| Receita estimada: <br> <b
-                                        v-if="safraInput.quantidade && safraInput.valor_unitario"
-                                        class="text-verde_claro">
-                                        {{ paraReal(parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) * paraFloat(safraInput.valor_unitario)) }}
+                                        v-if="safraInput.quantidade && safraInput.valor_unitario" class="text-verde_claro">
+                                        {{ paraReal(parseFloat(safraInput.quantidade) * parseFloat(safraInput.area) *
+                                            paraFloat(safraInput.valor_unitario)) }}
                                     </b> </p>
                                 <p class="text-md text-claro">| Despezas estimadas: <br> <b v-if="safraInput.despeza != ''"
                                         class="text-vermelho"> -{{
@@ -530,23 +568,25 @@ const despesasFormatar = (valor) => {
                 </ModalDeletarSafra>
             </Transition>
             <Transition name="pop">
-                <ModalAdicionarColheita v-if="showModalColheita" @close="showModalColheita = false"
-                    @adicionarColheita="handleAdicionarColheita">
+                <ModalPagarTaxa v-if="showModalPagarTaxa" @close="showModalPagarTaxa = false"
+                    @pagarTaxa="handlePagarTaxaSubmit">
                     <Transition name="pop">
                         <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
                             campos obrigatórios</h1>
                     </Transition>
+
+                    <h1 class="text-claro text-lg text-center">Você ainda precisa pagar <b class="text-vermelho"> {{safraResponse_qnt.data[0].taxa_arrendo + " " + formatar(safraInput.grandeza)}}</b> pelo terreno utilizado</h1>
                     <div class="relative z-0 w-full mb-6 group">
 
-                        <input type="number" v-model="safraInput.quantidade"
+                        <input type="number" v-on:input="limitarTaxa(safraInput.quantidade)" v-model="safraInput.quantidade"
                             class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                             placeholder=" " required>
                         <label
                             class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                            Quantidade Colhida em:
-                            <b v-if="safraInput.grandeza"> {{ formatar(safraInput.grandeza) }}</b></label>
+                            <b v-if="safraInput.grandeza"> {{ formatar(safraInput.grandeza) }}</b> à pagar
+                            </label>
                     </div>
-                </ModalAdicionarColheita>
+                </ModalPagarTaxa>
             </Transition>
             <Transition name="pop">
                 <ModalEncerrarSafra v-if="showModalEncerrar" @close="showModalEncerrar = false"

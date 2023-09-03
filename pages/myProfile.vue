@@ -9,7 +9,7 @@ if(process.client){
 }
 
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth","subscription"]
 })
 
 </script>

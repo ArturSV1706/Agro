@@ -1,7 +1,7 @@
 <script setup>
 
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth","subscription"]
 })
 
 const { supabase } = useSupabase()
@@ -28,6 +28,7 @@ const reverterOrdenar = ref()
 const limitarForm = ref()
 const showPreencha = ref()
 const safraResponse = ref();
+const emprestimoResponse = ref();
 
 if (process.client) {
     funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
@@ -189,20 +190,52 @@ const handleSubmitPagarFuncionario = async () => {
         if (!limitarForm.value) return
         limitarForm.value = false
 
+        emprestimoResponse.value = await supabase.from("safras").select("emprestimo").eq('id', funcionarioInput.safra_id)
+
+
         if (process.client) {
 
 
             if (paraFloat(funcionarioInput.salario) > 0) {
-                if (process.client) {
+
+                if (paraFloat(funcionarioInput.salario) > emprestimoResponse.value.data[0].emprestimo) {
+                    
+                    if (emprestimoResponse.value.data[0].emprestimo> 0) await supabase.from("fluxo").insert({
+                        categoria: "salario",
+                        produto: "Pagamento à: " + funcionarioInput.nome,
+                        valor: emprestimoResponse.value.data[0].emprestimo,
+                        tipo_fluxo: "saida_emprestimo",
+                        safra_id: funcionarioInput.safra_id,
+                        user_id: user.value.id
+                    });
                     await supabase.from("fluxo").insert({
                         categoria: "salario",
                         produto: "Pagamento à: " + funcionarioInput.nome,
-                        valor: paraFloat(funcionarioInput.salario),
+                        valor: paraFloat(funcionarioInput.salario) - emprestimoResponse.value.data[0].emprestimo,
                         tipo_fluxo: "saida",
                         safra_id: funcionarioInput.safra_id,
                         user_id: user.value.id
                     });
+                    
+                    await supabase.from("safras").update({
+                        emprestimo: 0
+                    }).eq('id', funcionarioInput.safra_id);
                 }
+                else {
+                    await supabase.from("fluxo").insert({
+                        categoria: "salario",
+                        produto: "Pagamento à: " + funcionarioInput.nome,
+                        valor: paraFloat(funcionarioInput.salario),
+                        tipo_fluxo: "saida_emprestimo",
+                        safra_id: funcionarioInput.safra_id,
+                        user_id: user.value.id
+                    });
+                    await supabase.from("safras").update({
+                        emprestimo: emprestimoResponse.value.data[0].emprestimo - paraFloat(funcionarioInput.salario)
+                    }).eq('id', funcionarioInput.safra_id);
+                }
+
+                
             }
 
         }
@@ -403,7 +436,7 @@ function generateRandomString(length) {
                             <th class="p-2 " @click="handleOrdenar('salario')">Salario</th>
                             <th class="p-2 " @click="handleOrdenar('dia')">Dia pagamento</th>
                             <th class="p-2 ">Pagar</th>
-                            <th class="p-2 ">Detalhes</th>
+                            <th class="p-2 ">Editar</th>
                             <th class="p-2 ">Deletar</th>
                         </thead>
                         <tbody>

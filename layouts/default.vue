@@ -21,6 +21,8 @@ const desativarBackdrop = () => {
         <img class="w-[10vw] animate-ping" src="../assets/icons/saffron_alt.svg" alt="">
 
     </div>
+    <NuxtLoadingIndicator height="5" color="#329F5B" />
+
     <div v-if="!loading" class="h-[100vh] w-screen bg-claro">
         <Transition name="open">
             <section v-if="showBackdrop"

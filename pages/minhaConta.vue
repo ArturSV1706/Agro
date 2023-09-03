@@ -1,0 +1,240 @@
+<script setup>
+definePageMeta({
+    middleware: ["auth"],
+})
+
+const { supabase } = useSupabase()
+const { user } = useAuth()
+
+const limitarForm = ref(true)
+const showPreencha = ref()
+const usuario = ref();
+const usuarioResponse = ref();
+const color = ref();
+
+
+
+const setupInput = reactive({
+    nome: "",
+    telefone: "",
+    estado: "",
+})
+
+
+const options = {
+    method: "GET",
+    headers: {
+        accept: "application/json",
+        ApiKey: "loja_0371c441d22a4a95a08cc82de4f1fca3",
+    },
+};
+
+const response = ref();
+const customerId = ref();
+const subscriptionId = ref();
+const status = ref();
+const expira_em = ref();
+const formattedDate = ref();
+
+
+// billsby api
+if (process.client) {
+
+    usuarioResponse.value = await supabase.from("usuario").select().eq('user_id', user.value.id)
+    setupInput.nome = usuarioResponse.value.data[0].nome
+    setupInput.telefone = usuarioResponse.value.data[0].telefone
+    setupInput.estado = usuarioResponse.value.data[0].estado
+
+    customerId.value = await fetch(
+        'https://public.billsby.com/api/v1/rest/core/loja/customers?page=1&pageSize=1&search=' + user.value.email,
+        options
+    )
+        .then((response) => response.json())
+        .then((response) => customerId.value = response.results[0].customerUniqueId)
+        .catch((err) => console.error(err));
+
+    console.log(customerId.value)
+
+    subscriptionId.value = await fetch(
+        'https://public.billsby.com/api/v1/rest/core/loja/customers/2GPVPIZOYX/subscriptions',
+        options
+    )
+        .then((response) => response.json())
+        .then((response) => subscriptionId.value = response[0].subscriptionId)
+        .catch((err) => console.error(err));
+
+    console.log(subscriptionId.value)
+
+
+
+
+    status.value = await fetch(
+        "https://public.billsby.com/api/v1/rest/core/loja/subscriptions/" + "GPW3VV2EME",
+        options
+    )
+        .then((response) => response.json())
+        .then((response) => (status.value = response.status))
+        .catch((err) => console.error(err));
+
+    expira_em.value = await fetch(
+        "https://public.billsby.com/api/v1/rest/core/loja/subscriptions/" + "GPW3VV2EME",
+        options
+    )
+        .then((response) => response.json())
+        .then((response) => (expira_em.value = response.nextBillingDate))
+        .catch((err) => console.error(err));
+
+
+    const inputDateStr = expira_em.value;
+    const inputDate = new Date(inputDateStr);
+    const day = String(inputDate.getDate()).padStart(2, '0');
+    const month = String(inputDate.getMonth() + 1).padStart(2, '0');
+    const year = inputDate.getFullYear();
+    formattedDate.value = `${day}-${month}-${year}`;
+
+
+    console.log(status.value);
+    console.log(formattedDate);
+
+    switch (status.value) {
+        case 'Active':
+            status.value = "Ativo"
+            color.value = 'verde_claro'
+            break;
+        case 'Suspended':
+            status.value = "Expirado"
+            color.value = 'vermelho'
+            break;
+
+        default:
+            break;
+    }
+
+}
+// --/--/--
+const handleSubmitSetup = async () => {
+    if (setupInput.nome && setupInput.telefone && setupInput.estado) {
+
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+        if (process.client) {
+            await supabase.from("usuario").update({
+                nome: setupInput.nome,
+                telefone: setupInput.telefone,
+                estado: setupInput.estado,
+            }).eq('user_id', user.value.id);;
+        }
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
+    }
+}
+
+</script>
+<template>
+    <div>
+        <!-- Título -->
+        <div class="flex flex-row items-center fixed ml-[-4%] ">
+            <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica  ">Minha conta | </h1>
+            <h1 class="sm:text-xl 2xl:text-3xl"> 👤 </h1>
+            <!-- 1F468 U+200D U+1F33E	 -->
+        </div>
+        <!-- ------------------------------------------------------------------------------ -->
+        <div class="ml-4 h-screen flex flex-col justify-center">
+            <div class="bg-white  border-l-8 border-l-verde flex justify-evenly p-4 max-w-[30vw] mb-5">
+                <div>
+                    <p class="text-escuro ">Plano:  <span class="font-bold">simples</span></p>
+                    <p class='text-escuro '>Estado: <span :class="`text-${color} font-semibold`">{{ status }}</span></p>
+                    <p class="text-escuro ">Expira em:  <span class="font-bold">{{ formattedDate }}</span></p>
+                </div>
+                <img class="h-[70px]" src="../assets/icons/saffron.svg" alt="">
+            </div>
+            <div class="bg-white  border-l-8 border-l-verde flex-row p-4 max-w-[30vw]">
+                <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha
+                        todos
+                        os
+                        campos</h1>
+                </Transition>
+                <div class="flex flex-row">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" disabled name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required :value="user.email">
+
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" name="floating_email" id="floating_email" v-model="setupInput.telefone"
+                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">
+                            Telefone</label>
+                    </div>
+
+
+
+                </div>
+                <div class="flex flex-col">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" name="floating_email" id="floating_email" v-model="setupInput.nome"
+                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Nome
+                            do Administrador
+                        </label>
+                    </div>
+
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <label for="nome"
+                            class=" peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Estado
+                        </label>
+                        <select type="text" placeholder="João da silva" v-model="setupInput.estado"
+                            class="block py-2.5 px-0 w-full text-sm text-escuro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" value="AC">Acre</option>
+                            <option class="bg-verde font-semibold" value="AL">Alagoas</option>
+                            <option class="bg-verde font-semibold" value="AP">Amapá</option>
+                            <option class="bg-verde font-semibold" value="AM">Amazonas</option>
+                            <option class="bg-verde font-semibold" value="BA">Bahia</option>
+                            <option class="bg-verde font-semibold" value="CE">Ceará</option>
+                            <option class="bg-verde font-semibold" value="DF">Distrito Federal</option>
+                            <option class="bg-verde font-semibold" value="ES">Espírito Santo</option>
+                            <option class="bg-verde font-semibold" value="GO">Goiás</option>
+                            <option class="bg-verde font-semibold" value="MA">Maranhão</option>
+                            <option class="bg-verde font-semibold" value="MT">Mato Grosso</option>
+                            <option class="bg-verde font-semibold" value="MS">Mato Grosso do Sul</option>
+                            <option class="bg-verde font-semibold" value="MG">Minas Gerais</option>
+                            <option class="bg-verde font-semibold" value="PA">Pará</option>
+                            <option class="bg-verde font-semibold" value="PB">Paraíba</option>
+                            <option class="bg-verde font-semibold" value="PR">Paraná</option>
+                            <option class="bg-verde font-semibold" value="PE">Pernambuco</option>
+                            <option class="bg-verde font-semibold" value="PI">Piauí</option>
+                            <option class="bg-verde font-semibold" value="RJ">Rio de Janeiro</option>
+                            <option class="bg-verde font-semibold" value="RN">Rio Grande do Norte</option>
+                            <option class="bg-verde font-semibold" value="RS">Rio Grande do Sul</option>
+                            <option class="bg-verde font-semibold" value="RO">Rondônia</option>
+                            <option class="bg-verde font-semibold" value="RR">Roraima</option>
+                            <option class="bg-verde font-semibold" value="SC">Santa Catarina</option>
+                            <option class="bg-verde font-semibold" value="SP">São Paulo</option>
+                            <option class="bg-verde font-semibold" value="SE">Sergipe</option>
+                            <option class="bg-verde font-semibold" value="TO">Tocantins</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button @click="handleSubmitSetup" data-modal-toggle="defaultModal" type="button"
+                    class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
+                    Editar Informações</button>
+            </div>
+        </div>
+    </div>
+</template>

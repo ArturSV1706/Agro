@@ -1,7 +1,7 @@
 <script setup>
 
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth", "subscription"]
 })
 
 import { reactive, ref } from 'vue';
@@ -12,11 +12,12 @@ const showModal = ref()
 const { supabase } = useSupabase()
 const { user } = useAuth()
 const { formatar, formatarData, paraReal, paraFloat, corLucro, paraRealInput } = useUtils()
-const route = useRoute()
+const router = useRouter()
 
 
 
 const safraResponse = ref();
+const fornecedoresResponse = ref();
 const safraResponse_qnt = ref()
 const safraSelecionadaResponse = ref();
 const saldoResponse = ref();
@@ -38,9 +39,15 @@ const reverterOrdenar = ref()
 const showFluxo = ref()
 const showModalDeletar = ref()
 const showModalEditar = ref()
+const showModalEmprestimo = ref()
+const showModalDespesa = ref()
+const showModalNota = ref()
 const limitarForm = ref()
 const showPreencha = ref()
+const showLimit = ref()
 
+const alert = ref()
+const alertMessage = ref()
 
 
 // Paginação
@@ -58,9 +65,10 @@ if (process.client) {
 const handleSafraSelecioanda = async () => {
     showFluxo.value = true
     if (process.client) {
-        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+        fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
         fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
         fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
+        fornecedoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id }).order('nome', { ascending: true })
         safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
         saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
         safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
@@ -94,7 +102,10 @@ const entradaInput = reactive({
 const fluxoInput = reactive({
     id: "",
     produto: "",
-    valor: ""
+    valor: "",
+    possui_nota: "",
+    arquivo_nota: "",
+    tipo_fluxo: ""
 })
 
 // const handleSubmitDespesa = async () => {
@@ -121,6 +132,38 @@ const fluxoInput = reactive({
 //     despesaInput.valor = ""
 // }
 
+const handleModalEmprestimo = async () => {
+
+    showPreencha.value = false
+    limitarForm.value = true
+    showModalEmprestimo.value = true
+}
+const handleModalDespesa = async () => {
+
+    showPreencha.value = false
+    limitarForm.value = true
+    showModalDespesa.value = true
+}
+const handleModalNota = async (id, tipo) => {
+
+    fluxoInput.id = id
+    fluxoInput.tipo_fluxo = tipo
+    showPreencha.value = false
+    showLimit.value = false
+    limitarForm.value = true
+    showModalNota.value = true
+}
+const handleVerNota = async (id) => {
+
+    fluxoInput.id = id
+    if (process.client) {
+        let link = await supabase.storage.from(user.value.id).createSignedUrl(fluxoInput.id + ".pdf", 3600)
+        console.log(link.data.signedURL)
+        window.open(link.data.signedURL, "_blank")
+    }
+}
+
+
 const handleSubmitEntrada = async () => {
     if (parseFloat(entradaInput.valor_unitario) <= 0 || parseFloat(entradaInput.valor_quantidade) <= 0) return
 
@@ -130,7 +173,7 @@ const handleSubmitEntrada = async () => {
     await supabase.from("fluxo").insert({
         tipo_fluxo: "entrada",
         categoria: "safra",
-        // fornecedor: entradaInput.fornecedor,
+        fornecedor: fluxoInput.fornecedor,
         produto: safraSelecionadaResponse.value.data[0].cultivo,
         valor: paraFloat(entradaInput.valor_unitario),
         safra_id: safra_escolhida.value,
@@ -163,6 +206,10 @@ const handleSubmitEntrada = async () => {
         saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
         safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
     }
+
+    showModalDeletar.value = false
+    alertMessage.value = "Venda realizada com sucesso!"
+    alert.value = true
 }
 
 const handleSubmitDeleteFluxo = async () => {
@@ -179,6 +226,117 @@ const handleSubmitDeleteFluxo = async () => {
         safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
     }
     showModalDeletar.value = false
+    alertMessage.value = "Item deletado com successo!"
+    alert.value = true
+}
+const handleSubmitAdicionarDespesa = async () => {
+    if (fluxoInput.valor && fluxoInput.categoria && fluxoInput.produto && fluxoInput.fornecedor) {
+
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+        if (process.client) {
+
+
+            if (paraFloat(fluxoInput.valor) > 0) {
+
+                if (paraFloat(fluxoInput.valor) > safraSelecionadaResponse.value.data[0].emprestimo) {
+
+
+                    if (safraSelecionadaResponse.value.data[0].emprestimo > 0) await supabase.from("fluxo").insert({
+                        categoria: fluxoInput.categoria,
+                        fornecedor: fluxoInput.fornecedor,
+                        produto: fluxoInput.produto,
+                        valor: safraSelecionadaResponse.value.data[0].emprestimo,
+                        tipo_fluxo: "saida_emprestimo",
+                        safra_id: safraSelecionadaResponse.value.data[0].id,
+                        user_id: user.value.id
+                    });
+                    await supabase.from("fluxo").insert({
+                        categoria: fluxoInput.categoria,
+                        produto: fluxoInput.produto,
+                        valor: paraFloat(fluxoInput.valor) - safraSelecionadaResponse.value.data[0].emprestimo,
+                        tipo_fluxo: "saida",
+                        safra_id: safraSelecionadaResponse.value.data[0].id,
+                        user_id: user.value.id
+                    });
+
+                    await supabase.from("safras").update({
+                        emprestimo: 0
+                    }).eq('id', safraSelecionadaResponse.value.data[0].id);
+                }
+                else {
+                    await supabase.from("fluxo").insert({
+                        categoria: fluxoInput.categoria,
+                        produto: fluxoInput.produto,
+                        valor: paraFloat(fluxoInput.valor),
+                        tipo_fluxo: "saida_emprestimo",
+                        safra_id: safraSelecionadaResponse.value.data[0].id,
+                        user_id: user.value.id
+                    });
+                    await supabase.from("safras").update({
+                        emprestimo: safraSelecionadaResponse.value.data[0].emprestimo - paraFloat(fluxoInput.valor)
+                    }).eq('id', safraSelecionadaResponse.value.data[0].id);
+                }
+
+
+            }
+
+            if (process.client) {
+                fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+                fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
+                fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
+                safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
+                saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
+                safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
+            }
+
+        }
+        fluxoInput.valor = ""
+        fluxoInput.categoria = ""
+        fluxoInput.produto = ""
+        fluxoInput.fornecedor = ""
+
+        showModalDespesa.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
+    }
+}
+const handleSubmitAdicionarEmprestimo = async () => {
+    if (fluxoInput.valor) {
+
+        await supabase.from("safras").update({
+            emprestimo: safraSelecionadaResponse.value.data[0].emprestimo + paraFloat(fluxoInput.valor)
+        }).eq('id', safraSelecionadaResponse.value.data[0].id);
+
+        if (process.client) {
+            await supabase.from("fluxo").insert({
+                categoria: "emprestimo",
+                produto: "emprestimo",
+                valor: paraFloat(fluxoInput.valor),
+                tipo_fluxo: "saida",
+                safra_id: safraSelecionadaResponse.value.data[0].id,
+                user_id: user.value.id
+            });
+        }
+
+        if (process.client) {
+            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
+            fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
+            safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
+            saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
+            safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
+        }
+
+
+        fluxoInput.valor = ""
+        showModalEmprestimo.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
+    }
 }
 const handleSubmitEditarFluxo = async () => {
     if (!limitarForm.value) return
@@ -192,6 +350,77 @@ const handleSubmitEditarFluxo = async () => {
         fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
     }
     showModalEditar.value = false
+
+    alertMessage.value = "Item editado com successo!"
+    alert.value = true
+}
+const handleSubmitEditarNota = async () => {
+    if (fluxoInput.possui_nota) {
+        if (fluxoInput.arquivo_nota) {
+
+            if (fluxoInput.arquivo_nota.size < 2097152) {
+
+                if (process.client) {
+                    let test_bucket = await supabase.storage.getBucket(user.value.id)
+                    if (!test_bucket.data) {
+                        console.log("Bucket doesn't exist")
+                        await supabase.storage.createBucket(user.value.id, {
+                            public: false,
+                            allowedMimeTypes: ['image/pdf'],
+                            fileSizeLimit: 2048
+                        })
+                    } else {
+                        console.log("Bucket exists" + test_bucket.value)
+
+                        await supabase.storage.from(user.value.id).upload(fluxoInput.id + ".pdf", fluxoInput.arquivo_nota, {
+                            cacheControl: '3600',
+                            upsert: true
+                        })
+                    }
+
+
+                }
+
+
+                fluxoInput.valor = ""
+                fluxoInput.arquivo_nota = ""
+                showModalNota.value = false
+                showPreencha.value = false
+            }
+            else {
+                showLimit.value = true
+            }
+
+
+        } else {
+            showPreencha.value = true
+        }
+
+
+        await supabase.from("fluxo").update({
+            possui_nota: fluxoInput.possui_nota
+        }).eq('id', fluxoInput.id);
+
+        if (process.client) {
+            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
+        }
+
+    } else {
+        await supabase.from("fluxo").update({
+            possui_nota: false
+        }).eq('id', fluxoInput.id);
+
+        fluxoInput.valor = ""
+        fluxoInput.arquivo_nota = ""
+        showModalNota.value = false
+        showPreencha.value = false
+
+        if (process.client) {
+            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
+        }
+    }
 }
 
 const handleDeleteFluxo = (id, produto, valor) => {
@@ -205,7 +434,7 @@ const handleDeleteFluxo = (id, produto, valor) => {
 const handleEditarFluxo = (id, valor) => {
     limitarForm.value = true
     fluxoInput.id = id
-    fluxoInput.valor = valor
+    fluxoInput.valor = paraReal(valor)
     showModalEditar.value = true
 }
 const handleDetalheFluxo = (id, tipo_fluxo, categoria, fornecedor, produto, valor) => {
@@ -293,12 +522,18 @@ function formatarTipoFluxo(a) {
     if (a === 'saida') {
         return '▼';
     }
+    if (a === 'saida_emprestimo') {
+        return '▼';
+    }
     if (a === 'entrada') {
         return '▲';
     }
 }
 function formatarTipoFluxoCor(a) {
     if (a === 'saida') {
+        return 'vermelho';
+    }
+    if (a === 'saida_emprestimo') {
         return 'vermelho';
     }
     if (a === 'entrada') {
@@ -373,10 +608,29 @@ const precoFormatar = (valor) => {
 const valorFormatar = (valor) => {
     fluxoInput.valor = paraRealInput(valor)
 }
+
+const redirectNota = (id) => {
+    router.push({ path: "/notas/" + id });
+    // window.location.href = "/safra/" + id
+}
+
+function onFileSelected(event) {
+    fluxoInput.arquivo_nota = event.target.files[0]
+    console.log(fluxoInput.arquivo_nota)
+}
+
 </script>
+
+
 
 <template>
     <div>
+        <Transition name="alert">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center text-claro font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
+
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
             <h1 class="sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Financeiro | </h1>
@@ -456,6 +710,30 @@ const valorFormatar = (valor) => {
 
                 <!-- Mecanismo de adição de despezas -->
                 <div v-if="showFluxo" class="flex items-center w-[85%] mb-6">
+                    <p class="whitespace-nowrap text-escuro font-bold text-2xl">Empréstimo 💰 </p>
+                    <div class="flex w-full h-1 bg-escuro ml-4"></div>
+                    <div v-if="!safraSelecionadaResponse"></div>
+                </div>
+                <div class="flex items-center  min-h-[120px]" v-if="showFluxo">
+                    <div class="flex flex-col">
+                        <button @click="handleModalEmprestimo"
+                            class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">Novo
+                            Empréstimo</button>
+                    </div>
+
+                    <div class="flex flex-col justify-center pl-2 ml-8" v-if="showFluxo">
+                        <h1 class="text-3xl text-escuro font-bold">{{ }}</h1>
+                        <h2 class="text-lg text-escuro font-semibold">Empréstimo</h2>
+                        <div v-if="!fluxoEntrada"></div>
+                        <h1 v-else class="text-verde_claro text-2xl font-semibold">{{
+                            paraReal(safraSelecionadaResponse.data[0].emprestimo) }}
+                        </h1>
+                    </div>
+                    <p class="ml-8 text-verde font-semibold">💡 Ao adicionar um empréstimo, uma despeza em seu valor será
+                        criada. <br> Novas despesas irão ser descontadas do valor do empréstimo até o mesmo acabar</p>
+                </div>
+
+                <div v-if="showFluxo" class="flex items-center w-[85%] mb-6">
                     <p class="whitespace-nowrap text-escuro font-bold text-2xl">Adicionar venda de colheita 🌾 </p>
                     <div class="flex w-full h-1 bg-escuro ml-4"></div>
                 </div>
@@ -489,7 +767,7 @@ const valorFormatar = (valor) => {
                                     placeholder=" " required>
                                 <label
                                     class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -z-10 scale-75 top-3 -translate-y-6  origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                                    Valor da venda (R$)
+                                    Valor <b>total</b> da venda (R$)
                                 </label>
                             </div>
 
@@ -500,13 +778,43 @@ const valorFormatar = (valor) => {
                         </div>
 
                     </div>
+                    <div class="flex w-[15%] ">
+                        <div class="flex flex-col justify-center pl-2" v-if="showFluxo">
+                            <h1 class="text-3xl text-escuro font-bold">{{ }}</h1>
+                            <h2 class="text-lg text-escuro font-semibold">Custo estimado de cada
+                                {{ formatar(safraSelecionadaResponse.data[0].grandeza) }} </h2>
+                            <h3>(Mantendo a mesma produtividade até o final da colheita)</h3>
+                            <div v-if="!fluxoEntrada"></div>
+                            <h1 v-else class="text-verde_claro text-2xl font-semibold">{{ paraReal(fluxoSaida.data /
+                                ((safraSelecionadaResponse.data[0].quantidade_max /
+                                    safraSelecionadaResponse.data[0].area_colhida) * safraSelecionadaResponse.data[0].area)) }}
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="flex w-[15%] ">
+                        <div class="flex flex-col justify-center pl-2" v-if="showFluxo">
+                            <h1 class="text-3xl text-escuro font-bold">{{ }}</h1>
+                            <h2 class="text-lg text-escuro font-semibold">Custo atual de cada
+                                {{ formatar(safraSelecionadaResponse.data[0].grandeza) }} </h2>
+                            <h3>(Levando em consideração a quantidade colhida atual)</h3>
+                            <div v-if="!fluxoEntrada"></div>
+                            <h1 v-else class="text-verde_claro text-2xl font-semibold">{{
+                                paraReal(fluxoSaida.data / safraSelecionadaResponse.data[0].quantidade_max) }}
+                            </h1>
+                        </div>
+                    </div>
+
                 </div>
+
                 <div v-if="showFluxo" class="flex items-center w-[85%] mb-6">
                     <p class="whitespace-nowrap text-escuro font-bold text-2xl">Entradas e saídas 🔃 </p>
                     <div class="flex w-full h-1 bg-escuro ml-4"></div>
                 </div>
                 <div v-if="!fluxoResponse"></div>
                 <div v-else class="flex flex-col  w-full">
+                    <button @click="handleModalDespesa"
+                        class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">Nova
+                        despesa</button>
                     <div class="flex flex-col w-[85%]">
                         <table class="bg-white shadow-xl w-full">
                             <thead class="bg-verde text-claro">
@@ -514,8 +822,11 @@ const valorFormatar = (valor) => {
                                 <th>Data</th>
                                 <th class="p-2 " @click="handleOrdenar('categoria')">Categoria</th>
                                 <!-- <th class="p-2 " @click="handleOrdenar('fornecedor')">Comprador/Vendedor</th> -->
-                                <th class="p-2 " @click="handleOrdenar('produto')">Produto</th>
+                                <th class="p-2 " @click="handleOrdenar('produto')">Produto/Serviço</th>
+                                <th class="p-2 " @click="handleOrdenar('produto')">Comprador/Vendedor</th>
                                 <th class="p-2 " @click="handleOrdenar('valor')">Valor</th>
+                                <th>Gerenciar Nota</th>
+                                <th>Ver Nota</th>
                                 <th>Editar</th>
                                 <th>Deletar</th>
                             </thead>
@@ -524,14 +835,27 @@ const valorFormatar = (valor) => {
                                     :class="` text-center text-escuro font-medium bg-opacity-25 bg-${formatarTipoFluxoCor(fluxo.tipo_fluxo)} even:bg-opacity-30`"
                                     :key="fluxo.id">
                                     <td
-                                        :class="`p-2 text-2xl font-extrabold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">
-                                        {{ formatarTipoFluxo(fluxo.tipo_fluxo) }}</td>
+                                        :class="` flex justify-center items-center p-2 text-2xl font-extrabold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">
+                                        {{ formatarTipoFluxo(fluxo.tipo_fluxo) }} <span
+                                            v-if="fluxo.tipo_fluxo === 'saida_emprestimo'"
+                                            class="text-xs font-semibold">(emprestimo)</span></td>
                                     <td class="p-2 text-center font-semibold"> {{ formatarData(fluxo.data_criacao) }}</td>
 
                                     <td class="p-2 text-center">{{ fluxo.categoria }}</td>
                                     <!-- <td class="p-2"> {{ fluxo.fornecedor }}</td> -->
                                     <td class="p-2 text-center"> {{ fluxo.produto }}</td>
+                                    <td v-if="fluxo.compradores" class="p-2 text-center capitalize"> {{
+                                        fluxo.compradores.nome }}</td>
+                                    <td v-else class="p-2 text-center "> ------ </td>
                                     <td class="p-2 text-center">{{ paraReal(fluxo.valor) }}</td>
+                                    <td @click="handleModalNota(fluxo.id, fluxo.tipo_fluxo)"
+                                        class="p-2 cursor-pointer material-icons text-center hover:text-xl transition-all">
+                                        📝</td>
+                                    <td v-if="fluxo.possui_nota" @click="handleVerNota(fluxo.id)"
+                                        class="p-2 cursor-pointer material-icons text-center hover:text-xl transition-all">
+                                        📑</td>
+                                    <td v-else class="p-2 material-icons text-center">
+                                        ------</td>
                                     <!-- <td>{{fluxo.valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> -->
                                     <td @click="handleEditarFluxo(fluxo.id, fluxo.valor)"
                                         class="p-2 cursor-pointer material-icons block text-center hover:text-xl transition-all">
@@ -595,16 +919,154 @@ const valorFormatar = (valor) => {
                         @editarFinanceiro="handleSubmitEditarFluxo">
                         <div class="relative z-0 w-full mb-6 group">
 
-                            <input type="text" v-on:input="valorFormatar(   fluxoInput.valor)" v-model="fluxoInput.valor" name="floating_email"
-                                id="floating_email"
+                            <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
+                                name="floating_email" id="floating_email"
                                 class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                 placeholder=" " required>
                             <label for="floating_email"
                                 class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
-                                
+
                             </label>
                         </div>
                     </ModalEditarFinanceiro>
+                </Transition>
+                <Transition name="pop">
+                    <ModalNovoEmprestimo v-if="showModalEmprestimo" @close="showModalEmprestimo = false"
+                        @adicionarEmprestimo="handleSubmitAdicionarEmprestimo">
+                        <Transition name="pop">
+                            <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
+                                os
+                                campos obrigatórios</h1>
+                        </Transition>
+
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
+                                name="floating_email" id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
+                                do empréstimo
+
+                            </label>
+                        </div>
+                    </ModalNovoEmprestimo>
+                </Transition>
+                <Transition name="pop">
+                    <ModalAdicionarDespesa v-if="showModalDespesa" @close="showModalDespesa = false"
+                        @adicionarDespesa="handleSubmitAdicionarDespesa">
+                        <Transition name="pop">
+                            <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
+                                os
+                                campos obrigatórios</h1>
+                        </Transition>
+
+                        <div class="relative z-0 w-full mb-11 group">
+
+                            <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
+                                name="floating_email" id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
+
+
+                            </label>
+                        </div>
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <label for="nome"
+                                class=" peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Categoria
+                            </label>
+                            <select v-model="fluxoInput.categoria" type="text" placeholder="João da silva"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                <option class="bg-verde font-semibold" value="semente/muda">Aluguel</option>
+                                <option class="bg-verde font-semibold" value="semente/muda">Quitação de dívida</option>
+                                <option class="bg-verde font-semibold" value="semente/muda">Outro</option>
+                            </select>
+                        </div>
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="text" v-model="fluxoInput.produto" name="floating_email" id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Produto/serviço
+
+                            </label>
+                        </div>
+
+                        <div class="relative z-0 w-full pt-8 group">
+
+
+                            <label
+                                class="mt-6 peer-focus:font-medium absolute text-sm text-claro font-bold  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                                Comprador</label>
+                            <select v-model="fluxoInput.fornecedor"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                <option class="bg-verde font-semibold capitalize" v-if="fornecedoresResponse"
+                                    v-for="comprador in fornecedoresResponse.data" :key="comprador.id"
+                                    v-bind:value=comprador.id>{{
+                                        comprador.nome
+                                    }}
+                                </option>
+                            </select>
+                        </div>
+                    </ModalAdicionarDespesa>
+                </Transition>
+
+                <Transition name="pop">
+                    <ModalAdicionarNotaFiscal v-if="showModalNota" @close="showModalNota = false"
+                        @adicionarNota="handleSubmitEditarNota">
+                        <Transition name="pop">
+                            <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
+                                os
+                                campos obrigatórios</h1>
+                        </Transition>
+                        <Transition name="pop">
+                            <h1 v-if="showLimit" class="text-center text-vermelho font-bold animate-pulse">Arqivo excede
+                                limite de 2Mb</h1>
+                        </Transition>
+                        <p class="text-claro text-xs"><span>ℹ️</span> Arquivos precisam estar no formato <b
+                                class="text-verde_claro">.pdf</b> e ter no máximo <b class="text-verde_claro">2MB</b> </p>
+
+
+
+
+
+
+                        <h1 v-if="fluxoInput.tipo_fluxo == 'entrada'" class="text-center text-claro">❗️ Não sabe emitir Nota
+                            eletrônica de produtor? <a href="/notaFiscal" target="_blank"
+                                class="text-verde_claro font-bold cursor-pointer underline">Clique aqui</a> para saber como!
+                        </h1>
+                        <h1 class="text-center text-vermelho font-semibold animate-pulse">Clicar alterar com a caixa
+                            <b>[Possui nota?]</b> desmarcada irá <b>apagar</b> sua nota atual</h1>
+
+                        <div class="flex items-center mb-4">
+
+                            <input
+                                class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                                v-model="fluxoInput.possui_nota" type="checkbox" placeholder="João da silva"
+                                name="recebe_salario">
+                            <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">Posssui nota?</label>
+                        </div>
+
+                        <div v-if="fluxoInput.possui_nota" class="relative z-0 w-full mb-11 group">
+
+                            <input type="file" accept="application/pdf" @change="onFileSelected" name="floating_email"
+                                id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Link
+                                da Nota
+
+
+                            </label>
+                        </div>
+
+                    </ModalAdicionarNotaFiscal>
                 </Transition>
 
             </div>

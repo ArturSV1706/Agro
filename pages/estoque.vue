@@ -1,13 +1,13 @@
 <script setup>
 
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth", "subscription"]
 })
 
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
-const { paraRealInput, paraFloat } = useUtils()
+const { paraRealInput, paraFloat, formatar } = useUtils()
 
 
 const sementesResponse = ref();
@@ -15,15 +15,21 @@ const fertilizantesResponse = ref();
 const defensivosResponse = ref();
 const outrosResponse = ref();
 const colheitaResponse = ref();
+const areaResponse = ref();
 const safraResponse = ref();
+const emprestimoResponse = ref();
 
 
 const showModalAdicionar = ref()
+const showModalAdicionarColheita = ref()
 const showModalEditar = ref()
+const showModalEditarColheita = ref()
 const showModalDeletar = ref()
 const showModalDeletarNegado = ref()
 const showModalRepor = ref()
-const showTabelaSementes = ref(); showTabelaSementes.value = true
+const showModalReporColheita = ref()
+const showTabelaColheita = ref(); showTabelaColheita.value = true
+const showTabelaSementes = ref();
 const showTabelaFetilizantes = ref()
 const showTabelaDefensivos = ref()
 const showTabelaOutros = ref()
@@ -51,7 +57,7 @@ if (process.client) {
     fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
     defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
     outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
-    colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id })
+    colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id }).order('cultivo', { ascending: true })
     safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
 }
 const estoqueInput = reactive({
@@ -63,6 +69,12 @@ const estoqueInput = reactive({
     grandeza: "",
     custo: "",
     safra: ""
+
+})
+const colheitaInput = reactive({
+    area: "",
+    area_colhida: "",
+    area_adicionar_colheita: ""
 
 })
 
@@ -89,6 +101,31 @@ const handleModalEditar = (item, categoria, quantidade, grandeza, id) => {
 
 
 }
+const handleModalEditarColheita = (cultivo, quantidade, grandeza, area, id) => {
+    showPreencha.value = false
+    limitarForm.value = true
+    showModalEditarColheita.value = true
+    estoqueInput.item = cultivo
+    estoqueInput.quantidade = quantidade
+    estoqueInput.grandeza = grandeza
+    estoqueInput.area_colhida = area
+    estoqueInput.id = id
+
+
+}
+const handleModalAdicionarColheita = async (cultivo, quantidade, grandeza, area, area_colhida, id) => {
+
+    showPreencha.value = false
+    limitarForm.value = true
+    showModalAdicionarColheita.value = true
+    estoqueInput.item = cultivo
+    estoqueInput.quantidade = ""
+    safraResponse.grandeza = grandeza
+    colheitaInput.area_colhida = area_colhida
+    estoqueInput.id = id
+
+
+}
 const handleModalRepor = (item, categoria, quantidade, grandeza, id) => {
     showPreencha.value = false
     limitarForm.value = true
@@ -103,6 +140,7 @@ const handleModalRepor = (item, categoria, quantidade, grandeza, id) => {
 
 
 }
+
 const handleDeleteEstoque = async (estoqueId) => {
     limitarForm.value = true
     estoqueInput.id = estoqueId
@@ -133,159 +171,276 @@ const handleSubmitDeleteEstoque = async () => {
 }
 
 const handleSubmitNovoEstoque = async () => {
-    if(estoqueInput.item && estoqueInput.categoria && estoqueInput.quantidade && estoqueInput.grandeza && estoqueInput.safra  ){
+    if (estoqueInput.item && estoqueInput.categoria && estoqueInput.quantidade && estoqueInput.grandeza && estoqueInput.safra) {
 
-    if (!limitarForm.value) return
-    limitarForm.value = false
+        if (!limitarForm.value) return
+        limitarForm.value = false
 
-    if (process.client) {
-        await supabase.from("estoque").insert({
-            user_id: user.value.id,
-            item: estoqueInput.item,
-            categoria: estoqueInput.categoria,
-            quantidade: estoqueInput.quantidade,
-            grandeza: estoqueInput.grandeza,
-            safra_id: parseInt(estoqueInput.safra)
+        emprestimoResponse.value = await supabase.from("safras").select("emprestimo").eq('id', estoqueInput.safra)
 
-        });
 
-    }
-
-    if (paraFloat(estoqueInput.custo) > 0) {
         if (process.client) {
-            await supabase.from("fluxo").insert({
-                categoria: estoqueInput.categoria,
-                produto: estoqueInput.item,
-                valor: paraFloat(estoqueInput.custo),
-                tipo_fluxo: "saida",
-                safra_id: estoqueInput.safra,
+            await supabase.from("estoque").insert({
                 user_id: user.value.id,
+                item: estoqueInput.item,
+                categoria: estoqueInput.categoria,
+                quantidade: estoqueInput.quantidade,
+                grandeza: estoqueInput.grandeza,
+                safra_id: parseInt(estoqueInput.safra)
+
             });
+
         }
-    }
 
-    estoqueInput.id = ""
-    estoqueInput.item = ""
-    estoqueInput.categoria = ""
-    estoqueInput.quantidade = ""
-    estoqueInput.grandeza = ""
-    estoqueInput.safra = ""
-    estoqueInput.custo = ""
-    showModalAdicionar.value = false
-    showPreencha.value = false
+        if (paraFloat(estoqueInput.custo) > 0) {
+
+            if (paraFloat(estoqueInput.custo) > emprestimoResponse.value.data[0].emprestimo) {
+
+                if (emprestimoResponse.value.data[0].emprestimo > 0) await supabase.from("fluxo").insert({
+                    valor: emprestimoResponse.value.data[0].emprestimo,
+                    categoria: estoqueInput.categoria,
+                    produto: estoqueInput.item,
+                    tipo_fluxo: "saida_emprestimo",
+                    safra_id: estoqueInput.safra,
+                    user_id: user.value.id
+                });
+                await supabase.from("fluxo").insert({
+                    valor: paraFloat(estoqueInput.custo) - emprestimoResponse.value.data[0].emprestimo,
+                    categoria: estoqueInput.categoria,
+                    produto: estoqueInput.item,
+                    tipo_fluxo: "saida",
+                    safra_id: estoqueInput.safra,
+                    user_id: user.value.id
+                });
+
+                await supabase.from("safras").update({
+                    emprestimo: 0
+                }).eq('id', estoqueInput.safra);
+            }
+            else {
+                await supabase.from("fluxo").insert({
+                    valor: paraFloat(estoqueInput.custo),
+                    categoria: estoqueInput.categoria,
+                    produto: estoqueInput.item,
+                    tipo_fluxo: "saida_emprestimo",
+                    safra_id: estoqueInput.safra,
+                    user_id: user.value.id
+                });
+                await supabase.from("safras").update({
+                    emprestimo: emprestimoResponse.value.data[0].emprestimo - paraFloat(estoqueInput.custo)
+                }).eq('id', estoqueInput.safra);
+            }
 
 
-    sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-    fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
-    defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
-    outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
-    }else{
+        }
+
+        estoqueInput.id = ""
+        estoqueInput.item = ""
+        estoqueInput.categoria = ""
+        estoqueInput.quantidade = ""
+        estoqueInput.grandeza = ""
+        estoqueInput.safra = ""
+        estoqueInput.custo = ""
+        showModalAdicionar.value = false
+        showPreencha.value = false
+
+
+        sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
+        fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
+        defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
+        outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
+    } else {
         showPreencha.value = true
     }
 }
 
 
 const handleSubmitEditarEstoque = async (id) => {
-    if(estoqueInput.item && estoqueInput.quantidade &&  estoqueInput.grandeza ){
+    if (estoqueInput.item && estoqueInput.quantidade && estoqueInput.grandeza) {
 
-    if (!limitarForm.value) return
-    limitarForm.value = false
+        if (!limitarForm.value) return
+        limitarForm.value = false
 
-    await supabase.from("estoque").update({
-        item: estoqueInput.item,
-        quantidade: estoqueInput.quantidade,
-        grandeza: estoqueInput.grandeza
+        await supabase.from("estoque").update({
+            item: estoqueInput.item,
+            quantidade: estoqueInput.quantidade,
+            grandeza: estoqueInput.grandeza
 
-    }).eq('id', id);
+        }).eq('id', id);
 
-    if (paraFloat(estoqueInput.custo) > 0) {
-        if (process.client) {
-            await supabase.from("fluxo").insert({
-                categoria: estoqueInput.categoria,
-                produto: estoqueInput.item,
-                valor: paraFloat(estoqueInput.custo),
-                tipo_fluxo: "saida",
-                safra_id: estoqueInput.safra,
-                user_id: user.value.id
-            });
+        if (paraFloat(estoqueInput.custo) > 0) {
+            if (process.client) {
+                await supabase.from("fluxo").insert({
+                    categoria: estoqueInput.categoria,
+                    produto: estoqueInput.item,
+                    valor: paraFloat(estoqueInput.custo),
+                    tipo_fluxo: "saida",
+                    safra_id: estoqueInput.safra,
+                    user_id: user.value.id
+                });
+            }
         }
+
+
+
+
+        sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
+        fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
+        defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
+
+
+        estoqueInput.id = ""
+        estoqueInput.item = ""
+        estoqueInput.categoria = ""
+        estoqueInput.quantidade = ""
+        estoqueInput.grandeza = ""
+        estoqueInput.safra = ""
+        estoqueInput.custo = ""
+        showModalEditar.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
     }
-
-
-
-
-    sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-    fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
-    defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
-
-
-    estoqueInput.id = ""
-    estoqueInput.item = ""
-    estoqueInput.categoria = ""
-    estoqueInput.quantidade = ""
-    estoqueInput.grandeza = ""
-    estoqueInput.safra = ""
-    estoqueInput.custo = ""
-    showModalEditar.value = false
-    showPreencha.value = false
-}else{
-    showPreencha.value = true
 }
+const handleSubmitEditarEstoqueColheita = async (id) => {
+    if (estoqueInput.area_colhida) {
+
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+        await supabase.from("safras").update({
+            area_colhida: parseFloat(estoqueInput.area_colhida)
+        }).eq('id', id);
+
+        colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id }).order('cultivo', { ascending: true })
+
+        estoqueInput.id = ""
+        estoqueInput.item = ""
+        estoqueInput.categoria = ""
+        estoqueInput.quantidade = ""
+        estoqueInput.grandeza = ""
+        estoqueInput.safra = ""
+        estoqueInput.custo = ""
+        showModalEditarColheita.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
+    }
+}
+const handleSubmitAdicionarColheita = async (id) => {
+    if (estoqueInput.quantidade && colheitaInput.area_adicionar_colheita) {
+        areaResponse.value = await supabase.from("safras").select().eq('id', id);
+        console.log(parseFloat(areaResponse.value.data[0].quantidade_real) + parseFloat(estoqueInput.quantidade))
+
+        if (!limitarForm.value) return
+        limitarForm.value = false
+
+        await supabase.from("safras").update({
+            quantidade_real: (parseFloat(areaResponse.value.data[0].quantidade_real) + parseFloat(estoqueInput.quantidade)),
+            quantidade_max: (parseFloat(areaResponse.value.data[0].quantidade_real) + parseFloat(estoqueInput.quantidade)),
+            area_colhida: parseFloat(areaResponse.value.data[0].area_colhida) + parseFloat(colheitaInput.area_adicionar_colheita)
+        }).eq('id', id);
+
+        colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id }).order('cultivo', { ascending: true })
+
+        estoqueInput.id = ""
+        estoqueInput.item = ""
+        estoqueInput.categoria = ""
+        estoqueInput.quantidade = ""
+        estoqueInput.grandeza = ""
+        estoqueInput.safra = ""
+        estoqueInput.custo = ""
+        colheitaInput.area_adicionar_colheita = ""
+        showModalAdicionarColheita.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
+    }
 }
 const handleSubmitReporEstoque = async (id) => {
     console.log(estoqueInput.safra)
-    if(estoqueInput.quantidade && estoqueInput.custo &&  estoqueInput.safra ){
+    if (estoqueInput.quantidade && estoqueInput.custo && estoqueInput.safra) {
         console.log(estoqueInput.safra)
 
 
-    if (!limitarForm.value) return
-    limitarForm.value = false
+        if (!limitarForm.value) return
+        limitarForm.value = false
 
-    if (estoqueInput.categoria == "colheita") {
-        await supabase.from("safras").update({
-            quantidade_real: (parseFloat(estoqueInput.quantidade) + parseFloat(estoqueInput.quantidade_repor)),
+        emprestimoResponse.value = await supabase.from("safras").select("emprestimo").eq('id', estoqueInput.safra)
 
-        }).eq('id', parseInt(estoqueInput.safra));
-    } else {
-        await supabase.from("estoque").update({
-            quantidade: (parseFloat(estoqueInput.quantidade) + parseFloat(estoqueInput.quantidade_repor))
 
-        }).eq('id', id);
-    }
+        if (estoqueInput.categoria == "colheita") {
+            await supabase.from("safras").update({
+                quantidade_real: (parseFloat(estoqueInput.quantidade) + parseFloat(estoqueInput.quantidade_repor)),
 
-    if (paraFloat(estoqueInput.custo) > 0) {
-        if (process.client) {
-            await supabase.from("fluxo").insert({
-                categoria: estoqueInput.categoria,
-                produto: estoqueInput.item,
-                valor: paraFloat(estoqueInput.custo),
-                tipo_fluxo: "saida",
-                safra_id: estoqueInput.safra,
-                user_id: user.value.id
-            });
+            }).eq('id', parseInt(estoqueInput.safra));
+        } else {
+            await supabase.from("estoque").update({
+                quantidade: (parseFloat(estoqueInput.quantidade) + parseFloat(estoqueInput.quantidade_repor))
+
+            }).eq('id', id);
         }
+
+        if (paraFloat(estoqueInput.custo) > 0) {
+            if (paraFloat(estoqueInput.custo) > emprestimoResponse.value.data[0].emprestimo) {
+
+                if (emprestimoResponse.value.data[0].emprestimo > 0) await supabase.from("fluxo").insert({
+                    valor: emprestimoResponse.value.data[0].emprestimo,
+                    categoria: estoqueInput.categoria,
+                    produto: estoqueInput.item,
+                    tipo_fluxo: "saida_emprestimo",
+                    safra_id: estoqueInput.safra,
+                    user_id: user.value.id
+                });
+                await supabase.from("fluxo").insert({
+                    valor: paraFloat(estoqueInput.custo) - emprestimoResponse.value.data[0].emprestimo,
+                    categoria: estoqueInput.categoria,
+                    produto: estoqueInput.item,
+                    tipo_fluxo: "saida",
+                    safra_id: estoqueInput.safra,
+                    user_id: user.value.id
+                });
+
+                await supabase.from("safras").update({
+                    emprestimo: 0
+                }).eq('id', estoqueInput.safra);
+            }
+            else {
+                await supabase.from("fluxo").insert({
+                    valor: paraFloat(estoqueInput.custo),
+                    categoria: estoqueInput.categoria,
+                    produto: estoqueInput.item,
+                    tipo_fluxo: "saida_emprestimo",
+                    safra_id: estoqueInput.safra,
+                    user_id: user.value.id
+                });
+                await supabase.from("safras").update({
+                    emprestimo: emprestimoResponse.value.data[0].emprestimo - paraFloat(estoqueInput.custo)
+                }).eq('id', estoqueInput.safra);
+            }
+        }
+
+
+        colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, categoria: "semente/muda" })
+        sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
+        fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
+        defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
+        outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
+
+
+        estoqueInput.id = ""
+        estoqueInput.item = ""
+        estoqueInput.categoria = ""
+        estoqueInput.quantidade = ""
+        estoqueInput.grandeza = ""
+        estoqueInput.custo = ""
+        estoqueInput.safra = ""
+        estoqueInput.custo = ""
+        showModalRepor.value = false
+        showPreencha.value = false
+    } else {
+        showPreencha.value = true
     }
-
-
-    sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-    fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
-    defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
-    outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
-
-
-    estoqueInput.id = ""
-    estoqueInput.item = ""
-    estoqueInput.categoria = ""
-    estoqueInput.quantidade = ""
-    estoqueInput.grandeza = ""
-    estoqueInput.custo = ""
-    estoqueInput.safra = ""
-    estoqueInput.custo = ""
-    showModalRepor.value = false
-    showPreencha.value = false
-}else{
-    showPreencha.value = true
-}
 }
 
 
@@ -404,34 +559,63 @@ function porQuantidadeReverse(a, b) {
     }
 }
 
+const limitarArea = async (id) => {
+    if (!areaResponse.area) {
+        areaResponse.value = await supabase.from("safras").select("area").eq('id', id)
+    }
+    if (estoqueInput.area_colhida > areaResponse.value.data[0].area) {
+        estoqueInput.area_colhida = areaResponse.value.data[0].area
+    }
+}
+const limitarAreaColheita = async (id) => {
+    if (!areaResponse.area) {
+        areaResponse.value = await supabase.from("safras").select().eq('id', id)
+    }
+    if (colheitaInput.area_adicionar_colheita > (parseFloat(areaResponse.value.data[0].area) - parseFloat(areaResponse.value.data[0].area_colhida))) {
+        colheitaInput.area_adicionar_colheita = parseFloat(areaResponse.value.data[0].area) - parseFloat(areaResponse.value.data[0].area_colhida)
+        console.log("aaa")
+    }
+    console.log(areaResponse.value.data[0].area_colhida)
+}
 
 const trocarTabela = (i) => {
     pagina.atual = 0
     pagina.tamanho = 5
     switch (i) {
-        case "semente":
+        case "colheita":
             margemTabelaSelector.value = "ml-[19px]"
+            showTabelaFetilizantes.value = false
+            showTabelaDefensivos.value = false
+            showTabelaOutros.value = false
+            showTabelaSementes.value = false
+            showTabelaColheita.value = true
+            break;
+        case "semente":
+            margemTabelaSelector.value = "ml-[152px]"
+            showTabelaColheita.value = false
             showTabelaFetilizantes.value = false
             showTabelaDefensivos.value = false
             showTabelaOutros.value = false
             showTabelaSementes.value = true
             break;
         case "fertilizante":
-            margemTabelaSelector.value = "ml-[152px]"
+            margemTabelaSelector.value = "ml-[284px]"
+            showTabelaColheita.value = false
             showTabelaSementes.value = false
             showTabelaDefensivos.value = false
             showTabelaOutros.value = false
             showTabelaFetilizantes.value = true
             break;
         case "defensivo":
-            margemTabelaSelector.value = "ml-[284px]"
+            margemTabelaSelector.value = "ml-[417px]"
+            showTabelaColheita.value = false
             showTabelaSementes.value = false
             showTabelaFetilizantes.value = false
             showTabelaOutros.value = false
             showTabelaDefensivos.value = true
             break;
         case "outros":
-            margemTabelaSelector.value = "ml-[417px]"
+            margemTabelaSelector.value = "ml-[550px]"
             showTabelaSementes.value = false
             showTabelaFetilizantes.value = false
             showTabelaDefensivos.value = false
@@ -460,6 +644,14 @@ const precoFormatar = (valor) => {
 
             <!-- Ícones -->
             <div class="sm:scale-75 2xl:scale-100 flex w-[90%] justify-evenly">
+                <div class="flex items-center space-x-4">
+                    <img src="../assets/icons/colheita.svg" alt="" class="h-[80px]">
+                    <div>
+                        <Loader v-if="!sementesResponse" />
+                        <h1 v-else class="text-3xl text-verde font-bold">{{ sementesResponse.data.length }}</h1>
+                        <h1 class="text-lg text-verde font-bold opacity-80">Colheita</h1>
+                    </div>
+                </div>
                 <div class="flex items-center space-x-4">
                     <img src="../assets/icons/semente.svg" alt="" class="h-[80px]">
                     <div>
@@ -500,6 +692,8 @@ const precoFormatar = (valor) => {
                 <div
                     :class="`${margemTabelaSelector} absolute z-[0] bg-verde text-claro  rounded-full  w-[125px] h-[32px] transition-all`">
                 </div>
+                <button @click="trocarTabela('colheita')"
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10 w-[100px]">Colheitas</button>
                 <button @click="trocarTabela('semente')"
                     class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10 w-[100px]">Sementes</button>
                 <button @click="trocarTabela('fertilizante')"
@@ -511,6 +705,96 @@ const precoFormatar = (valor) => {
                 <div> </div>
             </div>
             <!-- ------------------------------------------------------------------- -->
+            <Transition name="slide">
+                <div v-if="showTabelaColheita" id="container" class="flex flex-col min-w-[70%] mt-[3%]">
+
+
+                    <div v-if="!colheitaResponse">
+                        <Loader />
+                    </div>
+                    <table v-else="!colheitaResponse" class="bg-white shadow-xl w-full">
+
+                        <thead class="bg-verde text-claro">
+                            <th class="p-2 ">Item</th>
+                            <th class="p-2 ">Quantidade</th>
+                            <th class="p-2 ">Métrica de produção</th>
+                            <th class="p-2 ">Safra</th>
+                            <th class="p-2 ">Área total</th>
+                            <th class="p-2 ">Área colhida</th>
+                            <th class="p-2 ">Produtividade (Qnt. / ha)</th>
+                            <th class="p-2 ">Adicionar colheita</th>
+                            <th class="p-2 ">Editar</th>
+                        </thead>
+                        <tbody class="text-escuro font-semibold">
+                            <tr v-for="colheita in colheitaResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenarSemente)"
+                                class=" even:bg-gray-100" :key="colheita.id">
+                                <td class="p-2 capitalize">{{ colheita.cultivo }}</td>
+                                <td class="p-2">{{ colheita.quantidade_real }} </td>
+                                <td class="p-2 text-sm">{{ formatar(colheita.grandeza) }} </td>
+                                <td class="p-2 capitalize">{{ " (" + colheita.data_inicio + " - " + colheita.data_fim + ")"
+                                }} </td>
+                                <td class="p-2 capitalize text-center">{{ colheita.area }} <span class="text-xs">(Ha)</span>
+                                </td>
+                                <td class="p-2 capitalize text-center">{{ colheita.area_colhida }} <span
+                                        class="text-xs">(Ha)</span></td>
+                                <td class="p-2 capitalize text-center">{{ (colheita.quantidade_real /
+                                    colheita.area_colhida).toFixed(2) }}</td>
+
+                                <td class="p-2">
+                                    <span v-if="(colheita.area - colheita.area_colhida) > 0"
+                                        class=" transition-all cursor-pointer material-icons block text-center hover:text-xl"
+                                        @click="handleModalAdicionarColheita(colheita.cultivo, colheita.quantidade_real, colheita.grandeza, colheita.area, colheita.area_colhida, colheita.id)"
+                                        @close="showModalAdicionarColheita = false">
+                                        🌾
+                                    </span>
+                                    <span v-else class=" material-icons block text-center">✔️</span>
+                                </td>
+                                <td class="p-2">
+                                    <span
+                                        class=" transition-all cursor-pointer material-icons block text-center hover:text-xl"
+                                        @click="handleModalEditarColheita(colheita.cultivo, colheita.quantidade_real, colheita.grandeza, colheita.area_colhida, colheita.id)"
+                                        @close="showModalEditarColheita = false">
+                                        &#x270F
+                                    </span>
+                                </td>
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div v-if="colheitaResponse"
+                        class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
+                        <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
+                            &lt-
+                            Anterior </button>
+                        <div class="flex flex-col items-center">
+
+                            <p class="text-claro font-semibold">Pág.</p>
+                            <select v-model="pagina.atual"
+                                class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                                <option v-for="i in Math.ceil(colheitaResponse.data.length / pagina.tamanho)"
+                                    v-bind:value="i - 1">
+                                    {{
+                                        i
+                                    }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <p class="text-claro font-semibold">Items por Pág.</p>
+                            <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                                class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                                <option v-bind:value=5> 5 </option>
+                                <option v-bind:value=10> 10 </option>
+                                <option v-bind:value=250> 25 </option>
+                            </select>
+                        </div>
+                        <button v-if="pagina.atual < (Math.ceil(colheitaResponse.data.length / pagina.tamanho) - 1)"
+                            @click="handlePagina('proxima')" class="text-claro font-bold"> Próximo ->
+                        </button><br>
+                    </div>
+                </div>
+            </Transition>
             <Transition name="slide">
                 <div v-if="showTabelaSementes" id="container" class="flex flex-col min-w-[70%] mt-[3%]">
                     <div class="flex flex-row">
@@ -904,7 +1188,8 @@ const precoFormatar = (valor) => {
                         <div v-if="safraResponse.data != ''">
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-on:input="precoFormatar(estoqueInput.custo)" v-model="estoqueInput.custo" name="floating_email" id="floating_email"
+                                <input type="text" v-on:input="precoFormatar(estoqueInput.custo)"
+                                    v-model="estoqueInput.custo" name="floating_email" id="floating_email"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label for="floating_email"
@@ -995,6 +1280,72 @@ const precoFormatar = (valor) => {
                 </ModalEditarEstoque>
             </Transition>
             <Transition name="pop">
+                <ModalAdicionarColheita v-if="showModalAdicionarColheita" @close="showModalAdicionarColheita = false"
+                    @adicionarColheita="handleSubmitAdicionarColheita(estoqueInput.id)">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                            campos obrigatórios</h1>
+                    </Transition>
+                    <div class="flex flex-col">
+
+
+
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="text" v-model="estoqueInput.quantidade" name="floating_email" id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade
+                                colhida em | {{ estoqueInput.grandeza }}</label>
+                        </div>
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="text" v-on:input="limitarAreaColheita(estoqueInput.id)"
+                                v-model="colheitaInput.area_adicionar_colheita" name="floating_email" id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Área
+                                colhida | em Hectares</label>
+                        </div>
+
+
+
+
+                    </div>
+                </ModalAdicionarColheita>
+            </Transition>
+            <Transition name="pop">
+                <ModalEditarEstoqueColheita v-if="showModalEditarColheita" @close="showModalEditarColheita = false"
+                    @editarItemColheita="handleSubmitEditarEstoqueColheita(estoqueInput.id)">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                            campos obrigatórios</h1>
+                    </Transition>
+                    <div class="flex flex-col">
+                        <h1 class="text-center font-semibold text-claro text-lg">Quantidade atual de {{ estoqueInput.item
+                        }}:</h1>
+                        <h1 class="text-center font-semibold text-verde_claro text-lg mb-4">{{ "Em " + " " +
+                            formatar(estoqueInput.grandeza) }}</h1>
+
+
+
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="number" v-on:input="limitarArea(estoqueInput.id)"
+                                v-model="estoqueInput.area_colhida" name="floating_email" id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Hectares
+                                colhidos</label>
+                        </div>
+
+                    </div>
+                </ModalEditarEstoqueColheita>
+            </Transition>
+            <Transition name="pop">
                 <ModalAdicionarItemEstoque v-if="showModalRepor" @close="showModalRepor = false"
                     @reporItem="handleSubmitReporEstoque(estoqueInput.id)">
                     <div class="flex flex-col">
@@ -1022,7 +1373,8 @@ const precoFormatar = (valor) => {
                         <div v-if="safraResponse.data != ''">
                             <div class="relative z-0 w-full mb-6 group">
 
-                                <input type="text" v-on:input="precoFormatar(estoqueInput.custo)" v-model="estoqueInput.custo" name="floating_email" id="floating_email"
+                                <input type="text" v-on:input="precoFormatar(estoqueInput.custo)"
+                                    v-model="estoqueInput.custo" name="floating_email" id="floating_email"
                                     class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required>
                                 <label for="floating_email"

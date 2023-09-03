@@ -2,16 +2,15 @@ import { defineNuxtConfig } from "nuxt/config";
 
 // JykWxSuV40IQxpLE - senha DB
 
-export default ({
+export default {
+  modules: ["@nuxtjs/tailwindcss"],
 
-  
-  modules: ['@nuxtjs/tailwindcss'],
-  
   css: ["~/assets/css/tailwind.css"],
-  build: {
-    transpile: ['chart.js']
 
-  },
+  build: {
+    transpile: ["chart.js"],
+},
+
   postcss: {
     postcssOptions: {
       plugins: {
@@ -20,13 +19,17 @@ export default ({
       },
     },
   },
+
   meta: {
     link: [
       {
         rel: "stylesheet",
-        href: 'https://fonts.googleapis.com/icon?family=Material+Icons' 
-
+        href: "https://fonts.googleapis.com/icon?family=Material+Icons",
       },
     ],
   },
-});
+
+  devtools: {
+    enabled: true,
+  },
+};
