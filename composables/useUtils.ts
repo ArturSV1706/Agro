@@ -47,6 +47,13 @@ const useUtils = () => {
     });
     return x;
   }
+  function formatarString(valor, limit) {
+    let x = valor;
+    if (x.length > limit){
+      x = x.substring(0, limit) + '...'
+    }
+    return x;
+  }
   function formatarData(valor) {
     const dateString = valor;
     const dateParts = dateString.split("T");
@@ -140,6 +147,7 @@ const useUtils = () => {
   return {
     formatar,
     formatarData,
+    formatarString,
     paraReal,
     paraRealInput,
     paraFloat,

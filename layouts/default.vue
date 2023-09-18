@@ -4,11 +4,11 @@ const loading = ref(true);
 const screen = ref('mobile');
 
 
-if(process.client){
+if (process.client) {
     const screenWidth = window.innerWidth;
-    if(screenWidth > 600){
+    if (screenWidth > 600) {
         screen.value = 'desktop'
-    } else{
+    } else {
         screen.value = 'mobile'
     }
     loading.value = false
@@ -34,26 +34,27 @@ const desativarBackdrop = () => {
 
     <div v-if="!loading && screen === 'desktop'" class=" h-[100vh] w-screen  bg-claro">
         <Transition name="open">
-            <section v-if="showBackdrop"
-                class="left-[-20%] fixed z-10 h-screen w-1/3 skew-x-12 bg-[rgba(42,77,65,.9)]">
+            <section v-if="showBackdrop" class="left-[-20%] fixed z-10 h-screen w-1/3 skew-x-12 bg-[rgba(42,77,65,.9)]">
             </section>
         </Transition>
         <Sidebar class="sm:scale-90 2xl:scale-100" v-on:mouseover="ativarBackdrop" v-on:mouseleave="desativarBackdrop" />
 
         <div class="ml-[100px] pt-6">
 
-                <slot />
+            <slot />
         </div>
     </div>
-    <div v-if="!loading && screen === 'mobile' " class=" h-[100vh] w-screen  bg-claro">
-        
-        <Sidebar class="sm:scale-90 2xl:scale-100" v-on:mouseover="ativarBackdrop" v-on:mouseleave="desativarBackdrop" />
+    <div v-if="!loading && screen === 'mobile'" class=" h-[100vh] w-[86%] mx-[7%] ">
+        <div class="flex h-[90px] w-full py-[25px]  justify-between items-center">
+            <img class="h-[32px]" src="../assets/icons/saffron_alt.svg" alt="">
+            <h1 class="absolute left-1/2 transform -translate-x-1/2 font-aristotelica text-lg">Painel</h1>
+            <Sidebar  />
+        </div>
 
         <div class="pt-6">
 
-                <slot />
+            <slot />
         </div>
     </div>
-    
 </template>
 
