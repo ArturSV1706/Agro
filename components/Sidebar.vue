@@ -1,11 +1,11 @@
 <script setup>
+const x_transform = ref('-100%')
 
 function moveSidebar(acao) {
-    const sidebar = document.getElementById('sidebar');
     if (acao === 'abre') {
-        sidebar.classList.remove('-translate-x-full');
+        x_transform.value = '0'
     } else if (acao === 'fecha') {
-        sidebar.classList.add('-translate-x-full');
+        x_transform.value = '-100%'
     }
 }
 </script>
@@ -171,7 +171,7 @@ function moveSidebar(acao) {
         </button>
 
         <aside id="sidebar"
-            class="fixed top-0 left-0  w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+            :class="`fixed top-0 left-0  w-64 h-screen transition-transform translate-x-[${x_transform}]`"
             aria-label="Sidebar">
             <div class=" h-full px-3 py-4 overflow-y-auto bg-escuro">
 
