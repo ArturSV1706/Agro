@@ -23,7 +23,7 @@ const desativarBackdrop = () => {
     </div>
     <NuxtLoadingIndicator height="5" color="#329F5B" />
 
-    <div v-if="!loading" class="h-[100vh] w-screen bg-claro">
+    <div v-if="!loading" class="hidden sm:block h-[100vh] w-screen  bg-claro">
         <Transition name="open">
             <section v-if="showBackdrop"
                 class="left-[-20%] fixed z-10 h-screen w-1/3 skew-x-12 bg-[rgba(42,77,65,.9)]">
@@ -35,7 +35,14 @@ const desativarBackdrop = () => {
 
                 <slot />
         </div>
-        <p class="whitespace-nowrap fixed top-[98%] left-[92%] transform -translate-x-1/2 -translate-y-1/2 font-aristotelica text-verde opacity-60">Versão de testes Saffron</p>
+    </div>
+    <div v-if="!loading" class="h-[100vh] w-screen  bg-claro">
+        <Sidebar class="" />
+
+        <div class="pt-">
+
+                <slot />
+        </div>
     </div>
 </template>
 

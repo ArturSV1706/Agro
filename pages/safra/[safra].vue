@@ -224,16 +224,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                             <h3 class="text-verde sm:text-[11px] 2xl:text-sm">{{ safra.taxa_arrendo + " " + formatar(safra.grandeza) + " por Ha" }}</h3>
                         </div>
                     </div>
-                    <div class="flex w-full h-[70%] justify-center">
-                        <div class="">
-                            <div class="h-full sm:w-1 2xl:w-2 bg-verde"></div>
-                        </div>
-                        <div class="flex flex-col justify-evenly pl-1">
-                            <h1 class="sm:text-xl 2xl:text-3xl text-escuro font-bold">{{ safra.taxa_arrendo * safra.area }}</h1>
-                            <h2 class="sm:text-sm 2xl:text-lg text-escuro font-semibold">Colheita final</h2>
-                            <h3 class="text-verde sm:text-[11px] 2xl:text-sm">{{formatar(safra.grandeza)}}</h3>
-                        </div>
-                    </div>
+                    
                     <div class="flex w-full h-[70%] justify-center">
                         <div class="">
                             <div class="h-full sm:w-1 2xl:w-2 bg-verde"></div>

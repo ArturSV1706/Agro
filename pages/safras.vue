@@ -153,7 +153,7 @@ const abrirModalPagarTaxa = async (id, cultivo, grandeza, start, end) => {
     safraInput.grandeza = grandeza
     safraInput.data_inicio = start
     safraInput.data_fim = end
-    safraResponse_qnt.value = await supabase.from("safras").select("taxa_arrendo").eq('id', parseInt(safraInput.id))
+    safraResponse_qnt.value = await supabase.from("safras").select().eq('id', parseInt(safraInput.id))
 }
 const handlePagarTaxaSubmit = async () => {
     if (safraInput.quantidade) {
@@ -253,8 +253,8 @@ const despesasFormatar = (valor) => {
     safraInput.despeza = paraRealInput(valor)
 }
 const limitarTaxa = (valor) => {
-    if(valor > safraResponse_qnt.value.data[0].taxa_arrendo){
-        safraInput.quantidade = safraResponse_qnt.value.data[0].taxa_arrendo
+    if(valor > (safraResponse_qnt.value.data[0].taxa_arrendo * safraResponse_qnt.value.data[0].area)){
+        safraInput.quantidade = (safraResponse_qnt.value.data[0].taxa_arrendo * safraResponse_qnt.value.data[0].area)
     }
 }
 
@@ -324,7 +324,7 @@ const limitarTaxa = (valor) => {
                             </div>
                             <div v-if="safra.taxa_arrendo > 0" class="flex flex-col item-center h-[80%]">
                                 <h1 class="text-xl font-bold">Aluguel restante do terreno</h1>
-                                <h1 class="text-2xl font-bold text-escuro">{{ safra.taxa_arrendo }} |  <span class="text-sm">{{
+                                <h1 class="text-2xl font-bold text-escuro">{{ safra.taxa_arrendo * safra.area }} |  <span class="text-sm">{{
                                     formatar(safra.grandeza) }}</span></h1>
                                 <h1 @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"  
                                 class="text-verde_claro text-[1.2rem] font-bold underline cursor-pointer">Pagar taxa</h1>
@@ -575,7 +575,7 @@ const limitarTaxa = (valor) => {
                             campos obrigatórios</h1>
                     </Transition>
 
-                    <h1 class="text-claro text-lg text-center">Você ainda precisa pagar <b class="text-vermelho"> {{safraResponse_qnt.data[0].taxa_arrendo + " " + formatar(safraInput.grandeza)}}</b> pelo terreno utilizado</h1>
+                    <h1 class="text-claro text-lg text-center">Você ainda precisa pagar <b class="text-vermelho"> {{(safraResponse_qnt.data[0].taxa_arrendo *safraResponse_qnt.data[0].area ) + " " + formatar(safraInput.grandeza)}}</b> pelo terreno utilizado</h1>
                     <div class="relative z-0 w-full mb-6 group">
 
                         <input type="number" v-on:input="limitarTaxa(safraInput.quantidade)" v-model="safraInput.quantidade"
