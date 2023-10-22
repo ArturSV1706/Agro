@@ -55,6 +55,7 @@ const data = {
 
 };
 const options = ref({
+    borderColor: "ffff00",
     responsive: true,
     maintainAspectRatio: true,
         plugins: {

@@ -1376,6 +1376,10 @@ const valorCombustivelFormatar = (valor) => {
             <div class="flex w-full h-1 bg-escuro mr-4"></div>
         </div>
         <!--  -->
+        <button @click="handleNovoMaquina"
+            class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verdeself-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
+            Nova máquina
+        </button>
 
 
         <div v-for="maquina in maquinasResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
@@ -1420,6 +1424,10 @@ const valorCombustivelFormatar = (valor) => {
             <div class="flex w-full h-1 bg-escuro mr-4"></div>
         </div>
         <!--  -->
+        <button @click="handleNovoCombustivel"
+            class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verdeself-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
+            Novo Combustível
+        </button>
 
         <div v-for="combustivel in combustiveisResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
             :key="combustivel.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]">
