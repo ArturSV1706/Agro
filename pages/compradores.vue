@@ -1,12 +1,22 @@
 <script setup>
 
 definePageMeta({
-    middleware: ["auth","subscription"]
+    middleware: ["auth", "subscription"]
 })
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
-const { paraReal, paraRealInput, paraFloat, formatar } = useUtils()
+const { paraReal, paraRealInput, paraFloat, formatar, formatarSigla, formatarString } = useUtils()
+const screen = ref('mobile');
+
+if (process.client) {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 600) {
+        screen.value = 'desktop'
+    } else {
+        screen.value = 'mobile'
+    }
+}
 
 const compradoresResponse = ref();
 
@@ -317,7 +327,7 @@ function generateRandomString(length) {
 </script>
 
 <template>
-    <div>
+    <div v-if="screen === 'desktop'">
         <div>
             <!-- Título -->
             <div class="flex flex-row items-center absolute ml-[-4%] ">
@@ -582,5 +592,64 @@ function generateRandomString(length) {
             </ModalDeletarComprador>
         </Transition>
 
+    </div>
+    <div v-if="screen === 'mobile'">
+        <button @click="handleNovoComprador"
+            class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verdeself-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
+            Novo comprador
+        </button>
+
+        <div class="  w-full space-y-4 pb-5">
+            <div v-for="comprador in compradoresResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
+                :key="comprador.id" class="flex w-full h-[65px]">
+                <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center">
+                    <svg width="31" height="28" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M11.2846 11.7647C9.733 11.7647 8.4047 11.1887 7.29975 10.0368C6.19479 8.8848 5.64232 7.5 5.64232 5.88235C5.64232 4.26471 6.19479 2.8799 7.29975 1.72794C8.4047 0.57598 9.733 0 11.2846 0C12.8363 0 14.1646 0.57598 15.2695 1.72794C16.3745 2.8799 16.927 4.26471 16.927 5.88235C16.927 7.5 16.3745 8.8848 15.2695 10.0368C14.1646 11.1887 12.8363 11.7647 11.2846 11.7647ZM0 23.5294V19.4118C0 18.6029 0.199832 17.8431 0.599496 17.1324C0.99916 16.4216 1.55164 15.8824 2.25693 15.5147C3.45592 14.8775 4.80772 14.3382 6.31234 13.8971C7.81696 13.4559 9.47439 13.2353 11.2846 13.2353H11.7783C11.9194 13.2353 12.0605 13.2598 12.2015 13.3088C12.0134 13.75 11.8547 14.2096 11.7254 14.6875C11.5961 15.1654 11.4962 15.6618 11.4257 16.1765H11.2846C9.61545 16.1765 8.11671 16.3971 6.78841 16.8382C5.46012 17.2794 4.3728 17.7206 3.52645 18.1618C3.31486 18.2843 3.14442 18.4559 3.01511 18.6765C2.88581 18.8971 2.82116 19.1422 2.82116 19.4118V20.5882H11.7078C11.8489 21.1029 12.0369 21.6115 12.272 22.114C12.5071 22.6164 12.7657 23.0882 13.0479 23.5294H0ZM19.7481 25L19.3249 22.7941C19.0428 22.6716 18.7783 22.5429 18.5315 22.4081C18.2846 22.2733 18.0319 22.1078 17.7733 21.9118L15.728 22.5735L14.3174 20.0735L15.9395 18.6029C15.8925 18.2598 15.869 17.9412 15.869 17.6471C15.869 17.3529 15.8925 17.0343 15.9395 16.6912L14.3174 15.2206L15.728 12.7206L17.7733 13.3824C18.0319 13.1863 18.2846 13.0208 18.5315 12.886C18.7783 12.7512 19.0428 12.6226 19.3249 12.5L19.7481 10.2941H22.5693L22.9924 12.5C23.2746 12.6226 23.539 12.7574 23.7859 12.9044C24.0327 13.0515 24.2855 13.2353 24.5441 13.4559L26.5894 12.7206L28 15.2941L26.3778 16.7647C26.4249 17.0588 26.4484 17.3652 26.4484 17.6838C26.4484 18.0025 26.4249 18.3088 26.3778 18.6029L28 20.0735L26.5894 22.5735L24.5441 21.9118C24.2855 22.1078 24.0327 22.2733 23.7859 22.4081C23.539 22.5429 23.2746 22.6716 22.9924 22.7941L22.5693 25H19.7481ZM21.1587 20.5882C21.9345 20.5882 22.5987 20.3002 23.1511 19.7243C23.7036 19.1483 23.9798 18.4559 23.9798 17.6471C23.9798 16.8382 23.7036 16.1458 23.1511 15.5699C22.5987 14.9939 21.9345 14.7059 21.1587 14.7059C20.3829 14.7059 19.7187 14.9939 19.1662 15.5699C18.6138 16.1458 18.3375 16.8382 18.3375 17.6471C18.3375 18.4559 18.6138 19.1483 19.1662 19.7243C19.7187 20.3002 20.3829 20.5882 21.1587 20.5882ZM11.2846 8.82353C12.0605 8.82353 12.7246 8.53554 13.2771 7.95956C13.8296 7.38358 14.1058 6.69118 14.1058 5.88235C14.1058 5.07353 13.8296 4.38113 13.2771 3.80515C12.7246 3.22917 12.0605 2.94118 11.2846 2.94118C10.5088 2.94118 9.84467 3.22917 9.29219 3.80515C8.73971 4.38113 8.46348 5.07353 8.46348 5.88235C8.46348 6.69118 8.73971 7.38358 9.29219 7.95956C9.84467 8.53554 10.5088 8.82353 11.2846 8.82353Z"
+                            fill="#DDE0D0" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-escuro ">{{ formatarString(comprador.nome, 25) }}</h1>
+                    <div class=" space-x-2 flex items-center text-sm text-escuro">
+                        <h2 class="font-semibold text-escuro"> {{ comprador.categoria }}</h2>
+                        <div v-if="comprador.num_vendas > 0"
+                            class="flex justify-evenly text-xs bg-[#B9C2B3] rounded-md py-[1px] px-[5px] text-escuro ">
+                            <h2>{{ comprador.num_vendas + " Vendas" }}</h2>
+                            <h2>|</h2>
+                            <h2>{{ paraReal(comprador.valor_vendas) }} </h2>
+                        </div>
+                        <div v-else
+                            class="flex justify-center text-sm bg-[#B9C2B3] rounded-md py-[1px] px-[1px] text-escuro">
+                            <h2>Sem Vendas</h2>
+                        </div>
+                    </div>
+                    <div v-if="comprador.qnt_reservada > 0" class="flex text-xs items-center text-escuro">
+                        <h2 class="text-sm font-semibold">Reservado: &nbsp</h2>
+                        <h2 v-if="comprador.qnt_reservada > 0" class="bg-[#B9C2B3] rounded-md py-[1px] px-[2px]">{{ comprador.qnt_reservada_cultivo + " &nbsp | &nbsp" + comprador.qnt_reservada + formatarSigla(comprador.qnt_reservada_grandeza) }}</h2>
+                        <h2 v-else class="bg-[#B9C2B3] rounded-md py-[1px] px-[2px]">Não há reserva</h2>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div v-if="compradoresResponse"
+            class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
+            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
+                &lt </button>
+
+            <div class="flex flex-col items-center">
+                <p class="text-escuro font-semibold">Items por Pág.</p>
+                <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                    class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                    <option v-bind:value=5> 5 </option>
+                    <option v-bind:value=10> 10 </option>
+                    <option v-bind:value=250> 25 </option>
+                </select>
+            </div>
+            <button v-if="pagina.atual < (Math.ceil(compradoresResponse.data.length / pagina.tamanho) - 1)"
+                @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
+            </button><br>
+        </div>
     </div>
 </template>

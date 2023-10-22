@@ -143,3 +143,28 @@ transform: translateX(100%);
 .alert-leave-active {
   transition: all 0.4s cubic-bezier(0, 1.15, 0.47, 1.15);
 }
+
+@media screen and (max-width: 768px){
+  /* width */
+::-webkit-scrollbar {
+  width: 0px;
+  outline: #dde0d000;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(42, 77, 65, 0);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0f2a2500;
+  border-radius: 20rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(42, 77, 65, 0);
+}
+}
+

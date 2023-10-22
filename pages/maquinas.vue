@@ -1,12 +1,22 @@
 <script setup >
 
 definePageMeta({
-    middleware: ["auth","subscription"]
+    middleware: ["auth", "subscription"]
 })
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
-const { paraRealInput, paraFloat, paraReal } = useUtils()
+const { paraRealInput, paraFloat, paraReal, formatarString } = useUtils()
+const screen = ref('mobile');
+
+if (process.client) {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 600) {
+        screen.value = 'desktop'
+    } else {
+        screen.value = 'mobile'
+    }
+}
 
 
 // Evita erro de carregamento
@@ -242,7 +252,7 @@ const handleSubmitManutencao = async () => {
             if (paraFloat(maquinaInput.valor_manutencao) > 0) {
                 if (paraFloat(maquinaInput.valor_manutencao) > emprestimoResponse.value.data[0].emprestimo) {
 
-                    if (emprestimoResponse.value.data[0].emprestimo> 0) await supabase.from("fluxo").insert({
+                    if (emprestimoResponse.value.data[0].emprestimo > 0) await supabase.from("fluxo").insert({
                         tipo_fluxo: "saida_emprestimo",
                         categoria: "manutencao",
                         // fornecedor: entradaInput.fornecedor,
@@ -351,7 +361,7 @@ const handleSubmitPagarParcela = async () => {
 
             if (maquinaInput.valor_parcelas > emprestimoResponse.value.data[0].emprestimo) {
 
-                if (emprestimoResponse.value.data[0].emprestimo> 0) await supabase.from("fluxo").insert({
+                if (emprestimoResponse.value.data[0].emprestimo > 0) await supabase.from("fluxo").insert({
                     valor: emprestimoResponse.value.data[0].emprestimo,
                     categoria: "parcela_maquina",
                     produto: "Parcela de : " + maquinaInput.modelo + " - " + maquinaInput.ano,
@@ -451,7 +461,7 @@ const handleSubmitReporCombustivel = async () => {
 
                 if (paraFloat(combustivelInput.custo) > emprestimoResponse.value.data[0].emprestimo) {
 
-                    if (emprestimoResponse.value.data[0].emprestimo> 0) await supabase.from("fluxo").insert({
+                    if (emprestimoResponse.value.data[0].emprestimo > 0) await supabase.from("fluxo").insert({
                         valor: emprestimoResponse.value.data[0].emprestimo,
                         categoria: "combustivel",
                         produto: combustivelInput.nome,
@@ -485,7 +495,7 @@ const handleSubmitReporCombustivel = async () => {
                     }).eq('id', combustivelInput.safra_id);
                 }
 
-                
+
             }
 
 
@@ -711,7 +721,7 @@ const valorCombustivelFormatar = (valor) => {
 
 </script>
 <template>
-    <div>
+    <div v-if="screen === 'desktop'">
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica  ">Máquinas | </h1>
@@ -1358,5 +1368,93 @@ const valorCombustivelFormatar = (valor) => {
 
             </ModalAdicionarManutencao>
         </Transition>
+    </div>
+    <div v-if="screen === 'mobile'">
+        <!-- Divisor -->
+        <div class="flex items-center mb-4">
+            <p class="whitespace-nowrap text-escuro font-bold ">Máquinas 🚜 </p>
+            <div class="flex w-full h-1 bg-escuro mr-4"></div>
+        </div>
+        <!--  -->
+
+
+        <div v-for="maquina in maquinasResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
+            :key="maquina.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]">
+            <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center ">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="39" height="35" viewBox="0 -960 960 960" fill="#DDE0D0">
+                    <path
+                        d="M160-600q-17 0-28.5-11.5T120-640q0-17 11.5-28.5T160-680h120q33 0 56.5 23.5T360-600H160Zm80 360q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm540 0q25 0 42.5-17.5T840-300q0-25-17.5-42.5T780-360q-25 0-42.5 17.5T720-300q0 25 17.5 42.5T780-240Zm-540-60q-25 0-42.5-17.5T180-360q0-25 17.5-42.5T240-420q25 0 42.5 17.5T300-360q0 25-17.5 42.5T240-300Zm560-139q26 5 43 13.5t37 27.5v-242q0-33-23.5-56.5T800-720H548l-42-44 56-56-28-28-142 142 30 28 56-56 42 42v92q0 33-23.5 56.5T440-520h-81q23 17 37 35t28 45h16q66 0 113-47t47-113v-40h200v201ZM641-320q6-27 14.5-43.5T682-400H436q4 23 4 40t-4 40h205Zm139 160q-58 0-99-41t-41-99q0-58 41-99t99-41q58 0 99 41t41 99q0 58-41 99t-99 41Zm-540 0q-83 0-141.5-58.5T40-360q0-83 58.5-141.5T240-560q83 0 141.5 58.5T440-360q0 83-58.5 141.5T240-160Zm393-360Z" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="capitalize bg-escuro text-claro rounded-xl text-xs px-2 max-w-fit">{{ maquina.status }}</h1>
+                <h1 class="font-bold text-escuro text-sm ">{{ formatarString(maquina.modelo, 30) }}</h1>
+                <h1 class="font-semibold text-escuro text-sm ">{{ maquina.categoria }}</h1>
+            </div>
+        </div>
+
+        <div v-if="maquinasResponse"
+            class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
+            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
+                &lt </button>
+
+            <div class="flex flex-col items-center">
+                <p class="text-escuro font-semibold">Items por Pág.</p>
+                <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                    class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                    <option v-bind:value=5> 5 </option>
+                    <option v-bind:value=10> 10 </option>
+                    <option v-bind:value=250> 25 </option>
+                </select>
+            </div>
+            <button v-if="pagina.atual < (Math.ceil(maquinasResponse.data.length / pagina.tamanho) - 1)"
+                @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
+            </button><br>
+        </div>
+
+
+        <!-- Divisor -->
+        <div class="flex items-center mb-4">
+            <p class="whitespace-nowrap text-escuro font-bold ">Combustíveis ⛽</p>
+            <div class="flex w-full h-1 bg-escuro mr-4"></div>
+        </div>
+        <!--  -->
+
+        <div v-for="combustivel in combustiveisResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
+            :key="combustivel.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]">
+            <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center ">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="39" height="35" fill="#DDE0D0" viewBox="0 -960 960 960">
+                    <path
+                        d="M160-120v-640q0-33 23.5-56.5T240-840h240q33 0 56.5 23.5T560-760v280h40q33 0 56.5 23.5T680-400v180q0 17 11.5 28.5T720-180q17 0 28.5-11.5T760-220v-288q-9 5-19 6.5t-21 1.5q-42 0-71-29t-29-71q0-32 17.5-57.5T684-694l-84-84 42-42 148 144q15 15 22.5 35t7.5 41v380q0 42-29 71t-71 29q-42 0-71-29t-29-71v-200h-60v300H160Zm80-440h240v-200H240v200Zm480 0q17 0 28.5-11.5T760-600q0-17-11.5-28.5T720-640q-17 0-28.5 11.5T680-600q0 17 11.5 28.5T720-560ZM240-200h240v-280H240v280Zm240 0H240h240Z" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="font-bold text-escuro text-sm ">{{ combustivel.nome }}</h1>
+                <h1 class="font-semibold text-escuro text-sm ">{{ combustivel.quantidade + " Litros" }}</h1>
+            </div>
+        </div>
+
+        <div v-if="combustiveisResponse"
+            class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
+            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
+                &lt </button>
+
+            <div class="flex flex-col items-center">
+                <p class="text-escuro font-semibold">Items por Pág.</p>
+                <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                    class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                    <option v-bind:value=5> 5 </option>
+                    <option v-bind:value=10> 10 </option>
+                    <option v-bind:value=250> 25 </option>
+                </select>
+            </div>
+            <button v-if="pagina.atual < (Math.ceil(combustiveisResponse.data.length / pagina.tamanho) - 1)"
+                @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
+            </button><br>
+        </div>
+        <!--  Spacer -->
+        <section class="h-[30px]"></section>
     </div>
 </template>

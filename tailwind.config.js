@@ -50,6 +50,7 @@ module.exports = {
       claro: "#DDE0D0",
       verde: "#396858",
       verde_claro: "#329F5B",
+      verde_apagado: "#B9C2B3",
       vermelho: "#D52952",
       laranja: "rgb(242,129,35)",
       marrom: "#593D3B",

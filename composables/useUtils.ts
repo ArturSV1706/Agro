@@ -38,6 +38,45 @@ const useUtils = () => {
     }
     return x;
   }
+  function formatarSigla(grandeza) {
+    let x = grandeza;
+    switch (x) {
+      case "unidade":
+        x = "Un.";
+        break;
+      case "kilograma":
+        x = "Kg.";
+        break;
+      case "tonelada":
+        x = "T.";
+        break;
+      case "bins":
+        x = "Cx.";
+        break;
+      case "saca10":
+        x = "Sc. 10kg";
+        break;
+      case "saca20":
+        x = "Sc. 20kg";
+        break;
+      case "saca30":
+        x = "Sc. 30kg";
+        break;
+      case "saca40":
+        x = "Sc. 40kg";
+        break;
+      case "saca50":
+        x = "Sc. 50kg";
+        break;
+      case "saca60":
+        x = "Sc. 60kg";
+        break;
+
+      default:
+        break;
+    }
+    return x;
+  }
   function paraReal(valor) {
     let x = valor;
     if (!valor) return "------";
@@ -146,6 +185,7 @@ const useUtils = () => {
   }
   return {
     formatar,
+    formatarSigla,
     formatarData,
     formatarString,
     paraReal,

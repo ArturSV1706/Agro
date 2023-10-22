@@ -732,7 +732,7 @@ function generateRandomString(length) {
             </ModalPagarFuncionario>
         </Transition>
     </div>
-    <div v-if="screen === 'mobile'" >
+    <div v-if="screen === 'mobile'">
 
         <button @click="handleNovoFuncionario"
             class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verdeself-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
@@ -770,7 +770,7 @@ function generateRandomString(length) {
             class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
             <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
                 &lt </button>
-            
+
             <div class="flex flex-col items-center">
                 <p class="text-escuro font-semibold">Items por Pág.</p>
                 <select v-model="pagina.tamanho" @input="pagina.atual = 0"
@@ -784,5 +784,212 @@ function generateRandomString(length) {
                 @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
             </button><br>
         </div>
+        <Transition name="pop">
+            <ModalNovoFuncionario v-if="showModalAdicionar" @close="showModalAdicionar = false"
+                @adicionarFuncionario="handleSubmitNovoFuncionario">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.nome" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.numero" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número
+                            de telefone (celular)</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.cargo" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Cargo</label>
+                    </div>
+
+
+
+
+                    <div class="flex items-center mb-4">
+
+                        <input
+                            class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                            v-model="funcionarioInput.is_assalariado" type="checkbox" placeholder="João da silva"
+                            name="recebe_salario">
+                        <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">É assalariado?</label>
+                    </div>
+
+                    <Transition name="pop">
+                        <div v-if="funcionarioInput.is_assalariado" class="flex flex-col">
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input v-on:input="salárioFormatar(funcionarioInput.salario)" type="text"
+                                    v-model="funcionarioInput.salario" name="floating_email" id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">salário</label>
+                            </div>
+
+                            <div class="relative z-0 w-full mt-6 group">
+
+                                <label for=""
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dia
+                                    de pagamento</label>
+                                <select v-model="funcionarioInput.data_pagamento_salario" placeholder="João da silva"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                    <option class="bg-verde font-semibold" v-for="i in 28" v-bind:value=i>{{ i }}
+                                    </option>
+                                    >
+                                </select>
+                            </div>
+
+
+                        </div>
+                    </Transition>
+                </div>
+            </ModalNovoFuncionario>
+        </Transition>
+        <Transition name="pop">
+            <ModalEditarFuncionario v-if="showModalEditar" @close="showModalEditar = false"
+                @editarFuncionario="handleSubmitEditarFuncionario">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.nome" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.numero" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Número
+                            de telefone (celular)</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="funcionarioInput.cargo" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Cargo</label>
+                    </div>
+
+
+
+
+                    <div class="flex items-center mb-4">
+
+                        <input
+                            class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                            v-model="funcionarioInput.is_assalariado" type="checkbox" placeholder="João da silva"
+                            name="recebe_salario">
+                        <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">É assalariado?</label>
+                    </div>
+
+                    <Transition name="pop">
+                        <div v-if="funcionarioInput.is_assalariado" class="flex flex-col">
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input v-on:input="salárioFormatar(funcionarioInput.salario)" type="text"
+                                    v-model="funcionarioInput.salario" name="floating_email" id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">salário</label>
+                            </div>
+
+                            <div class="relative z-0 w-full mt-6 group">
+
+                                <label for=""
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Dia
+                                    de pagamento</label>
+                                <select v-model="funcionarioInput.data_pagamento_salario" placeholder="João da silva"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                    <option class="bg-verde font-semibold" v-for="i in 28" v-bind:value=i>{{ i }}
+                                    </option>
+                                    >
+                                </select>
+                            </div>
+
+
+                        </div>
+                    </Transition>
+                </div>
+            </ModalEditarFuncionario>
+        </Transition>
+        <Transition name="pop">
+            <ModalDeletarFuncionario v-if="showModalDeletar" @close="showModalDeletar = false"
+                @deletarFuncionario="handleDeleteFuncionario(funcionarioInput.id)">
+                <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este funcionário?</h1>
+                <h1 class="text-center text-xl text-claro capitalize font-bold">{{
+                    funcionarioInput.nome
+                }}</h1>
+                <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                            desfeita.</u> </b></h2>
+            </ModalDeletarFuncionario>
+        </Transition>
+        <Transition name="pop">
+            <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="showModalPagarFuncionario = false"
+                @pagarFuncionario="handleSubmitPagarFuncionario">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <h1 class="text-xl text-claro">Realizar pagamento à: {{ funcionarioInput.nome }}</h1>
+                <div class="relative z-0 w-full mb-6 group">
+
+                    <input type="text" v-on:input="salárioFormatar(funcionarioInput.salario)"
+                        v-model="funcionarioInput.salario" name="floating_email" id="floating_email"
+                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                        placeholder=" " required>
+                    <label for="floating_email"
+                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Valor
+                        do pagamento</label>
+                </div>
+                <div v-if="!safraResponse"></div>
+                <div v-else-if="safraResponse.data != ''">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            De qual safra será descontado o valor do pagamento?</label>
+                        <select v-model="funcionarioInput.safra_id"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
+                                v-bind:value=safra.id>{{
+                                    safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                                }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </ModalPagarFuncionario>
+        </Transition>
     </div>
 </template>

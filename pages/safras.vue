@@ -1,13 +1,23 @@
 <script setup>
 
 definePageMeta({
-    middleware: ["auth","subscription"]
+    middleware: ["auth", "subscription"]
 })
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
 const { formatar, paraReal, paraRealInput, paraFloat, corLucro } = useUtils()
 const router = useRouter()
+const screen = ref('mobile');
+
+if (process.client) {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 600) {
+        screen.value = 'desktop'
+    } else {
+        screen.value = 'mobile'
+    }
+}
 
 
 // Evita erro de carregamento
@@ -163,11 +173,11 @@ const handlePagarTaxaSubmit = async () => {
 
         if (process.client) {
             safrasAtivasResponse.value = await supabase.from("safras").update({
-            taxa_arrendo: safraResponse_qnt.value.data[0].taxa_arrendo - parseFloat(safraInput.quantidade)
-        }).eq('id', safraInput.id);
+                taxa_arrendo: safraResponse_qnt.value.data[0].taxa_arrendo - parseFloat(safraInput.quantidade)
+            }).eq('id', safraInput.id);
 
-    safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
-    
+            safrasAtivasResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+
         }
 
         safraInput.id = "",
@@ -253,7 +263,7 @@ const despesasFormatar = (valor) => {
     safraInput.despeza = paraRealInput(valor)
 }
 const limitarTaxa = (valor) => {
-    if(valor > (safraResponse_qnt.value.data[0].taxa_arrendo * safraResponse_qnt.value.data[0].area)){
+    if (valor > (safraResponse_qnt.value.data[0].taxa_arrendo * safraResponse_qnt.value.data[0].area)) {
         safraInput.quantidade = (safraResponse_qnt.value.data[0].taxa_arrendo * safraResponse_qnt.value.data[0].area)
     }
 }
@@ -264,7 +274,7 @@ const limitarTaxa = (valor) => {
 </script>
 
 <template>
-    <div class="overflow-y-hidden">
+    <div v-if="screen === 'desktop'" class="overflow-y-hidden">
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Safras | </h1>
@@ -324,10 +334,12 @@ const limitarTaxa = (valor) => {
                             </div>
                             <div v-if="safra.taxa_arrendo > 0" class="flex flex-col item-center h-[80%]">
                                 <h1 class="text-xl font-bold">Aluguel restante do terreno</h1>
-                                <h1 class="text-2xl font-bold text-escuro">{{ safra.taxa_arrendo * safra.area }} |  <span class="text-sm">{{
-                                    formatar(safra.grandeza) }}</span></h1>
-                                <h1 @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"  
-                                class="text-verde_claro text-[1.2rem] font-bold underline cursor-pointer">Pagar taxa</h1>
+                                <h1 class="text-2xl font-bold text-escuro">{{ safra.taxa_arrendo * safra.area }} | <span
+                                        class="text-sm">{{
+                                            formatar(safra.grandeza) }}</span></h1>
+                                <h1 @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"
+                                    class="text-verde_claro text-[1.2rem] font-bold underline cursor-pointer">Pagar taxa
+                                </h1>
                             </div>
                             <div v-else class="flex flex-col item-center justify-center h-[100%]">
                                 <h1 class="text-sm font-bold">Nenhuma dívida pendente do terreno</h1>
@@ -575,7 +587,9 @@ const limitarTaxa = (valor) => {
                             campos obrigatórios</h1>
                     </Transition>
 
-                    <h1 class="text-claro text-lg text-center">Você ainda precisa pagar <b class="text-vermelho"> {{(safraResponse_qnt.data[0].taxa_arrendo *safraResponse_qnt.data[0].area ) + " " + formatar(safraInput.grandeza)}}</b> pelo terreno utilizado</h1>
+                    <h1 class="text-claro text-lg text-center">Você ainda precisa pagar <b class="text-vermelho">
+                            {{ (safraResponse_qnt.data[0].taxa_arrendo * safraResponse_qnt.data[0].area) + " " +
+                                formatar(safraInput.grandeza) }}</b> pelo terreno utilizado</h1>
                     <div class="relative z-0 w-full mb-6 group">
 
                         <input type="number" v-on:input="limitarTaxa(safraInput.quantidade)" v-model="safraInput.quantidade"
@@ -584,7 +598,7 @@ const limitarTaxa = (valor) => {
                         <label
                             class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                             <b v-if="safraInput.grandeza"> {{ formatar(safraInput.grandeza) }}</b> à pagar
-                            </label>
+                        </label>
                     </div>
                 </ModalPagarTaxa>
             </Transition>
@@ -601,5 +615,126 @@ const limitarTaxa = (valor) => {
                 </ModalEncerrarSafra>
             </Transition>
         </div>
+    </div>
+    <div v-if="screen === 'mobile'" class="overflow-y-hidden">
+
+        <button @click="abrirModalNovaSafra"
+            class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
+            Nova Safra
+        </button>
+
+        <!-- Divisor -->
+        <div class="flex items-center">
+            <div class="flex w-full h-1 bg-escuro mr-4"></div>
+            <p class="whitespace-nowrap text-escuro font-bold ">Safras Ativas</p>
+        </div>
+        <!--  -->
+
+
+
+        <!-- Blocos -->
+        <div v-if="safrasAtivasResponse.data == ''">
+            <p class="text-verde text-xl font-semibold "> &#x1F33F Nenhuma safra encontrada, clique no botão de
+                Nova safra e adicone uma &#x1F600 </p>
+        </div>
+        <div v-else v-for="safra in safrasAtivasResponse.data" :key="safra.id" class="mb-4">
+            <h2 class="text-center p-[4px] text-sm bg-verde text-claro rounded-t-xl"> <b> Início:</b> {{ safra.data_inicio }} |
+                <b>Fim:</b> {{ safra.data_fim }}
+            </h2>
+
+            <div class="bg-[#B9C2B3] rounded-b-xl space-y-2 p-3">
+                <h1 class="text-lg text-center text-escuro font-bold capitalize">{{ safra.cultivo }}</h1>
+
+
+                <div class="flex  items-center border-l-4 border-verde pl-2">
+                    <div class=""></div>
+                    <h1 class=" text-escuro"> Área colhida (ha) &nbsp</h1>
+                    <h1 class=" font-bold text-escuro ">{{ ((safra.area_colhida / safra.area) *
+                        100).toFixed(2) }}% &nbsp </h1>
+                    <h3 class=" text-escuro ">[{{ safra.area_colhida + "/" + safra.area + " " }}] </h3>
+                </div>
+
+                <div class="flex  item-center border-l-4 border-verde pl-2">
+                    <h1 class=" text-escuro">Em estoque &nbsp</h1>
+                    <h1 class="font-bold text-escuro">{{ safra.quantidade_real }} &nbsp</h1>
+                    <h3 class=" text-escuro text-sm">{{ formatar(safra.grandeza) }}</h3>
+                </div>
+
+                <div v-if="safra.taxa_arrendo > 0" class="flex flex-col  item-center border-l-4 border-verde pl-2">
+                    <div class="flex ">
+                        <h1 class="text-escuro">Aluguel restante &nbsp</h1>
+                        <h1 class="text-escuro">{{ safra.taxa_arrendo * safra.area }} | <span class="text-sm">{{
+                            formatar(safra.grandeza) }}</span></h1>
+                    </div>
+
+                    <h1 @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"
+                        class="text-verde text-[1.2rem] font-bold underline cursor-pointer">Pagar
+                    </h1>
+                </div>
+                <div v-else class="flex flex-col item-center justify-center h-[100%]">
+                    <h1 class="text-verde text-center">Nenhuma dívida pendente</h1>
+                </div>
+
+
+
+
+
+                <div class="flex items-center justify-center space-x-2 rounded-b">
+                    <button @click="$emit('adicionarFuncionario')" data-modal-toggle="defaultModal" type="button"
+                        class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
+                        Encerrar Safra</button>
+                    <button @click="$emit('close')" data-modal-toggle="defaultModal" type="button"
+                        class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">Deletar</button>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+
+
+        <!-- Divisor -->
+        <div class="flex items-center mt-6 mb-3">
+            <div class="flex w-full h-1 bg-escuro mr-4"></div>
+            <p class="whitespace-nowrap text-escuro font-bold ">Safras Finalizadas</p>
+        </div>
+        <!--  -->
+
+        <!-- Blocos -->
+        <div v-if="!safrasFinalizadasResponse">
+            <Loader />
+        </div>
+        <div v-else v-for="safra in safrasFinalizadasResponse.data" :key="safra.id" class="mb-4">
+            <h2 class="text-center p-[4px] text-sm bg-escuro text-claro rounded-t-xl"> <b> Início:</b> {{ safra.data_inicio }} |
+                <b>Fim:</b> {{ safra.data_fim }}
+            </h2>
+
+            <div class="bg-[#B9C2B3] rounded-b-xl space-y-2 p-3">
+                <h1 class="text-lg text-center text-escuro font-bold capitalize">{{ safra.cultivo }}</h1>
+
+
+
+
+                <div class="flex items-center border-l-4 border-verde pl-2">
+                    <h1 class="font-bold text-escuro">Despezas &nbsp</h1>
+                    <h1 class=" font-bold text-vermelho ">{{ paraReal(safra.despeza_real) }}</h1>
+                </div>
+                <div class="flex items-center border-l-4 border-verde pl-2">
+                    <h1 class="font-bold text-escuro">Colhido &nbsp</h1>
+                    <h1 class="font-bold text-verde_claro">{{ safra.quantidade_real }} &nbsp</h1>
+                    <h3 class="text-verde">[{{ formatar(safra.grandeza) }}]</h3>
+                </div>
+
+
+                <div class="flex items-center justify-center space-x-2 rounded-b">
+                    <button @click="$emit('adicionarFuncionario')" data-modal-toggle="defaultModal" type="button"
+                        class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
+                        Ver Relatório</button>
+                    <button @click="$emit('close')" data-modal-toggle="defaultModal" type="button"
+                        class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">Deletar</button>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+
+
     </div>
 </template>

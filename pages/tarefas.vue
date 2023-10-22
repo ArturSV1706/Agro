@@ -1,11 +1,21 @@
 <script setup>
 
 definePageMeta({
-    middleware: ["auth","subscription"]
+    middleware: ["auth", "subscription"]
 })
 
 const { supabase } = useSupabase()
 const { user } = useAuth()
+const screen = ref('mobile');
+
+if (process.client) {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 600) {
+        screen.value = 'desktop'
+    } else {
+        screen.value = 'mobile'
+    }
+}
 
 const showModalAdicionar = ref()
 const showModalConfirmar = ref()
@@ -240,7 +250,7 @@ const handleModalConfirmar = async (id, titulo, descricao, funcionario, maquina_
 
 const handleSubmitConfirmar = async () => {
     if (showCorrigirEstoque.value) {
-        if(!tarefaInput.estoque_quantidade){
+        if (!tarefaInput.estoque_quantidade) {
             showPreencha.value = true
             return
         }
@@ -311,7 +321,7 @@ const handlePagina = (i) => {
 </script>
 
 <template>
-    <div class="flex flex-col  w-full">
+    <div v-if="screen === 'desktop'" class="flex flex-col  w-full">
         <!-- Título -->
         <div class=" ml-[-4%] flex flex-row items-center absolute">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Tarefas | </h1>
@@ -430,10 +440,12 @@ const handlePagina = (i) => {
                         </div>
                         <div class="flex flex-1 sm:text-xl 2xl:text-3xl h-full items-center justify-evenly">
                             <div v-if="tarefa.status == 'cancelada' || tarefa.status == 'completa'">
-                                <h1 v-if="tarefa.status == 'cancelada'" class="text-vermelho font-bold sm:text-lg 2xl:text-2xl">
+                                <h1 v-if="tarefa.status == 'cancelada'"
+                                    class="text-vermelho font-bold sm:text-lg 2xl:text-2xl">
                                     Cancelada
                                 </h1>
-                                <h1 v-if="tarefa.status == 'completa'" class="text-verde_claro font-bold sm:text-lg 2xl:text-2xl">
+                                <h1 v-if="tarefa.status == 'completa'"
+                                    class="text-verde_claro font-bold sm:text-lg 2xl:text-2xl">
                                     Completa
                                 </h1>
                             </div>
@@ -681,5 +693,98 @@ const handlePagina = (i) => {
                 </ModalCancelarTarefa>
             </Transition>
         </div>
+    </div>
+    <div v-if="screen === 'mobile'">
+        <!-- Tooltip -->
+        <ul class="flex flex-col">
+            <div class="flex w-full justify-center">
+                <li class="flex items-center space-x-2 mr-2">
+                    <div class="w-4 h-4 rounded-full bg-verde"></div>
+                    <div class="text-xs text-escuro font-bold"> Pendente</div>
+                    <div class="text-xs text-escuro font-bold"> |</div>
+                </li>
+                <li class="flex items-center space-x-2 mr-2">
+                    <div class="w-4 h-4 rounded-full bg-azul"></div>
+                    <div class="text-xs text-escuro font-bold"> Esperando confirmação</div>
+                    <div class="text-xs text-escuro font-bold"> |</div>
+                </li>
+            </div>
+            <div class="flex mt-2 justify-evenly">
+                <li class="flex items-center space-x-2 mr-2">
+                    <div class="w-4 h-4 rounded-full bg-verde_claro"></div>
+                    <div class="text-xs text-escuro font-bold"> Completa</div>
+                    <div class="text-xs text-escuro font-bold"> |</div>
+                </li>
+                <li class="flex items-center space-x-2 mr-2">
+                    <div class="w-4 h-4 rounded-full bg-amarelo"></div>
+                    <div class="text-xs text-escuro font-bold"> Atrasada</div>
+                    <div class="text-xs text-escuro font-bold"> |</div>
+                </li>
+                <li class="flex items-center space-x-2">
+                    <div class="w-4 h-4 rounded-full bg-vermelho"></div>
+                    <div class="text-xs text-escuro font-bold"> Cancelada </div>
+                </li>
+            </div>
+        </ul>
+        <!--  -->
+
+        <button @click="handleNovaTarefa()"
+            class="self-start bg-escuro px-4 py-2 mt-5 text-sm rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
+            Adicionar tarefa
+        </button>
+
+        <Loader v-if="!tarefaResponse" />
+
+        <div v-if="tarefaResponse"
+            v-for="tarefa in tarefaResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho)"
+            :key="tarefa.id"
+            :class="`flex justify-between mb-3 bg-escuro rounded-b-xl text-claro border-t-[5px] border-${corTarefa(tarefa.status)} p-2`">
+
+            <div class='space-y-2'>
+                <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
+                <p class="capitalize text-claro text-xs"><b>👤|</b> {{
+                    tarefa.funcionarios.nome
+                }}
+                </p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"> <b>⏱|</b>{{
+                    tarefa.prazo + "-" +
+                    tarefa.prazo_hora
+                }} </p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"><b>📦|</b> <span v-if="tarefa.estoque">{{
+                    tarefa.estoque.item + " " + tarefa.estoque_utilizado_quantidade
+                }} <span class="text-xs">({{
+    tarefa.estoque.grandeza
+}})</span> </span> <span v-else>--------</span></p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"><b>🚜|</b> <span v-if="tarefa.maquinas">{{
+                    tarefa.maquinas.modelo + " - " + tarefa.maquinas.ano
+                }}</span> <span v-else>--------</span></p>
+            </div>
+
+
+
+        </div>
+
+
+        <div v-if="tarefaResponse"
+            class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 mb-4 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
+            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
+                &lt </button>
+
+            <div class="flex flex-col items-center">
+                <p class="text-escuro font-semibold">Items por Pág.</p>
+                <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                    class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                    <option v-bind:value=5> 5 </option>
+                    <option v-bind:value=10> 10 </option>
+                    <option v-bind:value=250> 25 </option>
+                </select>
+            </div>
+            <button v-if="pagina.atual < (Math.ceil(tarefaResponse.data.length / pagina.tamanho) - 1)"
+                @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
+            </button><br>
+        </div>
+
+        <!-- Spacer -->
+<section class="h-[20px]"></section>
     </div>
 </template>
