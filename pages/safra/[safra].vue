@@ -454,7 +454,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                 </div>
             </div>
             <!--  -->
-            <div class="flex items-center justify-evenly w-[100%] h-[60px] bg-[#B9C2B3] rounded-xl">
+            <div class="flex items-center justify-between px-6 w-[100%] h-[60px] bg-[#B9C2B3] rounded-xl">
                 <h1 class="text-escuro font-bold">Margem de lucro</h1>
                 <h2 class="text-xl font-bold text-verde">{{ calcMargemDeLucro(safra.receita_bruta, safra.lucro_real) }}</h2>
             </div>
@@ -466,13 +466,13 @@ const calcMargemDeLucro = (receita, lucro) => {
         <div class="flex flex-col items-center justify-around" v-if="sementesResponse" v-for="safra in safraResponse.data"
             :key="safra.id">
             <div class="flex flex-col leading- items-center mt-6 ">
-                <h1 class="text-xl text-escuro font-semibold "> <b class="text-vermelho font-bold  sm:text-lg 2xl:text-2xl">
-                        {{
-                            paraReal(safra.despeza_real)
-                        }} </b></h1>
-                <h3 class="text-escuro sm:text-sm 2xl:text-lg font-semibold">Despesas (total)</h3>
+                <div class="flex items-center justify-between px-6 w-[100%] h-[60px] bg-[#B9C2B3] rounded-xl">
+                    <h1 class="text-escuro font-bold">Despesas</h1>
+                    <h2 class="text-xl font-bold text-vermelho">{{ paraReal(safra.despeza_real) }}</h2>
+                </div>
+
                 <ClientOnly>
-                    <GraficoRosca class="" :sementes=sementesResponse.data :fertilizantes=fertilizantesResponse.data
+                    <GraficoRosca class="mt-6" :sementes=sementesResponse.data :fertilizantes=fertilizantesResponse.data
                         :defensivos=defensivosResponse.data :outros=outrosResponse.data
                         :funcionarios=funcionariosResponse.data :combustiveis=combustiveisResponse.data
                         :manutencoes=manutencoesResponse.data />
@@ -480,7 +480,160 @@ const calcMargemDeLucro = (receita, lucro) => {
 
             </div>
         </div>
-        <div class="h-[40px]"></div>
 
+        <!-- divisoria -->
+        <div class="flex items-center mb-4 mt-4">
+            <p class="whitespace-nowrap text-escuro font-bold ">Estimativas &nbsp </p>
+            <div class="flex w-full h-1 bg-escuro mr-4"></div>
+        </div>
+        <!--  -->
+
+        <div v-if="safraResponse" v-for="safra in safraResponse.data" :key="safra.id"
+            class="w-full flex flex-col items-center">
+            <div class="flex w-full items-center">
+                <div class="h-1 bg-vermelho w-full"></div>
+                <h1 class="px-2 text-vermelho font-semibold">Despesas</h1>
+                <div class="h-1 bg-vermelho w-full"></div>
+            </div>
+            <div
+                class="flex flex-col justify-evenly min-w-[70%] h-3/5 bg-vermelho bg-opacity-40 border-2 border-vermelho rounded-2xl">
+                <span class="flex w-full ml-3 items-center">
+                    <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
+                        paraReal(safra.despeza_estimada) }}</h1>
+                    <h2 class="sm:text-sm 2xl:text-lg text-vermelho font-bold">Estimado</h2>
+                </span>
+                <span class="flex w-full ml-3 items-center">
+                    <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
+                        paraReal(safra.despeza_real) }}</h1>
+                    <h2 class="sm:text-sm 2xl:text-lg text-vermelho font-bold">Real</h2>
+                </span>
+            </div>
+            <span class="flex w-full ml-3 self-center justify-center">
+                <h1
+                    :class="`mr-4 text-xs text-center font-bold text-${corLucro(safra.despeza_estimada - safra.despeza_real)}`">
+                    {{ calcMargemDeErro(safra.despeza_estimada, safra.despeza_real) }}</h1>
+            </span>
+            <div class="flex w-full items-center mt-4">
+                <div class="h-1 bg-verde w-full"></div>
+                <h1 class="px-2 text-verde font-semibold">Lucro</h1>
+                <div class="h-1 bg-verde w-full"></div>
+            </div>
+            <div
+                class="flex flex-col justify-evenly min-w-[70%] h-3/5 bg-verde bg-opacity-40 border-2 border-verde rounded-2xl">
+                <span class="flex w-full ml-3 items-center">
+                    <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
+                        paraReal(safra.lucro_estimado) }}</h1>
+                    <h2 class="sm:text-sm 2xl:text-lg text-verde font-bold">Estimado</h2>
+                </span>
+                <span class="flex w-full ml-3 items-center">
+                    <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
+                        paraReal(safra.lucro_real) }}</h1>
+                    <h2 class="sm:text-sm 2xl:text-lg text-verde font-bold">Real</h2>
+                </span>
+
+            </div>
+            <span class="flex w-full ml-3 self-center justify-center">
+                <h1 :class="`mr-4 text-xs text-center font-bold text-${corLucro(safra.lucro_real - safra.lucro_estimado)}`">
+                    {{ calcMargemDeErro(safra.lucro_estimado, safra.lucro_real) }}</h1>
+            </span>
+            <div class="flex w-full items-center mt-4">
+                <div class="h-1 bg-azul w-full"></div>
+                <h1 class="px-2 text-azul font-semibold">Produtividade</h1>
+                <div class="h-1 bg-azul w-full"></div>
+            </div>
+
+            <div
+                class="flex flex-col justify-evenly min-w-[70%] h-3/5 bg-azul bg-opacity-40 border-2 border-azul rounded-2xl">
+                <span class="flex w-full ml-3 items-center">
+                    <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
+                        safra.quantidade_estimada.toFixed(2) }}
+                        <span class="text-[11px] text-escuro font-medium">({{
+                            formatar(safra.grandeza) }})</span>
+                    </h1>
+                    <h2 class="text-azul font-bold">Estimado</h2>
+                </span>
+                <span class="flex w-full ml-3 items-center">
+                    <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
+                        safra.quantidade_real.toFixed(2) }}
+                        <span class="text-[11px] text-escuro font-medium">({{
+                            formatar(safra.grandeza) }})</span>
+
+                    </h1>
+                    <h2 class="sm:text-sm 2xl:text-lg text-azul font-bold">Real</h2>
+                </span>
+
+            </div>
+            <span class="flex w-full ml-3 self-center justify-center">
+                <h1
+                    :class="`mr-4 text-xs text-center font-bold text-${corLucro(safra.quantidade_real - safra.quantidade_estimada)}`">
+                    {{ calcMargemDeErro(safra.quantidade_real, safra.quantidade_estimada) }}</h1>
+            </span>
+        </div>
+        <!-- divisoria -->
+        <div class="flex items-center mb-4 mt-4">
+            <p class="whitespace-nowrap text-escuro font-bold ">Comparações &nbsp </p>
+            <div class="flex w-full h-1 bg-escuro mr-4"></div>
+        </div>
+        <!--  -->
+
+        <Loader v-if="!safrasAntigasResponse" />
+        <div v-if="safrasAntigasResponse" v-for="safraAntiga in  safrasAntigasResponse.data " :key="safraAntiga.id" >
+
+        <Loader v-if="!safraResponse" />
+        <div class="bg-verde_apagado p-3 mb-4" v-if=" safraResponse "
+            v-for=" safra  in  safraResponse.data " :key=" safra.id ">
+            <div>
+                <div class="flex flex-col bg-escuro p-3 rounded-lg space-y-2">
+                    <h1 class="text-claro underline mb-2 font-bold text-sm text-center">{{
+                        safra.cultivo + " | " + safra.data_inicio + " -" + safra.data_fim }}</h1>
+
+                    <div class="flex">
+                        <h1 :class=" `text-xs text-${corLucro(safra.lucro_real - safra.despeza_real)}` ">{{
+                            calcMargemDeLucro(safra.receita_bruta, safra.lucro_real) }} &nbsp</h1>
+                        <h1 class="text-xs text-claro">| Margem de lucro</h1>
+                    </div>
+                    <div class="flex">
+                        <h1 :class=" `text-xs text-${corLucro(safra.lucro_real)} font-bold` ">{{
+                            paraReal(safra.lucro_real)
+                            }} &nbsp</h1>
+                        <h1 class="text-xs stext-claro">| Lucro</h1>
+                    </div>
+                    <div class="flex">
+                        <h1 class="text-xs text-claro font-bold">{{ (safra.quantidade_real /
+                            safra.area).toFixed(2) }} &nbsp</h1>
+                        <h1 class="text-xs text-claro">| Produtividade</h1>
+                    </div>
+                </div>
+
+                <h1 class="text-center font-bold font-aristotelica">X</h1>
+
+                <div class="flex flex-col bg-escuro p-3 rounded-lg space-y-2">
+                    <h1 class="text-claro underline mb-2 font-bold text-sm text-center">{{
+                        safraAntiga.cultivo + " | " + safraAntiga.data_inicio + " -" + safraAntiga.data_fim }}</h1>
+
+                    <div class="flex">
+                        <h1 :class=" `text-xs text-${corLucro(safraAntiga.lucro_real - safraAntiga.despeza_real)}` ">{{
+                            calcMargemDeLucro(safraAntiga.receita_bruta, safraAntiga.lucro_real) }} &nbsp</h1>
+                        <h1 class="text-xs text-claro">| Margem de lucro</h1>
+                    </div>
+                    <div class="flex">
+                        <h1 :class=" `text-xs text-${corLucro(safraAntiga.lucro_real)} font-bold` ">{{
+                            paraReal(safraAntiga.lucro_real)
+                            }} &nbsp</h1>
+                        <h1 class="text-xs text-claro">| Lucro</h1>
+                    </div>
+                    <div class="flex">
+                        <h1 class="text-xs text-claro font-bold">{{ (safraAntiga.quantidade_real /
+                            safraAntiga.area).toFixed(2) }} &nbsp</h1>
+                        <h1 class="text-xs text-claro">| Produtividade</h1>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
+    <div class="h-[40px]"></div>
+</div>
+
 </template>

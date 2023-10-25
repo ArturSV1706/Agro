@@ -60,7 +60,8 @@ const options = ref({
     maintainAspectRatio: true,
         plugins: {
         legend: {
-            position: 'top',
+            position: 'bottom',
+            align:'start',
             labels: {
                 color: "#0F2A25",
                 font: {
