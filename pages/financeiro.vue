@@ -1238,11 +1238,11 @@ function onFileSelected(event) {
 
             <!-- Entradas e saidas tabela -->
             <button @click="handleModalDespesa"
-                class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">Nova
+                class="self-start bg-escuro px-6  rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">Nova
                 despesa</button>
             <div class="">
                 <div v-for="fluxo in fluxoResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
-                    :key="fluxo.id" class="flex justify-between bg-verde_apagado w-full px-2 py-4 mb-3 rounded-xl">
+                    :key="fluxo.id" class="flex justify-between bg-verde_apagado w-full px-2 py-2 mb-3 rounded-xl">
                     <div class="flex items-center">
                         <div
                             :class="` flex flex-col mr-4 justify-center items-center  text-4xl font-extrabold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">
@@ -1259,7 +1259,7 @@ function onFileSelected(event) {
 
                         </div>
                     </div>
-                    <div class="flex flex-col items-end">
+                    <div class="flex flex-col h-full justify-evenly items-end">
 
 
                         <h1
