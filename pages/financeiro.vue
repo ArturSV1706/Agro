@@ -13,6 +13,16 @@ const { supabase } = useSupabase()
 const { user } = useAuth()
 const { formatar, formatarData, paraReal, paraFloat, corLucro, paraRealInput } = useUtils()
 const router = useRouter()
+const screen = ref('mobile');
+
+if (process.client) {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 600) {
+        screen.value = 'desktop'
+    } else {
+        screen.value = 'mobile'
+    }
+}
 
 
 
@@ -31,7 +41,7 @@ const detalhe_Categoria = ref();
 const detalhe_Fornecedor = ref();
 const detalhe_Produto = ref();
 const detalhe_Valor = ref();
-const safra_escolhida = ref()
+const safra_escolhida = ref("")
 
 const tipoOrdenar = ref();
 const reverterOrdenar = ref()
@@ -72,8 +82,6 @@ const handleSafraSelecioanda = async () => {
         safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
         saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
         safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
-
-
     }
 
 }
@@ -254,6 +262,7 @@ const handleSubmitAdicionarDespesa = async () => {
                     });
                     await supabase.from("fluxo").insert({
                         categoria: fluxoInput.categoria,
+                        fornecedor: fluxoInput.fornecedor,
                         produto: fluxoInput.produto,
                         valor: paraFloat(fluxoInput.valor) - safraSelecionadaResponse.value.data[0].emprestimo,
                         tipo_fluxo: "saida",
@@ -269,6 +278,7 @@ const handleSubmitAdicionarDespesa = async () => {
                     await supabase.from("fluxo").insert({
                         categoria: fluxoInput.categoria,
                         produto: fluxoInput.produto,
+                        fornecedor: fluxoInput.fornecedor,
                         valor: paraFloat(fluxoInput.valor),
                         tipo_fluxo: "saida_emprestimo",
                         safra_id: safraSelecionadaResponse.value.data[0].id,
@@ -624,7 +634,7 @@ function onFileSelected(event) {
 
 
 <template>
-    <div>
+    <div v-if="screen === 'desktop'">
         <Transition name="alert">
             <Alert v-if="alert" @close="alert = false">
                 <h1 class="text-center text-claro font-semibold">{{ alertMessage }}</h1>
@@ -724,7 +734,7 @@ function onFileSelected(event) {
                     <div class="flex flex-col justify-center pl-2 ml-8" v-if="showFluxo">
                         <h1 class="text-3xl text-escuro font-bold">{{ }}</h1>
                         <h2 class="text-lg text-escuro font-semibold">Empréstimo</h2>
-                        <div v-if="!fluxoEntrada"></div>
+                        <div v-if="!safraSelecionadaResponse"></div>
                         <h1 v-else class="text-verde_claro text-2xl font-semibold">{{
                             paraReal(safraSelecionadaResponse.data[0].emprestimo) }}
                         </h1>
@@ -780,11 +790,11 @@ function onFileSelected(event) {
                     </div>
                     <div class="flex w-[15%] ">
                         <div class="flex flex-col justify-center pl-2" v-if="showFluxo">
-                            <h1 class="text-3xl text-escuro font-bold">{{ }}</h1>
-                            <h2 class="text-lg text-escuro font-semibold">Custo estimado de cada
+                            <div v-if="!safraSelecionadaResponse"></div>
+                            <h2 v-else class="text-lg text-escuro font-semibold">Custo estimado de cada
                                 {{ formatar(safraSelecionadaResponse.data[0].grandeza) }} </h2>
                             <h3>(Mantendo a mesma produtividade até o final da colheita)</h3>
-                            <div v-if="!fluxoEntrada"></div>
+                            <div v-if="!safraSelecionadaResponse"></div>
                             <h1 v-else class="text-verde_claro text-2xl font-semibold">{{ paraReal(fluxoSaida.data /
                                 ((safraSelecionadaResponse.data[0].quantidade_max /
                                     safraSelecionadaResponse.data[0].area_colhida) * safraSelecionadaResponse.data[0].area)) }}
@@ -793,11 +803,11 @@ function onFileSelected(event) {
                     </div>
                     <div class="flex w-[15%] ">
                         <div class="flex flex-col justify-center pl-2" v-if="showFluxo">
-                            <h1 class="text-3xl text-escuro font-bold">{{ }}</h1>
-                            <h2 class="text-lg text-escuro font-semibold">Custo atual de cada
+                            <div v-if="!safraSelecionadaResponse"></div>
+                            <h2 v-else class="text-lg text-escuro font-semibold">Custo atual de cada
                                 {{ formatar(safraSelecionadaResponse.data[0].grandeza) }} </h2>
                             <h3>(Levando em consideração a quantidade colhida atual)</h3>
-                            <div v-if="!fluxoEntrada"></div>
+                            <div v-if="!safraSelecionadaResponse"></div>
                             <h1 v-else class="text-verde_claro text-2xl font-semibold">{{
                                 paraReal(fluxoSaida.data / safraSelecionadaResponse.data[0].quantidade_max) }}
                             </h1>
@@ -807,7 +817,7 @@ function onFileSelected(event) {
                 </div>
 
                 <div v-if="showFluxo" class="flex items-center w-[85%] mb-6">
-                    <p class="whitespace-nowrap text-escuro font-bold text-2xl">Entradas e saídas 🔃 </p>
+                    <p class="whitespace-nowrap text-escuro font-bold text-2xl"> 🔃 </p>
                     <div class="flex w-full h-1 bg-escuro ml-4"></div>
                 </div>
                 <div v-if="!fluxoResponse"></div>
@@ -1041,7 +1051,8 @@ function onFileSelected(event) {
                                 class="text-verde_claro font-bold cursor-pointer underline">Clique aqui</a> para saber como!
                         </h1>
                         <h1 class="text-center text-vermelho font-semibold animate-pulse">Clicar alterar com a caixa
-                            <b>[Possui nota?]</b> desmarcada irá <b>apagar</b> sua nota atual</h1>
+                            <b>[Possui nota?]</b> desmarcada irá <b>apagar</b> sua nota atual
+                        </h1>
 
                         <div class="flex items-center mb-4">
 
@@ -1070,6 +1081,224 @@ function onFileSelected(event) {
                 </Transition>
 
             </div>
+        </div>
+    </div>
+    <div v-if="screen === 'mobile'">
+        <!-- Select -->
+        <div class="flex h-[50px] self-center">
+            <div v-if="!safraResponse"></div>
+            <select v-else v-model="safra_escolhida" v-on:change="handleSafraSelecioanda"
+                class=" w-full p-4 text-sm  text-escuro bg-transparent bg-opacity-90 bg-verde_apagado  appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                <option class='text-verde font-light' value="" disabled selected>Selecione uma safra</option>
+                <option class='bg-verde_apagado font-bold' v-for="safra in safraResponse.data" :key="safra.id"
+                    v-bind:value=safra.id>{{
+                        safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                    }}
+                </option>
+            </select>
+
+        </div>
+        <!--  -->
+        <div v-if="showFluxo">
+            <!-- entradas e saidas -->
+            <div class="space-y-4 mt-6">
+                <div class="flex w-full justify-between px-6">
+                    <div class="flex flex-col justify-center text-center">
+                        <h1 class="text-escuro font-semibold">Entradas</h1>
+                        <div v-if="!fluxoEntrada"></div>
+                        <h1 v-else class="text-verde_claro text-md font-semibold">{{ paraReal(fluxoEntrada.data) }}
+                        </h1>
+                    </div>
+                    <div class="flex flex-col justify-center text-center">
+                        <h1 class="text-escuro font-semibold">saidas</h1>
+                        <div v-if="!fluxoSaida"></div>
+                        <h1 v-else class="text-vermelho text-md  font-semibold">{{ paraReal(fluxoSaida.data) }}</h1>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center text-center">
+                    <h1 class="text-escuro font-semibold">lucro</h1>
+                    <div v-if="!fluxoEntrada || !fluxoSaida"></div>
+                    <h1 v-else
+                        :class="`text-${corLucro((parseFloat(fluxoEntrada.data) - parseFloat(fluxoSaida.data)))} text-md  font-semibold`">
+                        {{ paraReal((parseFloat(fluxoEntrada.data) - parseFloat(fluxoSaida.data))) }}</h1>
+                </div>
+            </div>
+            <!--  -->
+            <!-- Divisor -->
+            <div class="flex items-center mb-4 mt-4">
+                <p class="whitespace-nowrap text-escuro font-bold ">Empréstimo 💰 &nbsp</p>
+                <div class="flex w-full h-1 bg-escuro mr-4"></div>
+            </div>
+            <!--  -->
+            <!-- emprestimos -->
+            <p class="text-justify text-sm font-semibold mb-2">💡 Ao adicionar um empréstimo, uma despeza em seu valor será
+                criada.
+                Novas despesas irão ser descontadas do valor do empréstimo até o mesmo acabar</p>
+
+            <div class="flex items-center justify-evenly">
+                <button @click="handleModalEmprestimo"
+                    class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold transition-all hover:bg-verde">Novo
+                    Empréstimo</button>
+
+                <div class="flex flex-col justify-center text-center">
+                    <h1 class="text-escuro font-semibold">Empréstimo</h1>
+                    <div v-if="!safraSelecionadaResponse"></div>
+                    <h1 v-else class="text-verde_claro text-md font-semibold">{{
+                        paraReal(safraSelecionadaResponse.data[0].emprestimo) }}
+                    </h1>
+                </div>
+
+            </div>
+            <!--  -->
+
+            <!-- Divisor -->
+            <div class="flex items-center mb-4 mt-4">
+                <p class="whitespace-nowrap text-escuro font-bold ">Adicionar Vendas 🌾 &nbsp</p>
+                <div class="flex w-full h-1 bg-escuro mr-4"></div>
+            </div>
+            <!--  -->
+
+            <!-- Vender colheita -->
+            <div class="flex flex-col  mb-2">
+                <div class="flex flex-col justify-center pl-2" v-if="showFluxo">
+                    <div v-if="!safraSelecionadaResponse"></div>
+                    <h1 v-else class="text-verde_claro text-xl font-semibold">{{ paraReal(fluxoSaida.data /
+                        ((safraSelecionadaResponse.data[0].quantidade_max /
+                            safraSelecionadaResponse.data[0].area_colhida) * safraSelecionadaResponse.data[0].area)) }}
+                    </h1>
+                    <h2 class="text-md text-escuro font-semibold">Custo <b>estimado</b> de cada
+                        {{ formatar(safraSelecionadaResponse.data[0].grandeza) }} </h2>
+                    <h3 class="text-xs text-escuro">(Mantendo a mesma produtividade até o final da colheita)</h3>
+
+                </div>
+            </div>
+
+            <div class="flex flex-col mb-4">
+                <div class="flex flex-col justify-center pl-2" v-if="showFluxo">
+                    <div v-if="!fluxoEntrada"></div>
+                    <h1 v-else class="text-verde_claro text-xl font-semibold">{{
+                        paraReal(fluxoSaida.data / safraSelecionadaResponse.data[0].quantidade_max) }}
+                    </h1>
+                    <h2 class="text-md text-escuro font-semibold">Custo <b> atual </b> de cada
+                        {{ formatar(safraSelecionadaResponse.data[0].grandeza) }} </h2>
+                    <h3 class="text-xs text-escuro">(Levando em consideração a quantidade colhida atual)</h3>
+
+                </div>
+            </div>
+
+            <div v-if="!safraSelecionadaResponse"></div>
+            <div v-else v-for="safra in safraSelecionadaResponse.data" :key="safra.id"
+                class="flex flex-col items-center p-2 bg-verde_apagado rounded-md shadow-md mb-4">
+                <h1 class="text-md w-[70%] text-center text-escuro mb-4"> Quantidade de {{ safra.cultivo }} no estoque:
+                    <b>{{
+                        safra.quantidade_real }}</b><span class="text-sm">{{ " (" +
+        formatar(safra.grandeza) }})</span>
+                </h1>
+                <div class="flex flex-col w-[95%]">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="number" v-model="entradaInput.valor_quantidade"
+                            v-on:input="limitarQuantidade(entradaInput.safra_id)"
+                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -z-10 scale-75 top-3 -translate-y-6  origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                            {{ "Quantidade à vender" }}
+                        </label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-on:input="precoFormatar(entradaInput.valor_unitario)"
+                            v-model="entradaInput.valor_unitario"
+                            class="block py-2.5 px-0 w-full text-sm text-verde  bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -z-10 scale-75 top-3 -translate-y-6  origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                            Valor <b>total</b> da venda (R$)
+                        </label>
+                    </div>
+
+
+                    <button @click="handleSubmitEntrada"
+                        class="self-start bg-escuro px-6 py-3 w-full rounded-md text-claro font-bold mb-4 transition-all text-md hover:bg-verde">Efetuar
+                        venda</button>
+                </div>
+
+            </div>
+
+            <!--  -->
+
+            <!-- Divisor -->
+            <div class="flex items-center mb-4 mt-4">
+                <p class="whitespace-nowrap text-escuro font-bold ">Entradas e saídas 🔃 &nbsp</p>
+                <div class="flex w-full h-1 bg-escuro mr-4"></div>
+            </div>
+            <!--  -->
+
+            <!-- Entradas e saidas tabela -->
+            <button @click="handleModalDespesa"
+                class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">Nova
+                despesa</button>
+            <div class="">
+                <div v-for="fluxo in fluxoResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
+                    :key="fluxo.id" class="flex justify-between bg-verde_apagado w-full px-2 py-4 mb-3 rounded-xl">
+                    <div class="flex items-center">
+                        <div
+                            :class="` flex flex-col mr-4 justify-center items-center  text-4xl font-extrabold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">
+
+
+                            {{ formatarTipoFluxo(fluxo.tipo_fluxo) }}
+                        </div>
+                        <div>
+
+                            <h1 class="capitalize text-sm  font-bold text-escuro "> {{ fluxo.produto }}</h1>
+                            <h1 class="capitalize text-sm font-bold text-escuro ">{{ fluxo.categoria }}</h1>
+                            <span v-if="fluxo.tipo_fluxo === 'saida_emprestimo'"
+                                class="text-xs font-semibold text-vermelho">(emprestimo)</span>
+
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end">
+
+
+                        <h1
+                            :class="` flex justify-center items-center text-right  text-sm font-semibold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">
+                            {{ paraReal(fluxo.valor) }}</h1>
+
+                        <h1 v-if="fluxo.compradores" class=" text-right capitalize text-escuro text-xs font-semibold"> {{
+                            fluxo.compradores.nome }}</h1>
+                        <h1 v-else class=" text-right text-escuro text-xs font-semibold"> ------ </h1>
+
+                        <h1 class="text-escuro text-xs text-right font-semibold"> {{ formatarData(fluxo.data_criacao) }}
+                        </h1>
+
+                    </div>
+                </div>
+            </div>
+            <!--  -->
+
+            <div v-if="fluxoResponse"
+            class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
+            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
+                &lt </button>
+
+            <div class="flex flex-col items-center">
+                <p class="text-escuro font-semibold">Items por Pág.</p>
+                <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                    class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                    <option v-bind:value=5> 5 </option>
+                    <option v-bind:value=10> 10 </option>
+                    <option v-bind:value=250> 25 </option>
+                </select>
+            </div>
+            <button v-if="pagina.atual < (Math.ceil(fluxoResponse.data.length / pagina.tamanho) - 1)"
+                @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
+            </button><br>
+        </div>
+
+            <section class="h-[30px]"></section>
+
         </div>
     </div>
 </template>
@@ -1102,4 +1331,5 @@ function onFileSelected(event) {
 .pop-leave-active {
     transition: all .4s cubic-bezier(0, 1.15, .47, 1.15);
 
-}</style>
+}
+</style>

@@ -61,6 +61,10 @@ const pagina = reactive({
     atual: 0,
     tamanho: 5
 })
+const pagina_combustivel = reactive({
+    atual: 0,
+    tamanho: 5
+})
 
 const maquinaInput = reactive({
     id: "",
@@ -1429,7 +1433,7 @@ const valorCombustivelFormatar = (valor) => {
             Novo Combustível
         </button>
 
-        <div v-for="combustivel in combustiveisResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
+        <div v-for="combustivel in combustiveisResponse.data.slice(pagina_combustivel.atual * pagina_combustivel.tamanho, (pagina_combustivel.tamanho * pagina_combustivel.atual) + pagina_combustivel.tamanho).sort(tipoOrdenar)"
             :key="combustivel.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]">
             <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center ">
 
@@ -1446,19 +1450,19 @@ const valorCombustivelFormatar = (valor) => {
 
         <div v-if="combustiveisResponse"
             class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
-            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
+            <button v-if="pagina_combustivel.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
                 &lt </button>
 
             <div class="flex flex-col items-center">
                 <p class="text-escuro font-semibold">Items por Pág.</p>
-                <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                <select v-model="pagina_combustivel.tamanho" @input="pagina_combustivel.atual = 0"
                     class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
                     <option v-bind:value=5> 5 </option>
                     <option v-bind:value=10> 10 </option>
                     <option v-bind:value=250> 25 </option>
                 </select>
             </div>
-            <button v-if="pagina.atual < (Math.ceil(combustiveisResponse.data.length / pagina.tamanho) - 1)"
+            <button v-if="pagina_combustivel.atual < (Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho) - 1)"
                 @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
             </button><br>
         </div>
