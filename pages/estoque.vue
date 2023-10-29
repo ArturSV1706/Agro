@@ -779,15 +779,15 @@ const precoFormatar = (valor) => {
                     :class="`${margemTabelaSelector} absolute z-[0] bg-verde text-claro  rounded-full  w-[125px] h-[32px] transition-all`">
                 </div>
                 <button @click="trocarTabela('colheita')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10 w-[100px]">Colheitas</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Colheitas</button>
                 <button @click="trocarTabela('semente')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10 w-[100px]">Sementes</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Sementes</button>
                 <button @click="trocarTabela('fertilizante')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10 w-[100px]">Fertilizantes</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Fertilizantes</button>
                 <button @click="trocarTabela('defensivo')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10 w-[100px]">Defensivos</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Defensivos</button>
                 <button @click="trocarTabela('outros')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10 w-[100px]">Outros</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Outros</button>
                 <div> </div>
             </div>
             <!-- ------------------------------------------------------------------- -->
@@ -1496,10 +1496,10 @@ const precoFormatar = (valor) => {
 
         <!-- Icones -->
 
-        <div class="flex w-full justify-between">
+        <div class="flex w-full justify-between ">
 
             <button @click="trocarTabelaMobile('colheita')"
-                :class="` text-claro bg-${bgIconesTabelas.colheitas} text-center font-semibold transition-all rounded-full  z-10 w-[50px]`">
+                :class="` text-claro bg-${bgIconesTabelas.colheitas} text-center font-semibold transition-all rounded-full   w-[50px]`">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57.97 57.97" class="p-2" fill="#396858">
                     <defs></defs>
@@ -1531,7 +1531,7 @@ const precoFormatar = (valor) => {
 
             </button>
             <button @click="trocarTabelaMobile('semente')"
-                :class="` text-claro bg-${bgIconesTabelas.sementes} text-center font-semibold transition-all rounded-[10000%] h-[50px] w-[50px] `">
+                :class="` text-claro bg-${bgIconesTabelas.sementes} text-center font-semibold transition-all rounded-[10000%] h-[50px] w-[50px] z-[1]`">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 335.15 403.62" class="p-2 scale-[90%] mt-[-4px]"
                     fill="#396858">
                     <defs></defs>
@@ -1860,7 +1860,7 @@ const precoFormatar = (valor) => {
                 </div>
 
                 <div class='flex justify-center items-center text-verde mb-4'>
-                    <h1 class="font-semibold">outros | </h1>
+                    <h1 class="font-semibold">Outros | </h1>
                     <Loader v-if="!outrosResponse" />
                     <h1 v-else class="text-xl  font-bold">{{ outrosResponse.data.length }}</h1>
                 </div>

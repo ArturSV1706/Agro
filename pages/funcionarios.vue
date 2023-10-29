@@ -34,6 +34,7 @@ const showModalAdicionar = ref()
 const showModalEditar = ref()
 const showModalDeletar = ref()
 const showModalPagarFuncionario = ref()
+const showModalOpcoes = ref('true')
 const tipoOrdenar = ref();
 const reverterOrdenar = ref()
 const limitarForm = ref()
@@ -45,6 +46,17 @@ if (process.client) {
     funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
     safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
 
+}
+
+const abrirOpcoesMobile = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
+    showModalOpcoes.value = true
+    funcionarioInput.nome = nome
+    funcionarioInput.cargo = cargo
+    funcionarioInput.numero = numero
+    funcionarioInput.is_assalariado = is_assalariado
+    funcionarioInput.salario = salario
+    funcionarioInput.data_pagamento_salario = diaPagamento
+    funcionarioInput.id = id
 }
 
 
@@ -78,14 +90,14 @@ const handleNovoFuncionario = () => {
 }
 const abrirModalDeletarFuncionario = (id, nome) => {
     limitarForm.value = true
-
+    showModalOpcoes.value = false
     showModalDeletar.value = true
     funcionarioInput.id = id
     funcionarioInput.nome = nome
 }
 const abrirModalPagarFuncionario = (id, nome) => {
     limitarForm.value = true
-
+    showModalOpcoes.value = false
     showModalPagarFuncionario.value = true
     funcionarioInput.id = id
     funcionarioInput.nome = nome
@@ -263,6 +275,7 @@ const handleSubmitPagarFuncionario = async () => {
 }
 const handleModalEditar = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
     showPreencha.value = false
+    showModalOpcoes.value = false
     limitarForm.value = true
     showModalEditar.value = true
     funcionarioInput.nome = nome
@@ -741,7 +754,7 @@ function generateRandomString(length) {
 
         <div class="  w-full space-y-4 pb-5">
             <div v-for="funcionario in funcionariosResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
-                :key="funcionario.id" class="flex w-full h-[65px]">
+                :key="funcionario.id" class="flex w-full h-[65px]" @click="abrirOpcoesMobile(funcionario.nome, funcionario.cargo, funcionario.numero, funcionario.is_assalariado, funcionario.salario, funcionario.data_pagamento_salario, funcionario.id)">
                 <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center">
                     <svg width="31" height="28" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -991,5 +1004,21 @@ function generateRandomString(length) {
                 </div>
             </ModalPagarFuncionario>
         </Transition>
+
+            <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false">
+                <h1 class="text-center text-escuro font-semibold mb-2">Artur de Souza Vieira</h1>
+                <ul>
+                    <li @click="handleModalEditar(funcionarioInput.nome, funcionarioInput.cargo, funcionarioInput.numero, funcionarioInput.is_assalariado, funcionarioInput.salario, funcionarioInput.data_pagamento_salario, funcionarioInput.id)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                        Editar
+                    </li>
+                    <li @click="abrirModalPagarFuncionario(funcionarioInput.id, funcionarioInput.nome)" class="bg-verde py-1 px-2 rounded mb-2">
+                        Fazer pagamento
+                    </li>
+                    <li @click="abrirModalDeletarFuncionario(funcionarioInput.id, funcionarioInput.nome)" class="bg-vermelho py-1 px-2 rounded">
+                        Deletar
+                    </li>
+                </ul>
+            </OpcoesMobile>
     </div>
 </template>

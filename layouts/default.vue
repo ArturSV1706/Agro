@@ -2,6 +2,16 @@
 
 const loading = ref(true);
 const screen = ref('mobile');
+const route = useRoute()
+const titulo = ref('Painel')
+
+
+watch(
+  () => route.path,
+  () => {
+    definirTitulo()
+  },
+);
 
 
 if (process.client) {
@@ -16,12 +26,53 @@ if (process.client) {
 }
 
 const showBackdrop = ref()
+const overflow = ref('auto')
 
+const definirTitulo = () => {
+    switch (route.path) {
+        case '/':
+        titulo.value = 'Painel'
+            break;
+        case '/safras':
+        titulo.value = 'Safras'
+            break;
+        case '/estoque':
+        titulo.value = 'Estoque'
+            break;
+        case '/tarefas':
+        titulo.value = 'Tarefas'
+            break;
+        case '/financeiro':
+        titulo.value = 'Financeiro'
+            break;
+        case '/compradores':
+        titulo.value = 'Compradores'
+            break;
+        case '/funcionarios':
+        titulo.value = 'Funcionários'
+            break;
+        case '/maquinas':
+        titulo.value = 'Máquinas'
+            break;
+        case '/minhaConta':
+        titulo.value = 'Minha Conta'
+            break;
+    
+        default:
+            break;
+    }
+}
 const ativarBackdrop = () => {
     showBackdrop.value = true
 }
 const desativarBackdrop = () => {
     showBackdrop.value = false
+}
+const desativarOverflow = () => {
+    overflow.value = 'hidden'
+}
+const ativarOverflow = () => {
+    overflow.value = 'auto'
 }
 
 </script>
@@ -39,16 +90,16 @@ const desativarBackdrop = () => {
         </Transition>
         <Sidebar class="sm:scale-90 2xl:scale-100" v-on:mouseover="ativarBackdrop" v-on:mouseleave="desativarBackdrop" />
 
-        <div class="ml-[100px] pt-6">
+        <div  class="ml-[100px] pt-6">
 
-            <slot />
+            <slot  />
         </div>
     </div>
-    <div v-if="!loading && screen === 'mobile'" class=" h-[100vh] w-[86%] mx-[7%] ">
+    <div v-if="!loading && screen === 'mobile'" :class="` h-[100vh] w-[86%] mx-[7%] overflow-${overflow}`">
         <div class="flex h-[90px] w-full py-[25px]  justify-between items-center">
             <img class="h-[32px]" src="../assets/icons/saffron_alt.svg" alt="">
-            <h1 class="absolute left-1/2 transform -translate-x-1/2 font-aristotelica text-lg">Painel</h1>
-            <Sidebar  />
+            <h1 class="absolute left-1/2 transform -translate-x-1/2 font-aristotelica text-lg">{{ titulo }}</h1>
+            <Sidebar @overflowOff='desativarOverflow()' @overflowOn='ativarOverflow()' @titulo='definirTitulo()' />
         </div>
 
         <div class="pt-6">

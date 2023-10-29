@@ -4,13 +4,24 @@ definePageMeta({
 })
 
 const { supabase } = useSupabase()
-const { user } = useAuth()
+const { user, signOut } = useAuth()
+const screen = ref('mobile');
+
+if (process.client) {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 600) {
+        screen.value = 'desktop'
+    } else {
+        screen.value = 'mobile'
+    }
+}
 
 const limitarForm = ref(true)
 const showPreencha = ref()
 const usuario = ref();
 const usuarioResponse = ref();
 const color = ref();
+
 
 
 
@@ -28,6 +39,12 @@ const options = {
         ApiKey: "loja_0371c441d22a4a95a08cc82de4f1fca3",
     },
 };
+
+
+const logOut = async () => {
+    const { error } = await supabase.auth.signOut()
+    return navigateTo('/login')
+}
 
 const response = ref();
 const customerId = ref();
@@ -133,7 +150,7 @@ const handleSubmitSetup = async () => {
 
 </script>
 <template>
-    <div>
+    <div v-if="screen === 'desktop'">
         <!-- Título -->
         <div class="flex flex-row items-center fixed ml-[-4%] ">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica  ">Minha conta | </h1>
@@ -144,9 +161,9 @@ const handleSubmitSetup = async () => {
         <div class="ml-4 h-screen flex flex-col justify-center">
             <div class="bg-white  border-l-8 border-l-verde flex justify-evenly p-4 max-w-[30vw] mb-5">
                 <div>
-                    <p class="text-escuro ">Plano:  <span class="font-bold">simples</span></p>
+                    <p class="text-escuro ">Plano: <span class="font-bold">simples</span></p>
                     <p class='text-escuro '>Estado: <span :class="`text-${color} font-semibold`">{{ status }}</span></p>
-                    <p class="text-escuro ">Expira em:  <span class="font-bold">{{ formattedDate }}</span></p>
+                    <p class="text-escuro ">Expira em: <span class="font-bold">{{ formattedDate }}</span></p>
                 </div>
                 <img class="h-[70px]" src="../assets/icons/saffron.svg" alt="">
             </div>
@@ -237,4 +254,112 @@ const handleSubmitSetup = async () => {
             </div>
         </div>
     </div>
-</template>
+    <div v-if="screen === 'mobile'">
+        <div class=" flex flex-col justify-center">
+            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex justify-evenly items-center p-4  mb-5">
+                <div>
+                    <p class="text-escuro ">Plano: <span class="font-bold">Simples</span></p>
+                    <p class='text-escuro '><span :class="`text-${color} font-semibold`">{{ status }}</span></p>
+                    <p class="text-escuro ">Expira em: <span class="font-bold text-xs">{{ formattedDate }}</span></p>
+                </div>
+                <img class="h-[40px]" src="../assets/icons/saffron.svg" alt="">
+            </div>
+            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex-row p-4 ">
+                <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha
+                        todos
+                        os
+                        campos</h1>
+                </Transition>
+                <div class="flex flex-col">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" disabled name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required :value="user.email">
+
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" name="floating_email" id="floating_email" v-model="setupInput.telefone"
+                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">
+                            Telefone</label>
+                    </div>
+
+
+
+                </div>
+                <div class="flex flex-col">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" name="floating_email" id="floating_email" v-model="setupInput.nome"
+                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Nome
+                            do Administrador
+                        </label>
+                    </div>
+
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <label for="nome"
+                            class=" peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Estado
+                        </label>
+                        <select type="text" placeholder="João da silva" v-model="setupInput.estado"
+                            class="block py-2.5 px-0 w-full text-sm text-escuro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" value="AC">Acre</option>
+                            <option class="bg-verde font-semibold" value="AL">Alagoas</option>
+                            <option class="bg-verde font-semibold" value="AP">Amapá</option>
+                            <option class="bg-verde font-semibold" value="AM">Amazonas</option>
+                            <option class="bg-verde font-semibold" value="BA">Bahia</option>
+                            <option class="bg-verde font-semibold" value="CE">Ceará</option>
+                            <option class="bg-verde font-semibold" value="DF">Distrito Federal</option>
+                            <option class="bg-verde font-semibold" value="ES">Espírito Santo</option>
+                            <option class="bg-verde font-semibold" value="GO">Goiás</option>
+                            <option class="bg-verde font-semibold" value="MA">Maranhão</option>
+                            <option class="bg-verde font-semibold" value="MT">Mato Grosso</option>
+                            <option class="bg-verde font-semibold" value="MS">Mato Grosso do Sul</option>
+                            <option class="bg-verde font-semibold" value="MG">Minas Gerais</option>
+                            <option class="bg-verde font-semibold" value="PA">Pará</option>
+                            <option class="bg-verde font-semibold" value="PB">Paraíba</option>
+                            <option class="bg-verde font-semibold" value="PR">Paraná</option>
+                            <option class="bg-verde font-semibold" value="PE">Pernambuco</option>
+                            <option class="bg-verde font-semibold" value="PI">Piauí</option>
+                            <option class="bg-verde font-semibold" value="RJ">Rio de Janeiro</option>
+                            <option class="bg-verde font-semibold" value="RN">Rio Grande do Norte</option>
+                            <option class="bg-verde font-semibold" value="RS">Rio Grande do Sul</option>
+                            <option class="bg-verde font-semibold" value="RO">Rondônia</option>
+                            <option class="bg-verde font-semibold" value="RR">Roraima</option>
+                            <option class="bg-verde font-semibold" value="SC">Santa Catarina</option>
+                            <option class="bg-verde font-semibold" value="SP">São Paulo</option>
+                            <option class="bg-verde font-semibold" value="SE">Sergipe</option>
+                            <option class="bg-verde font-semibold" value="TO">Tocantins</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button @click="handleSubmitSetup" data-modal-toggle="defaultModal" type="button"
+                    class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
+                    Editar Informações</button>
+            </div>
+        </div>
+        <button @click="logOut()" data-modal-toggle="defaultModal" type="button"
+            class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
+
+            <h1>Fazer logout</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" fill="#DDE0D0" width="24">
+                <path
+                    d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
+            </svg>
+
+
+        </button>
+        <section class="h-[60px]"></section>
+</div></template>
