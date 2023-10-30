@@ -39,6 +39,16 @@ const usuarioResponse = ref();
 usuarioResponse.value = await supabase.from("usuario").select()
 // ----//----
 
+// Get the element with the id "main"
+// var mainElement = document.getElementById("main");
+
+// // Check if the element exists before modifying it
+// if (mainElement) {
+//   // Disable overflow by setting the overflow CSS property to "hidden"
+//   mainElement.style.overflow = "hidden";
+// }
+
+
 if (process.client) {
     tarefaResponse.value = await supabase.from("tarefas").select("*, funcionarios(*), estoque(*), maquinas(*)").eq('user_id', user.value.id).order('prazo', { ascending: false }).order('prazo_hora', { ascending: false })
     estoqueResponse.value = await supabase.from("estoque").select().eq('user_id', user.value.id)
@@ -785,6 +795,62 @@ const handlePagina = (i) => {
         </div>
 
         <!-- Spacer -->
-<section class="h-[20px]"></section>
+        <section class="h-[20px]"></section>
+
+        <ModalDetalhesMobile>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+            <h1>teste</h1>
+        </ModalDetalhesMobile>
+
     </div>
 </template>

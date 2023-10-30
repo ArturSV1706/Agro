@@ -34,7 +34,7 @@ const showModalAdicionar = ref()
 const showModalEditar = ref()
 const showModalDeletar = ref()
 const showModalPagarFuncionario = ref()
-const showModalOpcoes = ref('true')
+const showModalOpcoes = ref()
 const tipoOrdenar = ref();
 const reverterOrdenar = ref()
 const limitarForm = ref()
@@ -45,10 +45,20 @@ const emprestimoResponse = ref();
 if (process.client) {
     funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
     safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
-
 }
 
+
+// Get the element with the id "main"
+var mainElement = document.getElementById("main");
+
+
+
 const abrirOpcoesMobile = (nome, cargo, numero, is_assalariado, salario, diaPagamento, id) => {
+    // Check if the element exists before modifying it
+if (mainElement) {
+  // Disable overflow by setting the overflow CSS property to "hidden"
+  mainElement.style.overflow = "hidden";
+}
     showModalOpcoes.value = true
     funcionarioInput.nome = nome
     funcionarioInput.cargo = cargo
@@ -478,7 +488,7 @@ function generateRandomString(length) {
                                     <span
                                         class="cursor-pointer material-icons block text-center hover:text-xl transition-all"
                                         @click="abrirModalPagarFuncionario(funcionario.id, funcionario.nome)"
-                                        @close="showModalEditar = false">
+                                        @close="mainElement.style.overflow = 'auto';showModalEditar = false">
                                         💵
                                     </span>
                                 </td>
@@ -486,7 +496,7 @@ function generateRandomString(length) {
                                     <span
                                         class="cursor-pointer material-icons block text-center hover:text-xl transition-all"
                                         @click="handleModalEditar(funcionario.nome, funcionario.cargo, funcionario.numero, funcionario.is_assalariado, funcionario.salario, funcionario.data_pagamento_salario, funcionario.id)"
-                                        @close="showModalEditar = false">
+                                        @close="mainElement.style.overflow = 'auto';showModalEditar = false">
                                         &#x270F
                                     </span>
                                 </td>
@@ -538,7 +548,7 @@ function generateRandomString(length) {
         </div>
         <!-- Modal Novo Funcionário -->
         <Transition name="pop">
-            <ModalNovoFuncionario v-if="showModalAdicionar" @close="showModalAdicionar = false"
+            <ModalNovoFuncionario v-if="showModalAdicionar" @close="mainElement.style.overflow = 'auto';showModalAdicionar = false"
                 @adicionarFuncionario="handleSubmitNovoFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -617,7 +627,7 @@ function generateRandomString(length) {
             </ModalNovoFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalEditarFuncionario v-if="showModalEditar" @close="showModalEditar = false"
+            <ModalEditarFuncionario v-if="showModalEditar" @close="mainElement.style.overflow = 'auto';showModalEditar = false"
                 @editarFuncionario="handleSubmitEditarFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -695,7 +705,7 @@ function generateRandomString(length) {
             </ModalEditarFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalDeletarFuncionario v-if="showModalDeletar" @close="showModalDeletar = false"
+            <ModalDeletarFuncionario v-if="showModalDeletar" @close="mainElement.style.overflow = 'auto';showModalDeletar = false"
                 @deletarFuncionario="handleDeleteFuncionario(funcionarioInput.id)">
                 <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este funcionário?</h1>
                 <h1 class="text-center text-xl text-claro capitalize font-bold">{{
@@ -706,7 +716,7 @@ function generateRandomString(length) {
             </ModalDeletarFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="showModalPagarFuncionario = false"
+            <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="mainElement.style.overflow = 'auto';showModalPagarFuncionario = false"
                 @pagarFuncionario="handleSubmitPagarFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -717,23 +727,24 @@ function generateRandomString(length) {
 
                     <input type="text" v-on:input="salárioFormatar(funcionarioInput.salario)"
                         v-model="funcionarioInput.salario" name="floating_email" id="floating_email"
-                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                        class="block py-5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                         placeholder=" " required>
                     <label for="floating_email"
                         class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Valor
                         do pagamento</label>
                 </div>
+                
                 <div v-if="!safraResponse"></div>
                 <div v-else-if="safraResponse.data != ''">
 
-                    <div class="relative z-0 w-full mb-6 group">
+                    <div class="relative z-0 w-full  group">
 
 
                         <label
-                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-12  top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-14">
                             De qual safra será descontado o valor do pagamento?</label>
                         <select v-model="funcionarioInput.safra_id"
-                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            class=" block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
                             <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
                                 v-bind:value=safra.id>{{
                                     safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
@@ -798,7 +809,7 @@ function generateRandomString(length) {
             </button><br>
         </div>
         <Transition name="pop">
-            <ModalNovoFuncionario v-if="showModalAdicionar" @close="showModalAdicionar = false"
+            <ModalNovoFuncionario v-if="showModalAdicionar" @close="mainElement.style.overflow = 'auto';showModalAdicionar = false"
                 @adicionarFuncionario="handleSubmitNovoFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -877,7 +888,7 @@ function generateRandomString(length) {
             </ModalNovoFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalEditarFuncionario v-if="showModalEditar" @close="showModalEditar = false"
+            <ModalEditarFuncionario v-if="showModalEditar" @close="mainElement.style.overflow = 'auto';showModalEditar = false"
                 @editarFuncionario="handleSubmitEditarFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -955,7 +966,7 @@ function generateRandomString(length) {
             </ModalEditarFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalDeletarFuncionario v-if="showModalDeletar" @close="showModalDeletar = false"
+            <ModalDeletarFuncionario v-if="showModalDeletar" @close="mainElement.style.overflow = 'auto';showModalDeletar = false"
                 @deletarFuncionario="handleDeleteFuncionario(funcionarioInput.id)">
                 <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este funcionário?</h1>
                 <h1 class="text-center text-xl text-claro capitalize font-bold">{{
@@ -966,7 +977,7 @@ function generateRandomString(length) {
             </ModalDeletarFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="showModalPagarFuncionario = false"
+            <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="mainElement.style.overflow = 'auto';showModalPagarFuncionario = false"
                 @pagarFuncionario="handleSubmitPagarFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -1005,8 +1016,8 @@ function generateRandomString(length) {
             </ModalPagarFuncionario>
         </Transition>
 
-            <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false">
-                <h1 class="text-center text-escuro font-semibold mb-2">Artur de Souza Vieira</h1>
+            <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
+                <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{funcionarioInput.nome}}</h1>
                 <ul>
                     <li @click="handleModalEditar(funcionarioInput.nome, funcionarioInput.cargo, funcionarioInput.numero, funcionarioInput.is_assalariado, funcionarioInput.salario, funcionarioInput.data_pagamento_salario, funcionarioInput.id)"
                     class="bg-verde py-1 px-2 rounded mb-2">

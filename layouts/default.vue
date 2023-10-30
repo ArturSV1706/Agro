@@ -9,6 +9,8 @@ const titulo = ref('Painel')
 watch(
   () => route.path,
   () => {
+    document.documentElement.scrollTop = 0; // For modern browsers
+    document.body.scrollTop = 0; // For older browsers
     definirTitulo()
   },
 );
@@ -95,10 +97,10 @@ const ativarOverflow = () => {
             <slot  />
         </div>
     </div>
-    <div v-if="!loading && screen === 'mobile'" :class="` h-[100vh] w-[86%] mx-[7%] overflow-${overflow}`">
+    <div id="main" v-if="!loading && screen === 'mobile'" :class="` h-[100vh] w-[86%] mx-[7%] overflow-${overflow}`">
         <div class="flex h-[90px] w-full py-[25px]  justify-between items-center">
             <img class="h-[32px]" src="../assets/icons/saffron_alt.svg" alt="">
-            <h1 class="absolute left-1/2 transform -translate-x-1/2 font-aristotelica text-lg">{{ titulo }}</h1>
+            <h1 class=" mr-[3%] font-aristotelica text-lg">{{ titulo }}</h1>
             <Sidebar @overflowOff='desativarOverflow()' @overflowOn='ativarOverflow()' @titulo='definirTitulo()' />
         </div>
 

@@ -40,19 +40,18 @@
         </div>
     </div>
     <!-- Backdrop -->
-
-    
+    <!-- mobile | para desktop= hidden sm:flex | para mobile = sm:hidden -->
     <div id="defaultModal" tabindex="-1" aria-hidden="true"
-        class="sm:hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-full  justify-center items-center  ">
-        <div class="fixed  pointer-events-none filter backdrop-blur-[3px] w-full h-[100%] bg-[rgba(42,77,65,.4)] z-10 "></div>
-        <div class="absolute top-1/2 left-1/2 -translate-y-[42%] -translate-x-[50%] z-20  w-[100%]  h-full flex flex-col">
+        class="sm:hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center  ">
+        <div class="fixed filter backdrop-blur-[3px] w-full h-full bg-[rgba(42,77,65,.4)] z-3 "></div>
+        <div class="fixed  z-20 p-4 w-full max-w-lg h-full md:h-auto">
             <!-- Modal content -->
-            <div class="fixed top-0 bg-escuro rounded-lg shadow w-[97.5%] ml-[1%]">
+            <div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-escuro rounded-lg shadow w-[90%] ">
                 <!-- Modal header -->
 
                 <div class="flex justify-between items-start p-4 rounded-t border-b border-verde">
                     <h3 class="text-xl font-semibold text-claro">
-                        Adicionar Funcionário
+                        Deletar registro
                     </h3>
                     <button @click="$emit('close')" type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -67,7 +66,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <div class="p-6 space-y-6">
+                <div class="p-6 space-y-6 overflow-y-scroll max-h-[60vh]">
                     <slot />
                 </div>
                 <!-- Modal footer -->
@@ -81,4 +80,6 @@
             </div>
         </div>
     </div>
+    <!-- Backdrop -->
+    
 </template>
