@@ -22,6 +22,7 @@ const showModalConfirmar = ref()
 const showModaldescricao = ref()
 const showModalCancelar = ref()
 const showCorrigirEstoque = ref()
+const showModalOpcoes = ref()
 const limitarForm = ref()
 
 const funcionariosResponse = ref();
@@ -47,6 +48,35 @@ usuarioResponse.value = await supabase.from("usuario").select()
 //   // Disable overflow by setting the overflow CSS property to "hidden"
 //   mainElement.style.overflow = "hidden";
 // }
+
+const mainElement = ref(document.getElementById("main"));
+
+const abrirOpcoesMobile = (id, titulo, descricao, funcionario, maquina_utilizada, maquina_id, estoque_id, estoque_utilizado_item, estoque_utilizado_quantidade, estoque_utilizado_grandeza, prazo, prazo_hora, status) => {
+    // Check if the element exists before modifying it
+    if (mainElement) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+        mainElement.value.style.overflow = "hidden";
+    }
+    showModalOpcoes.value = true
+    showPreencha.value = false
+    limitarForm.value = true
+    tarefaInput.id = id
+    tarefaInput.titulo = titulo
+    tarefaInput.descricao = descricao
+    tarefaInput.funcionario_nome = funcionario
+    tarefaInput.status = status
+    console.log('status: ' + status)
+    tarefaInput.prazo = prazo
+    tarefaInput.prazo_hora = prazo_hora
+    tarefaInput.maquina_utilizada = maquina_utilizada
+    tarefaInput.maquina_id = maquina_id
+    tarefaInput.estoque_id = estoque_id
+    tarefaInput.estoque_nome = estoque_utilizado_item
+    tarefaInput.estoque_quantidade_correcao = estoque_utilizado_quantidade
+    tarefaInput.estoque_grandeza = estoque_utilizado_grandeza
+
+}
+
 
 
 if (process.client) {
@@ -236,7 +266,6 @@ const handleSubmitNovoTarefa = async () => {
 const handleModalConfirmar = async (id, titulo, descricao, funcionario, maquina_utilizada, maquina_id, estoque_id, estoque_utilizado_item, estoque_utilizado_quantidade, estoque_utilizado_grandeza, prazo, prazo_hora, status) => {
 
     limitarForm.value = true
-
     maquinas_nomeResponse.value = await supabase.from("tarefas").select("maquinas(modelo)").eq('id', id)
     maquinas_anoResponse.value = await supabase.from("tarefas").select("maquinas(ano)").eq('id', id)
 
@@ -253,8 +282,9 @@ const handleModalConfirmar = async (id, titulo, descricao, funcionario, maquina_
     tarefaInput.maquina_id = maquina_id
     tarefaInput.estoque_id = estoque_id
     tarefaInput.estoque_nome = estoque_utilizado_item
-    tarefaInput.estoque_quantidade_correcao = estoque_utilizado_quantidade
+    tarefaInput.estoque_utilizado_quantidade_reportada = estoque_utilizado_quantidade
     tarefaInput.estoque_grandeza = estoque_utilizado_grandeza
+    console.log(tarefaInput)
     // tarefaInput.maquina_nome = 
 }
 
@@ -461,16 +491,16 @@ const handlePagina = (i) => {
                             </div>
                             <div v-else class="flex space-x-8">
                                 <h1 v-if="tarefa.estoque && tarefa.maquinas"
-                                    @click="handleModalConfirmar(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, (tarefa.maquinas.modelo + '-' + tarefa.maquinas.ano), tarefa.maquina_utilizada, tarefa.estoque_utilizado_item, tarefa.estoque.item, tarefa.estoque_utilizado_quantidade_reportada, tarefa.estoque.grandeza, tarefa.prazo, tarefa.prazo_hora, tarefa.status)"
+                                    @click="handleModalConfirmar(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, (tarefa.maquinas.modelo + '-' + tarefa.maquinas.ano), tarefa.maquina_utilizada, tarefa.estoque_utilizado_item, tarefa.estoque.item, tarefa.estoque_utilizado_quantidade, tarefa.estoque.grandeza, tarefa.prazo, tarefa.prazo_hora, tarefa.status)"
                                     class="hover:text-4xl transition-all cursor-pointer">✔</h1>
                                 <h1 v-if="tarefa.estoque && !tarefa.maquinas"
-                                    @click="handleModalConfirmar(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, null, null, tarefa.estoque_utilizado_item, tarefa.estoque.item, tarefa.estoque_utilizado_quantidade_reportada, tarefa.estoque.grandeza, tarefa.prazo, tarefa.prazo_hora, tarefa.status)"
+                                    @click="handleModalConfirmar(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, null, null, tarefa.estoque_utilizado_item, tarefa.estoque.item, tarefa.estoque_utilizado_quantidade, tarefa.estoque.grandeza, tarefa.prazo, tarefa.prazo_hora, tarefa.status)"
                                     class="hover:text-4xl transition-all cursor-pointer">✔</h1>
                                 <h1 v-if="tarefa.maquinas && !tarefa.estoque"
-                                    @click="handleModalConfirmar(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, (tarefa.maquinas.modelo + '-' + tarefa.maquinas.ano), tarefa.maquina_utilizada, null, null, null, tarefa.prazo, tarefa.prazo_hora, tarefa.status)"
+                                    @click="handleModalConfirmar(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, (tarefa.maquinas.modelo + '-' + tarefa.maquinas.ano), tarefa.maquina_utilizada, null, null, null, null, tarefa.prazo, tarefa.prazo_hora, tarefa.status)"
                                     class="hover:text-4xl transition-all cursor-pointer">✔</h1>
                                 <h1 v-if="!tarefa.estoque && !tarefa.maquinas"
-                                    @click="handleModalConfirmar(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, null, null, null, null, null, tarefa.prazo, tarefa.prazo_hora, tarefa.status)"
+                                    @click="handleModalConfirmar(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, null, null, null, null, null, null, tarefa.prazo, tarefa.prazo_hora, tarefa.status)"
                                     class="hover:text-4xl transition-all cursor-pointer">✔</h1>
                                 <h1 @click="handleDeletarTarefa(tarefa.id, tarefa.titulo)"
                                     class="hover:text-4xl transition-all cursor-pointer">❌</h1>
@@ -750,7 +780,75 @@ const handlePagina = (i) => {
             :key="tarefa.id"
             :class="`flex justify-between mb-3 bg-escuro rounded-b-xl text-claro border-t-[5px] border-${corTarefa(tarefa.status)} p-2`">
 
-            <div class='space-y-2'>
+
+
+
+
+            <div v-if="tarefa.estoque && tarefa.maquinas" class='space-y-2 bg-verde w-full'
+                @click="abrirOpcoesMobile(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, (tarefa.maquinas.modelo + '-' + tarefa.maquinas.ano), tarefa.maquina_utilizada, tarefa.estoque_utilizado_item, tarefa.estoque.item, tarefa.estoque_utilizado_quantidade, tarefa.estoque.grandeza, tarefa.prazo, tarefa.prazo_hora, tarefa.status)">
+                <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
+                <p class="capitalize text-claro text-xs"><b>👤|</b> {{
+                    tarefa.funcionarios.nome
+                }}
+                </p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"> <b>⏱|</b>{{
+                    tarefa.prazo + "-" +
+                    tarefa.prazo_hora
+                }} </p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"><b>📦|</b> <span v-if="tarefa.estoque">{{
+                    tarefa.estoque.item + " " + tarefa.estoque_utilizado_quantidade
+                }} <span class="text-xs">({{
+    tarefa.estoque.grandeza
+}})</span> </span> <span v-else>--------</span></p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"><b>🚜|</b> <span v-if="tarefa.maquinas">{{
+                    tarefa.maquinas.modelo + " - " + tarefa.maquinas.ano
+                }}</span> <span v-else>--------</span></p>
+            </div>
+
+            <div v-if="tarefa.estoque && !tarefa.maquinas" class='space-y-2 bg-verde w-full'
+                @click="abrirOpcoesMobile(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, null, null, tarefa.estoque_utilizado_item, tarefa.estoque.item, tarefa.estoque_utilizado_quantidade_reportada, tarefa.estoque.grandeza, tarefa.prazo, tarefa.prazo_hora, tarefa.status)">
+                <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
+                <p class="capitalize text-claro text-xs"><b>👤|</b> {{
+                    tarefa.funcionarios.nome
+                }}
+                </p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"> <b>⏱|</b>{{
+                    tarefa.prazo + "-" +
+                    tarefa.prazo_hora
+                }} </p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"><b>📦|</b> <span v-if="tarefa.estoque">{{
+                    tarefa.estoque.item + " " + tarefa.estoque_utilizado_quantidade
+                }} <span class="text-xs">({{
+    tarefa.estoque.grandeza
+}})</span> </span> <span v-else>--------</span></p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"><b>🚜|</b> <span v-if="tarefa.maquinas">{{
+                    tarefa.maquinas.modelo + " - " + tarefa.maquinas.ano
+                }}</span> <span v-else>--------</span></p>
+            </div>
+
+            <div v-if="tarefa.maquinas && !tarefa.estoque" class='space-y-2 bg-verde w-full'
+                @click="abrirOpcoesMobile(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, (tarefa.maquinas.modelo + '-' + tarefa.maquinas.ano), tarefa.maquina_utilizada, null, null, null, null, tarefa.prazo, tarefa.prazo_hora, tarefa.status)">
+                <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
+                <p class="capitalize text-claro text-xs"><b>👤|</b> {{
+                    tarefa.funcionarios.nome
+                }}
+                </p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"> <b>⏱|</b>{{
+                    tarefa.prazo + "-" +
+                    tarefa.prazo_hora
+                }} </p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"><b>📦|</b> <span v-if="tarefa.estoque">{{
+                    tarefa.estoque.item + " " + tarefa.estoque_utilizado_quantidade
+                }} <span class="text-xs">({{
+    tarefa.estoque.grandeza
+}})</span> </span> <span v-else>--------</span></p>
+                <p class="capitalize text-verde_claro text-xs font-semibold"><b>🚜|</b> <span v-if="tarefa.maquinas">{{
+                    tarefa.maquinas.modelo + " - " + tarefa.maquinas.ano
+                }}</span> <span v-else>--------</span></p>
+            </div>
+
+            <div v-if="!tarefa.estoque && !tarefa.maquinas" class='space-y-2 bg-verde w-full'
+                @click="abrirOpcoesMobile(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, null, null, null, null, null, null, tarefa.prazo, tarefa.prazo_hora, tarefa.status)">
                 <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
                 <p class="capitalize text-claro text-xs"><b>👤|</b> {{
                     tarefa.funcionarios.nome
@@ -797,60 +895,255 @@ const handlePagina = (i) => {
         <!-- Spacer -->
         <section class="h-[20px]"></section>
 
-        <ModalDetalhesMobile>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-            <h1>teste</h1>
-        </ModalDetalhesMobile>
+        <!-- <ModalDetalhesMobile>
+            
+        </ModalDetalhesMobile> -->
+
+        <Transition name="pop">
+            <ModalAdicionarTarefa v-if="showModalAdicionar" @close="showModalAdicionar = false"
+                @adicionarTarefa="handleSubmitNovoTarefa">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+
+                <div class="flex justify-evenly w-full space-x-4">
+                    <div class="flex flex-col flex-1">
+                        <div class="relative z-0 w-full mb-6 group">
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Designada
+                                à</label>
+                            <select v-model="tarefaInput.funcionario_id"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                <option class="bg-verde font-semibold" v-for="funcionario in funcionariosResponse.data"
+                                    :key="funcionario.id" v-bind:value=funcionario.id>{{ funcionario.nome }}
+                                </option>
+                            </select>
+                        </div>
+                        <!-- <label for="data_pagamento_salario"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Dia
+                                    de pagamento parcela</label>
+                                    <select v-model="maquinaInput.data_pagamento_parcelas" placeholder="João da silva"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    name="data_pagamento_salario">
+                                    <option class="bg-verde font-semibold" v-for="i in 28" v-bind:value=i>{{ i }}
+                                    </option>
+                                </select> -->
+
+                        <div class="flex space-x-7">
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="date" v-model="tarefaInput.prazo" name="a"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="a"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    Dia de prazo</label>
+                            </div>
+
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="time" v-model="tarefaInput.prazo_hora"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                    Horário de prazo</label>
+                            </div>
+
+                        </div>
+
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="text" v-model="tarefaInput.titulo"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Título</label>
+                        </div>
+
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <textarea v-model="tarefaInput.descricao" maxlength="500" cols="30" rows="7"
+                                class="block py-2.5 px-2.5 resize-none w-full rounded mt-4 text-sm text-escuro bg-transparent border-0 border-b-2  bg-claro appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required></textarea>
+                            <label
+                                class="peer-focus:font-medium absolute  text-sm text-escuro  duration-300 transform -translate-y-6 scale-75 top-5  left-1  font-bold   origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                Descrição</label>
+                        </div>
+
+                        <!-- <label for="titulo">Título</label>
+                                    < v-model="tarefaInput.descricao" maxlength="500" cols="30" rows="7"></textarea> -->
+                    </div>
+                    <div class="flex flex-col flex-1 items-center justify-evenly">
+
+                        <div class="flex items-center space-x-4">
+
+                            <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">Utilizará
+                                máquina?</label>
+                            <input
+                                class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                                v-model="tarefaInput.possui_maquina" type="checkbox" placeholder="João da silva"
+                                name="recebe_salario">
+                        </div>
+
+
+                        <Transition name="slide">
+                            <div v-if="tarefaInput.possui_maquina" class="relative z-0 w-full mb-6 group">
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Máquina
+                                    utilizada</label>
+                                <select v-model="tarefaInput.maquina_id"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                    <option v-for="maquina in maquinasResponse.data" :key="maquina.id"
+                                        class="bg-verde font-semibold" v-bind:value=maquina.id>
+                                        {{ maquina.modelo + " - " + maquina.ano }}
+                                    </option>
+                                </select>
+                            </div>
+                        </Transition>
+
+                        <div class="flex items-center space-x-4">
+
+                            <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">Utilizará itens
+                                do estoque?</label>
+                            <input
+                                class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                                v-model="tarefaInput.possui_estoque" type="checkbox" placeholder="João da silva"
+                                name="recebe_salario">
+                        </div>
+
+
+                        <Transition name="slide">
+                            <div v-if="tarefaInput.possui_estoque" class="flex flex-col w-full transition-all">
+                                <div class="relative z-0 w-full mb-6 group">
+                                    <label
+                                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Item
+                                        do estoque utilizado</label>
+                                    <select v-model="tarefaInput.estoque_id"
+                                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                        <option v-for="estoque in estoqueResponse.data" :key="estoque.id"
+                                            :v-if="estoque.quantidade > 0" class="bg-verde font-semibold"
+                                            v-bind:value=estoque.id>{{
+                                                estoque.item + " - " + estoque.grandeza
+                                            }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="relative z-0 w-full mb-6 group">
+
+                                    <input type="number" v-model="tarefaInput.estoque_quantidade"
+                                        v-on:input="limitarQuantidade(tarefaInput.estoque_id)"
+                                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                        placeholder=" " required>
+                                    <label
+                                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                                        Quantidade do item</label>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
+
+                </div>
+
+            </ModalAdicionarTarefa>
+        </Transition>
+
+        <Transition name="pop">
+            <ModalConfirmarTarefa v-if="showModalConfirmar" @close="showModalConfirmar = false"
+                @confirmarTarefa="handleSubmitConfirmar">
+
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+
+                <h2 class="text-claro text-lg">Atribuída à: <b class="text-verde_claro"> {{
+                    tarefaInput.funcionario_nome + " "
+                }} </b> com prazo limite até <b class=" text-xs">{{
+    tarefaInput.prazo
+    + " - " +
+    tarefaInput.prazo_hora
+}}</b></h2>
+                <h2 class="text-claro text-lg" v-if="tarefaInput.maquina_utilizada"> A máquina {{
+                    tarefaInput.maquina_utilizada }} foi
+                    utilizada
+                </h2>
+                <div v-if="tarefaInput.estoque_nome">
+                    <h2 class="text-verde font-semibold"> De acordo com <b class="text-claro font-bold">{{
+                        tarefaInput.funcionario_nome + ", "
+                    }}</b> <b class="text-verde_claro font-bold"> {{
+    tarefaInput.estoque_utilizado_quantidade_reportada + "(" + tarefaInput.estoque_grandeza +
+    ")" }}
+                        </b> de <b class="text-verde_claro font-bold">{{ tarefaInput.estoque_nome }}</b> foi
+                        utilizado</h2>
+                    <div>
+                        <div class="flex">
+                            <p class="text-verde font-semibold text-md mr-3">Deseja alterar este valor?</p>
+                            <input class="scale-150" type="checkbox" v-model="showCorrigirEstoque">
+                        </div>
+                        <input type="number" v-model="tarefaInput.estoque_quantidade" v-if="showCorrigirEstoque"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            v-on:input="limitarQuantidade(tarefaInput.estoque_id)" required>
+                    </div>
+                </div>
+                <h2 class="text-2xl text-claro font-bold"> {{ tarefaInput.titulo }}</h2>
+                <h2 class="text-claro"> {{ tarefaInput.descricao }}</h2>
+                <div v-if="!maquinas_nomeResponse.data || !maquinas_anoResponse.data">Loading...</div>
+                <div v-else="true">
+                </div>
+            </ModalConfirmarTarefa>
+        </Transition>
+        <Transition name="pop">
+            <ModalVerDescricao v-if="showModaldescricao" @close="showModaldescricao = false">
+                <div>
+                    <p class="capitalize text-claro break-all">{{ tarefaInput.descricao }}</p>
+                </div>
+            </ModalVerDescricao>
+        </Transition>
+        <Transition name="pop">
+            <ModalCancelarTarefa v-if="showModalCancelar" @close="showModalCancelar = false"
+                @cancelarTarefa="handleSubmitDeletarTarefa">
+                <div>
+                    <h1 class="text-center text-xl text-claro light">Deseja mesmo cancelar esta tarefa?</h1>
+                    <h1 class="text-center text-xl text-claro capitalize font-bold">{{ tarefaInput.titulo }}</h1>
+                    <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode
+                                ser
+                                desfeita.</u> </b></h2>
+                </div>
+            </ModalCancelarTarefa>
+        </Transition>
+
+        <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ tarefaInput.titulo }}</h1>
+            <ul>
+                <div v-if="tarefaInput.status == 'pendente'">
+                    <li v-if="tarefaInput.estoque_id && tarefaInput.maquina_id"
+                        @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, tarefaInput.maquina_utilizada, tarefaInput.maquina_id, tarefaInput.estoque_nome, tarefaInput.estoque_id, tarefaInput.estoque_quantidade_correcao, tarefaInput.estoque_grandeza, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
+                        class="bg-verde py-1 px-2 rounded mb-2">Marcar completa &nbsp ✔</li>
+                    <li v-if="tarefaInput.estoque_id && !tarefaInput.maquina_id"
+                        @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, null, null, tarefaInput.estoque_nome, tarefaInput.estoque_id, tarefaInput.estoque_quantidade_correcao, tarefaInput.estoque_grandeza, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
+                        class="bg-verde py-1 px-2 rounded mb-2">Marcar completa &nbsp ✔</li>
+                    <li v-if="tarefaInput.maquina_id && !tarefaInput.estoque_id"
+                        @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, tarefaInput.maquina_utilizada, tarefaInput.maquina_id, null, null, null, null, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
+                        class="bg-verde py-1 px-2 rounded mb-2">Marcar completa &nbsp ✔</li>
+                    <li v-if="!tarefaInput.estoque_id && !tarefaInput.maquina_id"
+                        @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, null, null, null, null, null, null, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
+                        class="bg-verde py-1 px-2 rounded mb-2">Marcar completa &nbsp ✔</li>
+
+                    <li @click="handleDeletarTarefa(tarefaInput.id, tarefaInput.titulo)"
+                        class="bg-vermelho py-1 px-2 rounded">
+                        Deletar
+                    </li>
+                </div>
+                <li @click="handleDeletarTarefa(tarefaInput.id, tarefaInput.titulo)" class="bg-vermelho py-1 px-2 rounded">
+                    Ver descricao
+                </li>
+            </ul>
+        </OpcoesMobile>
 
     </div>
 </template>

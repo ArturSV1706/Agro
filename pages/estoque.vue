@@ -20,6 +20,7 @@ if (process.client) {
 }
 
 
+
 const sementesResponse = ref();
 const fertilizantesResponse = ref();
 const defensivosResponse = ref();
@@ -43,6 +44,8 @@ const showTabelaSementes = ref();
 const showTabelaFetilizantes = ref()
 const showTabelaDefensivos = ref()
 const showTabelaOutros = ref()
+const showModalOpcoes = ref()
+const showModalOpcoesColheita = ref()
 const limitarForm = ref()
 const showPreencha = ref()
 
@@ -62,13 +65,47 @@ const usuarioResponse = ref();
 usuarioResponse.value = await supabase.from("usuario").select()
 // ----//----
 
+const mainElement = ref(document.getElementById("main"));
+
+const abrirOpcoesMobile = (item, categoria, quantidade, grandeza, id) => {
+    // Check if the element exists before modifying it
+    if (mainElement) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+        mainElement.value.style.overflow = "hidden";
+    }
+    showModalOpcoes.value = true
+    showPreencha.value = false
+    limitarForm.value = true
+    estoqueInput.item = item
+    estoqueInput.categoria = categoria
+    estoqueInput.quantidade = quantidade
+    estoqueInput.grandeza = grandeza
+    estoqueInput.id = id
+
+}
+const abrirOpcoesMobileColheita = (cultivo, quantidade, grandeza, area, area_colhida, id) => {
+    // Check if the element exists before modifying it
+    if (mainElement) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+        mainElement.value.style.overflow = "hidden";
+    }
+    showModalOpcoesColheita.value = true
+    showPreencha.value = false
+    limitarForm.value = true
+    estoqueInput.item = cultivo
+    estoqueInput.quantidade = ""
+    safraResponse.grandeza = grandeza
+    colheitaInput.area_colhida = area_colhida
+    estoqueInput.id = id
+}
+
 if (process.client) {
-    sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-    fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
-    defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
-    outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
-    colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id }).order('cultivo', { ascending: true })
-    safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+    sementesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "semente/muda" })
+    fertilizantesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "fertilizante" })
+    defensivosResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "defensivo" })
+    outrosResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "outros" })
+    colheitaResponse.value = await supabase.from("safras").select().order('data_inicio', { ascending: false }).match({ user_id: user.value.id }).order('cultivo', { ascending: true })
+    safraResponse.value = await supabase.from("safras").select().order('data_inicio', { ascending: false }).match({ user_id: user.value.id, status: "ativa" })
 }
 const estoqueInput = reactive({
     id: "",
@@ -178,10 +215,10 @@ const handleSubmitDeleteEstoque = async () => {
 
 
     if (process.client) {
-        sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-        fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
-        defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
-        outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
+        sementesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "semente/muda" })
+        fertilizantesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "fertilizante" })
+        defensivosResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "defensivo" })
+        outrosResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "outros" })
     }
     showModalDeletar.value = false
     pagina.atual = 0
@@ -263,10 +300,10 @@ const handleSubmitNovoEstoque = async () => {
         showPreencha.value = false
 
 
-        sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-        fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
-        defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
-        outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
+        sementesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "semente/muda" })
+        fertilizantesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "fertilizante" })
+        defensivosResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "defensivo" })
+        outrosResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "outros" })
     } else {
         showPreencha.value = true
     }
@@ -302,9 +339,9 @@ const handleSubmitEditarEstoque = async (id) => {
 
 
 
-        sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-        fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
-        defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
+        sementesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "semente/muda" })
+        fertilizantesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "fertilizante" })
+        defensivosResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "defensivo" })
 
 
         estoqueInput.id = ""
@@ -439,11 +476,10 @@ const handleSubmitReporEstoque = async (id) => {
         }
 
 
-        colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-        sementesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "semente/muda" })
-        fertilizantesResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "fertilizante" })
-        defensivosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "defensivo" })
-        outrosResponse.value = await supabase.from("estoque").select().match({ user_id: user.value.id, categoria: "outros" })
+        sementesResponse.value = await supabase.from("estoque").select().order('item', { ascending: false }).match({ user_id: user.value.id, categoria: "semente/muda" })
+        fertilizantesResponse.value = await supabase.from("estoque").select().order('item', { ascending: false }).match({ user_id: user.value.id, categoria: "fertilizante" })
+        defensivosResponse.value = await supabase.from("estoque").select().order('item', { ascending: false }).match({ user_id: user.value.id, categoria: "defensivo" })
+        outrosResponse.value = await supabase.from("estoque").select().order('item', { ascending: false }).match({ user_id: user.value.id, categoria: "outros" })
 
 
         estoqueInput.id = ""
@@ -1531,47 +1567,12 @@ const precoFormatar = (valor) => {
 
             </button>
             <button @click="trocarTabelaMobile('semente')"
-                :class="` text-claro bg-${bgIconesTabelas.sementes} text-center font-semibold transition-all rounded-[10000%] h-[50px] w-[50px] z-[1]`">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 335.15 403.62" class="p-2 scale-[90%] mt-[-4px]"
-                    fill="#396858">
-                    <defs></defs>
-                    <g id="Camada_2" data-name="Camada 2">
-                        <g id="Camada_1-2" data-name="Camada 1">
-                            <path class="cls-1"
-                                d="M192.79,354.51V305.2L185.2,311c13.6,2.57,28.7-.08,41.56-4.56,33.86-11.81,58.76-39.75,75.36-70.65s26.36-65.24,32.89-99.59a6.11,6.11,0,0,0-5.78-7.6c-14.7-1-30.19,1.72-44.33,5.38a164.74,164.74,0,0,0-83.3,51.36c-17.33,20.11-29.5,43.85-37.81,69-2.43,7.35,9.15,10.5,11.57,3.19,12.62-38.14,35.52-72.76,70.22-94a155.47,155.47,0,0,1,39.25-17.06,169.29,169.29,0,0,1,17.08-3.86A121.87,121.87,0,0,1,314.78,141a101,101,0,0,1,14.45-.36L323.44,133c-9.29,48.85-25.06,102.29-62,137.85-9.8,9.45-22.64,18.09-34.24,22.65a95.75,95.75,0,0,1-15.56,4.67q-1.65.34-3.33.63c-.89.15-3.56.52-2.17.35-1.95.24-3.9.43-5.85.54a73,73,0,0,1-9.81-.05c-.81-.07-4.24-.52-1.18-.08l-.93-.14c-3.78-.72-7.6,1.63-7.6,5.78v49.31c0,7.72,12,7.73,12,0Z" />
-                            <path class="cls-1"
-                                d="M281.94,158.52c-9.95,8.46-19.51,17.42-28.82,26.57C237,201,220.87,217.83,209,237.22c-4,6.6,6.34,12.64,10.36,6.05,11.56-18.88,27.4-35.17,43.15-50.59,9-8.83,18.29-17.49,27.92-25.67,5.89-5-2.63-13.46-8.49-8.49Z" />
-                            <path class="cls-1"
-                                d="M198.05,249.74c-5.56,8-11.55,16.18-15.66,25-3.22,7,7.12,13.07,10.37,6.06,4.1-8.87,10.09-17,15.65-25,4.41-6.35-6-12.36-10.36-6Z" />
-                            <path class="cls-1"
-                                d="M154.36,354.51V305.2c0-4.15-3.82-6.5-7.6-5.78l-.74.11c1.83-.26.75-.07-.62,0a71.52,71.52,0,0,1-7.88.23c-1.81,0-3.61-.15-5.4-.31-1-.09-2-.2-2.93-.32s1.21.2-.45-.06l-1.7-.27a95,95,0,0,1-15-3.81,86.41,86.41,0,0,1-16.15-7.37,108.24,108.24,0,0,1-17.57-12.5c-14.68-12.83-26.1-28.81-35.25-45.94C27.16,199.33,18,166.14,11.71,133l-5.79,7.59c14-.91,26.37,1.26,39.72,4.59a153.74,153.74,0,0,1,78.29,47.33c16.51,18.76,28,41.37,35.86,65,2.41,7.3,14,4.17,11.57-3.19-13.41-40.53-37.53-77.14-74.1-100.16a170.67,170.67,0,0,0-75.68-25.08,102.35,102.35,0,0,0-15.66-.47,6.11,6.11,0,0,0-5.78,7.6C9.86,187.29,27,243,65.79,279.9c18.74,17.83,42.81,30.21,68.88,31.78A62.55,62.55,0,0,0,150,311l-7.59-5.79v49.31c0,7.72,12,7.73,12,0Z" />
-                            <path class="cls-1"
-                                d="M44.72,167c9.64,8.18,18.89,16.84,27.92,25.67,15.75,15.42,31.59,31.71,43.15,50.59,4,6.58,14.4.56,10.36-6.05C114.28,217.83,98.17,201,82,185.09c-9.31-9.15-18.88-18.11-28.83-26.57-5.85-5-14.38,3.48-8.49,8.49Z" />
-                            <path class="cls-1"
-                                d="M126.74,255.79c5.56,8,11.55,16.19,15.66,25,3.23,7,13.58.91,10.36-6.06-4.1-8.86-10.1-17-15.66-25-4.37-6.3-14.78-.31-10.36,6Z" />
-                            <path class="cls-1"
-                                d="M56.78,401.16C69.87,392,85.06,385.22,100,379.81c33.24-12,69.44-16.56,104.35-9.85,26.25,5,50.59,16.07,72.53,31.2,6.38,4.4,12.38-6,6.06-10.36-37.74-26-82.79-39.14-128.63-35.24a232.66,232.66,0,0,0-87.63,25.87,145,145,0,0,0-16,9.37c-6.28,4.4-.29,14.8,6.06,10.36Z" />
-                            <path class="cls-1"
-                                d="M91.33,402.06,117,374.48c4.37-4.71-2.68-11.8-7.07-7.08L84.26,395c-4.38,4.71,2.68,11.8,7.07,7.07Z" />
-                            <path class="cls-1"
-                                d="M117,400.8,147.47,368c4.38-4.71-2.68-11.79-7.07-7.07l-30.51,32.85c-4.38,4.71,2.68,11.8,7.07,7.07Z" />
-                            <path class="cls-1"
-                                d="M142.59,400.8l32-34.41c4.37-4.71-2.68-11.8-7.07-7.07l-32,34.41c-4.38,4.71,2.68,11.8,7.07,7.07Z" />
-                            <path class="cls-1"
-                                d="M167.28,400.8,197.79,368c4.38-4.71-2.68-11.79-7.07-7.07l-30.51,32.85c-4.38,4.71,2.67,11.8,7.07,7.07Z" />
-                            <path class="cls-1"
-                                d="M192.06,400.8l25.63-27.59c4.38-4.71-2.67-11.8-7.07-7.07L185,393.73c-4.37,4.71,2.68,11.8,7.07,7.07Z" />
-                            <path class="cls-1"
-                                d="M217.69,400.8l22.18-23.87c4.38-4.71-2.68-11.8-7.07-7.07l-22.18,23.87c-4.37,4.71,2.68,11.8,7.07,7.07Z" />
-                            <path class="cls-1"
-                                d="M243.32,400.8l14.37-15.46c4.37-4.71-2.68-11.8-7.08-7.07l-14.36,15.46c-4.37,4.71,2.68,11.8,7.07,7.07Z" />
-                            <path class="cls-1"
-                                d="M230.62,91.44c-.2,29.15-12.66,61.65-40.38,75-25.87,12.44-53.51-1.69-67.8-24.43-16.78-26.71-18.57-63.11-5.19-91.6C128.6,26.25,153,6.1,181.06,13.18c33.69,8.51,49.34,46.59,49.56,78.26,0,7.72,12,7.74,12,0-.24-33.67-15.48-71.51-48-86.1-30.94-13.91-63.62.77-81.51,27.82-20.24,30.6-21.73,72.51-6.27,105.38,13.73,29.18,44.2,51.11,77.36,42.73,38.94-9.84,58.11-52.84,58.37-89.83C242.67,83.72,230.67,83.71,230.62,91.44Z" />
-                            <path class="cls-1" d="M163.58,46.16V87.37c0,7.73,12,7.74,12,0V46.16c0-7.72-12-7.74-12,0Z" />
-                            <path class="cls-1" d="M163.58,109.29V147.9c0,7.72,12,7.73,12,0V109.29c0-7.72-12-7.74-12,0Z" />
-                        </g>
-                    </g>
-                </svg> </button>
+                :class="` text-claro bg-${bgIconesTabelas.sementes} text-center font-semibold transition-all rounded-[10000%] h-[50px] w-[50px] `">
+                <svg xmlns="http://www.w3.org/2000/svg" height="50" viewBox="0 -960 960 960" class="p-2 opacity"  width="50" fill="#396858">
+                    <path
+                        d="M342-160h276l40-160H302l40 160Zm0 80q-28 0-49-17t-28-44l-45-179h520l-45 179q-7 27-28 44t-49 17H342ZM200-400h560v-80H200v80Zm280-240q0-100 70-170t170-70q0 90-57 156t-143 80v84h320v160q0 33-23.5 56.5T760-320H200q-33 0-56.5-23.5T120-400v-160h320v-84q-86-14-143-80t-57-156q100 0 170 70t70 170Z" />
+                </svg>
+            </button>
 
             <button @click="trocarTabelaMobile('fertilizante')"
                 :class="` text-claro bg-${bgIconesTabelas.fertilizantes} text-center font-semibold transition-all rounded-full  w-[50px]`">
@@ -1629,7 +1630,9 @@ const precoFormatar = (valor) => {
                 <div v-else="!colheitaResponse" class="">
 
                     <div v-for="colheita in colheitaResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenarSemente)"
-                        class=" flex-col justify-between items-center p-2 mb-2 bg-verde_apagado rounded-xl text-escuro" :key="colheita.id">
+                        @click='abrirOpcoesMobileColheita(colheita.cultivo, colheita.quantidade_real, colheita.grandeza, colheita.area, colheita.area_colhida, colheita.id)'
+                        class=" flex-col justify-between items-center p-2 mb-2 bg-verde_apagado rounded-xl text-escuro"
+                        :key="colheita.id">
                         <div class='flex justify-between items-center mb-1'>
                             <div class="flex">
                                 <h1 class="text-sm capitalize  font-semibold">{{ colheita.cultivo }} &nbsp</h1>
@@ -1646,12 +1649,12 @@ const precoFormatar = (valor) => {
                         </div>
 
 
-                       <div class='flex items-center'>
-                        <h1 class="text-sm font-semibold">Colhido: &nbsp</h1>
-                        <h1 class="text-sm font-semibold">{{ colheita.quantidade_real }} | &nbsp</h1>
-                        <h1 class=" text-xs">{{ formatar(colheita.grandeza) }} </h1>
-                       </div>
-                       
+                        <div class='flex items-center'>
+                            <h1 class="text-sm font-semibold">Colhido: &nbsp</h1>
+                            <h1 class="text-sm font-semibold">{{ colheita.quantidade_real }} | &nbsp</h1>
+                            <h1 class=" text-xs">{{ formatar(colheita.grandeza) }} </h1>
+                        </div>
+
 
 
 
@@ -1708,6 +1711,7 @@ const precoFormatar = (valor) => {
                 <div v-else="!sementesResponse" class="">
 
                     <div v-for="semente in sementesResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenarSemente)"
+                        @click="abrirOpcoesMobile(semente.item, semente.categoria, semente.quantidade, semente.grandeza, semente.id)"
                         class="flex justify-between items-center py-1 mb-2 bg-verde_apagado rounded-xl" :key="semente.id">
                         <h1 class="p-2 capitalize text-sm  font-semibold">{{ semente.item }}</h1>
                         <h1 class="p-2 text-sm font-bold">{{ semente.quantidade + " " + semente.grandeza }}</h1>
@@ -1762,6 +1766,7 @@ const precoFormatar = (valor) => {
                 <div v-else="!fertilizantesResponse" class="">
 
                     <div v-for="fertilizante in fertilizantesResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenarFertilizante)"
+                        @click='abrirOpcoesMobile(fertilizante.item, fertilizante.categoria, fertilizante.quantidade, fertilizante.grandeza, fertilizante.id)'
                         class="flex justify-between items-center py-1 mb-2 bg-verde_apagado rounded-xl"
                         :key="fertilizante.id">
                         <h1 class="p-2 capitalize text-sm  font-semibold">{{ fertilizante.item }}</h1>
@@ -1817,6 +1822,7 @@ const precoFormatar = (valor) => {
                 <div v-else="!defensivosResponse" class="">
 
                     <div v-for="defensivo in defensivosResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenarFertilizante)"
+                        @click='abrirOpcoesMobile(defensivo.item, defensivo.categoria, defensivo.quantidade, defensivo.grandeza, defensivo.id)'
                         class="flex justify-between items-center py-1 mb-2 bg-verde_apagado rounded-xl" :key="defensivo.id">
                         <h1 class="p-2 capitalize text-sm  font-semibold">{{ defensivo.item }}</h1>
                         <h1 class="p-2 text-sm font-bold">{{ defensivo.quantidade + " " + defensivo.grandeza }}</h1>
@@ -1871,6 +1877,7 @@ const precoFormatar = (valor) => {
                 <div v-else="!outrosResponse" class="">
 
                     <div v-for="outro in outrosResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenarFertilizante)"
+                        @click='abrirOpcoesMobile(outro.item, outro.categoria, outro.quantidade, outro.grandeza, outro.id)'
                         class="flex justify-between items-center py-1 mb-2 bg-verde_apagado rounded-xl" :key="outro.id">
                         <h1 class="p-2 capitalize text-sm  font-semibold">{{ outro.item }}</h1>
                         <h1 class="p-2 text-sm font-bold">{{ outro.quantidade + " " + outro.grandeza }}</h1>
@@ -1902,6 +1909,303 @@ const precoFormatar = (valor) => {
         </Transition>
         <!--  -->
         <section class="h-[60px]"></section>
+
+        <Transition name="pop">
+            <ModalNovoEstoque v-if="showModalAdicionar" @close="showModalAdicionar = false"
+                @adicionarItem="handleSubmitNovoEstoque()">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+
+                    <input v-model="estoqueInput.categoria" type="hidden" default="semente/muda" placeholder="João da silva"
+                        name="nome">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="estoqueInput.item" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome
+                            do item</label>
+                    </div>
+
+
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <label for=""
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Grandeza</label>
+                        <select v-model="estoqueInput.grandeza" placeholder="João da silva"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" value="mg">mg | Miligrama</option>
+                            <option class="bg-verde font-semibold" value="kg">Kg | Kilograma</option>
+                            <option class="bg-verde font-semibold" value="t">t | Tonelada</option>
+                            <option class="bg-verde font-semibold" value="ml">ml | Mililitro</option>
+                            <option class="bg-verde font-semibold" value="l">L | litro</option>
+                            <option class="bg-verde font-semibold" value="un"> un | Unidade </option>
+                        </select>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="estoqueInput.quantidade" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade</label>
+                    </div>
+                    <div v-if="safraResponse.data != ''">
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="text" v-on:input="precoFormatar(estoqueInput.custo)" v-model="estoqueInput.custo"
+                                name="floating_email" id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Custo
+                                de compra - (colocar 0 se não for uma compra)</label>
+                        </div>
+                        <div class="relative z-0 w-full mb-6 group">
+
+
+                            <label
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                                De qual safra será descontado o valor da compra</label>
+                            <select v-model="estoqueInput.safra"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
+                                    v-bind:value=safra.id>{{
+                                        safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                                    }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </ModalNovoEstoque>
+        </Transition>
+        <Transition name="pop">
+            <ModalDeletarEstoque v-if="showModalDeletar" @close="showModalDeletar = false"
+                @deletarItem="handleSubmitDeleteEstoque()">
+                <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este item?</h1>
+                <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                            desfeita.</u> </b></h2>
+            </ModalDeletarEstoque>
+        </Transition>
+
+        <Transition name="pop">
+            <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
+                <h2 class="text-center text-claro text-2xl font-semibold">Este Item está registrado em uma tarefa, não
+                    pode ser
+                    deletado.</h2>
+            </ModalDeletarNegado>
+        </Transition>
+
+        <Transition name="pop">
+            <ModalEditarEstoque v-if="showModalEditar" @close="showModalEditar = false"
+                @editarItem="handleSubmitEditarEstoque(estoqueInput.id)">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="estoqueInput.item" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Item</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="estoqueInput.quantidade" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade</label>
+                    </div>
+
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <label for="recebe_salario"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Grandeza</label>
+                        <select v-model="estoqueInput.grandeza" type="text" placeholder="João da silva"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option value="mg">mg - Miligrama</option>
+                            <option value="kg">Kg - Kilograma</option>
+                            <option value="t">t - tonelana</option>
+                            <option value="ml">ml - Mililitro</option>
+                            <option value="l">L - litro</option>
+                            <option value="un"> un- </option>
+                        </select>
+                    </div>
+
+                </div>
+            </ModalEditarEstoque>
+        </Transition>
+        <Transition name="pop">
+            <ModalAdicionarColheita v-if="showModalAdicionarColheita" @close="showModalAdicionarColheita = false"
+                @adicionarColheita="handleSubmitAdicionarColheita(estoqueInput.id)">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+
+
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="estoqueInput.quantidade" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade
+                            colhida em | {{ estoqueInput.grandeza }}</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-on:input="limitarAreaColheita(estoqueInput.id)"
+                            v-model="colheitaInput.area_adicionar_colheita" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Área
+                            colhida | em Hectares</label>
+                    </div>
+
+
+
+
+                </div>
+            </ModalAdicionarColheita>
+        </Transition>
+        <Transition name="pop">
+            <ModalEditarEstoqueColheita v-if="showModalEditarColheita" @close="showModalEditarColheita = false"
+                @editarItemColheita="handleSubmitEditarEstoqueColheita(estoqueInput.id)">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+                    <h1 class="text-center font-semibold text-claro text-lg">Quantidade atual de {{ estoqueInput.item
+                    }}:</h1>
+                    <h1 class="text-center font-semibold text-verde_claro text-lg mb-4">{{ "Em " + " " +
+                        formatar(estoqueInput.grandeza) }}</h1>
+
+
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="number" v-on:input="limitarArea(estoqueInput.id)" v-model="estoqueInput.area_colhida"
+                            name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Hectares
+                            colhidos</label>
+                    </div>
+
+                </div>
+            </ModalEditarEstoqueColheita>
+        </Transition>
+        <Transition name="pop">
+            <ModalAdicionarItemEstoque v-if="showModalRepor" @close="showModalRepor = false"
+                @reporItem="handleSubmitReporEstoque(estoqueInput.id)">
+                <div class="flex flex-col">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
+                            os
+                            campos obrigatórios</h1>
+                    </Transition>
+
+                    <p class="text-lg text-claro mb-4">Quantidade atual: <b>{{
+                        estoqueInput.quantidade +
+                        estoqueInput.grandeza
+                    }} </b></p>
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="estoqueInput.quantidade_repor" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade
+                            à adicionar</label>
+                    </div>
+                    <div v-if="safraResponse.data != ''">
+                        <div class="relative z-0 w-full mb-6 group">
+
+                            <input type="text" v-on:input="precoFormatar(estoqueInput.custo)" v-model="estoqueInput.custo"
+                                name="floating_email" id="floating_email"
+                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                placeholder=" " required>
+                            <label for="floating_email"
+                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Custo</label>
+                        </div>
+
+
+                        <div class="flex flex-col" v-if="estoqueInput.categoria != 'colheita'">
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <label
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                                    Adicionar Despeza à qual safra? </label>
+                                <select v-model="estoqueInput.safra"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                    <option class="bg-verde font-semibold" v-for="safra in safraResponse.data"
+                                        :key="safra.id" v-bind:value=safra.id>{{
+                                            safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                                        }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ModalAdicionarItemEstoque>
+        </Transition>
+
+        <OpcoesMobile v-if="showModalOpcoesColheita"
+            @close="showModalOpcoesColheita = false; mainElement.style.overflow = 'auto'">
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ estoqueInput.item }}</h1>
+            <ul>
+                <li @click="showModalOpcoesColheita = false; handleModalEditarColheita(estoqueInput.item, estoqueInput.quantidade, safraResponse.grandeza, colheitaInput.area_colhida, estoqueInput.id)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Editar
+                </li>
+                <li @click="showModalOpcoesColheita = false; handleModalAdicionarColheita(estoqueInput.item, estoqueInput.quantidade, safraResponse.grandeza, colheitaInput.area_colhida, null, estoqueInput.id)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Adicionar Colheita
+                </li>
+
+
+            </ul>
+        </OpcoesMobile>
+        <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ estoqueInput.item }}</h1>
+            <ul>
+                <li @click="showModalOpcoes = false; handleModalEditar(estoqueInput.item, estoqueInput.categoria, estoqueInput.quantidade, estoqueInput.grandeza, estoqueInput.id)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Editar
+                </li>
+                <li @click="showModalOpcoes = false; handleModalRepor(estoqueInput.item, estoqueInput.categoria, estoqueInput.quantidade, estoqueInput.grandeza, estoqueInput.id)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Adicionar
+                </li>
+                <li @click="showModalOpcoes = false; handleDeleteEstoque(estoqueInput.id)" class="bg-vermelho py-1 px-2 rounded">
+                    Deletar
+                </li>
+            </ul>
+        </OpcoesMobile>
 
     </div>
 </template>
@@ -1935,5 +2239,4 @@ const precoFormatar = (valor) => {
 .slide-leave-active {
     transition: all .4s cubic-bezier(0, 1.15, .47, 1.15);
 
-} */
-</style>
+} */</style>

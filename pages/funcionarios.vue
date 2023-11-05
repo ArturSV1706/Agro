@@ -49,7 +49,7 @@ if (process.client) {
 
 
 // Get the element with the id "main"
-var mainElement = document.getElementById("main");
+const mainElement = ref(document.getElementById("main"));
 
 
 
