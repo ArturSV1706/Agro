@@ -784,7 +784,7 @@ const handlePagina = (i) => {
 
 
 
-            <div v-if="tarefa.estoque && tarefa.maquinas" class='space-y-2 bg-verde w-full'
+            <div v-if="tarefa.estoque && tarefa.maquinas" class='space-y-2  w-full'
                 @click="abrirOpcoesMobile(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, (tarefa.maquinas.modelo + '-' + tarefa.maquinas.ano), tarefa.maquina_utilizada, tarefa.estoque_utilizado_item, tarefa.estoque.item, tarefa.estoque_utilizado_quantidade, tarefa.estoque.grandeza, tarefa.prazo, tarefa.prazo_hora, tarefa.status)">
                 <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
                 <p class="capitalize text-claro text-xs"><b>👤|</b> {{
@@ -805,7 +805,7 @@ const handlePagina = (i) => {
                 }}</span> <span v-else>--------</span></p>
             </div>
 
-            <div v-if="tarefa.estoque && !tarefa.maquinas" class='space-y-2 bg-verde w-full'
+            <div v-if="tarefa.estoque && !tarefa.maquinas" class='space-y-2  w-full'
                 @click="abrirOpcoesMobile(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, null, null, tarefa.estoque_utilizado_item, tarefa.estoque.item, tarefa.estoque_utilizado_quantidade_reportada, tarefa.estoque.grandeza, tarefa.prazo, tarefa.prazo_hora, tarefa.status)">
                 <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
                 <p class="capitalize text-claro text-xs"><b>👤|</b> {{
@@ -826,7 +826,7 @@ const handlePagina = (i) => {
                 }}</span> <span v-else>--------</span></p>
             </div>
 
-            <div v-if="tarefa.maquinas && !tarefa.estoque" class='space-y-2 bg-verde w-full'
+            <div v-if="tarefa.maquinas && !tarefa.estoque" class='space-y-2  w-full'
                 @click="abrirOpcoesMobile(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, (tarefa.maquinas.modelo + '-' + tarefa.maquinas.ano), tarefa.maquina_utilizada, null, null, null, null, tarefa.prazo, tarefa.prazo_hora, tarefa.status)">
                 <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
                 <p class="capitalize text-claro text-xs"><b>👤|</b> {{
@@ -847,7 +847,7 @@ const handlePagina = (i) => {
                 }}</span> <span v-else>--------</span></p>
             </div>
 
-            <div v-if="!tarefa.estoque && !tarefa.maquinas" class='space-y-2 bg-verde w-full'
+            <div v-if="!tarefa.estoque && !tarefa.maquinas" class='space-y-2  w-full'
                 @click="abrirOpcoesMobile(tarefa.id, tarefa.titulo, tarefa.descricao, tarefa.funcionarios.nome, null, null, null, null, null, null, tarefa.prazo, tarefa.prazo_hora, tarefa.status)">
                 <p class="capitalize text-claro font-bold text-sm"> {{ tarefa.titulo }}</p>
                 <p class="capitalize text-claro text-xs"><b>👤|</b> {{
@@ -907,7 +907,7 @@ const handlePagina = (i) => {
                         campos obrigatórios</h1>
                 </Transition>
 
-                <div class="flex justify-evenly w-full space-x-4">
+                <div class="flex flex-col justify-evenly w-full space-x-4">
                     <div class="flex flex-col flex-1">
                         <div class="relative z-0 w-full mb-6 group">
                             <label
@@ -991,7 +991,7 @@ const handlePagina = (i) => {
 
 
                         <Transition name="slide">
-                            <div v-if="tarefaInput.possui_maquina" class="relative z-0 w-full mb-6 group">
+                            <div v-if="tarefaInput.possui_maquina" class="relative z-0 w-full mt-12 mb-6 group">
                                 <label
                                     class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Máquina
                                     utilizada</label>
@@ -1005,7 +1005,7 @@ const handlePagina = (i) => {
                             </div>
                         </Transition>
 
-                        <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-4 mt-6">
 
                             <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">Utilizará itens
                                 do estoque?</label>
@@ -1017,8 +1017,8 @@ const handlePagina = (i) => {
 
 
                         <Transition name="slide">
-                            <div v-if="tarefaInput.possui_estoque" class="flex flex-col w-full transition-all">
-                                <div class="relative z-0 w-full mb-6 group">
+                            <div v-if="tarefaInput.possui_estoque" class="flex flex-col space-y-8 w-full transition-all">
+                                <div class="relative z-0 w-full mb-6 mt-12 group">
                                     <label
                                         class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Item
                                         do estoque utilizado</label>

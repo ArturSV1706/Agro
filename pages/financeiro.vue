@@ -59,6 +59,32 @@ const showLimit = ref()
 
 const alert = ref()
 const alertMessage = ref()
+const loadingWidth = ref(100)
+
+const showAlert = (message) => {
+    alert.value = true
+    alertMessage.value = message
+
+    const interval = setInterval(function () {
+
+        if (loadingWidth.value <= 0 || !alert.value) {
+            // Clear the interval when the timer reaches 0
+            clearInterval(interval);
+            alert.value = false
+            loadingWidth.value = 100;
+        }
+        // Decrease the width
+        loadingWidth.value -= 2;
+
+        // Update the width of the timer bar
+        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
+
+        // Check if the width has reached 0
+       
+    }, 60);
+
+
+}
 
 
 // Paginação
@@ -94,6 +120,10 @@ const abrirOpcoesMobile = (id, tipo, valor, produto, possui_nota) => {
 
 
 const handleSafraSelecioanda = async () => {
+    if (mainElement) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+        // mainElement.value.style.overflow = "auto";
+    }
     showFluxo.value = true
     if (process.client) {
         fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
@@ -194,69 +224,72 @@ const handleVerNota = async (id) => {
 
 
 const handleSubmitEntrada = async () => {
-    if (parseFloat(entradaInput.valor_unitario) <= 0 || parseFloat(entradaInput.valor_quantidade) <= 0) return
 
-    // if(!entradaInput.title || !entradaInput.note) return
-    // remover pontos do regex: .replace(".", "").replace(",", ".")
+    if (paraFloat(entradaInput.valor_unitario) > 0 && parseFloat(entradaInput.valor_quantidade) > 0) {
 
-    await supabase.from("fluxo").insert({
-        tipo_fluxo: "entrada",
-        categoria: "safra",
-        fornecedor: fluxoInput.fornecedor,
-        produto: safraSelecionadaResponse.value.data[0].cultivo,
-        valor: paraFloat(entradaInput.valor_unitario),
-        safra_id: safra_escolhida.value,
-        user_id: user.value.id
-    });
 
-    if (parseFloat(entradaInput.valor_quantidade) > 0) {
-        await supabase.from("safras").update({
-            quantidade_real: parseFloat(safraResponse_qnt.value.data[0].quantidade_real) - parseFloat(entradaInput.valor_quantidade)
-        }).eq('id', safra_escolhida.value);
-    }
-    saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
-    fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
-    fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
-    fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
-    saldoResult.value = parseFloat(fluxoEntrada.value) * parseFloat(fluxoSaida.value)
+        // if(!entradaInput.title || !entradaInput.note) return
+        // remover pontos do regex: .replace(".", "").replace(",", ".")
 
-    entradaInput.categoria = ""
-    entradaInput.fornecedor = ""
-    entradaInput.nota_fiscal = ""
-    entradaInput.produto = ""
-    entradaInput.valor_unitario = ""
-    entradaInput.valor_quantidade = ""
+        await supabase.from("fluxo").insert({
+            tipo_fluxo: "entrada",
+            categoria: "safra",
+            fornecedor: fluxoInput.fornecedor,
+            produto: safraSelecionadaResponse.value.data[0].cultivo,
+            valor: paraFloat(entradaInput.valor_unitario),
+            safra_id: safra_escolhida.value,
+            user_id: user.value.id
+        });
 
-    if (process.client) {
+        if (parseFloat(entradaInput.valor_quantidade) > 0) {
+            await supabase.from("safras").update({
+                quantidade_real: parseFloat(safraResponse_qnt.value.data[0].quantidade_real) - parseFloat(entradaInput.valor_quantidade)
+            }).eq('id', safra_escolhida.value);
+        }
+        saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
         fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
         fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
         fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
-        safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
-        saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
-        safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
+        saldoResult.value = parseFloat(fluxoEntrada.value) * parseFloat(fluxoSaida.value)
+
+        entradaInput.categoria = ""
+        entradaInput.fornecedor = ""
+        entradaInput.nota_fiscal = ""
+        entradaInput.produto = ""
+        entradaInput.valor_unitario = ""
+        entradaInput.valor_quantidade = ""
+
+        if (process.client) {
+            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
+            fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
+            safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
+            saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
+            safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
+        }
+
+        showModalDeletar.value = false
+        showAlert("Venda realizada com sucesso!")
+        alert.value = true
     }
 
-    showModalDeletar.value = false
-    alertMessage.value = "Venda realizada com sucesso!"
-    alert.value = true
-}
+    const handleSubmitDeleteFluxo = async () => {
+        if (!limitarForm.value) return
+        limitarForm.value = false
+        await supabase.from("fluxo").delete().eq('id', fluxoInput.id)
 
-const handleSubmitDeleteFluxo = async () => {
-    if (!limitarForm.value) return
-    limitarForm.value = false
-    await supabase.from("fluxo").delete().eq('id', fluxoInput.id)
-
-    if (process.client) {
-        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
-        fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
-        fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
-        safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
-        saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
-        safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
+        if (process.client) {
+            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
+            fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
+            safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
+            saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
+            safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
+        }
+        showModalDeletar.value = false
+        showAlert("Item deletado com successo!")
+        alert.value = true
     }
-    showModalDeletar.value = false
-    alertMessage.value = "Item deletado com successo!"
-    alert.value = true
 }
 const handleSubmitAdicionarDespesa = async () => {
     if (fluxoInput.valor && fluxoInput.categoria && fluxoInput.produto && fluxoInput.fornecedor) {
@@ -330,6 +363,8 @@ const handleSubmitAdicionarDespesa = async () => {
 
         showModalDespesa.value = false
         showPreencha.value = false
+        showAlert("Despesa adicionada com successo!")
+
     } else {
         showPreencha.value = true
     }
@@ -365,6 +400,8 @@ const handleSubmitAdicionarEmprestimo = async () => {
         fluxoInput.valor = ""
         showModalEmprestimo.value = false
         showPreencha.value = false
+        showAlert("Empréstimo criado com successo!")
+
     } else {
         showPreencha.value = true
     }
@@ -382,7 +419,7 @@ const handleSubmitEditarFluxo = async () => {
     }
     showModalEditar.value = false
 
-    alertMessage.value = "Item editado com successo!"
+    showAlert("Item editado com successo!")
     alert.value = true
 }
 const handleSubmitEditarNota = async () => {
@@ -416,6 +453,7 @@ const handleSubmitEditarNota = async () => {
                 fluxoInput.valor = ""
                 fluxoInput.arquivo_nota = ""
                 showModalNota.value = false
+                showAlert("Nota fiscal editada com successo!")
                 showPreencha.value = false
             }
             else {
@@ -445,6 +483,7 @@ const handleSubmitEditarNota = async () => {
         fluxoInput.valor = ""
         fluxoInput.arquivo_nota = ""
         showModalNota.value = false
+        showAlert("Nota fiscal editada com successo!")
         showPreencha.value = false
 
         if (process.client) {
@@ -658,7 +697,7 @@ function onFileSelected(event) {
     <div v-if="screen === 'desktop'">
         <Transition name="alert">
             <Alert v-if="alert" @close="alert = false">
-                <h1 class="text-center text-claro font-semibold">{{ alertMessage }}</h1>
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
             </Alert>
         </Transition>
 
@@ -1105,6 +1144,11 @@ function onFileSelected(event) {
         </div>
     </div>
     <div v-if="screen === 'mobile'">
+        <Transition name="alert_mobile">
+            <Alert v-if="alert" @close="alert = false;">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <!-- Select -->
         <div class="flex h-[50px] self-center">
             <div v-if="!safraResponse"></div>
@@ -1188,7 +1232,8 @@ function onFileSelected(event) {
                         ((safraSelecionadaResponse.data[0].quantidade_max /
                             safraSelecionadaResponse.data[0].area_colhida) * safraSelecionadaResponse.data[0].area)) }}
                     </h1>
-                    <h2 v-if="safraSelecionadaResponse" class="text-md text-escuro font-semibold">Custo <b>estimado</b> de cada
+                    <h2 v-if="safraSelecionadaResponse" class="text-md text-escuro font-semibold">Custo <b>estimado</b> de
+                        cada
                         {{ formatar(safraSelecionadaResponse.data[0].grandeza) }} </h2>
                     <h3 class="text-xs text-escuro">(Mantendo a mesma produtividade até o final da colheita)</h3>
 
@@ -1262,10 +1307,10 @@ function onFileSelected(event) {
                 class="self-start bg-escuro px-6 py-2  rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">Nova
                 despesa</button>
             <div class="">
-                <div v-if="safraSelecionadaResponse" v-for="fluxo in fluxoResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
+                <div v-if="safraSelecionadaResponse"
+                    v-for="fluxo in fluxoResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
                     :key="fluxo.id" class="flex justify-between bg-verde_apagado w-full px-2 py-2 mb-3 rounded-xl"
-                    @click="abrirOpcoesMobile(fluxo.id, fluxo.tipo_fluxo, fluxo.valor, fluxo.produto, fluxo.possui_nota)"
-                    >
+                    @click="abrirOpcoesMobile(fluxo.id, fluxo.tipo_fluxo, fluxo.valor, fluxo.produto, fluxo.possui_nota)">
                     <div class="flex items-center">
                         <div
                             :class="` flex flex-col mr-4 justify-center items-center  text-4xl font-extrabold text-${formatarTipoFluxoCor(fluxo.tipo_fluxo)}`">
@@ -1302,218 +1347,218 @@ function onFileSelected(event) {
             <!--  -->
 
             <div v-if="fluxoResponse"
-            class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
-            <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
-                &lt </button>
+                class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
+                <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
+                    &lt </button>
 
-            <div class="flex flex-col items-center">
-                <p class="text-escuro font-semibold">Items por Pág.</p>
-                <select v-model="pagina.tamanho" @input="pagina.atual = 0"
-                    class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
-                    <option v-bind:value=5> 5 </option>
-                    <option v-bind:value=10> 10 </option>
-                    <option v-bind:value=250> 25 </option>
-                </select>
+                <div class="flex flex-col items-center">
+                    <p class="text-escuro font-semibold">Items por Pág.</p>
+                    <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                        class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
+                        <option v-bind:value=5> 5 </option>
+                        <option v-bind:value=10> 10 </option>
+                        <option v-bind:value=250> 25 </option>
+                    </select>
+                </div>
+                <button v-if="pagina.atual < (Math.ceil(fluxoResponse.data.length / pagina.tamanho) - 1)"
+                    @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
+                </button><br>
             </div>
-            <button v-if="pagina.atual < (Math.ceil(fluxoResponse.data.length / pagina.tamanho) - 1)"
-                @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
-            </button><br>
-        </div>
 
             <section class="h-[30px]"></section>
 
-            <OpcoesMobile v-if="showModalOpcoes"
-            @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
-            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ fluxoInput.produto }}</h1>
-            <ul>
-                <li  @click="showModalOpcoes = false; handleEditarFluxo(fluxoInput.id, fluxoInput.valor)"
-                    class="bg-verde py-1 px-2 rounded mb-2">
-                    Editar
-                </li>
-                <li v-if="fluxoInput.possui_nota" @click="showModalOpcoes = false; handleVerNota(fluxoInput.id)"
-                    class="bg-verde py-1 px-2 rounded mb-2">
-                    Ver Nota
-                </li>
-                <li @click="showModalOpcoes = false; handleModalNota(fluxoInput.id, fluxoInput.tipo_fluxo)"
-                    class="bg-verde py-1 px-2 rounded mb-2">
-                    Gerenciar Nota
-                </li>
-                <li @click="showModalOpcoes = false; handleDeleteFluxo(fluxoInput.id, fluxoInput.produto, fluxoInput.valor)" class="bg-vermelho py-1 px-2 rounded">
-                    Deletar
-                </li>
+            <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
+                <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ fluxoInput.produto }}</h1>
+                <ul>
+                    <li @click="showModalOpcoes = false; handleEditarFluxo(fluxoInput.id, fluxoInput.valor)"
+                        class="bg-verde py-1 px-2 rounded mb-2">
+                        Editar
+                    </li>
+                    <li v-if="fluxoInput.possui_nota" @click="showModalOpcoes = false; handleVerNota(fluxoInput.id)"
+                        class="bg-verde py-1 px-2 rounded mb-2">
+                        Ver Nota
+                    </li>
+                    <li @click="showModalOpcoes = false; handleModalNota(fluxoInput.id, fluxoInput.tipo_fluxo)"
+                        class="bg-verde py-1 px-2 rounded mb-2">
+                        Gerenciar Nota
+                    </li>
+                    <li @click="showModalOpcoes = false; handleDeleteFluxo(fluxoInput.id, fluxoInput.produto, fluxoInput.valor)"
+                        class="bg-vermelho py-1 px-2 rounded">
+                        Deletar
+                    </li>
 
 
-            </ul>
-        </OpcoesMobile>
+                </ul>
+            </OpcoesMobile>
 
-        <Transition name="pop">
-                    <ModalDeletarFluxo v-if="showModalDeletar" @close="showModalDeletar = false"
-                        @deletarFluxo="handleSubmitDeleteFluxo">
-                        <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este registro?</h1>
-                        <h1 class="text-center text-xl text-claro light">{{ fluxoInput.produto + " - " +
-                            paraReal(fluxoInput.valor)
-                        }}
-                        </h1>
+            <Transition name="pop">
+                <ModalDeletarFluxo v-if="showModalDeletar" @close="showModalDeletar = false"
+                    @deletarFluxo="handleSubmitDeleteFluxo">
+                    <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este registro?</h1>
+                    <h1 class="text-center text-xl text-claro light">{{ fluxoInput.produto + " - " +
+                        paraReal(fluxoInput.valor)
+                    }}
+                    </h1>
 
-                        <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
-                                    desfeita.</u> </b></h2>
-                    </ModalDeletarFluxo>
-                </Transition>
-                <Transition name="pop">
-                    <ModalEditarFinanceiro v-if="showModalEditar" @close="showModalEditar = false"
-                        @editarFinanceiro="handleSubmitEditarFluxo">
-                        <div class="relative z-0 w-full mb-6 group">
+                    <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                                desfeita.</u> </b></h2>
+                </ModalDeletarFluxo>
+            </Transition>
+            <Transition name="pop">
+                <ModalEditarFinanceiro v-if="showModalEditar" @close="showModalEditar = false"
+                    @editarFinanceiro="handleSubmitEditarFluxo">
+                    <div class="relative z-0 w-full mb-6 group">
 
-                            <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
-                                name="floating_email" id="floating_email"
-                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                                placeholder=" " required>
-                            <label for="floating_email"
-                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
+                        <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
+                            name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
 
-                            </label>
-                        </div>
-                    </ModalEditarFinanceiro>
-                </Transition>
-                <Transition name="pop">
-                    <ModalNovoEmprestimo v-if="showModalEmprestimo" @close="showModalEmprestimo = false"
-                        @adicionarEmprestimo="handleSubmitAdicionarEmprestimo">
-                        <Transition name="pop">
-                            <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
-                                os
-                                campos obrigatórios</h1>
-                        </Transition>
+                        </label>
+                    </div>
+                </ModalEditarFinanceiro>
+            </Transition>
+            <Transition name="pop">
+                <ModalNovoEmprestimo v-if="showModalEmprestimo" @close="showModalEmprestimo = false"
+                    @adicionarEmprestimo="handleSubmitAdicionarEmprestimo">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
+                            os
+                            campos obrigatórios</h1>
+                    </Transition>
 
-                        <div class="relative z-0 w-full mb-6 group">
+                    <div class="relative z-0 w-full mb-6 group">
 
-                            <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
-                                name="floating_email" id="floating_email"
-                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                                placeholder=" " required>
-                            <label for="floating_email"
-                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
-                                do empréstimo
+                        <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
+                            name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
+                            do empréstimo
 
-                            </label>
-                        </div>
-                    </ModalNovoEmprestimo>
-                </Transition>
-                <Transition name="pop">
-                    <ModalAdicionarDespesa v-if="showModalDespesa" @close="showModalDespesa = false"
-                        @adicionarDespesa="handleSubmitAdicionarDespesa">
-                        <Transition name="pop">
-                            <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
-                                os
-                                campos obrigatórios</h1>
-                        </Transition>
+                        </label>
+                    </div>
+                </ModalNovoEmprestimo>
+            </Transition>
+            <Transition name="pop">
+                <ModalAdicionarDespesa v-if="showModalDespesa" @close="showModalDespesa = false"
+                    @adicionarDespesa="handleSubmitAdicionarDespesa">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
+                            os
+                            campos obrigatórios</h1>
+                    </Transition>
 
-                        <div class="relative z-0 w-full mb-11 group">
+                    <div class="relative z-0 w-full mb-11 group">
 
-                            <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
-                                name="floating_email" id="floating_email"
-                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                                placeholder=" " required>
-                            <label for="floating_email"
-                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
-
-
-                            </label>
-                        </div>
-                        <div class="relative z-0 w-full mb-6 group">
-
-                            <label for="nome"
-                                class=" peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Categoria
-                            </label>
-                            <select v-model="fluxoInput.categoria" type="text" placeholder="João da silva"
-                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
-                                <option class="bg-verde font-semibold" value="semente/muda">Aluguel</option>
-                                <option class="bg-verde font-semibold" value="semente/muda">Quitação de dívida</option>
-                                <option class="bg-verde font-semibold" value="semente/muda">Outro</option>
-                            </select>
-                        </div>
-                        <div class="relative z-0 w-full mb-6 group">
-
-                            <input type="text" v-model="fluxoInput.produto" name="floating_email" id="floating_email"
-                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                                placeholder=" " required>
-                            <label for="floating_email"
-                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Produto/serviço
-
-                            </label>
-                        </div>
-
-                        <div class="relative z-0 w-full pt-8 group">
+                        <input type="text" v-on:input="valorFormatar(fluxoInput.valor)" v-model="fluxoInput.valor"
+                            name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
 
 
-                            <label
-                                class="mt-6 peer-focus:font-medium absolute text-sm text-claro font-bold  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
-                                Comprador</label>
-                            <select v-model="fluxoInput.fornecedor"
-                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
-                                <option class="bg-verde font-semibold capitalize" v-if="fornecedoresResponse"
-                                    v-for="comprador in fornecedoresResponse.data" :key="comprador.id"
-                                    v-bind:value=comprador.id>{{
-                                        comprador.nome
-                                    }}
-                                </option>
-                            </select>
-                        </div>
-                    </ModalAdicionarDespesa>
-                </Transition>
+                        </label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
 
-                <Transition name="pop">
-                    <ModalAdicionarNotaFiscal v-if="showModalNota" @close="showModalNota = false"
-                        @adicionarNota="handleSubmitEditarNota">
-                        <Transition name="pop">
-                            <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
-                                os
-                                campos obrigatórios</h1>
-                        </Transition>
-                        <Transition name="pop">
-                            <h1 v-if="showLimit" class="text-center text-vermelho font-bold animate-pulse">Arqivo excede
-                                limite de 2Mb</h1>
-                        </Transition>
-                        <p class="text-claro text-xs"><span>ℹ️</span> Arquivos precisam estar no formato <b
-                                class="text-verde_claro">.pdf</b> e ter no máximo <b class="text-verde_claro">2MB</b> </p>
+                        <label for="nome"
+                            class=" peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Categoria
+                        </label>
+                        <select v-model="fluxoInput.categoria" type="text" placeholder="João da silva"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" value="semente/muda">Aluguel</option>
+                            <option class="bg-verde font-semibold" value="semente/muda">Quitação de dívida</option>
+                            <option class="bg-verde font-semibold" value="semente/muda">Outro</option>
+                        </select>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="fluxoInput.produto" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Produto/serviço
+
+                        </label>
+                    </div>
+
+                    <div class="relative z-0 w-full pt-8 group">
 
 
+                        <label
+                            class="mt-6 peer-focus:font-medium absolute text-sm text-claro font-bold  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            Comprador</label>
+                        <select v-model="fluxoInput.fornecedor"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold capitalize" v-if="fornecedoresResponse"
+                                v-for="comprador in fornecedoresResponse.data" :key="comprador.id"
+                                v-bind:value=comprador.id>{{
+                                    comprador.nome
+                                }}
+                            </option>
+                        </select>
+                    </div>
+                </ModalAdicionarDespesa>
+            </Transition>
 
+            <Transition name="pop">
+                <ModalAdicionarNotaFiscal v-if="showModalNota" @close="showModalNota = false"
+                    @adicionarNota="handleSubmitEditarNota">
+                    <Transition name="pop">
+                        <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos
+                            os
+                            campos obrigatórios</h1>
+                    </Transition>
+                    <Transition name="pop">
+                        <h1 v-if="showLimit" class="text-center text-vermelho font-bold animate-pulse">Arqivo excede
+                            limite de 2Mb</h1>
+                    </Transition>
+                    <p class="text-claro text-xs"><span>ℹ️</span> Arquivos precisam estar no formato <b
+                            class="text-verde_claro">.pdf</b> e ter no máximo <b class="text-verde_claro">2MB</b> </p>
 
 
 
-                        <h1 v-if="fluxoInput.tipo_fluxo == 'entrada'" class="text-center text-claro">❗️ Não sabe emitir Nota
-                            eletrônica de produtor? <a href="/notaFiscal" target="_blank"
-                                class="text-verde_claro font-bold cursor-pointer underline">Clique aqui</a> para saber como!
-                        </h1>
-                        <h1 class="text-center text-vermelho font-semibold animate-pulse">Clicar alterar com a caixa
-                            <b>[Possui nota?]</b> desmarcada irá <b>apagar</b> sua nota atual
-                        </h1>
-
-                        <div class="flex items-center mb-4">
-
-                            <input
-                                class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
-                                v-model="fluxoInput.possui_nota" type="checkbox" placeholder="João da silva"
-                                name="recebe_salario">
-                            <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">Posssui nota?</label>
-                        </div>
-
-                        <div v-if="fluxoInput.possui_nota" class="relative z-0 w-full mb-11 group">
-
-                            <input type="file" accept="application/pdf" @change="onFileSelected" name="floating_email"
-                                id="floating_email"
-                                class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                                placeholder=" " required>
-                            <label for="floating_email"
-                                class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Link
-                                da Nota
 
 
-                            </label>
-                        </div>
 
-                    </ModalAdicionarNotaFiscal>
-                </Transition>
+                    <h1 v-if="fluxoInput.tipo_fluxo == 'entrada'" class="text-center text-claro">❗️ Não sabe emitir Nota
+                        eletrônica de produtor? <a href="/notaFiscal" target="_blank"
+                            class="text-verde_claro font-bold cursor-pointer underline">Clique aqui</a> para saber como!
+                    </h1>
+                    <h1 class="text-center text-vermelho font-semibold animate-pulse">Clicar alterar com a caixa
+                        <b>[Possui nota?]</b> desmarcada irá <b>apagar</b> sua nota atual
+                    </h1>
+
+                    <div class="flex items-center mb-4">
+
+                        <input
+                            class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                            v-model="fluxoInput.possui_nota" type="checkbox" placeholder="João da silva"
+                            name="recebe_salario">
+                        <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">Posssui nota?</label>
+                    </div>
+
+                    <div v-if="fluxoInput.possui_nota" class="relative z-0 w-full mb-11 group">
+
+                        <input type="file" accept="application/pdf" @change="onFileSelected" name="floating_email"
+                            id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Link
+                            da Nota
+
+
+                        </label>
+                    </div>
+
+                </ModalAdicionarNotaFiscal>
+            </Transition>
 
         </div>
     </div>

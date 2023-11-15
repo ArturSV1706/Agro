@@ -10,6 +10,7 @@ export default defineNuxtRouteMiddleware(async() =>{
             console.log("entrou")
             return true
         }else{
+            navigateTo('/login')
             return false
         }
     }

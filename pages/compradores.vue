@@ -32,6 +32,7 @@ usuarioResponse.value = await supabase.from("usuario").select()
 const showModalAdicionar = ref()
 const showModalEditar = ref()
 const showModalDeletar = ref()
+const showModalOpcoes = ref()
 const showModalPagarFuncionario = ref()
 const tipoOrdenar = ref();
 const reverterOrdenar = ref()
@@ -43,6 +44,26 @@ const emprestimoResponse = ref();
 if (process.client) {
     compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id })
     // safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+
+}
+
+const mainElement = ref(document.getElementById("main"));
+
+const abrirOpcoesMobile = (nome, categoria, qnt_reservada, qnt_reservada_cultivo, qnt_reservada_grandeza, id) => {
+    // Check if the element exists before modifying it
+    if (mainElement) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+        mainElement.value.style.overflow = "hidden";
+    }
+    showModalOpcoes.value = true
+    showPreencha.value = false
+    limitarForm.value = true
+    compradorInput.nome = nome
+    compradorInput.categoria = categoria
+    compradorInput.qnt_reservada = qnt_reservada
+    compradorInput.qnt_reservada_cultivo = qnt_reservada_cultivo
+    compradorInput.qnt_reservada_grandeza = qnt_reservada_grandeza
+    compradorInput.id = id
 
 }
 
@@ -84,7 +105,6 @@ const abrirModalDeletarComprador = (id, nome) => {
 }
 const abrirModalPagarComprador = (id, nome) => {
     limitarForm.value = true
-
     showModalPagarFuncionario.value = true
     compradorInput.id = id
     compradorInput.nome = nome
@@ -354,7 +374,6 @@ function generateRandomString(length) {
                             <th class="p-2 " @click="handleOrdenar('salario')">Valor comprado</th>
                             <th class="p-2 " @click="handleOrdenar('dia')">Reservado</th>
                             <th class="p-2 ">Editar</th>
-                            <th class="p-2 ">Deletar</th>
                         </thead>
                         <tbody>
                             <tr v-for="comprador in compradoresResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)
@@ -375,14 +394,7 @@ function generateRandomString(length) {
                                         &#x270F
                                     </span>
                                 </td>
-                                <td class="p-2">
-                                    <span
-                                        class="cursor-pointer material-icons block text-center hover:text-xl transition-all"
-                                        @click="abrirModalDeletarComprador(comprador.id, comprador.nome)">
-                                        &#x274C
-                                    </span>
-
-                                </td>
+                               
 
                             </tr>
                         </tbody>
@@ -601,7 +613,9 @@ function generateRandomString(length) {
 
         <div class="  w-full space-y-4 pb-5">
             <div v-for="comprador in compradoresResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
-                :key="comprador.id" class="flex w-full h-[65px]">
+                :key="comprador.id" class="flex w-full h-[65px]"
+                @click="abrirOpcoesMobile(comprador.nome, comprador.categoria, comprador.qnt_reservada, comprador.qnt_reservada_cultivo, comprador.qnt_reservada_grandeza, comprador.id)"
+                >
                 <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center">
                     <svg width="31" height="28" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -651,5 +665,186 @@ function generateRandomString(length) {
                 @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
             </button><br>
         </div>
+
+        <Transition name="pop">
+            <ModalNovoComprador v-if="showModalAdicionar" @close="showModalAdicionar = false"
+                @adicionarComprador="handleSubmitNovoComprador">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="compradorInput.nome" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome
+                            *</label>
+                    </div>
+                    <div class="relative z-0 w-full mt-6 group">
+
+                        <label for=""
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Categoria
+                            *</label>
+                        <select v-model="compradorInput.categoria" placeholder="João da silva"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold">Atravessador</option>
+                            <option class="bg-verde font-semibold">Cooperativa</option>
+                            <option class="bg-verde font-semibold">Comerciante</option>
+                            <option class="bg-verde font-semibold">Exportador</option>
+                            <option class="bg-verde font-semibold">Pessoa Física</option>
+
+                        </select>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 mt-6 group">
+
+                        <input type="text" v-model="compradorInput.qnt_reservada_cultivo" name="floating_email"
+                            id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Produto
+                            à reservar <span class="opacity-50">(Ex: Amora)</span> </label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6  group">
+
+                        <input type="number" v-model="compradorInput.qnt_reservada" name="floating_email"
+                            id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade
+                            à reservar <span class="opacity-50">(Ex: 250)</span></label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <select placeholder="ex: 110" v-model="compradorInput.qnt_reservada_grandeza"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option value=" " disabled selected hidden class="bg-verde font-bold ">Grandeza</option>
+                            <option value="unidade" class="bg-verde font-bold">Un. - unidade</option>
+                            <option value="kilograma" class="bg-verde font-bold">Kg. - Kilograma</option>
+                            <option value="tonelada" class="bg-verde font-bold">T. - tonelada</option>
+                            <option value="bins" class="bg-verde font-bold">Caixa / Bins / Pallet</option>
+                            <option value="saca10" class="bg-verde font-bold">Saca de 10kg</option>
+                            <option value="saca20" class="bg-verde font-bold">Saca de 20kg</option>
+                            <option value="saca30" class="bg-verde font-bold">Saca de 30kg</option>
+                            <option value="saca40" class="bg-verde font-bold">Saca de 40kg</option>
+                            <option value="saca50" class="bg-verde font-bold">Saca de 50kg</option>
+                            <option value="saca60" class="bg-verde font-bold">Saca de 60kg</option>
+                        </select>
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Grandeza</label>
+                    </div>
+
+
+
+
+                </div>
+            </ModalNovoComprador>
+        </Transition>
+        <Transition name="pop">
+            <ModalEditarComprador v-if="showModalEditar" @close="showModalEditar = false"
+                @editarComprador="handleSubmitEditarComprador">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="compradorInput.nome" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nome
+                            *</label>
+                    </div>
+                    <div class="relative z-0 w-full mt-6 group">
+
+                        <label for=""
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Categoria
+                            *</label>
+                        <select v-model="compradorInput.categoria" placeholder="João da silva"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold">Atravessador</option>
+                            <option class="bg-verde font-semibold">Cooperativa</option>
+                            <option class="bg-verde font-semibold">Comerciante</option>
+                            <option class="bg-verde font-semibold">Exportador</option>
+                            <option class="bg-verde font-semibold">Pessoa Física</option>
+
+                        </select>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 mt-6 group">
+
+                        <input type="text" v-model="compradorInput.qnt_reservada_cultivo" name="floating_email"
+                            id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Produto
+                            à reservar <span class="opacity-50">(Ex: Amora)</span> </label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6  group">
+
+                        <input type="number" v-model="compradorInput.qnt_reservada" name="floating_email"
+                            id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade
+                            à reservar <span class="opacity-50">(Ex: 250)</span></label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <select placeholder="ex: 110" v-model="compradorInput.qnt_reservada_grandeza"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option value=" " disabled selected hidden class="bg-verde font-bold ">Grandeza</option>
+                            <option value="unidade" class="bg-verde font-bold">Un. - unidade</option>
+                            <option value="kilograma" class="bg-verde font-bold">Kg. - Kilograma</option>
+                            <option value="tonelada" class="bg-verde font-bold">T. - tonelada</option>
+                            <option value="bins" class="bg-verde font-bold">Caixa / Bins / Pallet</option>
+                            <option value="saca10" class="bg-verde font-bold">Saca de 10kg</option>
+                            <option value="saca20" class="bg-verde font-bold">Saca de 20kg</option>
+                            <option value="saca30" class="bg-verde font-bold">Saca de 30kg</option>
+                            <option value="saca40" class="bg-verde font-bold">Saca de 40kg</option>
+                            <option value="saca50" class="bg-verde font-bold">Saca de 50kg</option>
+                            <option value="saca60" class="bg-verde font-bold">Saca de 60kg</option>
+                        </select>
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Grandeza</label>
+                    </div>
+
+
+
+
+                </div>
+            </ModalEditarComprador>
+        </Transition>
+        <Transition name="pop">
+            <ModalDeletarComprador v-if="showModalDeletar" @close="showModalDeletar = false"
+                @deletarComprador="handleDeleteComprador(compradorInput.id)">
+                <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este funcionário?</h1>
+                <h1 class="text-center text-xl text-claro capitalize font-bold">{{
+                    compradorInput.nome
+                }}</h1>
+                <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                            desfeita.</u> </b></h2>
+            </ModalDeletarComprador>
+        </Transition>
+
+        <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ compradorInput.nome }}</h1>
+            <ul>
+                <li @click="showModalOpcoes = false; handleModalEditar(compradorInput.nome, compradorInput.categoria, compradorInput.qnt_reservada,   compradorInput.qnt_reservada_cultivo,  compradorInput.qnt_reservada_grandeza,   compradorInput.id)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Editar
+                </li>
+
+            </ul>
+        </OpcoesMobile>
     </div>
 </template>

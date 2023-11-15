@@ -57,7 +57,7 @@ const abrirOpcoesMobile = (nome, cargo, numero, is_assalariado, salario, diaPaga
     // Check if the element exists before modifying it
 if (mainElement) {
   // Disable overflow by setting the overflow CSS property to "hidden"
-  mainElement.style.overflow = "hidden";
+ 
 }
     showModalOpcoes.value = true
     funcionarioInput.nome = nome
@@ -169,7 +169,7 @@ const handleSubmitEditarFuncionario = async () => {
 
     if (funcionarioInput.nome && funcionarioInput.numero && funcionarioInput.cargo) {
         if (funcionarioInput.is_assalariado) {
-            if (isNaN(paraFloat(funcionarioInput.salario)) || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$") {
+            if (paraFloat(funcionarioInput.salario) === 0 || !funcionarioInput.data_pagamento_salario || funcionarioInput.salario == "R$") {
                 showPreencha.value = true
                 return
             }
@@ -765,7 +765,7 @@ function generateRandomString(length) {
 
         <div class="  w-full space-y-4 pb-5">
             <div v-for="funcionario in funcionariosResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
-                :key="funcionario.id" class="flex w-full h-[65px]" @click="abrirOpcoesMobile(funcionario.nome, funcionario.cargo, funcionario.numero, funcionario.is_assalariado, funcionario.salario, funcionario.data_pagamento_salario, funcionario.id)">
+                :key="funcionario.id" class="flex w-full h-[65px]" @click=" mainElement.style.overflow = 'hidden'; abrirOpcoesMobile(funcionario.nome, funcionario.cargo, funcionario.numero, funcionario.is_assalariado, funcionario.salario, funcionario.data_pagamento_salario, funcionario.id)">
                 <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center">
                     <svg width="31" height="28" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path

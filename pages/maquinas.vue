@@ -31,6 +31,45 @@ const safraResponse = ref();
 const abastecerCombustivelResponse = ref();
 const emprestimoResponse = ref();
 
+// Get the element with the id "main"
+const mainElement = ref(document.getElementById("main"));
+
+
+
+const abrirOpcoesMobile = (categoria,
+    modelo,
+    ano,
+    is_pago,
+    valor_parcelas,
+    num_parcelas,
+    data_pagamento_parcelas, id) => {
+    // Check if the element exists before modifying it
+    if (mainElement) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+
+    }
+    showModalOpcoes.value = true
+    maquinaInput.categoria = categoria
+    maquinaInput.modelo = modelo
+    maquinaInput.ano = ano
+    maquinaInput.is_pago = is_pago
+    maquinaInput.valor_parcelas = valor_parcelas
+    maquinaInput.num_parcelas = num_parcelas
+    maquinaInput.data_pagamento_parcelas = data_pagamento_parcelas
+    maquinaInput.id = id
+}
+const abrirOpcoesMobileCombustivel = (id, quantidade, nome) => {
+    // Check if the element exists before modifying it
+    if (mainElement) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+
+    }
+    showModalOpcoesCombustivel.value = true
+    combustivelInput.id = id
+    combustivelInput.quantidade = quantidade
+    combustivelInput.nome = nome
+}
+
 
 if (process.client) {
     maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id).order('modelo', { ascending: true })
@@ -45,6 +84,8 @@ const showModalMaquinaEmUso = ref()
 const showModalAbastecer = ref()
 const showModalManutencao = ref()
 const showModalPagarParcela = ref()
+const showModalOpcoes = ref()
+const showModalOpcoesCombustivel = ref()
 const showPreencha = ref()
 
 
@@ -606,6 +647,14 @@ const handlePagina = (i) => {
         pagina.atual--
     }
 }
+const handlePaginaCombustivel = (i) => {
+    if (i === "proxima") {
+        pagina_combustivel.atual++
+    }
+    if (i === "anterior") {
+        pagina_combustivel.atual--
+    }
+}
 const handleOrdenar = (i) => {
 
 
@@ -866,7 +915,7 @@ const valorCombustivelFormatar = (valor) => {
                             <th class="p-2 " @click="handleOrdenar('modelo')">Deletar</th>
                         </thead>
                         <tbody>
-                            <tr v-for="combustivel in combustiveisResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
+                            <tr v-for="combustivel in combustiveisResponse.data.slice(pagina_combustivel.atual * pagina_combustivel.tamanho, (pagina_combustivel.tamanho * pagina_combustivel.atual) + pagina_combustivel.tamanho).sort(tipoOrdenar)"
                                 :key="combustivel.id" class=" even:bg-gray-100">
                                 <td class="p-2 capitalize">{{ combustivel.nome }}</td>
                                 <td class="p-2">{{ combustivel.quantidade.toFixed(2) + " L" }}</td>
@@ -888,17 +937,17 @@ const valorCombustivelFormatar = (valor) => {
                             </tr>
                         </tbody>
                     </table>
-                    <div v-if="maquinasResponse"
+                    <div v-if="combustiveisResponse"
                         class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
-                        <button v-if="pagina.atual > 0" @click="handlePagina('anterior')" class="text-claro font-bold">
+                        <button v-if="pagina_combustivel.atual > 0" @click="handlePaginaCombustivel('anterior')" class="text-claro font-bold">
                             &lt-
                             Anterior </button>
                         <div class="flex flex-col items-center">
 
                             <p class="text-claro font-semibold">Pág.</p>
-                            <select v-model="pagina.atual"
+                            <select v-model="pagina_combustivel.atual"
                                 class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
-                                <option v-for="i in Math.ceil(maquinasResponse.data.length / pagina.tamanho)"
+                                <option v-for="i in Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho)"
                                     v-bind:value="i - 1">
                                     {{
                                         i
@@ -908,15 +957,15 @@ const valorCombustivelFormatar = (valor) => {
                         </div>
                         <div class="flex flex-col items-center">
                             <p class="text-claro font-semibold">Items por Pág.</p>
-                            <select v-model="pagina.tamanho" @input="pagina.atual = 0"
+                            <select v-model="pagina_combustivel.tamanho" @input="pagina_combustivel.atual = 0"
                                 class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
                                 <option v-bind:value=5> 5 </option>
                                 <option v-bind:value=10> 10 </option>
                                 <option v-bind:value=250> 25 </option>
                             </select>
                         </div>
-                        <button v-if="pagina.atual < (Math.ceil(maquinasResponse.data.length / pagina.tamanho) - 1)"
-                            @click="handlePagina('proxima')" class="text-claro font-bold"> Próximo ->
+                        <button v-if="pagina_combustivel.atual < (Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho) - 1)"
+                            @click="handlePaginaCombustivel('proxima')" class="text-claro font-bold"> Próximo ->
                         </button><br>
                     </div>
                 </div>
@@ -1387,7 +1436,9 @@ const valorCombustivelFormatar = (valor) => {
 
 
         <div v-for="maquina in maquinasResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
-            :key="maquina.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]">
+            :key="maquina.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]"
+            @click="abrirOpcoesMobile(maquina.categoria, maquina.modelo, maquina.ano, maquina.is_pago, maquina.valor_parcelas, maquina.num_parcelas, maquina.data_parcelas, maquina.id)"
+            >
             <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center ">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="39" height="35" viewBox="0 -960 960 960" fill="#DDE0D0">
@@ -1434,7 +1485,9 @@ const valorCombustivelFormatar = (valor) => {
         </button>
 
         <div v-for="combustivel in combustiveisResponse.data.slice(pagina_combustivel.atual * pagina_combustivel.tamanho, (pagina_combustivel.tamanho * pagina_combustivel.atual) + pagina_combustivel.tamanho).sort(tipoOrdenar)"
-            :key="combustivel.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]">
+            :key="combustivel.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]"
+            @click="abrirOpcoesMobileCombustivel(combustivel.id, combustivel.quantidade, combustivel.nome)"
+            >
             <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center ">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="39" height="35" fill="#DDE0D0" viewBox="0 -960 960 960">
@@ -1450,7 +1503,8 @@ const valorCombustivelFormatar = (valor) => {
 
         <div v-if="combustiveisResponse"
             class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-[#B9C2B3] space-x-8 rounded-b-xl mb-[50px] ">
-            <button v-if="pagina_combustivel.atual > 0" @click="handlePagina('anterior')" class="text-escuro text-3xl font-bold">
+            <button v-if="pagina_combustivel.atual > 0" @click="handlePaginaCombustivel('anterior')"
+                class="text-escuro text-3xl font-bold">
                 &lt </button>
 
             <div class="flex flex-col items-center">
@@ -1462,11 +1516,507 @@ const valorCombustivelFormatar = (valor) => {
                     <option v-bind:value=250> 25 </option>
                 </select>
             </div>
-            <button v-if="pagina_combustivel.atual < (Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho) - 1)"
-                @click="handlePagina('proxima')" class="text-escuro text-3xl font-bold"> >
+            <button
+                v-if="pagina_combustivel.atual < (Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho) - 1)"
+                @click="handlePaginaCombustivel('proxima')" class="text-escuro text-3xl font-bold"> >
             </button><br>
         </div>
         <!--  Spacer -->
         <section class="h-[30px]"></section>
-    </div>
-</template>
+
+
+<!-- Maquinas -->
+        <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ maquinaInput.modelo + " - " + maquinaInput.ano }}</h1>
+            <ul>
+                <li @click="showModalOpcoes = false; handleModalEditar(maquinaInput.categoria, maquinaInput.modelo, maquinaInput.ano, maquinaInput.is_pago, maquinaInput.valor_parcelas, maquinaInput.num_parcelas, maquinaInput.data_parcelas, maquinaInput.id)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Editar
+                </li>
+                <li @click="showModalOpcoes = false; handleAbastecer(maquinaInput.id, maquinaInput.modelo, maquinaInput.ano)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Abastecer
+                </li>
+                <li @click="showModalOpcoes = false; handleManutencao(maquinaInput.id, maquinaInput.modelo, maquinaInput.ano)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Manutenção
+                </li>
+                <li v-if="maquinaInput.num_parcelas > 0" @click="showModalOpcoes = false; handlePagarParceclas(maquinaInput.id, maquinaInput.modelo, maquinaInput.ano, maquinaInput.valor_parcelas, maquinaInput.num_parcelas)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Pagar Parcela
+                </li>
+                <li @click="showModalOpcoes = false; handleDeleteMaquina(maquinaInput.id, maquinaInput.modelo, maquinaInput.ano, maquinaInput.status)"
+                    class="bg-vermelho py-1 px-2 rounded">
+                    Deletar
+                </li>
+            </ul>
+        </OpcoesMobile>
+
+
+<!-- Combustiveis -->
+
+<OpcoesMobile v-if="showModalOpcoesCombustivel" @close="showModalOpcoesCombustivel = false; mainElement.style.overflow = 'auto'">
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ combustivelInput.nome}}</h1>
+            <ul>
+                <li @click="showModalOpcoesCombustivel = false; handleReporCombustivel(combustivelInput.id, combustivelInput.quantidade)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Editar
+                </li>
+                <li @click="showModalOpcoesCombustivel = false; handleDeleteCombustivel(combustivelInput.id)"
+                    class="bg-vermelho py-1 px-2 rounded">
+                    Deletar
+                </li>
+            </ul>
+        </OpcoesMobile>
+
+
+        <Transition name="pop">
+            <ModalNovoMaquina v-if="showModalAdicionar" @close="showModalAdicionar = false"
+                @adicionarMaquina="handleSubmitNovoMaquina">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <label for="nome"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Categoria
+                            da máquina</label>
+                        <select v-model="maquinaInput.categoria" type="text" placeholder="João da silva"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" value="tratores">Tratores</option>
+                            <option class="bg-verde font-semibold" value="ceifadeira/colheitadeira">Ceifadeira ou
+                                Colheitadeira
+                            </option>
+                            <option class="bg-verde font-semibold" value="atv/utv">ATVs ou UTVs</option>
+                            <option class="bg-verde font-semibold" value="acessorios/trator">Assessórios para trator
+                            </option>
+                            <option class="bg-verde font-semibold" value="arados">Arados</option>
+                            <option class="bg-verde font-semibold" value="distribuidores_de_fertilizante">Distribuidores
+                                De
+                                Fertilizante
+                            </option>
+                            <option class="bg-verde font-semibold" value="semeadores">Semeadores</option>
+                            <option class="bg-verde font-semibold" value="enfardadeiras">Enfardadeiras</option>
+                            <option class="bg-verde font-semibold" value="vagoes/reboque">Vagões ou reboque</option>
+                            <option class="bg-verde font-semibold" value="outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="maquinaInput.modelo" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Nome
+                        </label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="maquinaInput.ano" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Ano
+                        </label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input
+                            class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                            v-model="maquinaInput.is_pago" type="checkbox" placeholder="João da silva"
+                            name="recebe_salario">
+                        <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">Está Pago?</label>
+                    </div>
+
+
+
+
+
+                    <Transition name="pop">
+                        <div v-if="!maquinaInput.is_pago" class="flex flex-col">
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="text" v-model="maquinaInput.num_parcelas" name="floating_email"
+                                    id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Parcelas
+                                    Restantes
+                                </label>
+                            </div>
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="text" v-on:input="valorParcelaFormatar(maquinaInput.valor_parcelas)"
+                                    v-model="maquinaInput.valor_parcelas" name="floating_email" id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
+                                    da parcela
+                                </label>
+                            </div>
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <label for="data_pagamento_salario"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Dia
+                                    de pagamento parcela</label>
+                                <select v-model="maquinaInput.data_pagamento_parcelas" placeholder="João da silva"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    name="data_pagamento_salario">
+                                    <option class="bg-verde font-semibold" v-for="i in 28" v-bind:value=i>{{ i }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </Transition>
+                </div>
+            </ModalNovoMaquina>
+        </Transition>
+        <Transition name="pop">
+            <ModalEditarMaquina v-if="showModalEditar" @close="showModalEditar = false"
+                @editarMaquina="handleSubmitEditarMaquina">
+
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <label for="nome"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Categoria
+                            do máquina</label>
+                        <select v-model="maquinaInput.categoria" type="text" placeholder="João da silva"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" value="tratores">Tratores</option>
+                            <option class="bg-verde font-semibold" value="ceifadeira/colheitadeira">Ceifadeira ou
+                                Colheitadeira
+                            </option>
+                            <option class="bg-verde font-semibold" value="atv/utv">ATVs ou UTVs</option>
+                            <option class="bg-verde font-semibold" value="acessorios/trator">Assessórios para trator
+                            </option>
+                            <option class="bg-verde font-semibold" value="arados">Arados</option>
+                            <option class="bg-verde font-semibold" value="distribuidores_de_fertilizante">Distribuidores
+                                De
+                                Fertilizante
+                            </option>
+                            <option class="bg-verde font-semibold" value="semeadores">Semeadores</option>
+                            <option class="bg-verde font-semibold" value="enfardadeiras">Enfardadeiras</option>
+                            <option class="bg-verde font-semibold" value="vagoes/reboque">Vagões ou reboque</option>
+                            <option class="bg-verde font-semibold" value="outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="maquinaInput.modelo" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Nome
+                        </label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="maquinaInput.ano" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Ano
+                        </label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input
+                            class="w-4 h-4 text-claro bg-verde_claro border-verde_claro rounded focus:ring-verde_claro focus:ring-2"
+                            v-model="maquinaInput.is_pago" type="checkbox" placeholder="João da silva"
+                            name="recebe_salario">
+                        <label class="ml-2 text-sm font-medium text-claro" for="recebe_salario">Está Pago?</label>
+                    </div>
+
+
+
+
+
+                    <Transition name="pop">
+                        <div v-if="!maquinaInput.is_pago" class="flex flex-col">
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="text" v-model="maquinaInput.num_parcelas" name="floating_email"
+                                    id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Parcelas
+                                    Restantes
+                                </label>
+                            </div>
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <input type="text" v-on:input="valorParcelaFormatar(maquinaInput.valor_parcelas)"
+                                    v-model="maquinaInput.valor_parcelas" name="floating_email" id="floating_email"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    placeholder=" " required>
+                                <label for="floating_email"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Valor
+                                    da parcela
+                                </label>
+                            </div>
+
+                            <div class="relative z-0 w-full mb-6 group">
+
+                                <label for="data_pagamento_salario"
+                                    class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Dia
+                                    de pagamento parcela</label>
+                                <select v-model="maquinaInput.data_pagamento_parcelas" placeholder="João da silva"
+                                    class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    name="data_pagamento_salario">
+                                    <option class="bg-verde font-semibold" v-for="i in 28" v-bind:value=i>{{ i }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </Transition>
+                </div>
+            </ModalEditarMaquina>
+        </Transition>
+        <Transition name="pop">
+            <ModalAdicionarCombustivel v-if="showModalAdicionarCombustivel" @close="showModalAdicionarCombustivel = false"
+                @adicionarCombustivel="handleSubmitNovoCombustivel($event)">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <div class="flex flex-col">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="combustivelInput.nome" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Nome
+                            <span class="text-xs font-light">Ex: ("Diesel", "Gasolina", "Etanol")</span></label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-model="combustivelInput.quantidade" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Quantidade
+                            em litros <span class="text-xs font-light">(L.)</span>
+                        </label>
+                    </div>
+                    <h1 class="text-claro font-medium">❗ Obs: O combustível adicionado aqui <b class="text-vermelho">não
+                            criará uma entrada de despesa</b> , caso seja uma compra adicione a quantidade <b
+                            class="text-vermelho">0</b> e posteriormente a compra</h1>
+
+                </div>
+            </ModalAdicionarCombustivel>
+        </Transition>
+        <Transition name="pop">
+            <ModalDeletarMaquina v-if="showModalDeletar" @close="showModalDeletar = false"
+                @deletarMaquina="handleSubmitDeleteMaquina">
+                <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este combustível?</h1>
+                <h1 class="text-center text-xl text-claro light">{{ maquinaInput.modelo + " - " + maquinaInput.ano }}
+                </h1>
+
+                <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                            desfeita.</u> </b></h2>
+            </ModalDeletarMaquina>
+        </Transition>
+
+        <Transition name="pop">
+            <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
+                <h2 class="text-center text-claro text-2xl font-semibold">Este Item está registrado em uma tarefa, não
+                    pode ser
+                    deletado.</h2>
+            </ModalDeletarNegado>
+        </Transition>
+
+        <Transition name="pop">
+            <ModalAlerta v-if="showModalMaquinaEmUso" @close="showModalMaquinaEmUso = false">
+                <h1 class="text-center text-xl text-claro light">Não é possível deletar uma máquina <b>Em uso</b>,
+                    encerre seu uso na tela <b>Tarefas</b></h1>
+            </ModalAlerta>
+        </Transition>
+        <Transition name="pop">
+            <ModalDeletarCombustivel v-if="showModalDeletarCombustivel" @close="showModalDeletarCombustivel = false"
+                @deletarCombustivel="handleSubmitDeletarCombustivel">
+                <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este combustível?</h1>
+
+                <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
+                            desfeita.</u> </b></h2>
+            </ModalDeletarCombustivel>
+        </Transition>
+
+        <Transition name="pop">
+            <ModalPagarParcela v-if="showModalPagarParcela" @close="showModalPagarParcela = false"
+                @pagarParcela="handleSubmitPagarParcela">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <h1 class="text-center text-xl text-claro">Parcela do veículo: {{ maquinaInput.modelo + " - " +
+                    maquinaInput.ano }}</h1>
+                <h1 class="text-center text-xl text-claro light">Valor da parcela: <b class="text-vermelho">{{
+                    paraReal(maquinaInput.valor_parcelas) }} </b></h1>
+                <h1 class="text-center text-md text-claro light">({{ maquinaInput.num_parcelas + " Restantes" }}) </h1>
+
+                <div v-if="!safraResponse"></div>
+                <div v-else-if="safraResponse.data != ''">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            De qual safra será descontado o valor do pagamento?</label>
+                        <select v-model="maquinaInput.safra_id"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
+                                v-bind:value=safra.id>{{
+                                    safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                                }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </ModalPagarParcela>
+        </Transition>
+
+        <Transition name="pop">
+            <ModalReporCombustivel v-if="showModalReporCombustivel" @close="showModalReporCombustivel = false"
+                @reporCombustivel="handleSubmitReporCombustivel">
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+                <h1 class="text-xl text-claro">Quantidade atual: {{ combustivelInput.quantidade }}</h1>
+                <div class="relative z-0 w-full mb-6 group">
+                    <input type="text" v-model="combustivelInput.quantidade_repor" name="floating_email" id="floating_email"
+                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                        placeholder=" " required>
+                    <label for="floating_email"
+                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quatidade
+                        à adicionar (L)</label>
+                </div>
+                <div v-if="!safraResponse"></div>
+                <div v-else-if="safraResponse.data != ''">
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input type="text" v-on:input="valorCombustivelFormatar(combustivelInput.custo)"
+                            v-model="combustivelInput.custo" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Custo
+                            de compra - (colocar 0 se não for uma compra)</label>
+                    </div>
+                    <div class="relative z-0 w-full mb-6 group">
+
+
+                        <label
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            De qual safra será descontado o valor da compra</label>
+                        <select v-model="combustivelInput.safra_id"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
+                                v-bind:value=safra.id>{{
+                                    safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                                }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </ModalReporCombustivel>
+        </Transition>
+        <Transition name="pop">
+            <ModalAbastecerMaquina v-if="showModalAbastecer" @close="showModalAbastecer = false"
+                @abastecerMaquina="handleSubmitAbastecer">
+
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+
+                <h1 class="capitalize text-center text-2xl text-claro font-bold">{{
+                    maquinaInput.modelo + " - " +
+                    maquinaInput.ano
+                }}</h1>
+
+                <select v-model="combustivelInput.id" @change="limitarCombustivelSelect(combustivelInput.id)"
+                    class="capitalize block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                    <option class="bg-verde font-semibold capitalize" v-for="combustivel in combustiveisResponse.data"
+                        :key="combustivel.id" v-bind:value=combustivel.id>{{ combustivel.nome }}
+                    </option>
+                </select>
+                <div v-if="combustivelInput.id">
+
+                    <div class="relative z-0 w-full mb-6 group">
+
+                        <input v-on:input="limitarCombustivelInput()" type="number"
+                            v-model="combustivelInput.quantidade_repor" name="floating_email" id="floating_email"
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                            placeholder=" " required>
+                        <label for="floating_email"
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade
+                            máxima = <b v-if="abastecerCombustivelResponse">{{
+                                abastecerCombustivelResponse.data[0].quantidade + " L"
+                            }}</b></label>
+                    </div>
+                </div>
+
+            </ModalAbastecerMaquina>
+        </Transition>
+        <Transition name="pop">
+            <ModalAdicionarManutencao v-if="showModalManutencao" @close="showModalManutencao = false"
+                @adicionarManutencao="handleSubmitManutencao">
+
+                <Transition name="pop">
+                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
+                        campos obrigatórios</h1>
+                </Transition>
+
+                <h1 class="capitalize text-center text-2xl text-claro font-bold">{{
+                    maquinaInput.modelo + " - " +
+                    maquinaInput.ano
+                }}</h1>
+
+
+                <div class="relative z-0 w-full mb-6 group">
+
+                    <input v-on:input="valorManutencaoFormatar(maquinaInput.valor_manutencao)" type="text"
+                        v-model="maquinaInput.valor_manutencao" name="floating_email" id="floating_email"
+                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                        placeholder=" " required>
+                    <label for="floating_email"
+                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Custo
+                        da manutenção | R$
+                    </label>
+                </div>
+                <div class="relative z-0 w-full pt-6 group">
+
+
+                    <label
+                        class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-1  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                        À qual safra será adicionado o valor da manutenção?</label>
+                    <select v-model="combustivelInput.safra_id"
+                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                        <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
+                            v-bind:value=safra.id>{{
+                                safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
+                            }}
+                        </option>
+                    </select>
+                </div>
+
+            </ModalAdicionarManutencao>
+        </Transition>
+
+</div></template>

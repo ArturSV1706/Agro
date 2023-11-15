@@ -143,6 +143,30 @@ transform: translateX(100%);
 .alert-leave-active {
   transition: all 0.4s cubic-bezier(0, 1.15, 0.47, 1.15);
 }
+.alert_mobile-enter-from {
+  opacity: 0;
+}
+
+.alert_mobile-enter-to {
+  opacity: 100%
+}
+
+.alert_mobile-enter-active {
+  transition: all 0.1s ease-in;
+}
+
+.alert_mobile-leave-from {
+  opacity: 100%
+
+}
+
+.alert_mobile-leave-to {
+  opacity: 0;
+}
+
+.alert_mobile-leave-active {
+  transition: all 0.2s ease-out;
+}
 
 @media screen and (max-width: 768px){
   /* width */

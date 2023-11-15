@@ -152,6 +152,9 @@ const useUtils = () => {
   function paraFloat(valor) {
     // input value
     const inputValue = valor;
+    if (inputValue == undefined || inputValue == ""){
+      return 0
+    }
 
     // remove currency symbol and thousands separator
     const strippedValue = inputValue.replace(/[R$,]/g, ".");

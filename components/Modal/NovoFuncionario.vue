@@ -51,7 +51,7 @@
 
                 <div class="flex justify-between items-start p-4 rounded-t border-b border-verde">
                     <h3 class="text-xl font-semibold text-claro">
-                        Deletar registro
+                        Adcionar Funcionário
                     </h3>
                     <button @click="$emit('close')" type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
