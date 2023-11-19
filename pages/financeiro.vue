@@ -95,10 +95,10 @@ usuarioResponse.value = await supabase.from("usuario").select()
 // ----//----
 if (process.client) {
     safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id })
+    const mainElement = ref(document.getElementById("main"));
 }
 
 
-const mainElement = ref(document.getElementById("main"));
 
 const abrirOpcoesMobile = (id, tipo, valor, produto, possui_nota) => {
     // Check if the element exists before modifying it
