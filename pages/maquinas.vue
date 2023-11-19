@@ -1044,6 +1044,7 @@ const valorCombustivelFormatar = (valor) => {
                             <option class="bg-verde font-semibold" value="ceifadeira/colheitadeira">Ceifadeira ou
                                 Colheitadeira
                             </option>
+                            <option class="bg-verde font-semibold" value="puverizador">Puverizadores</option>
                             <option class="bg-verde font-semibold" value="atv/utv">ATVs ou UTVs</option>
                             <option class="bg-verde font-semibold" value="acessorios/trator">Assessórios para trator
                             </option>

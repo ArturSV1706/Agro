@@ -205,7 +205,7 @@ const handleModalAdicionarColheita = async (cultivo, quantidade, grandeza, area,
     showModalAdicionarColheita.value = true
     estoqueInput.item = cultivo
     estoqueInput.quantidade = ""
-    safraResponse.grandeza = grandeza
+    estoqueInput.grandeza = grandeza
     colheitaInput.area_colhida = area_colhida
     estoqueInput.id = id
 

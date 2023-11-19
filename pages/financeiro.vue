@@ -121,8 +121,7 @@ const abrirOpcoesMobile = (id, tipo, valor, produto, possui_nota) => {
 
 const handleSafraSelecioanda = async () => {
     if (mainElement) {
-        // Disable overflow by setting the overflow CSS property to "hidden"
-        // mainElement.value.style.overflow = "auto";
+        mainElement.style.overflow = 'auto'
     }
     showFluxo.value = true
     if (process.client) {
