@@ -11,6 +11,7 @@ watch(
   () => {
     document.documentElement.scrollTop = 0; // For modern browsers
     document.body.scrollTop = 0; // For older browsers
+    overflow.value = 'auto'
     definirTitulo()
   },
 );

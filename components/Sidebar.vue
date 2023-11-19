@@ -130,8 +130,7 @@ function moveSidebar(acao) {
 
             <li id="test" class="group flex items-center justify-evenly w-[80%] transition-all cursor-pointer
                      hover:bg-verde rounded-xl group-hover/main:justify-start">
-                <a href="https://www.youtube.com/watch?v=9EuLwHoX1Po&list=PLvUJTkiYrMAOjIV3abwvV1Uf4Mkc0fVjh"
-                    target="_blank" class="flex items-center group-hover/main:w-full">
+                <NuxtLink to="/minhaConta" class="flex items-center group-hover/main:w-full">
 
                     <svg class="sm:scale-[35%] 2xl:scale-[45%] transition-all fill-verde group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 -960 960 960">
@@ -140,7 +139,7 @@ function moveSidebar(acao) {
                             </svg>
                     <p class="text-verde hidden font-bold transition-all whitespace-nowrap 
                             group-hover/main:block group-hover:text-claro">Minha Conta</p>
-                </a>
+                </NuxtLink>
 
             </li>
 
@@ -191,7 +190,7 @@ function moveSidebar(acao) {
                     <li></li>
 
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha'); $emit('titulo')" to="/" href="#"
+                        <NuxtLink @click="moveSidebar('fecha'); $emit('titulo')" to="/" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -202,7 +201,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/safras" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/safras" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -213,7 +212,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/estoque" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/estoque" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -224,7 +223,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/tarefas" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/tarefas" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -235,7 +234,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/financeiro" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/financeiro" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -246,7 +245,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/compradores" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/compradores" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
@@ -257,7 +256,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/funcionarios" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/funcionarios" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -268,7 +267,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/maquinas" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/maquinas" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48">
@@ -279,7 +278,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/minhaConta" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/minhaConta" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 -960 960 960">
@@ -290,7 +289,7 @@ function moveSidebar(acao) {
                         </NuxtLink>
                     </li>
                     <li>
-                        <NuxtLink @click="moveSidebar('fecha')" to="/ajuda" href="#"
+                        <NuxtLink @click="moveSidebar('fecha')" to="/ajuda" 
                             class="flex items-center p-1 text-claro hover:bg-verde rounded-lg">
                             <svg class="scale-[50%] transition-all fill-claro group-hover:fill-claro"
                                 xmlns="http://www.w3.org/2000/svg" height="48" width="48">

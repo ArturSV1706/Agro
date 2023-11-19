@@ -779,6 +779,7 @@ const trocarTabelaMobile = (i) => {
             bgIconesTabelas.fertilizantes = "";
             bgIconesTabelas.defensivos = "";
             bgIconesTabelas.outros = "escuro";
+            showTabelaColheita.value = false
             showTabelaSementes.value = false
             showTabelaFetilizantes.value = false
             showTabelaDefensivos.value = false
