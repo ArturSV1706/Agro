@@ -49,6 +49,36 @@ const showModalOpcoesColheita = ref()
 const limitarForm = ref()
 const showPreencha = ref()
 
+const alert = ref()
+const alertMessage = ref()
+const loadingWidth = ref(100)
+
+const showAlert = (message) => {
+    alert.value = true
+    alertMessage.value = message
+
+    const interval = setInterval(function () {
+
+        if (loadingWidth.value <= 0 || !alert.value) {
+            // Clear the interval when the timer reaches 0
+            clearInterval(interval);
+            alert.value = false
+            loadingWidth.value = 100;
+        }
+        // Decrease the width
+        loadingWidth.value -= 2;
+
+        // Update the width of the timer bar
+        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+
+        // Check if the width has reached 0
+       
+    }, 80);
+
+
+}
+
 
 
 const margemTabelaSelector = ref()
@@ -221,6 +251,7 @@ const handleSubmitDeleteEstoque = async () => {
         outrosResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "outros" })
     }
     showModalDeletar.value = false
+    showAlert("Item deletado com sucesso!")
     pagina.atual = 0
 
 }
@@ -298,6 +329,8 @@ const handleSubmitNovoEstoque = async () => {
         estoqueInput.custo = ""
         showModalAdicionar.value = false
         showPreencha.value = false
+        showAlert("Item adicionado com sucesso!")
+
 
 
         sementesResponse.value = await supabase.from("estoque").select().order('item', { ascending: true }).match({ user_id: user.value.id, categoria: "semente/muda" })
@@ -353,6 +386,8 @@ const handleSubmitEditarEstoque = async (id) => {
         estoqueInput.custo = ""
         showModalEditar.value = false
         showPreencha.value = false
+        showAlert("Item editado com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -378,6 +413,8 @@ const handleSubmitEditarEstoqueColheita = async (id) => {
         estoqueInput.custo = ""
         showModalEditarColheita.value = false
         showPreencha.value = false
+        showAlert("Colheita editada com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -408,6 +445,8 @@ const handleSubmitAdicionarColheita = async (id) => {
         colheitaInput.area_adicionar_colheita = ""
         showModalAdicionarColheita.value = false
         showPreencha.value = false
+        showAlert("Colheita adicionada com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -492,6 +531,8 @@ const handleSubmitReporEstoque = async (id) => {
         estoqueInput.custo = ""
         showModalRepor.value = false
         showPreencha.value = false
+        showAlert("Quantidade adicionada com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -756,6 +797,11 @@ const precoFormatar = (valor) => {
 
 <template>
     <div v-if="screen === 'desktop'">
+        <Transition name="alert">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Estoque | </h1>
@@ -815,15 +861,15 @@ const precoFormatar = (valor) => {
                     :class="`${margemTabelaSelector} absolute z-[0] bg-verde text-claro  rounded-full  w-[125px] h-[32px] transition-all`">
                 </div>
                 <button @click="trocarTabela('colheita')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Colheitas</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10  w-[100px]">Colheitas</button>
                 <button @click="trocarTabela('semente')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Sementes</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10  w-[100px]">Sementes</button>
                 <button @click="trocarTabela('fertilizante')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Fertilizantes</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10  w-[100px]">Fertilizantes</button>
                 <button @click="trocarTabela('defensivo')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Defensivos</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  z-10 w-[100px]">Defensivos</button>
                 <button @click="trocarTabela('outros')"
-                    class=" text-claro text-center font-semibold rounded-full px-2 py-1  w-[100px]">Outros</button>
+                    class=" text-claro text-center font-semibold rounded-full px-2 py-1 z-10  w-[100px]">Outros</button>
                 <div> </div>
             </div>
             <!-- ------------------------------------------------------------------- -->
@@ -1529,6 +1575,11 @@ const precoFormatar = (valor) => {
         </div>
     </div>
     <div v-if="screen === 'mobile'">
+        <Transition name="alert_mobile">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
 
         <!-- Icones -->
 

@@ -34,6 +34,36 @@ const estoqueResponse = ref();
 const estoqueResponse_qnt = ref();
 const showPreencha = ref()
 
+const alert = ref()
+const alertMessage = ref()
+const loadingWidth = ref(100)
+
+const showAlert = (message) => {
+    alert.value = true
+    alertMessage.value = message
+
+    const interval = setInterval(function () {
+
+        if (loadingWidth.value <= 0 || !alert.value) {
+            // Clear the interval when the timer reaches 0
+            clearInterval(interval);
+            alert.value = false
+            loadingWidth.value = 100;
+        }
+        // Decrease the width
+        loadingWidth.value -= 2;
+
+        // Update the width of the timer bar
+        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+
+        // Check if the width has reached 0
+       
+    }, 80);
+
+
+}
+
 
 // Evita erro de carregamento
 const usuarioResponse = ref();
@@ -65,7 +95,6 @@ const abrirOpcoesMobile = (id, titulo, descricao, funcionario, maquina_utilizada
     tarefaInput.descricao = descricao
     tarefaInput.funcionario_nome = funcionario
     tarefaInput.status = status
-    console.log('status: ' + status)
     tarefaInput.prazo = prazo
     tarefaInput.prazo_hora = prazo_hora
     tarefaInput.maquina_utilizada = maquina_utilizada
@@ -74,6 +103,7 @@ const abrirOpcoesMobile = (id, titulo, descricao, funcionario, maquina_utilizada
     tarefaInput.estoque_nome = estoque_utilizado_item
     tarefaInput.estoque_quantidade_correcao = estoque_utilizado_quantidade
     tarefaInput.estoque_grandeza = estoque_utilizado_grandeza
+    console.log(tarefaInput.estoque_id)
 
 }
 
@@ -163,7 +193,7 @@ const handleSubmitDeletarTarefa = async () => {
     if (process.client) {
         tarefaResponse.value = await supabase.from("tarefas").select("*, funcionarios(*), estoque(*), maquinas(*)").eq('user_id', user.value.id).order('prazo', { ascending: false }).order('prazo_hora', { ascending: false })
     }
-
+    showAlert("Tarefa deletada com sucesso")
     showModalCancelar.value = false
 }
 
@@ -258,6 +288,7 @@ const handleSubmitNovoTarefa = async () => {
             tarefaInput.descricao = "",
             tarefaInput.prazo = ""
         showPreencha.value = false
+        showAlert("Tarefa adicionada com sucesso")
     } else {
         showPreencha.value = true
     }
@@ -330,15 +361,22 @@ const handleSubmitConfirmar = async () => {
     }
     tarefaInput.estoque_quantidade = ""
     showModalConfirmar.value = false
+    showAlert("Tarefa confimada com sucesso")
     showPreencha.value = false
 }
 
 
 const limitarQuantidade = async (id) => {
+    console.log("FFFFFFFFFFFFFFFFFFFFFFF" + tarefaInput.estoque_id)
     if (!estoqueResponse_qnt.value) {
-        estoqueResponse_qnt.value = await supabase.from("estoque").select("quantidade").eq('id', id)
-        console.log('query')
+        if(screen === 'desktop'){
+            estoqueResponse_qnt.value = await supabase.from("estoque").select("quantidade").eq('id', id)
+        }else{
+            estoqueResponse_qnt.value = await supabase.from("estoque").select("quantidade").eq('id', tarefaInput.estoque_id)
+
+        }
     }
+    console.log(estoqueResponse_qnt)
     if (tarefaInput.estoque_quantidade > estoqueResponse_qnt.value.data[0].quantidade) {
         tarefaInput.estoque_quantidade = estoqueResponse_qnt.value.data[0].quantidade
     }
@@ -362,6 +400,12 @@ const handlePagina = (i) => {
 
 <template>
     <div v-if="screen === 'desktop'" class="flex flex-col  w-full">
+
+        <Transition name="alert">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <!-- Título -->
         <div class=" ml-[-4%] flex flex-row items-center absolute">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Tarefas | </h1>
@@ -735,6 +779,11 @@ const handlePagina = (i) => {
         </div>
     </div>
     <div v-if="screen === 'mobile'">
+        <Transition name="alert_mobile">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <!-- Tooltip -->
         <ul class="flex flex-col">
             <div class="flex w-full justify-center">
@@ -1120,12 +1169,15 @@ const handlePagina = (i) => {
         <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
             <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ tarefaInput.titulo }}</h1>
             <ul>
+                <li @click="showModalOpcoes = false; handleVerDescricao(tarefaInput.descricao)" class="mb-2 bg-verde py-1 px-2 rounded">
+                    Ver descricao
+                </li>
                 <div v-if="tarefaInput.status == 'pendente'">
                     <li v-if="tarefaInput.estoque_id && tarefaInput.maquina_id"
-                        @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, tarefaInput.maquina_utilizada, tarefaInput.maquina_id, tarefaInput.estoque_nome, tarefaInput.estoque_id, tarefaInput.estoque_quantidade_correcao, tarefaInput.estoque_grandeza, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
+                        @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, tarefaInput.maquina_utilizada, tarefaInput.maquina_id,  tarefaInput.estoque_id, tarefaInput.estoque_nome, tarefaInput.estoque_quantidade_correcao, tarefaInput.estoque_grandeza, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
                         class="bg-verde py-1 px-2 rounded mb-2">Marcar completa &nbsp ✔</li>
                     <li v-if="tarefaInput.estoque_id && !tarefaInput.maquina_id"
-                        @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, null, null, tarefaInput.estoque_nome, tarefaInput.estoque_id, tarefaInput.estoque_quantidade_correcao, tarefaInput.estoque_grandeza, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
+                        @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, null, null, tarefaInput.estoque_id, tarefaInput.estoque_nome, tarefaInput.estoque_quantidade_correcao, tarefaInput.estoque_grandeza, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
                         class="bg-verde py-1 px-2 rounded mb-2">Marcar completa &nbsp ✔</li>
                     <li v-if="tarefaInput.maquina_id && !tarefaInput.estoque_id"
                         @click="showModalOpcoes = false; handleModalConfirmar(tarefaInput.id, tarefaInput.titulo, tarefaInput.descricao, tarefaInput.funcionario_nome, tarefaInput.maquina_utilizada, tarefaInput.maquina_id, null, null, null, null, tarefaInput.prazo, tarefaInput.prazo_hora, tarefaInput.status)"
@@ -1139,9 +1191,7 @@ const handlePagina = (i) => {
                         Deletar
                     </li>
                 </div>
-                <li @click="handleDeletarTarefa(tarefaInput.id, tarefaInput.titulo)" class="bg-vermelho py-1 px-2 rounded">
-                    Ver descricao
-                </li>
+                
             </ul>
         </OpcoesMobile>
 

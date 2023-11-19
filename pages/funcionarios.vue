@@ -35,21 +35,55 @@ const showModalEditar = ref()
 const showModalDeletar = ref()
 const showModalPagarFuncionario = ref()
 const showModalOpcoes = ref()
+const showModalDeletarNegado = ref()
 const tipoOrdenar = ref();
 const reverterOrdenar = ref()
 const limitarForm = ref()
 const showPreencha = ref()
 const safraResponse = ref();
 const emprestimoResponse = ref();
+const mainElement = ref();
+
+
+const alert = ref()
+const alertMessage = ref()
+const loadingWidth = ref(100)
+
+const showAlert = (message) => {
+    alert.value = true
+    alertMessage.value = message
+
+    const interval = setInterval(function () {
+
+        if (loadingWidth.value <= 0 || !alert.value) {
+            // Clear the interval when the timer reaches 0
+            clearInterval(interval);
+            alert.value = false
+            loadingWidth.value = 100;
+        }
+        // Decrease the width
+        loadingWidth.value -= 2;
+
+        // Update the width of the timer bar
+        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+
+        // Check if the width has reached 0
+       
+    }, 80);
+
+
+}
 
 if (process.client) {
     funcionariosResponse.value = await supabase.from("funcionarios").select().match({ user_id: user.value.id })
     safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
+    mainElement.value = document.getElementById("main");
+
 }
 
 
 // Get the element with the id "main"
-const mainElement = ref(document.getElementById("main"));
 
 
 
@@ -98,12 +132,19 @@ const handleNovoFuncionario = () => {
     funcionarioInput.data_pagamento_salario = ""
     funcionarioInput.safra_id = ""
 }
-const abrirModalDeletarFuncionario = (id, nome) => {
+const abrirModalDeletarFuncionario = async (id, nome) => {
     limitarForm.value = true
     showModalOpcoes.value = false
-    showModalDeletar.value = true
     funcionarioInput.id = id
     funcionarioInput.nome = nome
+
+    let testarChaveEstrangeira = await supabase.from("tarefas").select('funcionario_id').eq('funcionario_id', id)
+
+    if (testarChaveEstrangeira.data[0]) {
+        showModalDeletarNegado.value = true
+    } else {
+        showModalDeletar.value = true
+    }
 }
 const abrirModalPagarFuncionario = (id, nome) => {
     limitarForm.value = true
@@ -161,6 +202,7 @@ const handleSubmitNovoFuncionario = async () => {
             showModalAdicionar.value = false
         }
         showPreencha.value = false
+        showAlert("Funcionário adicionado com sucesso!")
     } else {
         showPreencha.value = true
     }
@@ -213,6 +255,8 @@ const handleSubmitEditarFuncionario = async () => {
             funcionarioInput.data_pagamento_salario = ""
         showModalEditar.value = false
         showPreencha.value = false
+        showAlert("Funcionário editado com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -279,6 +323,8 @@ const handleSubmitPagarFuncionario = async () => {
 
         showModalPagarFuncionario.value = false
         showPreencha.value = false
+        showAlert("Pagamento realisado com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -444,6 +490,11 @@ function generateRandomString(length) {
 
 <template>
     <div v-if="screen === 'desktop'">
+        <Transition name="alert">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <div>
             <!-- Título -->
             <div class="flex flex-row items-center absolute ml-[-4%] ">
@@ -716,6 +767,13 @@ function generateRandomString(length) {
             </ModalDeletarFuncionario>
         </Transition>
         <Transition name="pop">
+                <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
+                    <h2 class="text-center text-claro text-2xl font-semibold">Este funcionário está registrado em uma tarefa, não
+                        pode ser
+                        deletado.</h2>
+                </ModalDeletarNegado>
+            </Transition>
+        <Transition name="pop">
             <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="mainElement.style.overflow = 'auto';showModalPagarFuncionario = false"
                 @pagarFuncionario="handleSubmitPagarFuncionario">
                 <Transition name="pop">
@@ -757,7 +815,11 @@ function generateRandomString(length) {
         </Transition>
     </div>
     <div v-if="screen === 'mobile'">
-
+        <Transition name="alert_mobile">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <button @click="handleNovoFuncionario"
             class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verdeself-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
             Novo funcionário
@@ -997,14 +1059,14 @@ function generateRandomString(length) {
                 <div v-if="!safraResponse"></div>
                 <div v-else-if="safraResponse.data != ''">
 
-                    <div class="relative z-0 w-full mb-6 group">
+                    <div class="relative z-0 w-full mt-6 group">
 
 
                         <label
-                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-12  top-7 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 ">
                             De qual safra será descontado o valor do pagamento?</label>
                         <select v-model="funcionarioInput.safra_id"
-                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            class="block mt-4 py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde translate-y-8 mb-6  border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
                             <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
                                 v-bind:value=safra.id>{{
                                     safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
@@ -1015,6 +1077,13 @@ function generateRandomString(length) {
                 </div>
             </ModalPagarFuncionario>
         </Transition>
+        <Transition name="pop">
+                <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
+                    <h2 class="text-center text-claro text-2xl font-semibold">Este funcionário está registrado em uma tarefa, não
+                        pode ser
+                        deletado.</h2>
+                </ModalDeletarNegado>
+            </Transition>
 
             <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
                 <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{funcionarioInput.nome}}</h1>

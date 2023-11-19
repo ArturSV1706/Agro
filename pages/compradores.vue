@@ -41,6 +41,37 @@ const showPreencha = ref()
 const safraResponse = ref();
 const emprestimoResponse = ref();
 
+const alert = ref()
+const alertMessage = ref()
+const loadingWidth = ref(100)
+
+const showAlert = (message) => {
+    alert.value = true
+    alertMessage.value = message
+
+    const interval = setInterval(function () {
+
+        if (loadingWidth.value <= 0 || !alert.value) {
+            // Clear the interval when the timer reaches 0
+            clearInterval(interval);
+            alert.value = false
+            loadingWidth.value = 100;
+        }
+        // Decrease the width
+        loadingWidth.value -= 2;
+
+        // Update the width of the timer bar
+        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+
+        // Check if the width has reached 0
+       
+    }, 80);
+
+
+}
+
+
 if (process.client) {
     compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id })
     // safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
@@ -151,6 +182,7 @@ const handleSubmitNovoComprador = async () => {
                 showModalAdicionar.value = false
         }
         showPreencha.value = false
+        showAlert("Comprador adicionado com sucesso!")
     } else {
         showPreencha.value = true
     }
@@ -184,6 +216,7 @@ const handleSubmitEditarComprador = async () => {
             compradorInput.qnt_reservada_cultivo = "",
             showModalEditar.value = false
         showPreencha.value = false
+        showAlert("Comprador editado com sucesso!")
     } else {
         showPreencha.value = true
     }
@@ -348,6 +381,11 @@ function generateRandomString(length) {
 
 <template>
     <div v-if="screen === 'desktop'">
+        <Transition name="alert">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <div>
             <!-- Título -->
             <div class="flex flex-row items-center absolute ml-[-4%] ">
@@ -606,6 +644,11 @@ function generateRandomString(length) {
 
     </div>
     <div v-if="screen === 'mobile'">
+        <Transition name="alert_mobile">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <button @click="handleNovoComprador"
             class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verdeself-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
             Novo comprador

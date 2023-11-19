@@ -31,6 +31,36 @@ const safraResponse = ref();
 const abastecerCombustivelResponse = ref();
 const emprestimoResponse = ref();
 
+const alert = ref()
+const alertMessage = ref()
+const loadingWidth = ref(100)
+
+const showAlert = (message) => {
+    alert.value = true
+    alertMessage.value = message
+
+    const interval = setInterval(function () {
+
+        if (loadingWidth.value <= 0 || !alert.value) {
+            // Clear the interval when the timer reaches 0
+            clearInterval(interval);
+            alert.value = false
+            loadingWidth.value = 100;
+        }
+        // Decrease the width
+        loadingWidth.value -= 2;
+
+        // Update the width of the timer bar
+        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+
+        // Check if the width has reached 0
+       
+    }, 80);
+
+
+}
+
 // Get the element with the id "main"
 const mainElement = ref(document.getElementById("main"));
 
@@ -42,7 +72,7 @@ const abrirOpcoesMobile = (categoria,
     is_pago,
     valor_parcelas,
     num_parcelas,
-    data_pagamento_parcelas, id) => {
+    data_pagamento_parcelas, id, status) => {
     // Check if the element exists before modifying it
     if (mainElement) {
         // Disable overflow by setting the overflow CSS property to "hidden"
@@ -57,6 +87,7 @@ const abrirOpcoesMobile = (categoria,
     maquinaInput.num_parcelas = num_parcelas
     maquinaInput.data_pagamento_parcelas = data_pagamento_parcelas
     maquinaInput.id = id
+    maquinaInput.status = status
 }
 const abrirOpcoesMobileCombustivel = (id, quantidade, nome) => {
     // Check if the element exists before modifying it
@@ -149,8 +180,7 @@ const handleDeleteMaquina = async (id, modelo, ano, status) => {
     let testarChaveEstrangeira = await supabase.from("tarefas").select('maquina_utilizada').eq('maquina_utilizada', id)
 
 
-
-    if (status == "disponivel") {
+    if (status === "disponivel") {
         if (testarChaveEstrangeira.data[0]) {
             showModalDeletarNegado.value = true
         } else {
@@ -177,6 +207,7 @@ const handleSubmitDeleteMaquina = async () => {
     maquinaInput.modelo = ""
     maquinaInput.ano = ""
     showModalDeletar.value = false
+    showAlert("Máquina deletada com sucesso!")
 }
 
 const handleNovoCombustivel = () => {
@@ -218,6 +249,8 @@ const handleSubmitDeletarCombustivel = async () => {
 
     await supabase.from("combustiveis").delete().eq('id', combustivelInput.id)
     showModalDeletarCombustivel.value = false
+    showAlert("Combustível deletado com sucesso!")
+
     if (process.client) {
         combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
     }
@@ -281,6 +314,8 @@ const handleSubmitAbastecer = async () => {
 
         showModalAbastecer.value = false
         showPreencha.value = false
+        showAlert("Abastecimento realizado com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -346,6 +381,8 @@ const handleSubmitManutencao = async () => {
 
         showModalManutencao.value = false
         showPreencha.value = false
+        showAlert("Manutenção adicionada com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -387,6 +424,8 @@ const handleSubmitNovoMaquina = async () => {
             maquinaInput.num_parcelas = ""
         showModalAdicionar.value = false
         showPreencha.value = false
+        showAlert("Máquina adicionada com sucesso!")
+
 
     } else {
         showPreencha.value = true
@@ -455,6 +494,8 @@ const handleSubmitPagarParcela = async () => {
 
         showModalPagarParcela.value = false
         showPreencha.value = false
+        showAlert("Pagamento realizado com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -480,6 +521,8 @@ const handleSubmitNovoCombustivel = async (event) => {
             combustivelInput.nome = "",
             combustivelInput.quantidade = "",
             showModalAdicionarCombustivel.value = false
+            showAlert("Combustível adicionado com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -555,6 +598,8 @@ const handleSubmitReporCombustivel = async () => {
 
         showModalReporCombustivel.value = false
         showPreencha.value = false
+        showAlert("Combustível adicionado com sucesso!")
+
     } else {
         showPreencha.value = true
     }
@@ -611,6 +656,8 @@ const handleSubmitEditarMaquina = async () => {
             maquinaInput.num_parcelas = ""
         showModalEditar.value = false
         showPreencha.value = false
+        showAlert("Máquina editada com sucesso!")
+
 
     } else {
         showPreencha.value = true
@@ -775,6 +822,11 @@ const valorCombustivelFormatar = (valor) => {
 </script>
 <template>
     <div v-if="screen === 'desktop'">
+        <Transition name="alert">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica  ">Máquinas | </h1>
@@ -1423,6 +1475,11 @@ const valorCombustivelFormatar = (valor) => {
         </Transition>
     </div>
     <div v-if="screen === 'mobile'">
+        <Transition name="alert_mobile">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <!-- Divisor -->
         <div class="flex items-center mb-4">
             <p class="whitespace-nowrap text-escuro font-bold ">Máquinas 🚜 </p>
@@ -1437,7 +1494,7 @@ const valorCombustivelFormatar = (valor) => {
 
         <div v-for="maquina in maquinasResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
             :key="maquina.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]"
-            @click="abrirOpcoesMobile(maquina.categoria, maquina.modelo, maquina.ano, maquina.is_pago, maquina.valor_parcelas, maquina.num_parcelas, maquina.data_parcelas, maquina.id)"
+            @click="abrirOpcoesMobile(maquina.categoria, maquina.modelo, maquina.ano, maquina.is_pago, maquina.valor_parcelas, maquina.num_parcelas, maquina.data_parcelas, maquina.id, maquina.status)"
             >
             <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center ">
 
@@ -1878,7 +1935,7 @@ const valorCombustivelFormatar = (valor) => {
                             class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
                             De qual safra será descontado o valor do pagamento?</label>
                         <select v-model="maquinaInput.safra_id"
-                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 translate-y-6 mb-6 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
                             <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
                                 v-bind:value=safra.id>{{
                                     safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
@@ -1916,16 +1973,16 @@ const valorCombustivelFormatar = (valor) => {
                             placeholder=" " required>
                         <label for="floating_email"
                             class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Custo
-                            de compra - (colocar 0 se não for uma compra)</label>
+                            de compra - (0 se não for uma compra)</label>
                     </div>
                     <div class="relative z-0 w-full mb-6 group">
 
 
                         <label
-                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
+                            class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-1  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
                             De qual safra será descontado o valor da compra</label>
                         <select v-model="combustivelInput.safra_id"
-                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                            class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent translate-y-8 mb-6 bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
                             <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
                                 v-bind:value=safra.id>{{
                                     safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"
@@ -2007,7 +2064,7 @@ const valorCombustivelFormatar = (valor) => {
                         class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-1  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">
                         À qual safra será adicionado o valor da manutenção?</label>
                     <select v-model="combustivelInput.safra_id"
-                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                        class="block py-2.5 px-0 w-full text-sm text-claro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 translate-y-6 mb-6 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
                         <option class="bg-verde font-semibold" v-for="safra in safraResponse.data" :key="safra.id"
                             v-bind:value=safra.id>{{
                                 safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"

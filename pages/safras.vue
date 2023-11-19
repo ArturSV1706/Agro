@@ -44,6 +44,36 @@ const showModalOpcoes = ref()
 const limitarForm = ref()
 const showPreencha = ref()
 
+const alert = ref()
+const alertMessage = ref()
+const loadingWidth = ref(100)
+
+const showAlert = (message) => {
+    alert.value = true
+    alertMessage.value = message
+
+    const interval = setInterval(function () {
+
+        if (loadingWidth.value <= 0 || !alert.value) {
+            // Clear the interval when the timer reaches 0
+            clearInterval(interval);
+            alert.value = false
+            loadingWidth.value = 100;
+        }
+        // Decrease the width
+        loadingWidth.value -= 2;
+
+        // Update the width of the timer bar
+        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+
+        // Check if the width has reached 0
+       
+    }, 80);
+
+
+}
+
 
 
 
@@ -156,6 +186,7 @@ const handleSubmitNovaSafra = async () => {
             safraInput.despeza = "";
             safraInput.receita_estimada = "";
             showPreencha.value = false
+            showAlert("Safra Adicionada com sucesso!")
 
             showModalNovo.value = false
             if (process.client) {
@@ -212,6 +243,7 @@ const handlePagarTaxaSubmit = async () => {
             safraInput.quantidade = "",
             safraInput.despeza = "",
             safraInput.receita_estimada = ""
+            showAlert("Taxa de aluguel/arrendo paga com sucesso")
         showPreencha.value = false
 
         showModalPagarTaxa.value = false
@@ -231,6 +263,7 @@ const handleDeletarSafra = async () => {
     }
 
     showModalDeletar.value = false
+    showAlert("Safra deletada com sucesso!")
 }
 const abrirModalEncerrarSafra = (id, cultivo, inicio, fim) => {
     limitarForm.value = true
@@ -272,7 +305,7 @@ const handleEncerrarSafra = async () => {
     }
 
     showModalEncerrar.value = false
-
+    showAlert("Safra encerrada com sucessso!")
 
 
 }
@@ -296,6 +329,12 @@ const limitarTaxa = (valor) => {
 
 <template>
     <div v-if="screen === 'desktop'" class="overflow-y-hidden">
+
+        <Transition name="alert">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <!-- Título -->
         <div class="flex flex-row items-center absolute ml-[-4%] ">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica ">Safras | </h1>
@@ -327,12 +366,7 @@ const limitarTaxa = (valor) => {
                         <div class="w-full flex justify-end ">
                             <div @click="abrirModalDeletarSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim)"
                                 class="group/alerta flex  bg-vermelho text-claro cursor-pointer rounded-tr-xl h-9 items-center transition-all hover:bg-white hover:text-vermelho ">
-                                <button class=" px-3  font-semibold ">Deletar safra</button>
-                                <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"
-                                    class="transition-all fill-claro scale-50  group-hover/alerta:fill-vermelho">
-                                    <path
-                                        d="M2 42 24 4l22 38Zm5.2-3h33.6L24 10Zm17-2.85q.65 0 1.075-.425.425-.425.425-1.075 0-.65-.425-1.075-.425-.425-1.075-.425-.65 0-1.075.425Q22.7 34 22.7 34.65q0 .65.425 1.075.425.425 1.075.425Zm-1.5-5.55h3V19.4h-3Zm1.3-6.1Z" />
-                                </svg>
+                                
                             </div>
                         </div>
                         <div
@@ -398,15 +432,7 @@ const limitarTaxa = (valor) => {
                     </div>
                     <div v-else v-for="safra in safrasFinalizadasResponse.data" :key="safra.id">
                         <div class="w-full flex justify-end ">
-                            <div @click="abrirModalDeletarSafra(safra.id, safra.safra, safra.data_inicio, safra.data_fim)"
-                                class="group/alerta flex  bg-vermelho text-claro cursor-pointer rounded-tr-xl h-9 items-center transition-all hover:bg-white hover:text-vermelho ">
-                                <button class=" px-3  font-semibold ">Deletar safra</button>
-                                <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"
-                                    class="transition-all fill-claro scale-50  group-hover/alerta:fill-vermelho">
-                                    <path
-                                        d="M2 42 24 4l22 38Zm5.2-3h33.6L24 10Zm17-2.85q.65 0 1.075-.425.425-.425.425-1.075 0-.65-.425-1.075-.425-.425-1.075-.425-.65 0-1.075.425Q22.7 34 22.7 34.65q0 .65.425 1.075.425.425 1.075.425Zm-1.5-5.55h3V19.4h-3Zm1.3-6.1Z" />
-                                </svg>
-                            </div>
+                            
                         </div>
                         <div
                             class="flex  px-12 items-end justify-between  w-full h-[130px] bg-white rounded-xl rounded-r-none mb-5">
@@ -639,6 +665,12 @@ const limitarTaxa = (valor) => {
     </div>
     <div v-if="screen === 'mobile'" class="overflow-y-hidden">
 
+        <Transition name="alert_mobile">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
+
         <button @click="abrirModalNovaSafra"
             class="self-start bg-escuro px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde">
             Nova Safra
@@ -704,11 +736,13 @@ const limitarTaxa = (valor) => {
                 <div class="flex items-center justify-center space-x-2 rounded-b">
                     <button @click="abrirModalEncerrarSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim)"
                         data-modal-toggle="defaultModal" type="button"
-                        class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
+                        class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">
                         Encerrar Safra</button>
-                    <button @click="abrirModalDeletarSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim)"
+                    <button @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"
                         data-modal-toggle="defaultModal" type="button"
-                        class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">Deletar</button>
+                        class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
+                        Pagar taxa</button>
+                    
                 </div>
             </div>
         </div>
@@ -753,8 +787,7 @@ const limitarTaxa = (valor) => {
                     <button @click="redirectSafra(safra.id)" data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
                         Ver Relatório</button>
-                    <button @click="abrirModalDeletarSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim, safra.cultivo)" data-modal-toggle="defaultModal" type="button"
-                        class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">Deletar</button>
+                    
                 </div>
             </div>
         </div>
@@ -966,10 +999,7 @@ const limitarTaxa = (valor) => {
                     class="bg-verde py-1 px-2 rounded mb-2">
                     Fazer pagamento
                 </li>
-                <li @click="abrirModalDeletarFuncionario(funcionarioInput.id, funcionarioInput.nome)"
-                    class="bg-vermelho py-1 px-2 rounded">
-                    Deletar
-                </li>
+
             </ul>
         </OpcoesMobile>
 
