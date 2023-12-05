@@ -201,7 +201,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                             </span>
                             <span class="flex w-full ml-3 items-center">
                                 <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
-                                    safra.quantidade_real.toFixed(2) }}
+                                    safra.quantidade_max.toFixed(2) }}
                                     <span class="sm:text-[11px] 2xl:text-sm text-escuro font-medium">({{
                                         formatar(safra.grandeza) }})</span>
 
@@ -210,8 +210,8 @@ const calcMargemDeLucro = (receita, lucro) => {
                             </span>
                             <span class="flex w-full ml-3 self-center justify-center">
                                 <h1
-                                    :class="`mr-4 sm:text-sm 2xl:text-lg text-center font-bold text-${corLucro(safra.quantidade_real - safra.quantidade_estimada)}`">
-                                    {{ calcMargemDeErro(safra.quantidade_estimada, safra.quantidade_real) }}</h1>
+                                    :class="`mr-4 sm:text-sm 2xl:text-lg text-center font-bold text-${corLucro(safra.quantidade_max - safra.quantidade_estimada)}`">
+                                    {{ calcMargemDeErro(safra.quantidade_estimada, safra.quantidade_max) }}</h1>
                             </span>
                         </div>
                     </Transition>
@@ -228,7 +228,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                                 <div class="h-full sm:w-1 2xl:w-2 bg-verde"></div>
                             </div>
                             <div class="flex flex-col justify-evenly pl-1">
-                                <h1 class="sm:text-xl 2xl:text-3xl text-escuro font-bold">{{ safra.quantidade_real }}</h1>
+                                <h1 class="sm:text-xl 2xl:text-3xl text-escuro font-bold">{{ safra.quantidade_max }}</h1>
                                 <h2 class="sm:text-sm 2xl:text-lg text-escuro font-semibold">Colheita total</h2>
                                 <h3 class="text-verde sm:text-[11px] 2xl:text-sm">Em |{{ " " + formatar(safra.grandeza) }}
                                 </h3>
@@ -252,7 +252,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                                 <div class="h-full sm:w-1 2xl:w-2 bg-verde"></div>
                             </div>
                             <div class="flex flex-col justify-evenly pl-1">
-                                <h1 class="sm:text-xl 2xl:text-3xl text-escuro font-bold">{{ (safra.quantidade_real /
+                                <h1 class="sm:text-xl 2xl:text-3xl text-escuro font-bold">{{ (safra.quantidade_max /
                                     safra.area).toFixed(2) }}</h1>
                                 <h2 class="sm:text-sm 2xl:text-lg text-escuro font-semibold">Produtividade</h2>
                                 <h3 class="text-verde sm:text-[11px] 2xl:text-sm">{{ formatar(safra.grandeza) + " de " +
@@ -273,7 +273,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                             </div>
                             <div class="flex flex-col justify-evenly pl-1">
                                 <h1 class="sm:text-xl 2xl:text-3xl text-escuro font-bold">{{
-                                    paraReal(safra.receita_bruta / safra.quantidade_real) }}</h1>
+                                    paraReal(safra.receita_bruta / safra.quantidade_max) }}</h1>
                                 <h2 class="sm:text-sm 2xl:text-lg text-escuro font-semibold">Preço Médio</h2>
                                 <h3 class="text-verde sm:text-[11px] 2xl:text-sm">Por {{ formatar(safra.grandeza) }}</h3>
                             </div>
@@ -342,7 +342,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                                         <h1 class="text-claro sm:text-[9px] 2xl:text-sm">Margem de lucro</h1>
                                     </div>
                                     <div class="flex flex-col items-center">
-                                        <h1 class="sm:text-sm 2xl:text-xl text-claro font-bold">{{ (safra.quantidade_real /
+                                        <h1 class="sm:text-sm 2xl:text-xl text-claro font-bold">{{ (safra.quantidade_max /
                                             safra.area).toFixed(2) }}</h1>
                                         <h1 class="text-claro sm:text-[9px] 2xl:text-sm">Produtividade</h1>
                                     </div>
@@ -367,7 +367,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                                     <h1 class="text-claro sm:text-[9px] 2xl:text-sm">Margem de lucro</h1>
                                 </div>
                                 <div class="flex flex-col items-center">
-                                    <h1 class="sm:text-sm 2xl:text-xl text-claro font-bold">{{ (safraAntiga.quantidade_real
+                                    <h1 class="sm:text-sm 2xl:text-xl text-claro font-bold">{{ (safraAntiga.quantidade_max
                                         /
                                         safraAntiga.area).toFixed(2) }}</h1>
                                     <h1 class="text-claro sm:text-[9px] 2xl:text-sm">Produtividade</h1>
@@ -395,51 +395,53 @@ const calcMargemDeLucro = (receita, lucro) => {
 
         <!-- Estatisticas -->
         <Loader v-if="!safraResponse" />
-        <div v-else v-for="safra in safraResponse.data" :key="safra.id">
+        <div class="text-escuro" v-else v-for="safra in safraResponse.data" :key="safra.id">
             <!--  -->
             <div class="flex justify-between mb-4">
                 <div class="w-[45%] aspect-square bg-[#B9C2B3] rounded-2xl">
                     <div class="flex flex-col justify-evenly pl-3 py-3 h-full">
                         <h2 class="sm:text-sm 2xl:text-lg text-escuro font-semibold">Colheita total</h2>
-                        <h1 class="text-2xl text-verde font-bold">{{ safra.quantidade_real }}</h1>
+                        <h1 class="text-2xl text-verde font-bold">{{ safra.quantidade_max }}</h1>
                         <h3 class="text-escuro text-xs font-semibold">Em |{{ " " + formatar(safra.grandeza) }}</h3>
                     </div>
                 </div>
                 <div class="w-[45%] aspect-square bg-[#B9C2B3] rounded-2xl">
                     <div class="flex flex-col justify-evenly pl-3 py-3 h-full">
-                        <h2 class="text-sm text-escuro font-semibold">Aluguel do terreno</h2>
-                        <h1 class="text-2xl text-verde font-bold">{{ safra.taxa_arrendo * safra.area }}</h1>
-                        <h3 class="text-escuro text-xs font-semibold">Em |{{ safra.taxa_arrendo + " " +
-                            formatarSigla(safra.grandeza) + " por Ha" }}</h3>
+                        <h2 class="text-md text-escuro font-semibold">Produtividade</h2>
+                        <h1 class="text-2xl text-verde font-bold">{{ (safra.quantidade_max / safra.area).toFixed(2) }}</h1>
+                        <h3 class="text-escuro text-xs font-semibold">{{ formatarSigla(safra.grandeza) + " de " +
+                            safra.cultivo + " por Ha " }}</h3>
                     </div>
                 </div>
+                
             </div>
             <!--  -->
             <div class="flex justify-between mb-4">
                 <div class="w-[45%] aspect-square bg-[#B9C2B3] rounded-2xl">
                     <div class="flex flex-col justify-evenly pl-3 py-3 h-full">
-                        <h2 class="text-md text-escuro font-semibold">Produtividade</h2>
-                        <h1 class="text-2xl text-verde font-bold">{{ (safra.quantidade_real / safra.area).toFixed(2) }}</h1>
-                        <h3 class="text-escuro text-xs font-semibold">{{ formatarSigla(safra.grandeza) + " de " +
-                            safra.cultivo + " por Ha " }}</h3>
-                    </div>
-                </div>
-                <div class="w-[45%] aspect-square bg-[#B9C2B3] rounded-2xl">
-                    <div class="flex flex-col justify-evenly pl-3 py-3 h-full">
                         <h2 class="text-md text-escuro font-semibold">Preço médio</h2>
-                        <h1 class="text-2xl text-verde font-bold">{{ paraReal(safra.receita_bruta / safra.quantidade_real)
+                        <h1 class="text-xl text-verde font-bold">{{ paraReal(safra.receita_bruta / safra.quantidade_max)
                         }}
                         </h1>
                         <h3 class="text-escuro text-xs font-semibold">Por {{ formatar(safra.grandeza) }}</h3>
                     </div>
                 </div>
+                <div class="w-[45%] aspect-square bg-[#B9C2B3] rounded-2xl">
+                    <div class="flex flex-col justify-evenly pl-3 py-3 h-full">
+                        <h2 class="text-sm text-escuro font-semibold">Aluguel do terreno</h2>
+                        <h1 class="text-sm text-vermelho font-bold">{{ paraReal((safra.receita_bruta / safra.quantidade_max) * safra.taxa_arrendo) }}</h1>
+                        <h3 class="text-escuro text-xs font-semibold">{{ safra.taxa_arrendo + " " +
+                            formatar(safra.grandeza) }}</h3>
+                    </div>
+                </div>
+                
             </div>
             <!--  -->
             <div class="flex justify-between mb-4">
                 <div class="w-[45%] aspect-square bg-[#B9C2B3] rounded-2xl">
                     <div class="flex flex-col justify-evenly pl-3 py-3 h-full">
                         <h2 class="text-md text-escuro font-semibold">Receita bruta</h2>
-                        <h1 class=" text-verde_claro text-sm font-bold">{{ paraReal(safra.receita_bruta * 10) }}</h1>
+                        <h1 class=" text-verde_claro text-sm font-bold">{{ paraReal(safra.receita_bruta) }}</h1>
                         <h3 class="text-escuro text-xs font-semibold">Todas as entradas</h3>
                     </div>
                 </div>
@@ -496,13 +498,13 @@ const calcMargemDeLucro = (receita, lucro) => {
                 <div class="h-1 bg-vermelho w-full"></div>
             </div>
             <div
-                class="flex flex-col justify-evenly min-w-[70%] h-3/5 bg-vermelho bg-opacity-40 border-2 border-vermelho rounded-2xl">
-                <span class="flex w-full ml-3 items-center">
+                class="flex p-2  flex-col justify-evenly min-w-[100%] h-3/5 bg-vermelho bg-opacity-40 border-2 border-vermelho rounded-xl">
+                <span class="flex w-full  items-center justify-evenly">
                     <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
                         paraReal(safra.despeza_estimada) }}</h1>
                     <h2 class="sm:text-sm 2xl:text-lg text-vermelho font-bold">Estimado</h2>
                 </span>
-                <span class="flex w-full ml-3 items-center">
+                <span class="flex w-full items-center justify-evenly">
                     <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
                         paraReal(safra.despeza_real) }}</h1>
                     <h2 class="sm:text-sm 2xl:text-lg text-vermelho font-bold">Real</h2>
@@ -519,13 +521,13 @@ const calcMargemDeLucro = (receita, lucro) => {
                 <div class="h-1 bg-verde w-full"></div>
             </div>
             <div
-                class="flex flex-col justify-evenly min-w-[70%] h-3/5 bg-verde bg-opacity-40 border-2 border-verde rounded-2xl">
-                <span class="flex w-full ml-3 items-center">
+                class="flex p-2 flex-col justify-evenly min-w-[100%] h-3/5 bg-verde bg-opacity-40 border-2 border-verde rounded-xl">
+                <span class="flex w-full  items-center justify-evenly">
                     <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
                         paraReal(safra.lucro_estimado) }}</h1>
                     <h2 class="sm:text-sm 2xl:text-lg text-verde font-bold">Estimado</h2>
                 </span>
-                <span class="flex w-full ml-3 items-center">
+                <span class="flex w-full items-center justify-evenly" >
                     <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
                         paraReal(safra.lucro_real) }}</h1>
                     <h2 class="sm:text-sm 2xl:text-lg text-verde font-bold">Real</h2>
@@ -543,8 +545,8 @@ const calcMargemDeLucro = (receita, lucro) => {
             </div>
 
             <div
-                class="flex flex-col justify-evenly min-w-[70%] h-3/5 bg-azul bg-opacity-40 border-2 border-azul rounded-2xl">
-                <span class="flex w-full ml-3 items-center">
+                class="flex p-2 flex-col justify-evenly min-w-[100%] h-3/5 bg-azul bg-opacity-40 border-2 border-azul rounded-xl">
+                <span class="flex w-full items-center justify-evenly">
                     <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
                         safra.quantidade_estimada.toFixed(2) }}
                         <span class="text-[11px] text-escuro font-medium">({{
@@ -552,9 +554,9 @@ const calcMargemDeLucro = (receita, lucro) => {
                     </h1>
                     <h2 class="text-azul font-bold">Estimado</h2>
                 </span>
-                <span class="flex w-full ml-3 items-center">
+                <span class="flex w-full  items-center justify-evenly">
                     <h1 class="mr-4 sm:text-md 2xl:text-2xl font-bold text-escuro">{{
-                        safra.quantidade_real.toFixed(2) }}
+                        safra.quantidade_max.toFixed(2) }}
                         <span class="text-[11px] text-escuro font-medium">({{
                             formatar(safra.grandeza) }})</span>
 
@@ -565,8 +567,8 @@ const calcMargemDeLucro = (receita, lucro) => {
             </div>
             <span class="flex w-full ml-3 self-center justify-center">
                 <h1
-                    :class="`mr-4 text-xs text-center font-bold text-${corLucro(safra.quantidade_real - safra.quantidade_estimada)}`">
-                    {{ calcMargemDeErro(safra.quantidade_real, safra.quantidade_estimada) }}</h1>
+                    :class="`mr-4 text-xs text-center font-bold text-${corLucro(safra.quantidade_max - safra.quantidade_estimada)}`">
+                    {{ calcMargemDeErro(safra.quantidade_max, safra.quantidade_estimada) }}</h1>
             </span>
         </div>
         <!-- divisoria -->
@@ -596,10 +598,10 @@ const calcMargemDeLucro = (receita, lucro) => {
                         <h1 :class=" `text-xs text-${corLucro(safra.lucro_real)} font-bold` ">{{
                             paraReal(safra.lucro_real)
                             }} &nbsp</h1>
-                        <h1 class="text-xs stext-claro">| Lucro</h1>
+                        <h1 class="text-xs text-claro">| Lucro</h1>
                     </div>
                     <div class="flex">
-                        <h1 class="text-xs text-claro font-bold">{{ (safra.quantidade_real /
+                        <h1 class="text-xs text-claro font-bold">{{ (safra.quantidade_max /
                             safra.area).toFixed(2) }} &nbsp</h1>
                         <h1 class="text-xs text-claro">| Produtividade</h1>
                     </div>
@@ -623,7 +625,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                         <h1 class="text-xs text-claro">| Lucro</h1>
                     </div>
                     <div class="flex">
-                        <h1 class="text-xs text-claro font-bold">{{ (safraAntiga.quantidade_real /
+                        <h1 class="text-xs text-claro font-bold">{{ (safraAntiga.quantidade_max /
                             safraAntiga.area).toFixed(2) }} &nbsp</h1>
                         <h1 class="text-xs text-claro">| Produtividade</h1>
                     </div>

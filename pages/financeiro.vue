@@ -56,6 +56,8 @@ const showModalOpcoes = ref()
 const limitarForm = ref()
 const showPreencha = ref()
 const showLimit = ref()
+const mainElement = ref(document.getElementById("main"));
+
 
 const alert = ref()
 const alertMessage = ref()
@@ -95,7 +97,7 @@ usuarioResponse.value = await supabase.from("usuario").select()
 // ----//----
 if (process.client) {
     safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id })
-    const mainElement = ref(document.getElementById("main"));
+    mainElement.value = document.getElementById("main");
 }
 
 
@@ -120,8 +122,8 @@ const abrirOpcoesMobile = (id, tipo, valor, produto, possui_nota) => {
 
 
 const handleSafraSelecioanda = async () => {
-    if (mainElement) {
-        mainElement.style.overflow = 'auto'
+    if (mainElement && screen.value === 'mobile') {
+        mainElement.value.style.overflow = "auto";
     }
     showFluxo.value = true
     if (process.client) {
@@ -722,7 +724,7 @@ function onFileSelected(event) {
                         <div class="flex h-[40px] self-center">
                             <div v-if="!safraResponse"></div>
                             <select v-else v-model="safra_escolhida"
-                                class="  px-0 text-sm text-claro bg-transparent bg-opacity-90 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
+                                class="  w-[13vw] text-sm text-claro bg-transparent bg-opacity-90 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
                                 <option class='bg-verde font-bold' v-for="safra in safraResponse.data" :key="safra.id"
                                     v-bind:value=safra.id>{{
                                         safra.cultivo + " (" + safra.data_inicio + " - " + safra.data_fim + ")"

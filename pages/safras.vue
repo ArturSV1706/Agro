@@ -20,7 +20,7 @@ if (process.client) {
 }
 
 // Get the element with the id "main"
-var mainElement = document.getElementById("main");
+const mainElement = ref() 
 
 
 
@@ -64,11 +64,11 @@ const showAlert = (message) => {
         loadingWidth.value -= 2;
 
         // Update the width of the timer bar
-        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
-        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBar").style.width = loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width = loadingWidth.value + "%";
 
         // Check if the width has reached 0
-       
+
     }, 80);
 
 
@@ -81,11 +81,27 @@ const showAlert = (message) => {
 if (process.client) {
     safrasAtivasResponse.value = await supabase.from("safras").select().order('data_inicio', { ascending: false }).match({ user_id: user.value.id, status: "ativa" })
     safrasFinalizadasResponse.value = await supabase.from("safras").select().order('data_inicio', { ascending: false }).match({ user_id: user.value.id, status: "completa" })
+    mainElement.value = document.getElementById("main");
 }
 
-const redirectSafra = (id) => {
+const redirectSafra = async (id, cultivo, inicio, fim) => {
+    safraInput.id = id
+    safraInput.safra = cultivo
+    safraInput.data_inicio = inicio
+    safraInput.data_fim = fim
 
-   
+    // Request para supabase 
+    if (process.client) {
+        fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safraInput.id })
+        fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safraInput.id })
+    }
+    await supabase.from("safras").update({
+
+        despeza_real: fluxoSaida.value.data,
+        receita_bruta: fluxoEntrada.value.data,
+        lucro_real: fluxoEntrada.value.data - fluxoSaida.value.data
+    }).eq('id', safraInput.id)
+
     router.push({ path: "/safra/" + id });
     // window.location.href = "/safra/" + id
 }
@@ -107,9 +123,9 @@ const safraInput = reactive({
 const abrirOpcoesMobile = (id, cultivo, inicio, fim) => {
 
     // Check if the element exists before modifying it
-    if (mainElement) {
+    if (mainElement.value) {
         // Disable overflow by setting the overflow CSS property to "hidden"
-        mainElement.style.overflow = "hidden";
+        mainElement.value.style.overflow = "hidden";
     }
     showModalOpcoes.value = true
     safraInput.id = id
@@ -119,6 +135,10 @@ const abrirOpcoesMobile = (id, cultivo, inicio, fim) => {
 }
 
 const abrirModalNovaSafra = () => {
+    if (mainElement.value) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+        mainElement.value.style.overflow = "hidden";
+    }
     limitarForm.value = true
     showModalNovo.value = true
     safraInput.id = ""
@@ -134,6 +154,10 @@ const abrirModalNovaSafra = () => {
     safraInput.receita_estimada = ""
 }
 const fecharModalNovaSafra = () => {
+    if (mainElement.value) {
+        // Disable overflow by setting the overflow CSS property to "hidden"
+        mainElement.value.style.overflow = "auto";
+    }
     showModalNovo.value = false
     safraInput.id = "",
         safraInput.safra = "",
@@ -159,13 +183,14 @@ const handleSubmitNovaSafra = async () => {
             await supabase.from("safras").insert({
                 cultivo: safraInput.safra,
                 area: parseFloat(safraInput.area),
-                taxa_arrendo: parseFloat(safraInput.taxa_arrendo),
+                taxa_arrendo: Math.abs(parseFloat(safraInput.taxa_arrendo)),
                 user_id: user.value.id,
                 grandeza: safraInput.grandeza,
                 despeza_estimada: paraFloat(safraInput.despeza),
                 valor_venda_estimado: paraFloat(safraInput.valor_unitario),
                 quantidade_estimada: parseFloat(safraInput.quantidade) * parseFloat(safraInput.area),
                 receita_estimada: receita_estimada_calc,
+                lucro_estimado: receita_estimada_calc - paraFloat(safraInput.despeza),
                 data_inicio: safraInput.data_inicio,
                 data_fim: safraInput.data_fim,
                 status: "ativa",
@@ -186,6 +211,10 @@ const handleSubmitNovaSafra = async () => {
             safraInput.despeza = "";
             safraInput.receita_estimada = "";
             showPreencha.value = false
+            if (mainElement.value) {
+                // Disable overflow by setting the overflow CSS property to "hidden"
+                mainElement.value.style.overflow = "auto";
+            }
             showAlert("Safra Adicionada com sucesso!")
 
             showModalNovo.value = false
@@ -243,7 +272,7 @@ const handlePagarTaxaSubmit = async () => {
             safraInput.quantidade = "",
             safraInput.despeza = "",
             safraInput.receita_estimada = ""
-            showAlert("Taxa de aluguel/arrendo paga com sucesso")
+        showAlert("Taxa de aluguel/arrendo paga com sucesso")
         showPreencha.value = false
 
         showModalPagarTaxa.value = false
@@ -366,7 +395,7 @@ const limitarTaxa = (valor) => {
                         <div class="w-full flex justify-end ">
                             <div @click="abrirModalDeletarSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim)"
                                 class="group/alerta flex  bg-vermelho text-claro cursor-pointer rounded-tr-xl h-9 items-center transition-all hover:bg-white hover:text-vermelho ">
-                                
+
                             </div>
                         </div>
                         <div
@@ -432,7 +461,7 @@ const limitarTaxa = (valor) => {
                     </div>
                     <div v-else v-for="safra in safrasFinalizadasResponse.data" :key="safra.id">
                         <div class="w-full flex justify-end ">
-                            
+
                         </div>
                         <div
                             class="flex  px-12 items-end justify-between  w-full h-[130px] bg-white rounded-xl rounded-r-none mb-5">
@@ -454,7 +483,8 @@ const limitarTaxa = (valor) => {
 
                                 <div class="flex flex-col self-center h-[25%]">
 
-                                    <button @click="redirectSafra(safra.id)"
+                                    <button
+                                        @click="redirectSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim)"
                                         class="self-start bg-escuro px-8 py-4 rounded-md text-xl text-claro font-bold transition-all hover:bg-verde ">
                                         Ver relatório
                                     </button>
@@ -738,11 +768,12 @@ const limitarTaxa = (valor) => {
                         data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">
                         Encerrar Safra</button>
-                    <button @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"
+                    <button
+                        @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"
                         data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
                         Pagar taxa</button>
-                    
+
                 </div>
             </div>
         </div>
@@ -784,13 +815,15 @@ const limitarTaxa = (valor) => {
 
 
                 <div class="flex items-center justify-center space-x-2 rounded-b">
-                    <button @click="redirectSafra(safra.id)" data-modal-toggle="defaultModal" type="button"
+                    <button @click="redirectSafra(safra.id, safra.cultivo, safra.data_inicio, safra.data_fim)"
+                        data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
                         Ver Relatório</button>
-                    
+
                 </div>
             </div>
         </div>
+        <section class="h-[100px]"></section>
         <!--  -->
 
         <Transition name="pop">
@@ -988,7 +1021,7 @@ const limitarTaxa = (valor) => {
         </Transition>
 
 
-        <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
+        <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.value.style.overflow = 'auto'">
             <h1 class="text-center text-escuro font-semibold mb-2">Artur de Souza Vieira</h1>
             <ul>
                 <li @click="handleModalEditar(funcionarioInput.nome, funcionarioInput.cargo, funcionarioInput.numero, funcionarioInput.is_assalariado, funcionarioInput.salario, funcionarioInput.data_pagamento_salario, funcionarioInput.id)"
@@ -1003,4 +1036,5 @@ const limitarTaxa = (valor) => {
             </ul>
         </OpcoesMobile>
 
-</div></template>
+    </div>
+</template>

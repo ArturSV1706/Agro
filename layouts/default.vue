@@ -65,6 +65,10 @@ const definirTitulo = () => {
             break;
     }
 }
+if(process.client){
+    definirTitulo()
+
+}
 const ativarBackdrop = () => {
     showBackdrop.value = true
 }

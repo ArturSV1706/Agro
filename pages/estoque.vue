@@ -124,7 +124,7 @@ const abrirOpcoesMobileColheita = (cultivo, quantidade, grandeza, area, area_col
     limitarForm.value = true
     estoqueInput.item = cultivo
     estoqueInput.quantidade = ""
-    safraResponse.grandeza = grandeza
+    estoqueInput.grandeza = grandeza
     colheitaInput.area_colhida = area_colhida
     estoqueInput.id = id
 }
@@ -402,7 +402,7 @@ const handleSubmitEditarEstoqueColheita = async (id) => {
             area_colhida: parseFloat(estoqueInput.area_colhida)
         }).eq('id', id);
 
-        colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id }).order('cultivo', { ascending: true })
+        colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id }).order('data_inicio', { ascending: false })
 
         estoqueInput.id = ""
         estoqueInput.item = ""
@@ -1663,11 +1663,7 @@ const precoFormatar = (valor) => {
         <Transition name="slide">
             <div v-if="showTabelaColheita" id="container" class="">
                 <div class="flex flex-row">
-                    <span
-                        class="self-start bg-escuro mt-4 px-6 py-2 rounded-md text-claro font-bold mb-4 transition-all hover:bg-verde"
-                        @click="handleNovoEstoque('semente/muda')">
-                        Adicionar Colheita
-                    </span>
+                    
                 </div>
 
                 <div class='flex justify-center items-center text-verde mb-4'>
@@ -1693,9 +1689,9 @@ const precoFormatar = (valor) => {
                                 }} </h1>
                             </div>
                             <div class='flex font-bold'>
-                                <h1 class="text-xs capitalize text-center">{{ colheita.area }}/
+                                <h1 class="text-xs capitalize text-center">{{ colheita.area_colhida }}/
                                 </h1>
-                                <h1 class="text-xs capitalize text-center">{{ colheita.area_colhida }} (Ha)
+                                <h1 class="text-xs capitalize text-center">{{ colheita.area }} (Ha)
                                 </h1>
                             </div>
                         </div>
@@ -2121,7 +2117,7 @@ const precoFormatar = (valor) => {
                             placeholder=" " required>
                         <label for="floating_email"
                             class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade
-                            colhida em | {{ estoqueInput.grandeza }}</label>
+                            colhida em | {{ formatar(estoqueInput.grandeza) }}</label>
                     </div>
                     <div class="relative z-0 w-full mb-6 group">
 
@@ -2230,11 +2226,11 @@ const precoFormatar = (valor) => {
             @close="showModalOpcoesColheita = false; mainElement.style.overflow = 'auto'">
             <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ estoqueInput.item }}</h1>
             <ul>
-                <li @click="showModalOpcoesColheita = false; handleModalEditarColheita(estoqueInput.item, estoqueInput.quantidade, safraResponse.grandeza, colheitaInput.area_colhida, estoqueInput.id)"
+                <li @click="showModalOpcoesColheita = false; handleModalEditarColheita(estoqueInput.item, estoqueInput.quantidade, estoqueInput.grandeza, colheitaInput.area_colhida, estoqueInput.id)"
                     class="bg-verde py-1 px-2 rounded mb-2">
                     Editar
                 </li>
-                <li @click="showModalOpcoesColheita = false; handleModalAdicionarColheita(estoqueInput.item, estoqueInput.quantidade, safraResponse.grandeza, colheitaInput.area_colhida, null, estoqueInput.id)"
+                <li @click="showModalOpcoesColheita = false; handleModalAdicionarColheita(estoqueInput.item, estoqueInput.quantidade, estoqueInput.grandeza, colheitaInput.area_colhida, null, estoqueInput.id)"
                     class="bg-verde py-1 px-2 rounded mb-2">
                     Adicionar Colheita
                 </li>
