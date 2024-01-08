@@ -3,7 +3,7 @@
 
 
 definePageMeta({
-    middleware: ["auth"]
+    middleware: ["auth", "subscription"]
 })
 
 

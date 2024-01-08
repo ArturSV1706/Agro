@@ -6,24 +6,13 @@ definePageMeta({
 const { supabase } = useSupabase()
 const { user, signOut } = useAuth()
 const screen = ref('mobile');
-
-if (process.client) {
-    const screenWidth = window.innerWidth;
-    if (screenWidth > 600) {
-        screen.value = 'desktop'
-    } else {
-        screen.value = 'mobile'
-    }
-}
-
+const assinatura = ref();
+const assinatura_data_expiracao = ref();
 const limitarForm = ref(true)
 const showPreencha = ref()
 const usuario = ref();
 const usuarioResponse = ref();
 const color = ref();
-
-
-
 
 const setupInput = reactive({
     nome: "",
@@ -32,13 +21,44 @@ const setupInput = reactive({
 })
 
 
-const options = {
-    method: "GET",
-    headers: {
-        accept: "application/json",
-        ApiKey: "loja_0371c441d22a4a95a08cc82de4f1fca3",
-    },
-};
+if (process.client) {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 600) {
+        screen.value = 'desktop'
+    } else {
+        screen.value = 'mobile'
+    }
+
+
+    usuarioResponse.value = await supabase.from("usuario").select().eq('user_id', user.value.id)
+    setupInput.nome = usuarioResponse.value.data[0].nome
+    setupInput.telefone = usuarioResponse.value.data[0].telefone
+    setupInput.estado = usuarioResponse.value.data[0].estado
+
+
+    assinatura.value = await supabase
+        .from("usuario")
+        .select()
+        .match({ user_id: user.value.id });
+    assinatura_data_expiracao.value = assinatura.value.data[0].data_expiracao
+    assinatura.value = assinatura.value.data[0].status
+
+    if (assinatura.value === 'ativo') {
+        color.value = 'verde_claro'
+    } else {
+        color.value = 'vermelho'
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 const logOut = async () => {
@@ -54,81 +74,7 @@ const expira_em = ref();
 const formattedDate = ref();
 
 
-// billsby api
-if (process.client) {
 
-    usuarioResponse.value = await supabase.from("usuario").select().eq('user_id', user.value.id)
-    setupInput.nome = usuarioResponse.value.data[0].nome
-    setupInput.telefone = usuarioResponse.value.data[0].telefone
-    setupInput.estado = usuarioResponse.value.data[0].estado
-
-    customerId.value = await fetch(
-        'https://public.billsby.com/api/v1/rest/core/loja/customers?page=1&pageSize=1&search=' + user.value.email,
-        options
-    )
-        .then((response) => response.json())
-        .then((response) => customerId.value = response.results[0].customerUniqueId)
-        .catch((err) => console.error(err));
-
-    console.log(customerId.value)
-
-    subscriptionId.value = await fetch(
-        'https://public.billsby.com/api/v1/rest/core/loja/customers/2GPVPIZOYX/subscriptions',
-        options
-    )
-        .then((response) => response.json())
-        .then((response) => subscriptionId.value = response[0].subscriptionId)
-        .catch((err) => console.error(err));
-
-    console.log(subscriptionId.value)
-
-
-
-
-    status.value = await fetch(
-        "https://public.billsby.com/api/v1/rest/core/loja/subscriptions/" + "GPW3VV2EME",
-        options
-    )
-        .then((response) => response.json())
-        .then((response) => (status.value = response.status))
-        .catch((err) => console.error(err));
-
-    expira_em.value = await fetch(
-        "https://public.billsby.com/api/v1/rest/core/loja/subscriptions/" + "GPW3VV2EME",
-        options
-    )
-        .then((response) => response.json())
-        .then((response) => (expira_em.value = response.nextBillingDate))
-        .catch((err) => console.error(err));
-
-
-    const inputDateStr = expira_em.value;
-    const inputDate = new Date(inputDateStr);
-    const day = String(inputDate.getDate()).padStart(2, '0');
-    const month = String(inputDate.getMonth() + 1).padStart(2, '0');
-    const year = inputDate.getFullYear();
-    formattedDate.value = `${day}-${month}-${year}`;
-
-
-    console.log(status.value);
-    console.log(formattedDate);
-
-    switch (status.value) {
-        case 'Active':
-            status.value = "Ativo"
-            color.value = 'verde_claro'
-            break;
-        case 'Suspended':
-            status.value = "Expirado"
-            color.value = 'vermelho'
-            break;
-
-        default:
-            break;
-    }
-
-}
-// --/--/--
 const handleSubmitSetup = async () => {
     if (setupInput.nome && setupInput.telefone && setupInput.estado) {
 
@@ -159,15 +105,25 @@ const handleSubmitSetup = async () => {
         </div>
         <!-- ------------------------------------------------------------------------------ -->
         <div class="ml-4 h-screen flex flex-col justify-center">
-            <div class="bg-white  border-l-8 border-l-verde flex justify-evenly p-4 max-w-[30vw] mb-5">
+            <div class="bg-verde_apagado  border-l-8 border-l-verde flex justify-evenly p-4 max-w-[30vw] mb-5">
                 <div>
-                    <p class="text-escuro ">Plano: <span class="font-bold">simples</span></p>
-                    <p class='text-escuro '>Estado: <span :class="`text-${color} font-semibold`">{{ status }}</span></p>
-                    <p class="text-escuro ">Expira em: <span class="font-bold">{{ formattedDate }}</span></p>
+                    <p class="text-escuro ">Plano: <span class="font-bold capitalize">simples</span></p>
+                    <p class='text-escuro '>Assinatura: <span :class="`text-${color} font-semibold capitalize`">{{
+                        assinatura
+                    }}</span></p>
+                    <p class="text-escuro ">Expira em: <span class="font-bold">{{ assinatura_data_expiracao }}</span></p>
                 </div>
                 <img class="h-[70px]" src="../assets/icons/saffron.svg" alt="">
             </div>
-            <div class="bg-white  border-l-8 border-l-verde flex-row p-4 max-w-[30vw]">
+            <h1 v-if="assinatura != 'ativo'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura Expirou!</h1>
+
+            <a v-if="assinatura != 'ativo'"
+                href='https://api.whatsapp.com/send?phone=5549988765487&text=Ol%C3%A1,%20desejo%20renovar%20minha%20assinatura'
+                target="_blank"
+                class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4 max-w-[30vw] mb-5">
+                Clique aqui para entrar em contato e renovar sua assinatura
+            </a>
+            <div class="bg-verde_apagado  border-l-8 border-l-verde flex-row p-4 max-w-[30vw]">
                 <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha
@@ -258,12 +214,22 @@ const handleSubmitSetup = async () => {
         <div class=" flex flex-col justify-center">
             <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex justify-evenly items-center p-4  mb-5">
                 <div>
-                    <p class="text-escuro ">Plano: <span class="font-bold">Simples</span></p>
+                    <p class='text-escuro '>Assinatura: <span :class="`text-${color} font-semibold capitalize`">{{
+                        assinatura
+                    }}</span></p>
                     <p class='text-escuro '><span :class="`text-${color} font-semibold`">{{ status }}</span></p>
-                    <p class="text-escuro ">Expira em: <span class="font-bold text-xs">{{ formattedDate }}</span></p>
+                    <p class="text-escuro ">Expira em: <span class="font-bold text-xs">{{ assinatura_data_expiracao
+                    }}</span></p>
                 </div>
                 <img class="h-[40px]" src="../assets/icons/saffron.svg" alt="">
             </div>
+            <h1 v-if="assinatura != 'ativo'" class="text-center text-vermelho font-bold animate-pulse">Sua Assinatura Expirou!</h1>
+            <a v-if="assinatura != 'ativo'"
+                href='https://api.whatsapp.com/send?phone=5549988765487&text=Ol%C3%A1,%20desejo%20renovar%20minha%20assinatura'
+                target="_blank"
+                class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4 w-full mb-5">
+                Clique aqui para entrar em contato e renovar sua assinatura
+            </a>
             <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex-row p-4 ">
                 <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
                 <Transition name="pop">
@@ -360,6 +326,6 @@ const handleSubmitSetup = async () => {
             </svg>
 
 
-        </button>
-        <section class="h-[60px]"></section>
+    </button>
+    <section class="h-[60px]"></section>
 </div></template>
