@@ -1,7 +1,7 @@
 <script setup>
 import useSupabase from '~~/composables/useSupabase';
 
-const screen = ref('mobile');
+const screen = ref();
 
 if (process.client) {
     const screenWidth = window.innerWidth;
