@@ -14,6 +14,36 @@ const usuario = ref();
 const usuarioResponse = ref();
 const color = ref();
 
+const alert = ref()
+const alertMessage = ref()
+const loadingWidth = ref(100)
+
+const showAlert = (message) => {
+    alert.value = true
+    alertMessage.value = message
+
+    const interval = setInterval(function () {
+
+        if (loadingWidth.value <= 0 || !alert.value) {
+            // Clear the interval when the timer reaches 0
+            clearInterval(interval);
+            alert.value = false
+            loadingWidth.value = 100;
+        }
+        // Decrease the width
+        loadingWidth.value -= 2;
+
+        // Update the width of the timer bar
+        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+
+        // Check if the width has reached 0
+       
+    }, 80);
+
+
+}
+
 const setupInput = reactive({
     nome: "",
     telefone: "",
@@ -88,6 +118,8 @@ const handleSubmitSetup = async () => {
                 estado: setupInput.estado,
             }).eq('user_id', user.value.id);;
         }
+        showAlert("Informações editadas com sucesso!")
+
         showPreencha.value = false
     } else {
         showPreencha.value = true
@@ -97,6 +129,11 @@ const handleSubmitSetup = async () => {
 </script>
 <template>
     <div v-if="screen === 'desktop'">
+        <Transition name="alert">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <!-- Título -->
         <div class="flex flex-row items-center fixed ml-[-4%] ">
             <h1 class=" sm:pt-0 2xl:pt-2 sm:text-2xl 2xl:text-4xl text-escuro font-aristotelica  ">Minha conta | </h1>
@@ -203,16 +240,36 @@ const handleSubmitSetup = async () => {
                         </select>
                     </div>
                 </div>
+                <div class="flex w-full justify-evenly ">
+                    <button @click="handleSubmitSetup" data-modal-toggle="defaultModal" type="button"
+                    class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
+                        Editar Informações</button>
+                    <button @click="logOut()" data-modal-toggle="defaultModal" type="button"
+                        class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
 
-                <button @click="handleSubmitSetup" data-modal-toggle="defaultModal" type="button"
-                    class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
-                    Editar Informações</button>
+                        <h1>Fazer logout</h1>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" fill="#DDE0D0"
+                            width="24">
+                            <path
+                                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
+                        </svg>
+
+
+                    </button>
+                </div>
             </div>
+
         </div>
+
     </div>
     <div v-if="screen === 'mobile'">
+        <Transition name="alert_mobile">
+            <Alert v-if="alert" @close="alert = false">
+                <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
+            </Alert>
+        </Transition>
         <div class=" flex flex-col justify-center">
-            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex justify-evenly items-center p-4  mb-5">
+            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex justify-evenly items-center p-4  mb-5 ">
                 <div>
                     <p class='text-escuro '>Assinatura: <span :class="`text-${color} font-semibold capitalize`">{{
                         assinatura
@@ -223,14 +280,15 @@ const handleSubmitSetup = async () => {
                 </div>
                 <img class="h-[40px]" src="../assets/icons/saffron.svg" alt="">
             </div>
-            <h1 v-if="assinatura != 'ativo'" class="text-center text-vermelho font-bold animate-pulse">Sua Assinatura Expirou!</h1>
+            <h1 v-if="assinatura != 'ativo'" class="text-center text-vermelho font-bold animate-pulse">Sua Assinatura
+                Expirou!</h1>
             <a v-if="assinatura != 'ativo'"
                 href='https://api.whatsapp.com/send?phone=5549988765487&text=Ol%C3%A1,%20desejo%20renovar%20minha%20assinatura'
                 target="_blank"
                 class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4 w-full mb-5">
                 Clique aqui para entrar em contato e renovar sua assinatura
             </a>
-            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex-row p-4 ">
+            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex-row p-4 z-[-1]">
                 <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha
@@ -261,7 +319,7 @@ const handleSubmitSetup = async () => {
                 </div>
                 <div class="flex flex-col">
 
-                    <div class="relative z-0 w-full mb-6 group">
+                    <div class="relative z-[0] w-full mb-6 group">
 
                         <input type="text" name="floating_email" id="floating_email" v-model="setupInput.nome"
                             class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
@@ -326,6 +384,7 @@ const handleSubmitSetup = async () => {
             </svg>
 
 
-    </button>
-    <section class="h-[60px]"></section>
-</div></template>
+        </button>
+        <section class="h-[60px]"></section>
+    </div>
+</template>

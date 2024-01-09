@@ -381,9 +381,7 @@ const calcMargemDeLucro = (receita, lucro) => {
                             </div>
                         </div>
                     </div>
-                    <h1
-                        class=" sm:text-sm 2xl:text-xl font-bold font-escuro self-center text-center cursor-pointer transition-all hover:text-verde">
-                        Ver todas</h1>
+                    
                 </div>
             </div>
 

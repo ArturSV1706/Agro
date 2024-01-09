@@ -104,7 +104,7 @@ const abrirOpcoesMobileCombustivel = (id, quantidade, nome) => {
 
 if (process.client) {
     maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id).order('modelo', { ascending: true })
-    combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+    combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id).order('nome', { ascending: true })
     safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
 }
 
@@ -176,6 +176,8 @@ const handleDeleteMaquina = async (id, modelo, ano, status) => {
     maquinaInput.modelo = modelo
     maquinaInput.ano = ano
     maquinaInput.status = status
+    limitarForm.value = true
+
 
     let testarChaveEstrangeira = await supabase.from("tarefas").select('maquina_utilizada').eq('maquina_utilizada', id)
 
@@ -201,7 +203,7 @@ const handleSubmitDeleteMaquina = async () => {
 
     await supabase.from("maquinas").delete().eq('id', maquinaInput.id)
     if (process.client) {
-        maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id)
+        maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id).order('modelo', { ascending: true })
     }
     maquinaInput.id = ""
     maquinaInput.modelo = ""
@@ -252,7 +254,7 @@ const handleSubmitDeletarCombustivel = async () => {
     showAlert("Combustível deletado com sucesso!")
 
     if (process.client) {
-        combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+        combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id).order('nome', { ascending: true })
     }
 
 }
@@ -260,7 +262,7 @@ const handleAbastecer = async (id, modelo, ano) => {
     showPreencha.value = false
     limitarForm.value = true
     if (process.client) {
-        combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+        combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id).order('nome', { ascending: true })
     }
     maquinaInput.id = id
     maquinaInput.modelo = modelo
@@ -301,7 +303,7 @@ const handleSubmitAbastecer = async () => {
 
                 }).eq('id', combustivelInput.id);
             }
-            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id).order('nome', { ascending: true })
         }
         combustivelInput.id = ""
         combustivelInput.nome = ""
@@ -371,7 +373,7 @@ const handleSubmitManutencao = async () => {
                     }).eq('id', combustivelInput.safra_id);
                 }
             }
-            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id).order('nome', { ascending: true })
         }
 
         maquinaInput.valor_manutencao = ''
@@ -412,7 +414,7 @@ const handleSubmitNovoMaquina = async () => {
                 data_parcelas: parseInt(maquinaInput.data_pagamento_parcelas),
                 user_id: user.value.id
             });
-            maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id)
+            maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id).order('modelo', { ascending: true })
         }
 
 
@@ -514,7 +516,7 @@ const handleSubmitNovoCombustivel = async (event) => {
                 quantidade: parseFloat(combustivelInput.quantidade),
                 user_id: user.value.id
             });
-            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id).order('nome', { ascending: true })
         }
 
         combustivelInput.id = "",
@@ -587,7 +589,7 @@ const handleSubmitReporCombustivel = async () => {
             }
 
 
-            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id)
+            combustiveisResponse.value = await supabase.from("combustiveis").select().eq('user_id', user.value.id).order('nome', { ascending: true })
         }
         combustivelInput.id = ""
         combustivelInput.nome = ""
@@ -854,8 +856,8 @@ const valorCombustivelFormatar = (valor) => {
 
                     <table class="bg-white shadow-xl w-full">
                         <thead class="bg-verde text-claro">
-                            <th class="p-2 " @click="handleOrdenar('categoria')">Categoria</th>
-                            <th class="p-2 " @click="handleOrdenar('modelo')">Modelo</th>
+                            <th class="p-2 " @click="handleOrdenar('categoria')">Modelo</th>
+                            <th class="p-2 " @click="handleOrdenar('modelo')">Categoria</th>
                             <th class="p-2 " @click="handleOrdenar('ano')">Ano</th>
                             <th class="p-2 " @click="handleOrdenar('status')">Status</th>
 
@@ -868,8 +870,8 @@ const valorCombustivelFormatar = (valor) => {
                         <tbody>
                             <tr v-for="maquina in maquinasResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
                                 :key="maquina.id" class=" even:bg-gray-100">
-                                <td class="p-2 capitalize">{{ maquina.categoria }}</td>
                                 <td class="p-2 capitalize">{{ maquina.modelo }}</td>
+                                <td class="p-2 capitalize">{{ maquina.categoria }}</td>
                                 <td class="p-2">{{ maquina.ano }}</td>
                                 <td class="p-2 capitalize">{{ maquina.status }}</td>
                                 <!-- <td>{{fluxo.salario.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</td> -->
@@ -1278,7 +1280,7 @@ const valorCombustivelFormatar = (valor) => {
         <Transition name="pop">
             <ModalDeletarMaquina v-if="showModalDeletar" @close="showModalDeletar = false"
                 @deletarMaquina="handleSubmitDeleteMaquina">
-                <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este combustível?</h1>
+                <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar esta máquina?</h1>
                 <h1 class="text-center text-xl text-claro light">{{ maquinaInput.modelo + " - " + maquinaInput.ano }}
                 </h1>
 

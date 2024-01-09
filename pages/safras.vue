@@ -20,7 +20,7 @@ if (process.client) {
 }
 
 // Get the element with the id "main"
-const mainElement = ref() 
+const mainElement = ref()
 
 
 
@@ -184,6 +184,7 @@ const handleSubmitNovaSafra = async () => {
                 cultivo: safraInput.safra,
                 area: parseFloat(safraInput.area),
                 taxa_arrendo: Math.abs(parseFloat(safraInput.taxa_arrendo)),
+                arrendo_total: Math.abs(parseFloat(safraInput.taxa_arrendo)) * parseFloat(safraInput.area),
                 user_id: user.value.id,
                 grandeza: safraInput.grandeza,
                 despeza_estimada: paraFloat(safraInput.despeza),
@@ -236,7 +237,7 @@ const abrirModalDeletarSafra = (id, cultivo, inicio, fim) => {
     safraInput.data_inicio = inicio
     safraInput.data_fim = fim
 }
-const abrirModalPagarTaxa = async (id, cultivo, grandeza, start, end) => {
+const abrirModalPagarTaxa = async (id, cultivo, grandeza, start, end, quantidade_real, arrendo_total) => {
     limitarForm.value = true
     showModalPagarTaxa.value = true
     safraInput.id = id
@@ -244,6 +245,8 @@ const abrirModalPagarTaxa = async (id, cultivo, grandeza, start, end) => {
     safraInput.grandeza = grandeza
     safraInput.data_inicio = start
     safraInput.data_fim = end
+    safraInput.quantidade_real = quantidade_real
+    safraInput.arrendo_total = arrendo_total
     safraResponse_qnt.value = await supabase.from("safras").select().eq('id', parseInt(safraInput.id))
 }
 const handlePagarTaxaSubmit = async () => {
@@ -254,8 +257,10 @@ const handlePagarTaxaSubmit = async () => {
 
         if (process.client) {
             safrasAtivasResponse.value = await supabase.from("safras").update({
-                taxa_arrendo: safraResponse_qnt.value.data[0].taxa_arrendo - parseFloat(safraInput.quantidade)
+                arrendo_total: safraResponse_qnt.value.data[0].arrendo_total - parseFloat(safraInput.quantidade),
+                quantidade_real: safraResponse_qnt.value.data[0].quantidade_real - parseFloat(safraInput.quantidade)
             }).eq('id', safraInput.id);
+            
 
             safrasAtivasResponse.value = await supabase.from("safras").select().order('data_inicio', { ascending: false }).match({ user_id: user.value.id, status: "ativa" })
 
@@ -346,14 +351,26 @@ const despesasFormatar = (valor) => {
     safraInput.despeza = paraRealInput(valor)
 }
 const limitarTaxa = (valor) => {
-    if (valor > (safraResponse_qnt.value.data[0].taxa_arrendo * safraResponse_qnt.value.data[0].area)) {
-        safraInput.quantidade = (safraResponse_qnt.value.data[0].taxa_arrendo * safraResponse_qnt.value.data[0].area)
+    console.log(safraInput.quantidade_real)
+    if (safraInput.quantidade_real < safraInput.arrendo_total) {
+        if (valor > (safraInput.quantidade_real)) {
+            safraInput.quantidade = safraInput.quantidade_real
+        }
     }
+    else {
+        if (valor > safraInput.arrendo_total) {
+            safraInput.quantidade = safraInput.arrendo_total
+        }
+
+    }
+
+
+
+
+
+
+
 }
-
-
-
-
 </script>
 
 <template>
@@ -416,12 +433,12 @@ const limitarTaxa = (valor) => {
                                 <h1 class="text-2xl font-bold text-verde_claro">{{ safra.quantidade_real }}</h1>
                                 <h3 class="text-verde">[{{ formatar(safra.grandeza) }}]</h3>
                             </div>
-                            <div v-if="safra.taxa_arrendo > 0" class="flex flex-col item-center h-[80%]">
+                            <div v-if="safra.arrendo_total > 0" class="flex flex-col item-center h-[80%]">
                                 <h1 class="text-xl font-bold">Aluguel restante do terreno</h1>
-                                <h1 class="text-2xl font-bold text-escuro">{{ safra.taxa_arrendo * safra.area }} | <span
+                                <h1 class="text-2xl font-bold text-escuro">{{ safra.arrendo_total }} | <span
                                         class="text-sm">{{
                                             formatar(safra.grandeza) }}</span></h1>
-                                <h1 @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"
+                                <h1 @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim, safra.quantidade_real, safra.arrendo_total)"
                                     class="text-verde_claro text-[1.2rem] font-bold underline cursor-pointer">Pagar taxa
                                 </h1>
                             </div>
@@ -664,7 +681,8 @@ const limitarTaxa = (valor) => {
                             campos obrigatórios</h1>
                     </Transition>
 
-                    <h1 class="text-claro text-lg text-center">Você ainda precisa pagar <b class="text-vermelho">
+                    <h1 v-if='safraResponse_qnt' class="text-claro text-lg text-center">Você ainda precisa pagar <b
+                            class="text-vermelho">
                             {{ (safraResponse_qnt.data[0].taxa_arrendo * safraResponse_qnt.data[0].area) + " " +
                                 formatar(safraInput.grandeza) }}</b> pelo terreno utilizado</h1>
                     <div class="relative z-0 w-full mb-6 group">
@@ -744,16 +762,14 @@ const limitarTaxa = (valor) => {
                     <h3 class=" text-escuro text-sm">{{ formatar(safra.grandeza) }}</h3>
                 </div>
 
-                <div v-if="safra.taxa_arrendo > 0" class="flex flex-col  item-center border-l-4 border-verde pl-2">
+                <div v-if="safra.arrendo_total > 0" class="flex flex-col  item-center border-l-4 border-verde pl-2">
                     <div class="flex ">
                         <h1 class="text-escuro">Aluguel restante &nbsp</h1>
                         <h1 class="text-escuro">{{ safra.taxa_arrendo * safra.area }} | <span class="text-sm">{{
                             formatar(safra.grandeza) }}</span></h1>
                     </div>
 
-                    <h1 @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"
-                        class="text-verde text-[1.2rem] font-bold underline cursor-pointer">Pagar
-                    </h1>
+                    
                 </div>
                 <div v-else class="flex flex-col item-center justify-center h-[100%]">
                     <h1 class="text-verde text-center">Nenhuma dívida pendente</h1>
@@ -768,8 +784,8 @@ const limitarTaxa = (valor) => {
                         data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-vermelho  rounded-lg   text-sm font-medium px-5 py-2.5">
                         Encerrar Safra</button>
-                    <button
-                        @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim)"
+                    <button v-if="safra.arrendo_total > 0"
+                        @click="abrirModalPagarTaxa(safra.id, safra.cultivo, safra.grandeza, safra.data_inicio, safra.data_fim, safra.quantidade_real, safra.arrendo_total)"
                         data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
                         Pagar taxa</button>

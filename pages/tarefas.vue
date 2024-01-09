@@ -949,7 +949,7 @@ const handlePagina = (i) => {
         </ModalDetalhesMobile> -->
 
         <Transition name="pop">
-            <ModalAdicionarTarefa v-if="showModalAdicionar" @close="showModalAdicionar = false"
+            <ModalAdicionarTarefa v-if="showModalAdicionar" @close="showModalAdicionar = false; mainElement.style.overflow = 'auto'"
                 @adicionarTarefa="handleSubmitNovoTarefa">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -1102,7 +1102,7 @@ const handlePagina = (i) => {
         </Transition>
 
         <Transition name="pop">
-            <ModalConfirmarTarefa v-if="showModalConfirmar" @close="showModalConfirmar = false"
+            <ModalConfirmarTarefa v-if="showModalConfirmar" @close="showModalConfirmar = false; mainElement.style.overflow = 'auto'"
                 @confirmarTarefa="handleSubmitConfirmar">
 
                 <Transition name="pop">
@@ -1147,14 +1147,14 @@ const handlePagina = (i) => {
             </ModalConfirmarTarefa>
         </Transition>
         <Transition name="pop">
-            <ModalVerDescricao v-if="showModaldescricao" @close="showModaldescricao = false">
+            <ModalVerDescricao v-if="showModaldescricao" @close="showModaldescricao = false; mainElement.style.overflow = 'auto' ">
                 <div>
                     <p class="capitalize text-claro break-all">{{ tarefaInput.descricao }}</p>
                 </div>
             </ModalVerDescricao>
         </Transition>
         <Transition name="pop">
-            <ModalCancelarTarefa v-if="showModalCancelar" @close="showModalCancelar = false"
+            <ModalCancelarTarefa v-if="showModalCancelar" @close="showModalCancelar = false; mainElement.style.overflow = 'auto'"
                 @cancelarTarefa="handleSubmitDeletarTarefa">
                 <div>
                     <h1 class="text-center text-xl text-claro light">Deseja mesmo cancelar esta tarefa?</h1>

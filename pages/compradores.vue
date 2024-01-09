@@ -73,7 +73,7 @@ const showAlert = (message) => {
 
 
 if (process.client) {
-    compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id })
+    compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id }).order('nome', { ascending: true })
     // safraResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, status: "ativa" })
 
 }
@@ -146,7 +146,7 @@ const handleDeleteComprador = async (id) => {
     limitarForm.value = false
     if (process.client) {
         await supabase.from("compradores").delete().eq('id', id)
-        compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id })
+        compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id }).order('nome', { ascending: true })
     }
     showModalDeletar.value = false
     pagina.atual = 0
@@ -171,7 +171,7 @@ const handleSubmitNovoComprador = async () => {
                 qnt_reservada_cultivo: compradorInput.qnt_reservada_cultivo,
                 qnt_reservada_grandeza: compradorInput.qnt_reservada_grandeza
             });
-            compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id })
+            compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id }).order('nome', { ascending: true })
 
 
             compradorInput.nome = "",
@@ -207,7 +207,7 @@ const handleSubmitEditarComprador = async () => {
 
 
         if (process.client) {
-            compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id })
+            compradoresResponse.value = await supabase.from("compradores").select().match({ user_id: user.value.id }).order('nome', { ascending: true })
         }
         compradorInput.nome = "",
             compradorInput.categoria = "",
@@ -421,7 +421,7 @@ function generateRandomString(length) {
                                 <td class="p-2">{{ comprador.num_vendas }}</td>
                                 <td class="p-2">{{ paraReal(comprador.valor_vendas) }}</td>
                                 <td class="p-2 capitalize font-semibold"> {{ comprador.qnt_reservada_cultivo }} | <span
-                                        class="font-normal text-xs">{{ comprador.qnt_reservada +
+                                        class="font-normal text-xs">{{ comprador.qnt_reservada + '&nbsp' +
                                             formatar(comprador.qnt_reservada_grandeza) }}</span> </td>
 
                                 <td class="p-2">
@@ -710,7 +710,7 @@ function generateRandomString(length) {
         </div>
 
         <Transition name="pop">
-            <ModalNovoComprador v-if="showModalAdicionar" @close="showModalAdicionar = false"
+            <ModalNovoComprador v-if="showModalAdicionar" @close="showModalAdicionar = false; mainElement.style.overflow = 'auto'"
                 @adicionarComprador="handleSubmitNovoComprador">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -789,7 +789,7 @@ function generateRandomString(length) {
             </ModalNovoComprador>
         </Transition>
         <Transition name="pop">
-            <ModalEditarComprador v-if="showModalEditar" @close="showModalEditar = false"
+            <ModalEditarComprador v-if="showModalEditar" @close="showModalEditar = false; mainElement.style.overflow = 'auto'"
                 @editarComprador="handleSubmitEditarComprador">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -868,7 +868,7 @@ function generateRandomString(length) {
             </ModalEditarComprador>
         </Transition>
         <Transition name="pop">
-            <ModalDeletarComprador v-if="showModalDeletar" @close="showModalDeletar = false"
+            <ModalDeletarComprador v-if="showModalDeletar" @close="showModalDeletar = false; mainElement.style.overflow = 'auto'"
                 @deletarComprador="handleDeleteComprador(compradorInput.id)">
                 <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este funcionário?</h1>
                 <h1 class="text-center text-xl text-claro capitalize font-bold">{{

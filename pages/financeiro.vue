@@ -878,7 +878,7 @@ function onFileSelected(event) {
                 </div>
 
                 <div v-if="showFluxo" class="flex items-center w-[85%] mb-6">
-                    <p class="whitespace-nowrap text-escuro font-bold text-2xl"> 🔃 </p>
+                    <p class="whitespace-nowrap text-escuro font-bold text-2xl">Movimentações 🔃</p>
                     <div class="flex w-full h-1 bg-escuro ml-4"></div>
                 </div>
                 <div v-if="!fluxoResponse"></div>

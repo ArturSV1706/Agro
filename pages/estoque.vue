@@ -433,7 +433,7 @@ const handleSubmitAdicionarColheita = async (id) => {
             area_colhida: parseFloat(areaResponse.value.data[0].area_colhida) + parseFloat(colheitaInput.area_adicionar_colheita)
         }).eq('id', id);
 
-        colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id }).order('cultivo', { ascending: true })
+        colheitaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id }).order('data_inicio', { ascending: false }).match({ user_id: user.value.id }).order('cultivo', { ascending: true })
 
         estoqueInput.id = ""
         estoqueInput.item = ""
@@ -906,8 +906,10 @@ const precoFormatar = (valor) => {
                                 </td>
                                 <td class="p-2 capitalize text-center">{{ colheita.area_colhida }} <span
                                         class="text-xs">(Ha)</span></td>
-                                <td class="p-2 capitalize text-center">{{ (colheita.quantidade_real /
+                                <td v-if='!isNaN(colheita.quantidade_real /
+                                    colheita.area_colhida)' class="p-2 capitalize text-center">{{ (colheita.quantidade_real /
                                     colheita.area_colhida).toFixed(2) }}</td>
+                                    <td v-else class="p-2 capitalize text-center">0.00</td>
 
                                 <td class="p-2">
                                     <span v-if="(colheita.area - colheita.area_colhida) > 0"
@@ -1959,7 +1961,7 @@ const precoFormatar = (valor) => {
         <section class="h-[60px]"></section>
 
         <Transition name="pop">
-            <ModalNovoEstoque v-if="showModalAdicionar" @close="showModalAdicionar = false"
+            <ModalNovoEstoque v-if="showModalAdicionar" @close="showModalAdicionar = false; mainElement.style.overflow = 'auto'"
                 @adicionarItem="handleSubmitNovoEstoque()">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -2037,7 +2039,7 @@ const precoFormatar = (valor) => {
             </ModalNovoEstoque>
         </Transition>
         <Transition name="pop">
-            <ModalDeletarEstoque v-if="showModalDeletar" @close="showModalDeletar = false"
+            <ModalDeletarEstoque v-if="showModalDeletar" @close="showModalDeletar = false; mainElement.style.overflow = 'auto'"
                 @deletarItem="handleSubmitDeleteEstoque()">
                 <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este item?</h1>
                 <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
@@ -2046,7 +2048,7 @@ const precoFormatar = (valor) => {
         </Transition>
 
         <Transition name="pop">
-            <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
+            <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false; mainElement.style.overflow = 'auto'">
                 <h2 class="text-center text-claro text-2xl font-semibold">Este Item está registrado em uma tarefa, não
                     pode ser
                     deletado.</h2>
@@ -2054,7 +2056,7 @@ const precoFormatar = (valor) => {
         </Transition>
 
         <Transition name="pop">
-            <ModalEditarEstoque v-if="showModalEditar" @close="showModalEditar = false"
+            <ModalEditarEstoque v-if="showModalEditar" @close="showModalEditar = false; mainElement.style.overflow = 'auto'"
                 @editarItem="handleSubmitEditarEstoque(estoqueInput.id)">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -2100,7 +2102,7 @@ const precoFormatar = (valor) => {
             </ModalEditarEstoque>
         </Transition>
         <Transition name="pop">
-            <ModalAdicionarColheita v-if="showModalAdicionarColheita" @close="showModalAdicionarColheita = false"
+            <ModalAdicionarColheita v-if="showModalAdicionarColheita" @close="showModalAdicionarColheita = false; mainElement.style.overflow = 'auto'"
                 @adicionarColheita="handleSubmitAdicionarColheita(estoqueInput.id)">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -2137,7 +2139,7 @@ const precoFormatar = (valor) => {
             </ModalAdicionarColheita>
         </Transition>
         <Transition name="pop">
-            <ModalEditarEstoqueColheita v-if="showModalEditarColheita" @close="showModalEditarColheita = false"
+            <ModalEditarEstoqueColheita v-if="showModalEditarColheita" @close="showModalEditarColheita = false; mainElement.style.overflow = 'auto'"
                 @editarItemColheita="handleSubmitEditarEstoqueColheita(estoqueInput.id)">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -2166,7 +2168,7 @@ const precoFormatar = (valor) => {
             </ModalEditarEstoqueColheita>
         </Transition>
         <Transition name="pop">
-            <ModalAdicionarItemEstoque v-if="showModalRepor" @close="showModalRepor = false"
+            <ModalAdicionarItemEstoque v-if="showModalRepor" @close="showModalRepor = false; mainElement.style.overflow = 'auto'"
                 @reporItem="handleSubmitReporEstoque(estoqueInput.id)">
                 <div class="flex flex-col">
                     <Transition name="pop">
