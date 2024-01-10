@@ -5,9 +5,9 @@ export default defineNuxtRouteMiddleware(async() =>{
     if(process.client){
     const isLoggedIn_ = async() =>{
          const result = await isLoggedIn()
-        console.log(result)
+        // console.log(result)
         if( result === null){
-            console.log("entrou")
+            // console.log("entrou")
             return true
         }else{
             navigateTo('/login')
@@ -16,7 +16,7 @@ export default defineNuxtRouteMiddleware(async() =>{
     }
 
     if(await isLoggedIn_()){
-        console.log( await isLoggedIn_())
+        // console.log( await isLoggedIn_())
         return navigateTo('/login')
     }
         

@@ -11,8 +11,9 @@ if (process.client) {
         screen.value = 'mobile'
     }
     loading.value = false
-
 }
+
+console.log(loading.value)
 
 </script>
 <template>
@@ -20,7 +21,7 @@ if (process.client) {
         <img class="w-[10vw] animate-ping" src="../assets/icons/saffron_alt.svg" alt="">
 
     </div>
-    <div v-if="!loading">
+    <div v-else>
         <slot />
     </div>
 </template>

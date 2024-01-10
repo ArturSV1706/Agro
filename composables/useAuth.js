@@ -43,7 +43,7 @@ const useAuth = () => {
   }
   const isLoggedIn = async() =>{
   const u = await supabase.auth.session()
-  console.log(u)
+  // console.log(u)
     return u
   }
   return {

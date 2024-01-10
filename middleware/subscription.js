@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async () => {
           .select()
           .match({ user_id: user.value.id });
       }
-      console.log(usuario.value.data[0].status);
+      // console.log(usuario.value.data[0].status);
       return usuario.value.data[0].status;
     };
 
