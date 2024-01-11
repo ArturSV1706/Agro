@@ -11,15 +11,14 @@ export default defineNuxtRouteMiddleware(async () => {
           .select()
           .match({ user_id: user.value.id });
       }
-      console.log(usuario.value.data[0]);
       return usuario.value.data[0];
     };
 
     if (await userExists()) {
-      console.log("setup " + "true");
+      // console.log("setup " + "true");
       return navigateTo("/");
     } else {
-      console.log("setup " + "false");
+      // console.log("setup " + "false");
     }
   }
 });

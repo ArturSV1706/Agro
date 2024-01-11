@@ -1,5 +1,4 @@
 <script setup>
-import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
 
 
 const authState = ref("entrar")
@@ -7,22 +6,22 @@ const authError = ref("")
 const showConfirmEmailMessage = ref(false)
 const input = reactive({
     password: "",
-    email: ""
+    email: "",
 })
 const router = useRouter()
 
-const onVerify = (token, eKey) => {
-    console.log('Verified: ', { token, eKey })
-}
-const onExpire = () => {
-    console.log('Token expired')
-}
-const onChallengeExpire = () => {
-    console.log('Challenge expired')
-}
-const onError = (err) => {
-    console.log('Error', err)
-}
+// const onVerify = (token, eKey) => {
+//     console.log('Verified: ', { token, eKey })
+// }
+// const onExpire = () => {
+//     console.log('Token expired')
+// }
+// const onChallengeExpire = () => {
+//     console.log('Challenge expired')
+// }
+// const onError = (err) => {
+//     console.log('Error', err)
+// }
 
 
 const { signIn, signUp, user } = useAuth()
@@ -49,8 +48,6 @@ const toggleAuthState = () => {
 }
 
 const handleSubmit = async () => {
-    let erro
-
     emit('loading')
 
     try {
@@ -118,9 +115,7 @@ if (process.client) {
                             class="pl-2 peer-focus:font-medium absolute text-sm text-verde_claro  duration-300 transform -translate-y-9 scale-75 top-[.7rem]  origin-[0] peer-focus:left-0 peer-focus:text-escuro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-9 peer-focus:-pl-0">Senha
                         </label>
                     </div>
-                    <vue-hcaptcha sitekey="bb7bc19b-29a9-4865-9bf9-e85c6ed115c8" @verify="onVerify" @expired="onExpire"
-                        @challenge-expired="onChallengeExpire" @error="onError"></vue-hcaptcha>
-
+                   
 
                     <button
                         class="px-8 py-2 mt-2 w-[80%] self-center rounded transition-all capitalize border-2 bg-escuro text-claro font-bold hover:bg-verde hover:border-verde_claro hover:text-verde_claro"
@@ -179,7 +174,6 @@ if (process.client) {
                             class="pl-2 peer-focus:font-medium absolute text-sm text-verde_claro  duration-300 transform -translate-y-9 scale-75 top-[.7rem]  origin-[0] peer-focus:left-0 peer-focus:text-escuro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-9 peer-focus:-pl-0">Senha
                         </label>
                     </div>
-                    <vue-hcaptcha sitekey="bb7bc19b-29a9-4865-9bf9-e85c6ed115c8"></vue-hcaptcha>
 
 
                     <button

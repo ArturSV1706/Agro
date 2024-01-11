@@ -12,6 +12,7 @@ const useAuth = () => {
       {
         email,
         password,
+        options: { captchaToken }
       },
       {
         data: metadata,
