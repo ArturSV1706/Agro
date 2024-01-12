@@ -26,7 +26,6 @@ export default {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/icon?family=Material+Icons",
       },
-      { hid: 'recaptcha', src: 'https://www.google.com/recaptcha/api.js', defer: true }
     ],
   },
 

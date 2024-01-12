@@ -57,10 +57,10 @@ const handleSubmit = async () => {
         } else {
             await signUp({ email: input.email, password: input.password })
             showConfirmEmailMessage.value = true
-            emit('stopLoading')
         }
+        emit('stopLoading')
     } catch (err) {
-        if (err.message.includes('You must provide either an email')) {
+        if (err.message.includes('You must provide either an email') || !input.password) {
             // Do something when the error message matches the expected value
             err.message = 'Você precisa adicionar um email e senha para fazer login.'
         } else if (err.message.includes('Invalid login credentials')) {
@@ -69,6 +69,10 @@ const handleSubmit = async () => {
         } else if (err.message.includes('captcha verification process failed')) {
             // Do something when the error message matches the expected value
             err.message = 'Preencha o captcha para fazer login ou registrar-se'
+        }
+        else if (err.message.includes('you can only request this once')) {
+            // Do something when the error message matches the expected value
+            err.message = 'Máximo de tentativas atingido, espere 60 segundos para tentar novamente'
         }
 
         console.log(err)
