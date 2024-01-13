@@ -202,7 +202,7 @@ if (process.client) {
             <div :class="`flex flex-col justify-evenly h-full w-full p-4 border-2 border-escuro text-center`">
                 <h1 class="text-center text-5xl">📨</h1>
                 <h1 class="text-2xl text-center font-bold text-escuro animate-bounce">Cheque o seu email</h1>
-                <h3 class="text-xl font-semibold text-center text-verde">Enviamos um email de confirmação do registro da
+                <h3 class="text-xl font-semibold text-center mb-5 text-verde">Enviamos um email de confirmação do registro da
                     conta, basta clicar no
                     link enviado. 😉</h3>
                 <button @click="showConfirmEmailMessage = false, authState = 'entrar'"

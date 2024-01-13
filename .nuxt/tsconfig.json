@@ -50,6 +50,9 @@
       "public": [
         "C:/Users/Artur/Documents/nuxt/template/public"
       ],
+      "public/*": [
+        "C:/Users/Artur/Documents/nuxt/template/public/*"
+      ],
       "#app": [
         "C:/Users/Artur/Documents/nuxt/template/node_modules/nuxt/dist/app"
       ],

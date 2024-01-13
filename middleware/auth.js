@@ -19,7 +19,6 @@ export default defineNuxtRouteMiddleware(async() =>{
         // console.log( await isLoggedIn_())
         return navigateTo('/login')
     }
-        
-
+    
 }
 })

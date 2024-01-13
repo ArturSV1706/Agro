@@ -177,7 +177,7 @@ function moveSidebar(acao) {
             </svg>
         </button>
 
-        <aside id="sidebar" :class="`fixed top-0 left-0  w-64 h-screen transition-transform ${x_transform}`"
+        <aside id="sidebar" :class="`fixed z-30 top-0 left-0  w-64 h-screen transition-transform ${x_transform}`"
             aria-label="Sidebar">
             <div class=" h-full px-3 py-4 overflow-y-auto bg-escuro">
 

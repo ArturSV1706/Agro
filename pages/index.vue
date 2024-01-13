@@ -3,12 +3,12 @@
 
 
 definePageMeta({
-    middleware: ["auth", "subscription"]
+    middleware: ["auth", "subscription", 'setup']
 })
 
 
 const { supabase } = useSupabase()
-const { user } = useAuth()
+const { user, signOut } = useAuth()
 const { formatar, formatarData, paraReal, corLucro } = useUtils()
 const screen = ref('mobile');
 

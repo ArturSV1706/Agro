@@ -34,11 +34,11 @@ const showAlert = (message) => {
         loadingWidth.value -= 2;
 
         // Update the width of the timer bar
-        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
-        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBar").style.width = loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width = loadingWidth.value + "%";
 
         // Check if the width has reached 0
-       
+
     }, 80);
 
 
@@ -61,22 +61,25 @@ if (process.client) {
 
 
     usuarioResponse.value = await supabase.from("usuario").select().eq('user_id', user.value.id)
-    setupInput.nome = usuarioResponse.value.data[0].nome
-    setupInput.telefone = usuarioResponse.value.data[0].telefone
-    setupInput.estado = usuarioResponse.value.data[0].estado
+    console.log(usuarioResponse.value.data[0])
+    if (usuarioResponse.value.data[0] != undefined) {
+        setupInput.nome = usuarioResponse.value.data[0].nome
+        setupInput.telefone = usuarioResponse.value.data[0].telefone
+        setupInput.estado = usuarioResponse.value.data[0].estado
 
 
-    assinatura.value = await supabase
-        .from("usuario")
-        .select()
-        .match({ user_id: user.value.id });
-    assinatura_data_expiracao.value = assinatura.value.data[0].data_expiracao
-    assinatura.value = assinatura.value.data[0].status
+        assinatura.value = await supabase
+            .from("usuario")
+            .select()
+            .match({ user_id: user.value.id });
+        assinatura_data_expiracao.value = assinatura.value.data[0].data_expiracao
+        assinatura.value = assinatura.value.data[0].status
 
-    if (assinatura.value === 'ativo') {
-        color.value = 'verde_claro'
-    } else {
-        color.value = 'vermelho'
+        if (assinatura.value === 'ativo') {
+            color.value = 'verde_claro'
+        } else {
+            color.value = 'vermelho'
+        }
     }
 }
 
@@ -119,6 +122,7 @@ const handleSubmitSetup = async () => {
             }).eq('user_id', user.value.id);;
         }
         showAlert("Informações editadas com sucesso!")
+        limitarForm.value = true
 
         showPreencha.value = false
     } else {
@@ -152,13 +156,13 @@ const handleSubmitSetup = async () => {
                 </div>
                 <img class="h-[70px]" src="../assets/icons/saffron.svg" alt="">
             </div>
-            <h1 v-if="assinatura != 'ativo'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura Expirou!</h1>
+            <h1 v-if="assinatura != 'ativo'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura não está ativa!</h1>
 
             <a v-if="assinatura != 'ativo'"
                 href='https://api.whatsapp.com/send?phone=5549988765487&text=Ol%C3%A1,%20desejo%20renovar%20minha%20assinatura'
                 target="_blank"
                 class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4 max-w-[30vw] mb-5">
-                Clique aqui para entrar em contato e renovar sua assinatura
+                Clique aqui para entrar em contato e ativar ou renovar sua assinatura
             </a>
             <div class="bg-verde_apagado  border-l-8 border-l-verde flex-row p-4 max-w-[30vw]">
                 <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
@@ -242,7 +246,7 @@ const handleSubmitSetup = async () => {
                 </div>
                 <div class="flex w-full justify-evenly ">
                     <button @click="handleSubmitSetup" data-modal-toggle="defaultModal" type="button"
-                    class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
+                        class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
                         Editar Informações</button>
                     <button @click="logOut()" data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
@@ -280,15 +284,14 @@ const handleSubmitSetup = async () => {
                 </div>
                 <img class="h-[40px]" src="../assets/icons/saffron.svg" alt="">
             </div>
-            <h1 v-if="assinatura != 'ativo'" class="text-center text-vermelho font-bold animate-pulse">Sua Assinatura
-                Expirou!</h1>
+            <h1 v-if="assinatura != 'ativo'" class="text-center text-vermelho font-bold animate-pulse z-[-1]">Sua Assinatura não está ativa!</h1>
             <a v-if="assinatura != 'ativo'"
                 href='https://api.whatsapp.com/send?phone=5549988765487&text=Ol%C3%A1,%20desejo%20renovar%20minha%20assinatura'
                 target="_blank"
                 class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4 w-full mb-5">
-                Clique aqui para entrar em contato e renovar sua assinatura
+                Clique aqui para entrar em contato e ativar ou renovar sua assinatura
             </a>
-            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex-row p-4 z-[-1]">
+            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex-row p-4 ">
                 <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha
@@ -331,10 +334,10 @@ const handleSubmitSetup = async () => {
                     </div>
 
 
-                    <div class="relative z-0 w-full mb-6 group">
+                    <div class="relative  w-full mb-6 group">
 
                         <label for="nome"
-                            class=" peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Estado
+                            class=" peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6  top-1 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Estado
                         </label>
                         <select type="text" placeholder="João da silva" v-model="setupInput.estado"
                             class="block py-2.5 px-0 w-full text-sm text-escuro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
