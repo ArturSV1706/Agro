@@ -92,9 +92,9 @@ if (process.client) {
 </script>
 
 <template>
-    <div v-if="screen === 'desktop'">
+    <div class='flex' v-if="screen === 'desktop'">
         <div v-if="!showConfirmEmailMessage">
-            <div :class="`flex flex-col justify-evenly h-full min-w-[23vw] p-4 border-2 border-escuro`">
+            <div :class="`flex flex-col  justify-evenly h-full min-w-[23vw] p-4 border-2 border-escuro`">
                 <h3 class="text-escuro mb-5 text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}
                 </h3>
                 <p class="px-2 mb-11 text-vermelho font-semibold animate-pulse text-center" v-if="authError">{{ authError }}
@@ -143,6 +143,7 @@ if (process.client) {
             <div :class="`flex flex-col justify-evenly h-full w-full p-4 border-2 border-escuro text-center`">
                 <h1 class="text-center text-5xl">📨</h1>
                 <h1 class="text-2xl text-center font-bold text-escuro animate-bounce">Cheque o seu email</h1>
+                <h1 class="text-2xl text-center font-bold text-verde ">{{input.email }}</h1>
                 <h3 class="text-xl font-semibold text-center text-verde">Enviamos um email de confirmação do registro da
                     conta, basta clicar no
                     link enviado. 😉</h3>
