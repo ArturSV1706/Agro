@@ -125,6 +125,9 @@ const handleSafraSelecioanda = async () => {
     if (mainElement && screen.value === 'mobile') {
         mainElement.value.style.overflow = "auto";
     }
+    if (safra_escolhida.value) {
+        console.log(safra_escolhida.value)
+
     showFluxo.value = true
     if (process.client) {
         fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
@@ -135,7 +138,7 @@ const handleSafraSelecioanda = async () => {
         saldoResult.value = parseFloat(fluxoEntrada.value) - parseFloat(fluxoSaida.value)
         safraResponse_qnt.value = await supabase.from("safras").select("quantidade_real").eq('id', safra_escolhida.value)
     }
-
+}
 }
 const pagina = reactive({
     atual: 0,

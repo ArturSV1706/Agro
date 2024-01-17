@@ -156,7 +156,7 @@ const handleSubmitSetup = async () => {
                 </div>
                 <img class="h-[70px]" src="../assets/icons/saffron.svg" alt="">
             </div>
-            <h1 v-if="assinatura != 'ativo'" class=" text-vermelho text-center font-bold animate-pulse">Sua Assinatura não está ativa!</h1>
+            <h1 v-if="assinatura != 'ativo'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura não está ativa!</h1>
 
             <a v-if="assinatura != 'ativo'"
                 href='https://api.whatsapp.com/send?phone=5549988765487&text=Ol%C3%A1,%20desejo%20renovar%20minha%20assinatura'
