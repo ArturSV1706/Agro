@@ -1364,7 +1364,8 @@ const valorCombustivelFormatar = (valor) => {
                         class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quatidade
                         à adicionar (L)</label>
                 </div>
-                <div v-if="!safraResponse"></div>
+                {{safraResponse.data}}
+                <div class='text-vermelho font-bold' v-if="safraResponse.data[0] == undefined">Nenhuma Safra encontrada, adicione uma safra</div>
                 <div v-else-if="safraResponse.data != ''">
                     <div class="relative z-0 w-full mb-6 group">
 

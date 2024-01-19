@@ -2,8 +2,8 @@
 <template>
     <div id="defaultModal" tabindex="-1" aria-hidden="true"
         class="hidden sm:flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center  ">
-        <div class="absolute filter backdrop-blur-[3px] w-[500px] h-full bg-[rgba(42,77,65,.4)] z-10 "></div>
-        <div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 p-4 w-full max-w-xl h-full md:h-auto">
+        <div class="absolute filter backdrop-blur-[3px] w-full h-full bg-[rgba(42,77,65,.4)] z-10 "></div>
+                <div class="fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 p-4 w-full max-w-xl h-full md:h-auto">
             <!-- Modal content -->
             <div class="relative bg-escuro rounded-lg shadow ">
                 <!-- Modal header -->
