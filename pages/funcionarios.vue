@@ -67,11 +67,11 @@ const showAlert = (message) => {
         loadingWidth.value -= 2;
 
         // Update the width of the timer bar
-        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
-        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBar").style.width = loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width = loadingWidth.value + "%";
 
         // Check if the width has reached 0
-       
+
     }, 80);
 
 
@@ -679,7 +679,8 @@ function generateRandomString(length) {
             </ModalNovoFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalEditarFuncionario v-if="showModalEditar" @close="showModalEditar = false; mainElement.style.overflow = 'auto'"
+            <ModalEditarFuncionario v-if="showModalEditar"
+                @close="showModalEditar = false; mainElement.style.overflow = 'auto'"
                 @editarFuncionario="handleSubmitEditarFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -768,12 +769,13 @@ function generateRandomString(length) {
             </ModalDeletarFuncionario>
         </Transition>
         <Transition name="pop">
-                <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
-                    <h2 class="text-center text-claro text-2xl font-semibold">Este funcionário está registrado em uma tarefa, não
-                        pode ser
-                        deletado.</h2>
-                </ModalDeletarNegado>
-            </Transition>
+            <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
+                <h2 class="text-center text-claro text-2xl font-semibold">Este funcionário está registrado em uma tarefa,
+                    não
+                    pode ser
+                    deletado.</h2>
+            </ModalDeletarNegado>
+        </Transition>
         <Transition name="pop">
             <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="showModalPagarFuncionario = false"
                 @pagarFuncionario="handleSubmitPagarFuncionario">
@@ -792,9 +794,8 @@ function generateRandomString(length) {
                         class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Valor
                         do pagamento</label>
                 </div>
-                
-                <div v-if="!safraResponse"></div>
-                <div v-else-if="safraResponse.data != ''">
+
+                <div v-if="safraResponse.data != ''">
 
                     <div class="relative z-0 w-full  group">
 
@@ -812,6 +813,9 @@ function generateRandomString(length) {
                         </select>
                     </div>
                 </div>
+                <div v-else class="text-center text-vermelho font-bold ">
+                    Você precisa de uma safra ativa para adicionar este item
+                </div>
             </ModalPagarFuncionario>
         </Transition>
     </div>
@@ -828,7 +832,8 @@ function generateRandomString(length) {
 
         <div class="  w-full space-y-4 pb-5">
             <div v-for="funcionario in funcionariosResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
-                :key="funcionario.id" class="flex w-full h-[65px]" @click=" mainElement.style.overflow = 'hidden'; abrirOpcoesMobile(funcionario.nome, funcionario.cargo, funcionario.numero, funcionario.is_assalariado, funcionario.salario, funcionario.data_pagamento_salario, funcionario.id)">
+                :key="funcionario.id" class="flex w-full h-[65px]"
+                @click=" mainElement.style.overflow = 'hidden'; abrirOpcoesMobile(funcionario.nome, funcionario.cargo, funcionario.numero, funcionario.is_assalariado, funcionario.salario, funcionario.data_pagamento_salario, funcionario.id)">
                 <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center">
                     <svg width="31" height="28" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -872,7 +877,8 @@ function generateRandomString(length) {
             </button><br>
         </div>
         <Transition name="pop">
-            <ModalNovoFuncionario v-if="showModalAdicionar" @close="showModalAdicionar = false; mainElement.style.overflow = 'auto'"
+            <ModalNovoFuncionario v-if="showModalAdicionar"
+                @close="showModalAdicionar = false; mainElement.style.overflow = 'auto'"
                 @adicionarFuncionario="handleSubmitNovoFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -951,7 +957,8 @@ function generateRandomString(length) {
             </ModalNovoFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalEditarFuncionario v-if="showModalEditar" @close="mainElement.style.overflow = 'auto';showModalEditar = false"
+            <ModalEditarFuncionario v-if="showModalEditar"
+                @close="mainElement.style.overflow = 'auto'; showModalEditar = false"
                 @editarFuncionario="handleSubmitEditarFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -1029,7 +1036,8 @@ function generateRandomString(length) {
             </ModalEditarFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalDeletarFuncionario v-if="showModalDeletar" @close="mainElement.style.overflow = 'auto';showModalDeletar = false"
+            <ModalDeletarFuncionario v-if="showModalDeletar"
+                @close="mainElement.style.overflow = 'auto'; showModalDeletar = false"
                 @deletarFuncionario="handleDeleteFuncionario(funcionarioInput.id)">
                 <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este funcionário?</h1>
                 <h1 class="text-center text-xl text-claro capitalize font-bold">{{
@@ -1040,7 +1048,8 @@ function generateRandomString(length) {
             </ModalDeletarFuncionario>
         </Transition>
         <Transition name="pop">
-            <ModalPagarFuncionario v-if="showModalPagarFuncionario" @close="mainElement.style.overflow = 'auto';showModalPagarFuncionario = false"
+            <ModalPagarFuncionario v-if="showModalPagarFuncionario"
+                @close="mainElement.style.overflow = 'auto'; showModalPagarFuncionario = false"
                 @pagarFuncionario="handleSubmitPagarFuncionario">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -1057,8 +1066,7 @@ function generateRandomString(length) {
                         class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Valor
                         do pagamento</label>
                 </div>
-                <div v-if="!safraResponse"></div>
-                <div v-else-if="safraResponse.data != ''">
+                <div v-if="safraResponse.data != ''">
 
                     <div class="relative z-0 w-full mt-6 group">
 
@@ -1076,30 +1084,35 @@ function generateRandomString(length) {
                         </select>
                     </div>
                 </div>
+                <div v-else class="text-center text-vermelho font-bold ">
+                    Você precisa de uma safra ativa para adicionar este item
+                </div>
             </ModalPagarFuncionario>
         </Transition>
         <Transition name="pop">
-                <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
-                    <h2 class="text-center text-claro text-2xl font-semibold">Este funcionário está registrado em uma tarefa, não
-                        pode ser
-                        deletado.</h2>
-                </ModalDeletarNegado>
-            </Transition>
+            <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false">
+                <h2 class="text-center text-claro text-2xl font-semibold">Este funcionário está registrado em uma tarefa,
+                    não
+                    pode ser
+                    deletado.</h2>
+            </ModalDeletarNegado>
+        </Transition>
 
-            <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
-                <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{funcionarioInput.nome}}</h1>
-                <ul>
-                    <li @click="handleModalEditar(funcionarioInput.nome, funcionarioInput.cargo, funcionarioInput.numero, funcionarioInput.is_assalariado, funcionarioInput.salario, funcionarioInput.data_pagamento_salario, funcionarioInput.id)"
+        <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ funcionarioInput.nome }}</h1>
+            <ul>
+                <li @click="handleModalEditar(funcionarioInput.nome, funcionarioInput.cargo, funcionarioInput.numero, funcionarioInput.is_assalariado, funcionarioInput.salario, funcionarioInput.data_pagamento_salario, funcionarioInput.id)"
                     class="bg-verde py-1 px-2 rounded mb-2">
-                        Editar
-                    </li>
-                    <li @click="abrirModalPagarFuncionario(funcionarioInput.id, funcionarioInput.nome)" class="bg-verde py-1 px-2 rounded mb-2">
-                        Fazer pagamento
-                    </li>
-                    <li @click="abrirModalDeletarFuncionario(funcionarioInput.id, funcionarioInput.nome)" class="bg-vermelho py-1 px-2 rounded">
-                        Deletar
-                    </li>
-                </ul>
-            </OpcoesMobile>
-    </div>
-</template>
+                    Editar
+                </li>
+                <li @click="abrirModalPagarFuncionario(funcionarioInput.id, funcionarioInput.nome)"
+                    class="bg-verde py-1 px-2 rounded mb-2">
+                    Fazer pagamento
+            </li>
+            <li @click="abrirModalDeletarFuncionario(funcionarioInput.id, funcionarioInput.nome)"
+                class="bg-vermelho py-1 px-2 rounded">
+                Deletar
+            </li>
+        </ul>
+    </OpcoesMobile>
+</div></template>

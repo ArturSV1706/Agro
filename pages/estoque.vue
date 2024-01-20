@@ -69,11 +69,11 @@ const showAlert = (message) => {
         loadingWidth.value -= 2;
 
         // Update the width of the timer bar
-        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
-        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBar").style.width = loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width = loadingWidth.value + "%";
 
         // Check if the width has reached 0
-       
+
     }, 80);
 
 
@@ -907,9 +907,10 @@ const precoFormatar = (valor) => {
                                 <td class="p-2 capitalize text-center">{{ colheita.area_colhida }} <span
                                         class="text-xs">(Ha)</span></td>
                                 <td v-if='!isNaN(colheita.quantidade_real /
-                                    colheita.area_colhida)' class="p-2 capitalize text-center">{{ (colheita.quantidade_real /
-                                    colheita.area_colhida).toFixed(2) }}</td>
-                                    <td v-else class="p-2 capitalize text-center">0.00</td>
+                                    colheita.area_colhida)' class="p-2 capitalize text-center">{{
+        (colheita.quantidade_real /
+            colheita.area_colhida).toFixed(2) }}</td>
+                                <td v-else class="p-2 capitalize text-center">0.00</td>
 
                                 <td class="p-2">
                                     <span v-if="(colheita.area - colheita.area_colhida) > 0"
@@ -1050,6 +1051,7 @@ const precoFormatar = (valor) => {
                             @click="handlePagina('proxima')" class="text-claro font-bold"> Próximo ->
                         </button><br>
                     </div>
+
                 </div>
             </Transition>
             <Transition name="slide">
@@ -1383,6 +1385,9 @@ const precoFormatar = (valor) => {
                                 </select>
                             </div>
                         </div>
+                        <div v-else class="text-center text-vermelho font-bold ">
+                            Você precisa de uma safra ativa para adicionar este item
+                        </div>
 
                     </div>
                 </ModalNovoEstoque>
@@ -1622,7 +1627,8 @@ const precoFormatar = (valor) => {
             </button>
             <button @click="trocarTabelaMobile('semente')"
                 :class="` text-claro bg-${bgIconesTabelas.sementes} text-center font-semibold transition-all rounded-[10000%] h-[50px] w-[50px] `">
-                <svg xmlns="http://www.w3.org/2000/svg" height="50" viewBox="0 -960 960 960" class="p-2 opacity"  width="50" fill="#396858">
+                <svg xmlns="http://www.w3.org/2000/svg" height="50" viewBox="0 -960 960 960" class="p-2 opacity" width="50"
+                    fill="#396858">
                     <path
                         d="M342-160h276l40-160H302l40 160Zm0 80q-28 0-49-17t-28-44l-45-179h520l-45 179q-7 27-28 44t-49 17H342ZM200-400h560v-80H200v80Zm280-240q0-100 70-170t170-70q0 90-57 156t-143 80v84h320v160q0 33-23.5 56.5T760-320H200q-33 0-56.5-23.5T120-400v-160h320v-84q-86-14-143-80t-57-156q100 0 170 70t70 170Z" />
                 </svg>
@@ -1665,7 +1671,7 @@ const precoFormatar = (valor) => {
         <Transition name="slide">
             <div v-if="showTabelaColheita" id="container" class="">
                 <div class="flex flex-row">
-                    
+
                 </div>
 
                 <div class='flex justify-center items-center text-verde mb-4'>
@@ -1961,7 +1967,8 @@ const precoFormatar = (valor) => {
         <section class="h-[60px]"></section>
 
         <Transition name="pop">
-            <ModalNovoEstoque v-if="showModalAdicionar" @close="showModalAdicionar = false; mainElement.style.overflow = 'auto'"
+            <ModalNovoEstoque v-if="showModalAdicionar"
+                @close="showModalAdicionar = false; mainElement.style.overflow = 'auto'"
                 @adicionarItem="handleSubmitNovoEstoque()">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -2034,12 +2041,16 @@ const precoFormatar = (valor) => {
                             </select>
                         </div>
                     </div>
+                    <div v-else class="text-center text-vermelho font-bold ">
+                        Você precisa de uma safra ativa para adicionar este item
+                    </div>
 
                 </div>
             </ModalNovoEstoque>
         </Transition>
         <Transition name="pop">
-            <ModalDeletarEstoque v-if="showModalDeletar" @close="showModalDeletar = false; mainElement.style.overflow = 'auto'"
+            <ModalDeletarEstoque v-if="showModalDeletar"
+                @close="showModalDeletar = false; mainElement.style.overflow = 'auto'"
                 @deletarItem="handleSubmitDeleteEstoque()">
                 <h1 class="text-center text-xl text-claro light">Deseja mesmo deletar este item?</h1>
                 <h2 class="text-center text-claro animate-bounce">Esta ação <b class="text-vermelho"><u>não pode ser
@@ -2048,7 +2059,8 @@ const precoFormatar = (valor) => {
         </Transition>
 
         <Transition name="pop">
-            <ModalDeletarNegado v-if="showModalDeletarNegado" @close="showModalDeletarNegado = false; mainElement.style.overflow = 'auto'">
+            <ModalDeletarNegado v-if="showModalDeletarNegado"
+                @close="showModalDeletarNegado = false; mainElement.style.overflow = 'auto'">
                 <h2 class="text-center text-claro text-2xl font-semibold">Este Item está registrado em uma tarefa, não
                     pode ser
                     deletado.</h2>
@@ -2102,7 +2114,8 @@ const precoFormatar = (valor) => {
             </ModalEditarEstoque>
         </Transition>
         <Transition name="pop">
-            <ModalAdicionarColheita v-if="showModalAdicionarColheita" @close="showModalAdicionarColheita = false; mainElement.style.overflow = 'auto'"
+            <ModalAdicionarColheita v-if="showModalAdicionarColheita"
+                @close="showModalAdicionarColheita = false; mainElement.style.overflow = 'auto'"
                 @adicionarColheita="handleSubmitAdicionarColheita(estoqueInput.id)">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -2139,7 +2152,8 @@ const precoFormatar = (valor) => {
             </ModalAdicionarColheita>
         </Transition>
         <Transition name="pop">
-            <ModalEditarEstoqueColheita v-if="showModalEditarColheita" @close="showModalEditarColheita = false; mainElement.style.overflow = 'auto'"
+            <ModalEditarEstoqueColheita v-if="showModalEditarColheita"
+                @close="showModalEditarColheita = false; mainElement.style.overflow = 'auto'"
                 @editarItemColheita="handleSubmitEditarEstoqueColheita(estoqueInput.id)">
                 <Transition name="pop">
                     <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha todos os
@@ -2168,7 +2182,8 @@ const precoFormatar = (valor) => {
             </ModalEditarEstoqueColheita>
         </Transition>
         <Transition name="pop">
-            <ModalAdicionarItemEstoque v-if="showModalRepor" @close="showModalRepor = false; mainElement.style.overflow = 'auto'"
+            <ModalAdicionarItemEstoque v-if="showModalRepor"
+                @close="showModalRepor = false; mainElement.style.overflow = 'auto'"
                 @reporItem="handleSubmitReporEstoque(estoqueInput.id)">
                 <div class="flex flex-col">
                     <Transition name="pop">
@@ -2251,7 +2266,8 @@ const precoFormatar = (valor) => {
                     class="bg-verde py-1 px-2 rounded mb-2">
                     Adicionar
                 </li>
-                <li @click="showModalOpcoes = false; handleDeleteEstoque(estoqueInput.id)" class="bg-vermelho py-1 px-2 rounded">
+                <li @click="showModalOpcoes = false; handleDeleteEstoque(estoqueInput.id)"
+                    class="bg-vermelho py-1 px-2 rounded">
                     Deletar
                 </li>
             </ul>
@@ -2289,4 +2305,5 @@ const precoFormatar = (valor) => {
 .slide-leave-active {
     transition: all .4s cubic-bezier(0, 1.15, .47, 1.15);
 
-} */</style>
+} */
+</style>

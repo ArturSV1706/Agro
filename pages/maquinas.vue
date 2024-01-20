@@ -51,11 +51,11 @@ const showAlert = (message) => {
         loadingWidth.value -= 2;
 
         // Update the width of the timer bar
-        document.getElementById("timerBar").style.width =  loadingWidth.value + "%";
-        document.getElementById("timerBarMobile").style.width =  loadingWidth.value + "%";
+        document.getElementById("timerBar").style.width = loadingWidth.value + "%";
+        document.getElementById("timerBarMobile").style.width = loadingWidth.value + "%";
 
         // Check if the width has reached 0
-       
+
     }, 80);
 
 
@@ -523,7 +523,7 @@ const handleSubmitNovoCombustivel = async (event) => {
             combustivelInput.nome = "",
             combustivelInput.quantidade = "",
             showModalAdicionarCombustivel.value = false
-            showAlert("Combustível adicionado com sucesso!")
+        showAlert("Combustível adicionado com sucesso!")
 
     } else {
         showPreencha.value = true
@@ -993,7 +993,8 @@ const valorCombustivelFormatar = (valor) => {
                     </table>
                     <div v-if="combustiveisResponse"
                         class="flex items-center justify-center self-end min-w-[260px] px-4 py-2 bg-escuro space-x-8 rounded-b-xl mb-[50px]">
-                        <button v-if="pagina_combustivel.atual > 0" @click="handlePaginaCombustivel('anterior')" class="text-claro font-bold">
+                        <button v-if="pagina_combustivel.atual > 0" @click="handlePaginaCombustivel('anterior')"
+                            class="text-claro font-bold">
                             &lt-
                             Anterior </button>
                         <div class="flex flex-col items-center">
@@ -1001,7 +1002,8 @@ const valorCombustivelFormatar = (valor) => {
                             <p class="text-claro font-semibold">Pág.</p>
                             <select v-model="pagina_combustivel.atual"
                                 class=" p-1 text-claro font-bold rounded-lg  bg-verde border-2 border-claro">
-                                <option v-for="i in Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho)"
+                                <option
+                                    v-for="i in Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho)"
                                     v-bind:value="i - 1">
                                     {{
                                         i
@@ -1018,7 +1020,8 @@ const valorCombustivelFormatar = (valor) => {
                                 <option v-bind:value=250> 25 </option>
                             </select>
                         </div>
-                        <button v-if="pagina_combustivel.atual < (Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho) - 1)"
+                        <button
+                            v-if="pagina_combustivel.atual < (Math.ceil(combustiveisResponse.data.length / pagina_combustivel.tamanho) - 1)"
                             @click="handlePaginaCombustivel('proxima')" class="text-claro font-bold"> Próximo ->
                         </button><br>
                     </div>
@@ -1326,8 +1329,7 @@ const valorCombustivelFormatar = (valor) => {
                     paraReal(maquinaInput.valor_parcelas) }} </b></h1>
                 <h1 class="text-center text-md text-claro light">({{ maquinaInput.num_parcelas + " Restantes" }}) </h1>
 
-                <div v-if="!safraResponse"></div>
-                <div v-else-if="safraResponse.data != ''">
+                <div v-if="safraResponse.data != ''">
 
                     <div class="relative z-0 w-full mb-6 group">
 
@@ -1344,6 +1346,9 @@ const valorCombustivelFormatar = (valor) => {
                             </option>
                         </select>
                     </div>
+                </div>
+                <div v-else class="text-center text-vermelho font-bold ">
+                    Você precisa de uma safra ativa para adicionar este item
                 </div>
             </ModalPagarParcela>
         </Transition>
@@ -1364,8 +1369,8 @@ const valorCombustivelFormatar = (valor) => {
                         class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quatidade
                         à adicionar (L)</label>
                 </div>
-                {{safraResponse.data}}
-                <div class='text-vermelho font-bold' v-if="safraResponse.data[0] == undefined">Nenhuma Safra encontrada, adicione uma safra</div>
+                <div class='text-vermelho font-bold' v-if="safraResponse.data[0] == undefined">Nenhuma Safra encontrada,
+                    adicione uma safra</div>
                 <div v-else-if="safraResponse.data != ''">
                     <div class="relative z-0 w-full mb-6 group">
 
@@ -1498,8 +1503,7 @@ const valorCombustivelFormatar = (valor) => {
 
         <div v-for="maquina in maquinasResponse.data.slice(pagina.atual * pagina.tamanho, (pagina.tamanho * pagina.atual) + pagina.tamanho).sort(tipoOrdenar)"
             :key="maquina.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]"
-            @click="abrirOpcoesMobile(maquina.categoria, maquina.modelo, maquina.ano, maquina.is_pago, maquina.valor_parcelas, maquina.num_parcelas, maquina.data_parcelas, maquina.id, maquina.status)"
-            >
+            @click="abrirOpcoesMobile(maquina.categoria, maquina.modelo, maquina.ano, maquina.is_pago, maquina.valor_parcelas, maquina.num_parcelas, maquina.data_parcelas, maquina.id, maquina.status)">
             <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center ">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="39" height="35" viewBox="0 -960 960 960" fill="#DDE0D0">
@@ -1547,8 +1551,7 @@ const valorCombustivelFormatar = (valor) => {
 
         <div v-for="combustivel in combustiveisResponse.data.slice(pagina_combustivel.atual * pagina_combustivel.tamanho, (pagina_combustivel.tamanho * pagina_combustivel.atual) + pagina_combustivel.tamanho).sort(tipoOrdenar)"
             :key="combustivel.id" class="flex items-center w-full h-[65px] bg-[#B9C2B3] mb-3 rounded-xl p-1 px-[0.30rem]"
-            @click="abrirOpcoesMobileCombustivel(combustivel.id, combustivel.quantidade, combustivel.nome)"
-            >
+            @click="abrirOpcoesMobileCombustivel(combustivel.id, combustivel.quantidade, combustivel.nome)">
             <div class="bg-verde mr-2 h-full aspect-square rounded-xl flex justify-center items-center ">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="39" height="35" fill="#DDE0D0" viewBox="0 -960 960 960">
@@ -1586,9 +1589,10 @@ const valorCombustivelFormatar = (valor) => {
         <section class="h-[30px]"></section>
 
 
-<!-- Maquinas -->
+        <!-- Maquinas -->
         <OpcoesMobile v-if="showModalOpcoes" @close="showModalOpcoes = false; mainElement.style.overflow = 'auto'">
-            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ maquinaInput.modelo + " - " + maquinaInput.ano }}</h1>
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ maquinaInput.modelo + " - " +
+                maquinaInput.ano }}</h1>
             <ul>
                 <li @click="showModalOpcoes = false; handleModalEditar(maquinaInput.categoria, maquinaInput.modelo, maquinaInput.ano, maquinaInput.is_pago, maquinaInput.valor_parcelas, maquinaInput.num_parcelas, maquinaInput.data_parcelas, maquinaInput.id)"
                     class="bg-verde py-1 px-2 rounded mb-2">
@@ -1602,7 +1606,8 @@ const valorCombustivelFormatar = (valor) => {
                     class="bg-verde py-1 px-2 rounded mb-2">
                     Manutenção
                 </li>
-                <li v-if="maquinaInput.num_parcelas > 0" @click="showModalOpcoes = false; handlePagarParceclas(maquinaInput.id, maquinaInput.modelo, maquinaInput.ano, maquinaInput.valor_parcelas, maquinaInput.num_parcelas)"
+                <li v-if="maquinaInput.num_parcelas > 0"
+                    @click="showModalOpcoes = false; handlePagarParceclas(maquinaInput.id, maquinaInput.modelo, maquinaInput.ano, maquinaInput.valor_parcelas, maquinaInput.num_parcelas)"
                     class="bg-verde py-1 px-2 rounded mb-2">
                     Pagar Parcela
                 </li>
@@ -1614,10 +1619,11 @@ const valorCombustivelFormatar = (valor) => {
         </OpcoesMobile>
 
 
-<!-- Combustiveis -->
+        <!-- Combustiveis -->
 
-<OpcoesMobile v-if="showModalOpcoesCombustivel" @close="showModalOpcoesCombustivel = false; mainElement.style.overflow = 'auto'">
-            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ combustivelInput.nome}}</h1>
+        <OpcoesMobile v-if="showModalOpcoesCombustivel"
+            @close="showModalOpcoesCombustivel = false; mainElement.style.overflow = 'auto'">
+            <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ combustivelInput.nome }}</h1>
             <ul>
                 <li @click="showModalOpcoesCombustivel = false; handleReporCombustivel(combustivelInput.id, combustivelInput.quantidade)"
                     class="bg-verde py-1 px-2 rounded mb-2">
@@ -2077,7 +2083,7 @@ const valorCombustivelFormatar = (valor) => {
                     </select>
                 </div>
 
-            </ModalAdicionarManutencao>
-        </Transition>
+        </ModalAdicionarManutencao>
+    </Transition>
 
 </div></template>
