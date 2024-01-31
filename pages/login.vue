@@ -24,14 +24,13 @@ definePageMeta({ layout: 'login' })
 
 <template>
     <div v-if="screen === 'desktop'" class="flex flex-col justify-center items-center h-screen w-screen">
+        <div class="fixed bg-escuro w-full h-full z-[-9999999]"></div>
         <div v-if="loading" class="h-full w-full absolute flex justify-center items-center bg-claro opacity-60 z-[8]">
         </div>
         <div v-if="loading" class="w-[90px] h-[90px] z-10 border-[15px] rounded-[50%]  absolute border-verde border-t-escuro opacity-100 animate-spin"></div>
-        <div class="flex shadow-2xl aspect-video">
-            <Auth class="flex flex-1" @loading="loading = true" @stopLoading="loading = false" />
-            <div class="flex flex-1 flex-col justify-evenly h-full w-full bg-escuro">
-                <img class="scale-[60%]" src="../assets/icons/logoLogin.svg" alt="">
-            </div>
+        <div class="flex flex-col space-y-5 mt-[-10vh]">
+            <img class=" ml-[1vw] w-[40%] " src="../assets/icons/logoLogin.svg" alt="">
+            <Auth class="flex " @loading="loading = true" @stopLoading="loading = false" />
         </div>
 
     </div>

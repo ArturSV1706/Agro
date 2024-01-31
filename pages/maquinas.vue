@@ -645,8 +645,9 @@ const handleSubmitEditarMaquina = async () => {
             }).eq('id', maquinaInput.id);
         }
 
-
-        maquinasResponse.value = await supabase.from("maquinas").select()
+if(process.client){
+    maquinasResponse.value = await supabase.from("maquinas").select().eq('user_id', user.value.id).order('modelo', { ascending: true })
+}
 
 
         maquinaInput.id = "",

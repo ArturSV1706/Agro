@@ -3,6 +3,8 @@
 
 const authState = ref("entrar")
 const authError = ref("")
+const corBotaoEntrar = ref("verde")
+const corBotaoRegistrar = ref("escuro")
 const showConfirmEmailMessage = ref(false)
 const input = reactive({
     password: "",
@@ -40,11 +42,17 @@ if (process.client) {
 const toggleAuthState = () => {
     if (authState.value === "entrar") {
         authState.value = "registrar"
+        corBotaoEntrar.value = 'escuro'
+        corBotaoRegistrar.value = 'verde'
     } else {
         authState.value = "entrar"
+        corBotaoEntrar.value = 'verde'
+        corBotaoRegistrar.value = 'escuro'
     }
     input.email = ""
     input.password = ""
+
+
 }
 
 const handleSubmit = async () => {
@@ -88,13 +96,20 @@ if (process.client) {
         }
     })
 }
+function corAuth() {
+
+}
 
 </script>
 
 <template>
     <div class='flex' v-if="screen === 'desktop'">
         <div v-if="!showConfirmEmailMessage">
-            <div :class="`flex flex-col  justify-evenly h-full min-w-[23vw] p-4 border-2 border-escuro`">
+            <div class="flex items-end rounded-t-md border-claro border-2 w-fit">
+                <div @click='authState  = "registrar"; toggleAuthState()' :class="` transition-all flex items-center justify-center text-claro font-bold bg-${corBotaoEntrar} min-w-[100px] h-[60px] rounded-tl-md cursor-pointer`">Entrar</div>
+                <div @click='authState  = "entrar"; toggleAuthState() ' :class="`transition-all flex items-center justify-center text-claro font-bold  bg-${corBotaoRegistrar} min-w-[100px] h-[60px] cursor-pointer   rounded-tr-md`">Resgistrar</div>
+            </div>
+            <div :class="`flex flex-col  justify-evenly h-full min-w-[23vw] p-4 border-2 bg-claro`">
                 <h3 class="text-escuro mb-5 text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}
                 </h3>
                 <p class="px-2 mb-11 text-vermelho font-semibold animate-pulse text-center" v-if="authError">{{ authError }}
@@ -130,13 +145,13 @@ if (process.client) {
 
 
                 </div>
-                <div class="w-[320px] mt-4">
+                <!-- <div class="w-[320px] mt-4">
                     <p class="text-sm font-bold text-escuro text-center cursor-pointer" @click="toggleAuthState">{{
                         authState === "entrar" ? "Não possui uma conta? Clique para se registrar"
                         :
                         "Já possui uma conta? Clique para entrar"
                     }}</p>
-                </div>
+                </div> -->
             </div>
         </div>
         <div v-else>
@@ -155,7 +170,11 @@ if (process.client) {
     </div>
     <div v-if="screen === 'mobile'">
         <div v-if="!showConfirmEmailMessage">
-            <div :class="`flex flex-col justify-evenly h-full w-[90vw] py-6 rounded-2xl border-escuro bg-claro space-y-10`">
+            <div class="flex items-end rounded-t-md border-claro border-2 w-fit">
+                <div @click='authState  = "registrar"; toggleAuthState()' :class="` transition-all flex items-center justify-center text-claro font-bold bg-${corBotaoEntrar} min-w-[100px] h-[60px] rounded-tl-md cursor-pointer`">Entrar</div>
+                <div @click='authState  = "entrar"; toggleAuthState() ' :class="`transition-all flex items-center justify-center text-claro font-bold  bg-${corBotaoRegistrar} min-w-[100px] h-[60px] cursor-pointer   rounded-tr-md`">Resgistrar</div>
+            </div>
+            <div :class="`flex flex-col justify-evenly h-full w-[90vw] py-6  border-escuro bg-claro space-y-10`">
                 <h3 class="text-escuro  text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}
                 </h3>
                 <p class="px-2 text-vermelho font-semibold animate-pulse text-center" v-if="authError">{{ authError }}</p>
@@ -190,13 +209,13 @@ if (process.client) {
 
 
                 </div>
-                <div class="w-[100%] mt-4 text-center flex flex-col justify-center items-center">
+                <!-- <div class="w-[100%] mt-4 text-center flex flex-col justify-center items-center">
                     <p class="text-sm w-[70%] font-bold text-escuro text-center cursor-pointer" @click="toggleAuthState">{{
                         authState === "entrar" ? "Não possui uma conta? Clique para se registrar"
                         :
                         "Já possui uma conta? Clique para entrar"
                     }}</p>
-                </div>
+                </div> -->
             </div>
         </div>
         <div v-else>

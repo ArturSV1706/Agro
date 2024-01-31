@@ -30,6 +30,6 @@ export default {
   },
 
   devtools: {
-    enabled: true,
+    enabled: false,
   },
 };
