@@ -19,6 +19,8 @@ console.log(loading.value)
 <template>
     <div v-if="loading" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <img class="w-[10vw] animate-ping" src="../assets/icons/saffron_alt.svg" alt="">
+        <NuxtLoadingIndicator height="5" color="#329F5B" />
+
         
     </div>
     <div v-else>

@@ -4,6 +4,13 @@ import { defineNuxtConfig } from "nuxt/config";
 
 export default {
   modules: ["@nuxtjs/tailwindcss"],
+ 
+  runtimeConfig: {
+    STRIPE_SECRET: process.env.STRIPE_SECRET,
+    public: {
+    }
+    // The private keys which are only available within server-side
+  },
 
   css: ["~/assets/css/tailwind.css"],
 

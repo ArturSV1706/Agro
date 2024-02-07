@@ -52,7 +52,7 @@ module.exports = {
       verde_claro: "#329F5B",
       verde_apagado: "#B9C2B3",
       vermelho: "#D52952",
-      laranja: "rgb(242,129,35)",
+      laranja: "#f28123",
       marrom: "#593D3B",
     },
       fontFamily: {

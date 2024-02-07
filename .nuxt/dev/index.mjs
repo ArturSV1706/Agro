@@ -124,7 +124,8 @@ const _inlineRuntimeConfig = {
       }
     }
   },
-  "public": {}
+  "public": {},
+  "STRIPE_SECRET": "sk_test_51Oh9oSHA4IKR1tD0BwY4UGubWHXOCKqqIr9wRG43o6BzWBrpazIPSRH5lDjjWHJeeGezX5PehsVmFxDRXqq66Ru600LKZe6ZmV"
 };
 const ENV_PREFIX = "NITRO_";
 const ENV_PREFIX_ALT = _inlineRuntimeConfig.nitro.envPrefix ?? process.env.NITRO_ENV_PREFIX ?? "_";

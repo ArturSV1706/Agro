@@ -5,6 +5,56 @@ definePageMeta({
 
 const { supabase } = useSupabase()
 const { user, signOut } = useAuth()
+const subscription = ref()
+const session = ref()
+const dataExpiracao = ref()
+
+import Stripe from 'stripe';
+const runtimeConfig = useRuntimeConfig()
+
+
+const stripe = new Stripe('sk_test_51Oh9oSHA4IKR1tD0BwY4UGubWHXOCKqqIr9wRG43o6BzWBrpazIPSRH5lDjjWHJeeGezX5PehsVmFxDRXqq66Ru600LKZe6ZmV');
+if (process.client) {
+    console.log(user.value.email)
+    const customers = await stripe.customers.search({
+        query: `email:'${user.value.email}'`,
+        expand: ['data.subscriptions'],
+    });
+
+    session.value = await stripe.billingPortal.sessions.create({
+        customer: customers.data[0].id,
+        return_url: 'https://app.saffron.com.br',
+    });
+    // window.location.href = session.url;
+
+
+    if (customers.data[0].subscriptions.data[0] != undefined) {
+
+        subscription.value = await stripe.subscriptions.retrieve(
+            customers.data[0].subscriptions.data[0].id
+        );
+        // Unix timestamp
+        const unixTimestamp = subscription.value.current_period_end;
+
+        // Convert Unix timestamp to milliseconds
+        const milliseconds = unixTimestamp * 1000;
+
+        // Create a new Date object
+        const dateObject = new Date(milliseconds);
+
+        // Get the individual components of the date
+        const day = ("0" + dateObject.getDate()).slice(-2);
+        const month = ("0" + (dateObject.getMonth() + 1)).slice(-2);
+        const year = dateObject.getFullYear();
+
+        // Format the date as dd-mm-yyyy
+        dataExpiracao.value = `${day}-${month}-${year}`;
+
+    }
+}
+
+
+
 const screen = ref('mobile');
 const assinatura = ref();
 const assinatura_data_expiracao = ref();
@@ -58,30 +108,23 @@ if (process.client) {
     } else {
         screen.value = 'mobile'
     }
-
-
-    usuarioResponse.value = await supabase.from("usuario").select().eq('user_id', user.value.id)
-    console.log(usuarioResponse.value.data[0])
-    if (usuarioResponse.value.data[0] != undefined) {
-        setupInput.nome = usuarioResponse.value.data[0].nome
-        setupInput.telefone = usuarioResponse.value.data[0].telefone
-        setupInput.estado = usuarioResponse.value.data[0].estado
-
-
-        assinatura.value = await supabase
-            .from("usuario")
-            .select()
-            .match({ user_id: user.value.id });
-        assinatura_data_expiracao.value = assinatura.value.data[0].data_expiracao
-        assinatura.value = assinatura.value.data[0].status
-
-        if (assinatura.value === 'ativo') {
-            color.value = 'verde_claro'
-        } else {
-            color.value = 'vermelho'
-        }
+    if (subscription.value === undefined) {
+        color.value = 'vermelho'
+    } else if (subscription.value.status === 'active') {
+        subscription.value.status = 'ativo'
+        color.value = 'verde_claro'
+    } else if (subscription.value.status === 'trialing') {
+        subscription.value.status = 'Período de teste'
+        color.value = 'verde'
+    } else if (subscription.value.status === 'paused') {
+        subscription.value.status = 'expirada'
+        color.value = 'vermelho'
+    }
+    else {
+        color.value = 'laranja'
     }
 }
+
 
 
 
@@ -133,6 +176,7 @@ const handleSubmitSetup = async () => {
 </script>
 <template>
     <div v-if="screen === 'desktop'">
+
         <Transition name="alert">
             <Alert v-if="alert" @close="alert = false">
                 <h1 class="text-center font-semibold">{{ alertMessage }}</h1>
@@ -150,106 +194,42 @@ const handleSubmitSetup = async () => {
                 <div>
                     <p class="text-escuro ">Plano: <span class="font-bold capitalize">simples</span></p>
                     <p class='text-escuro '>Assinatura: <span :class="`text-${color} font-semibold capitalize`">{{
-                        assinatura
+                        subscription ? subscription.status : 'Inexistente'
                     }}</span></p>
-                    <p class="text-escuro ">Expira em: <span class="font-bold">{{ assinatura_data_expiracao }}</span></p>
+                    <p class="text-escuro ">Expira em: <span class="font-bold">{{ dataExpiracao }}</span></p>
                 </div>
                 <img class="h-[70px]" src="../assets/icons/saffron.svg" alt="">
             </div>
-            <h1 v-if="assinatura != 'ativo'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura não está ativa!</h1>
-
-            <a v-if="assinatura != 'ativo'"
-                href='https://api.whatsapp.com/send?phone=5549988765487&text=Ol%C3%A1,%20desejo%20renovar%20minha%20assinatura'
-                target="_blank"
+            <h1 v-if="subscription === undefined" class=" text-vermelho font-bold animate-pulse">Sua Assinatura não está
+                ativa!
+            </h1>
+            <h1 v-else-if="subscription.status === 'expirada'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura não está
+                ativa!
+            </h1>
+            <NuxtLink v-if="subscription === undefined" to="https://saffron.com.br/comprar"
                 class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4 max-w-[30vw] mb-5">
-                Clique aqui para entrar em contato e ativar ou renovar sua assinatura
-            </a>
+                Clique aqui para obter sua assinatura
+            </NuxtLink>
+
+            <NuxtLink v-else-if="subscription.status === 'expirada'" :to="`${session.url}`"
+                class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4 max-w-[30vw] mb-5">
+                Clique aqui para obter sua assinatura
+            </NuxtLink>
             <div class="bg-verde_apagado  border-l-8 border-l-verde flex-row p-4 max-w-[30vw]">
                 <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
-                <Transition name="pop">
-                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha
-                        todos
-                        os
-                        campos</h1>
-                </Transition>
-                <div class="flex flex-row">
-                    <div class="relative z-0 w-full mb-6 group">
+               
 
-                        <input type="text" disabled name="floating_email" id="floating_email"
-                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                            placeholder=" " required :value="user.email">
-
-                    </div>
-                    <div class="relative z-0 w-full mb-6 group">
-
-                        <input type="text" name="floating_email" id="floating_email" v-model="setupInput.telefone"
-                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                            placeholder=" " required>
-                        <label for="floating_email"
-                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">
-                            Telefone</label>
-                    </div>
-
-
-
-                </div>
                 <div class="flex flex-col">
 
-                    <div class="relative z-0 w-full mb-6 group">
-
-                        <input type="text" name="floating_email" id="floating_email" v-model="setupInput.nome"
-                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                            placeholder=" " required>
-                        <label for="floating_email"
-                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Nome
-                            do Administrador
-                        </label>
-                    </div>
 
 
-                    <div class="relative z-0 w-full mb-6 group">
-
-                        <label for="nome"
-                            class=" peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6  top-1 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Estado
-                        </label>
-                        <select type="text" placeholder="João da silva" v-model="setupInput.estado"
-                            class="block py-2.5 px-0 w-full text-sm text-escuro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
-                            <option class="bg-verde font-semibold" value="AC">Acre</option>
-                            <option class="bg-verde font-semibold" value="AL">Alagoas</option>
-                            <option class="bg-verde font-semibold" value="AP">Amapá</option>
-                            <option class="bg-verde font-semibold" value="AM">Amazonas</option>
-                            <option class="bg-verde font-semibold" value="BA">Bahia</option>
-                            <option class="bg-verde font-semibold" value="CE">Ceará</option>
-                            <option class="bg-verde font-semibold" value="DF">Distrito Federal</option>
-                            <option class="bg-verde font-semibold" value="ES">Espírito Santo</option>
-                            <option class="bg-verde font-semibold" value="GO">Goiás</option>
-                            <option class="bg-verde font-semibold" value="MA">Maranhão</option>
-                            <option class="bg-verde font-semibold" value="MT">Mato Grosso</option>
-                            <option class="bg-verde font-semibold" value="MS">Mato Grosso do Sul</option>
-                            <option class="bg-verde font-semibold" value="MG">Minas Gerais</option>
-                            <option class="bg-verde font-semibold" value="PA">Pará</option>
-                            <option class="bg-verde font-semibold" value="PB">Paraíba</option>
-                            <option class="bg-verde font-semibold" value="PR">Paraná</option>
-                            <option class="bg-verde font-semibold" value="PE">Pernambuco</option>
-                            <option class="bg-verde font-semibold" value="PI">Piauí</option>
-                            <option class="bg-verde font-semibold" value="RJ">Rio de Janeiro</option>
-                            <option class="bg-verde font-semibold" value="RN">Rio Grande do Norte</option>
-                            <option class="bg-verde font-semibold" value="RS">Rio Grande do Sul</option>
-                            <option class="bg-verde font-semibold" value="RO">Rondônia</option>
-                            <option class="bg-verde font-semibold" value="RR">Roraima</option>
-                            <option class="bg-verde font-semibold" value="SC">Santa Catarina</option>
-                            <option class="bg-verde font-semibold" value="SP">São Paulo</option>
-                            <option class="bg-verde font-semibold" value="SE">Sergipe</option>
-                            <option class="bg-verde font-semibold" value="TO">Tocantins</option>
-                        </select>
-                    </div>
                 </div>
-                <div class="flex w-full justify-evenly ">
-                    <button @click="handleSubmitSetup" data-modal-toggle="defaultModal" type="button"
-                        class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
-                        Editar Informações</button>
+                <div class="flex w-full justify-evenly space-x-4">
+                    <NuxtLink :to="`${session.url}`" data-modal-toggle="defaultModal" type="button"
+                        class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg w-full   text-md font-medium px-3 mt-4 py-2.5">
+                        Editar Assinatura</NuxtLink>
                     <button @click="logOut()" data-modal-toggle="defaultModal" type="button"
-                        class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
+                        class="text-claro bg-escuro flex  justify-between items-center space-x-2 w-full  rounded-lg   text-md font-medium px-3 mt-4 py-2.5">
 
                         <h1>Fazer logout</h1>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" fill="#DDE0D0"
@@ -275,119 +255,57 @@ const handleSubmitSetup = async () => {
         <div class=" flex flex-col justify-center">
             <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex justify-evenly items-center p-4  mb-5 ">
                 <div>
+
                     <p class='text-escuro '>Assinatura: <span :class="`text-${color} font-semibold capitalize`">{{
-                        assinatura
+                        subscription ? subscription.status : 'Inexistente'
                     }}</span></p>
-                    <p class='text-escuro '><span :class="`text-${color} font-semibold`">{{ status }}</span></p>
-                    <p class="text-escuro ">Expira em: <span class="font-bold text-xs">{{ assinatura_data_expiracao
-                    }}</span></p>
+                    <p v-if="subscription != undefined" class="text-escuro ">Expira em: <span class="font-bold">{{
+                        dataExpiracao }}</span></p>
                 </div>
                 <img class="h-[40px]" src="../assets/icons/saffron.svg" alt="">
             </div>
-            <h1 v-if="assinatura != 'ativo'" class="text-center text-vermelho font-bold animate-pulse z-[-1]">Sua Assinatura não está ativa!</h1>
-            <a v-if="assinatura != 'ativo'"
-                href='https://api.whatsapp.com/send?phone=5549988765487&text=Ol%C3%A1,%20desejo%20renovar%20minha%20assinatura'
-                target="_blank"
-                class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4 w-full mb-5">
-                Clique aqui para entrar em contato e ativar ou renovar sua assinatura
-            </a>
-            <div class="bg-verde_apagado text-escuro border-l-8 border-l-verde flex-row p-4 ">
+
+
+
+            <h1 v-if="subscription === undefined" class=" text-vermelho font-bold animate-pulse">Sua Assinatura não está
+                ativa!
+            </h1>
+            <h1 v-else-if="subscription.status === 'expirada'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura
+                não está
+                ativa!
+            </h1>
+
+            <NuxtLink v-if="subscription === undefined" to="https://saffron.com.br/comprar"
+                class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4  mb-5">
+                Clique aqui para obter uma assinatura
+            </NuxtLink>
+            <NuxtLink v-else-if="subscription.status === 'expirada'" :to="`${session.url}`"
+                class="bg-vermelho text-white font-semibold text-center cursor-pointer  border-l-8flex justify-evenly p-4  mb-5">
+                Clique aqui para obter uma assinatura
+            </NuxtLink>
+            <div class="bg-verde_apagado  text-escuro border-l-8 border-l-verde flex-row items-center justify-center p-4 ">
                 <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
-                <Transition name="pop">
-                    <h1 v-if="showPreencha" class="text-center text-vermelho font-bold animate-pulse">Preencha
-                        todos
-                        os
-                        campos</h1>
-                </Transition>
+
+
                 <div class="flex flex-col">
-                    <div class="relative z-0 w-full mb-6 group">
-
-                        <input type="text" disabled name="floating_email" id="floating_email"
-                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                            placeholder=" " required :value="user.email">
-
-                    </div>
-                    <div class="relative z-0 w-full mb-6 group">
-
-                        <input type="text" name="floating_email" id="floating_email" v-model="setupInput.telefone"
-                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                            placeholder=" " required>
-                        <label for="floating_email"
-                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">
-                            Telefone</label>
-                    </div>
-
 
 
                 </div>
-                <div class="flex flex-col">
 
-                    <div class="relative z-[0] w-full mb-6 group">
+                <NuxtLink @click="handleSubmitSetup" :to="`${session.url}`" data-modal-toggle="defaultModal" type="button"
+                    class="text-claro text-center bg-verde_claro w-[90%]  rounded-lg   text-sm font-medium px-5 py-2.5">
+                    Editar Informações</NuxtLink>
+                <button @click="logOut()" data-modal-toggle="defaultModal" type="button"
+                    class="text-claro bg-escuro flex justify-evenly text-center w-[90%]   items-center  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
 
-                        <input type="text" name="floating_email" id="floating_email" v-model="setupInput.nome"
-                            class="block py-2.5 px-0 w-full text-sm text-verde bg-transparent border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
-                            placeholder=" " required>
-                        <label for="floating_email"
-                            class="peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold">Nome
-                            do Administrador
-                        </label>
-                    </div>
+                    <h1>Fazer logout</h1>
 
 
-                    <div class="relative  w-full mb-6 group">
 
-                        <label for="nome"
-                            class=" peer-focus:font-medium absolute text-sm text-verde  duration-300 transform -translate-y-6  top-1 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale- peer-focus:-translate-y-6">Estado
-                        </label>
-                        <select type="text" placeholder="João da silva" v-model="setupInput.estado"
-                            class="block py-2.5 px-0 w-full text-sm text-escuro bg-transparent bg-opacity-10 bg-verde border-0 border-b-2 border-verde appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer">
-                            <option class="bg-verde font-semibold" value="AC">Acre</option>
-                            <option class="bg-verde font-semibold" value="AL">Alagoas</option>
-                            <option class="bg-verde font-semibold" value="AP">Amapá</option>
-                            <option class="bg-verde font-semibold" value="AM">Amazonas</option>
-                            <option class="bg-verde font-semibold" value="BA">Bahia</option>
-                            <option class="bg-verde font-semibold" value="CE">Ceará</option>
-                            <option class="bg-verde font-semibold" value="DF">Distrito Federal</option>
-                            <option class="bg-verde font-semibold" value="ES">Espírito Santo</option>
-                            <option class="bg-verde font-semibold" value="GO">Goiás</option>
-                            <option class="bg-verde font-semibold" value="MA">Maranhão</option>
-                            <option class="bg-verde font-semibold" value="MT">Mato Grosso</option>
-                            <option class="bg-verde font-semibold" value="MS">Mato Grosso do Sul</option>
-                            <option class="bg-verde font-semibold" value="MG">Minas Gerais</option>
-                            <option class="bg-verde font-semibold" value="PA">Pará</option>
-                            <option class="bg-verde font-semibold" value="PB">Paraíba</option>
-                            <option class="bg-verde font-semibold" value="PR">Paraná</option>
-                            <option class="bg-verde font-semibold" value="PE">Pernambuco</option>
-                            <option class="bg-verde font-semibold" value="PI">Piauí</option>
-                            <option class="bg-verde font-semibold" value="RJ">Rio de Janeiro</option>
-                            <option class="bg-verde font-semibold" value="RN">Rio Grande do Norte</option>
-                            <option class="bg-verde font-semibold" value="RS">Rio Grande do Sul</option>
-                            <option class="bg-verde font-semibold" value="RO">Rondônia</option>
-                            <option class="bg-verde font-semibold" value="RR">Roraima</option>
-                            <option class="bg-verde font-semibold" value="SC">Santa Catarina</option>
-                            <option class="bg-verde font-semibold" value="SP">São Paulo</option>
-                            <option class="bg-verde font-semibold" value="SE">Sergipe</option>
-                            <option class="bg-verde font-semibold" value="TO">Tocantins</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button @click="handleSubmitSetup" data-modal-toggle="defaultModal" type="button"
-                    class="text-claro bg-verde  rounded-lg   text-sm font-medium px-5 py-2.5">
-                    Editar Informações</button>
+                </button>
             </div>
         </div>
-        <button @click="logOut()" data-modal-toggle="defaultModal" type="button"
-            class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
 
-            <h1>Fazer logout</h1>
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" fill="#DDE0D0" width="24">
-                <path
-                    d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z" />
-            </svg>
-
-
-        </button>
         <section class="h-[60px]"></section>
     </div>
 </template>

@@ -3,6 +3,7 @@ import useSupabase from '~~/composables/useSupabase';
 
 const screen = ref();
 const loading = ref()
+const showLogo = ref(true)
 
 if (process.client) {
     const screenWidth = window.innerWidth;
@@ -29,7 +30,7 @@ definePageMeta({ layout: 'login' })
         </div>
         <div v-if="loading" class="w-[90px] h-[90px] z-10 border-[15px] rounded-[50%]  absolute border-verde border-t-escuro opacity-100 animate-spin"></div>
         <div class="flex flex-col space-y-5 mt-[-10vh]">
-            <img class=" ml-[1vw] w-[40%] " src="../assets/icons/logoLogin.svg" alt="">
+            <img v-if='showLogo' @hide='showLogo = false' class=" ml-[1svw] w-[40%] " src="../assets/icons/logoLogin.svg" alt="">
             <Auth class="flex " @loading="loading = true" @stopLoading="loading = false" />
         </div>
 

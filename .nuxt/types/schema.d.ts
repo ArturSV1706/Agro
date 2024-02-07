@@ -13,6 +13,8 @@ declare module 'nuxt/schema' {
 
       cdnURL: string,
    },
+
+   STRIPE_SECRET: string,
   }
   interface PublicRuntimeConfig {
 

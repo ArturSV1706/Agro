@@ -63,6 +63,7 @@ const handleSubmit = async () => {
             await signIn({ email: input.email, password: input.password })
             router.push("/")
         } else {
+            emit('hide')
             await signUp({ email: input.email, password: input.password })
             showConfirmEmailMessage.value = true
         }
@@ -163,7 +164,7 @@ function corAuth() {
                     conta, basta clicar no
                     link enviado. 😉</h3>
                 <button @click="showConfirmEmailMessage = false, authState = 'entrar'"
-                    class="px-8 py-2 w-[80%] self-center rounded transition-all capitalize border-2 bg-escuro text-claro font-bold hover:bg-verde hover:border-verde_claro hover:text-verde_claro">Já
+                    class="mt-6 px-8 py-2 w-[80%] self-center rounded transition-all capitalize border-2 bg-escuro text-claro font-bold hover:bg-verde hover:border-verde_claro hover:text-verde_claro">Já
                     confirmei</button>
             </div>
         </div>
