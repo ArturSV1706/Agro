@@ -158,12 +158,12 @@ function corAuth() {
                         class="px-8 py-2 mt-2 w-[80%] self-center rounded transition-all capitalize border-2 bg-escuro text-claro font-bold hover:bg-verde hover:border-verde_claro hover:text-verde_claro"
                         @click="handleSubmit()">{{ authState }}</button>
                     
-                        <button @click="oathGoogle()"
+                        <!-- <button @click="oathGoogle()"
                             class="mt-4 px-4 py-2 border flex  space-x-4 justify-around bg-slate-200 border-slate-200  rounded-lg text-slate-700  hover:border-slate-400  hover:text-slate-900  hover:shadow transition duration-150">
                             <img class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy"
                                 alt="google logo">
                             <span>Entrar com Google</span>
-                        </button>
+                        </button> -->
                     <!-- <input class="p-3 mb-4 bg-escuro text-claro outline" type="text" placeholder="email"
                             v-model="input.email">
                         <input type="password" placeholder="Password" v-model="input.password"> -->
@@ -233,13 +233,13 @@ function corAuth() {
                         class="px-8 py-2 mt-4 w-[80%] self-center rounded transition-all capitalize border-2 bg-escuro text-claro font-bold hover:bg-verde hover:border-verde_claro hover:text-verde_claro"
                         @click="handleSubmit">{{ authState }}</button>
 
-                        <button @click="oathGoogle()"
+                        <!-- <button @click="oathGoogle()"
                             class="mt-4 px-4 py-2 border flex space-x-4 justify-around bg-slate-200 border-slate-200  rounded-lg text-slate-700  hover:border-slate-400  hover:text-slate-900  hover:shadow transition duration-150">
                             <img class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy"
                                 alt="google logo">
                             <span>Entrar com Google</span>
                         </button>
-               
+                -->
 
 
                 </div>
