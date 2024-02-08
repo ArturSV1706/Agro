@@ -30,8 +30,8 @@ definePageMeta({ layout: 'login' })
         </div>
         <div v-if="loading" class="w-[90px] h-[90px] z-10 border-[15px] rounded-[50%]  absolute border-verde border-t-escuro opacity-100 animate-spin"></div>
         <div class="flex flex-col space-y-5 mt-[-10vh]">
-            <img v-if='showLogo' @hide='showLogo = false' class=" ml-[1svw] w-[40%] " src="../assets/icons/logoLogin.svg" alt="">
-            <Auth class="flex " @loading="loading = true" @stopLoading="loading = false" />
+            <img v-if='showLogo'  class=" ml-[1svw] w-[40%] " src="../assets/icons/logoLogin.svg" alt="">
+            <Auth class="flex " @hide='showLogo = false' @show='showLogo = true' @loading="loading = true" @stopLoading="loading = false" />
         </div>
 
     </div>
@@ -40,8 +40,8 @@ definePageMeta({ layout: 'login' })
         </div>
         <div v-if="loading" class="w-[90px] h-[90px] z-10 border-[15px] rounded-[50%]  absolute border-verde border-t-escuro opacity-100 animate-spin"></div>
         <div class="flex flex-col w-full justify-center items-center">
-            <img class="w-[40%] " src="../assets/icons/logoLogin.svg" alt="">
+            <img v-if='showLogo' class="w-[40%] " src="../assets/icons/logoLogin.svg" alt="">
         </div>
-        <Auth @loading="loading = true" @stopLoading="loading = false" />
+        <Auth  @hide='showLogo = false' @show='showLogo = true' @loading="loading = true" @stopLoading="loading = false" />
     </div>
 </template>

@@ -26,7 +26,7 @@ const router = useRouter()
 // }
 
 
-const { signIn, signUp, user } = useAuth()
+const { signIn, signUp, signInGoogle, user } = useAuth()
 const screen = ref('mobile');
 const emit = defineEmits(['loading']);
 
@@ -54,20 +54,24 @@ const toggleAuthState = () => {
 
 
 }
+const oathGoogle = async () => {
+    await signInGoogle()
+    emit('loading')
+    router.push("/")
+}
 
 const handleSubmit = async () => {
     emit('loading')
 
     try {
         if (authState.value === 'entrar') {
-            await signIn({ email: input.email, password: input.password })
+            c({ email: input.email, password: input.password })
             router.push("/")
         } else {
             emit('hide')
             await signUp({ email: input.email, password: input.password })
             showConfirmEmailMessage.value = true
         }
-        emit('stopLoading')
     } catch (err) {
         if (err.message.includes('You must provide either an email') || !input.password) {
             // Do something when the error message matches the expected value
@@ -83,9 +87,18 @@ const handleSubmit = async () => {
             // Do something when the error message matches the expected value
             err.message = 'Máximo de tentativas atingido, espere 60 segundos para tentar novamente'
         }
+        else if (err.message.includes('should be at least 6 characters')) {
+            // Do something when the error message matches the expected value
+            err.message = 'A senha precisa ter pelo menos 6 dígitos'
+        }
+        else if (err.message.includes('rate limit exceeded')) {
+            // Do something when the error message matches the expected value
+            err.message = 'Muitas tentativas, tente novamente daqui 1 minuto'
+        }
 
         console.log(err)
         emit('stopLoading')
+        emit('show')
         authError.value = err.message
     }
 }
@@ -107,8 +120,12 @@ function corAuth() {
     <div class='flex' v-if="screen === 'desktop'">
         <div v-if="!showConfirmEmailMessage">
             <div class="flex items-end rounded-t-md border-claro border-2 w-fit">
-                <div @click='authState  = "registrar"; toggleAuthState()' :class="` transition-all flex items-center justify-center text-claro font-bold bg-${corBotaoEntrar} min-w-[100px] h-[60px] rounded-tl-md cursor-pointer`">Entrar</div>
-                <div @click='authState  = "entrar"; toggleAuthState() ' :class="`transition-all flex items-center justify-center text-claro font-bold  bg-${corBotaoRegistrar} min-w-[100px] h-[60px] cursor-pointer   rounded-tr-md`">Resgistrar</div>
+                <div @click='authState = "registrar"; toggleAuthState()'
+                    :class="` transition-all flex items-center justify-center text-claro font-bold bg-${corBotaoEntrar} min-w-[100px] h-[60px] rounded-tl-md cursor-pointer`">
+                    Entrar</div>
+                <div @click='authState = "entrar"; toggleAuthState()'
+                    :class="`transition-all flex items-center justify-center text-claro font-bold  bg-${corBotaoRegistrar} min-w-[100px] h-[60px] cursor-pointer   rounded-tr-md`">
+                    Resgistrar</div>
             </div>
             <div :class="`flex flex-col  justify-evenly h-full min-w-[23vw] p-4 border-2 bg-claro`">
                 <h3 class="text-escuro mb-5 text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}
@@ -135,11 +152,18 @@ function corAuth() {
                             class="pl-2 peer-focus:font-medium absolute text-sm text-verde_claro  duration-300 transform -translate-y-9 scale-75 top-[.7rem]  origin-[0] peer-focus:left-0 peer-focus:text-escuro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:-translate-y-9 peer-focus:-pl-0">Senha
                         </label>
                     </div>
-                   
+
 
                     <button
                         class="px-8 py-2 mt-2 w-[80%] self-center rounded transition-all capitalize border-2 bg-escuro text-claro font-bold hover:bg-verde hover:border-verde_claro hover:text-verde_claro"
                         @click="handleSubmit()">{{ authState }}</button>
+                    
+                        <button @click="oathGoogle()"
+                            class="mt-4 px-4 py-2 border flex  space-x-4 justify-around bg-slate-200 border-slate-200  rounded-lg text-slate-700  hover:border-slate-400  hover:text-slate-900  hover:shadow transition duration-150">
+                            <img class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy"
+                                alt="google logo">
+                            <span>Entrar com Google</span>
+                        </button>
                     <!-- <input class="p-3 mb-4 bg-escuro text-claro outline" type="text" placeholder="email"
                             v-model="input.email">
                         <input type="password" placeholder="Password" v-model="input.password"> -->
@@ -159,7 +183,7 @@ function corAuth() {
             <div :class="`flex flex-col justify-evenly h-full w-full p-4 border-2 border-escuro text-center`">
                 <h1 class="text-center text-5xl">📨</h1>
                 <h1 class="text-2xl text-center font-bold text-escuro animate-bounce">Cheque o seu email</h1>
-                <h1 class="text-2xl text-center font-bold text-verde ">{{input.email }}</h1>
+                <h1 class="text-2xl text-center font-bold text-verde ">{{ input.email }}</h1>
                 <h3 class="text-xl font-semibold text-center text-verde">Enviamos um email de confirmação do registro da
                     conta, basta clicar no
                     link enviado. 😉</h3>
@@ -172,8 +196,12 @@ function corAuth() {
     <div v-if="screen === 'mobile'">
         <div v-if="!showConfirmEmailMessage">
             <div class="flex items-end rounded-t-md border-claro border-2 w-fit">
-                <div @click='authState  = "registrar"; toggleAuthState()' :class="` transition-all flex items-center justify-center text-claro font-bold bg-${corBotaoEntrar} min-w-[100px] h-[60px] rounded-tl-md cursor-pointer`">Entrar</div>
-                <div @click='authState  = "entrar"; toggleAuthState() ' :class="`transition-all flex items-center justify-center text-claro font-bold  bg-${corBotaoRegistrar} min-w-[100px] h-[60px] cursor-pointer   rounded-tr-md`">Resgistrar</div>
+                <div @click='authState = "registrar"; toggleAuthState()'
+                    :class="` transition-all flex items-center justify-center text-claro font-bold bg-${corBotaoEntrar} min-w-[100px] h-[60px] rounded-tl-md cursor-pointer`">
+                    Entrar</div>
+                <div @click='authState = "entrar"; toggleAuthState()'
+                    :class="`transition-all flex items-center justify-center text-claro font-bold  bg-${corBotaoRegistrar} min-w-[100px] h-[60px] cursor-pointer   rounded-tr-md`">
+                    Resgistrar</div>
             </div>
             <div :class="`flex flex-col justify-evenly h-full w-[90vw] py-6  border-escuro bg-claro space-y-10`">
                 <h3 class="text-escuro  text-5xl font-aristotelica capitalize font-bold text-center">{{ authState }}
@@ -204,9 +232,14 @@ function corAuth() {
                     <button
                         class="px-8 py-2 mt-4 w-[80%] self-center rounded transition-all capitalize border-2 bg-escuro text-claro font-bold hover:bg-verde hover:border-verde_claro hover:text-verde_claro"
                         @click="handleSubmit">{{ authState }}</button>
-                    <!-- <input class="p-3 mb-4 bg-escuro text-claro outline" type="text" placeholder="email"
-                            v-model="input.email">
-                        <input type="password" placeholder="Password" v-model="input.password"> -->
+
+                        <button @click="oathGoogle()"
+                            class="mt-4 px-4 py-2 border flex space-x-4 justify-around bg-slate-200 border-slate-200  rounded-lg text-slate-700  hover:border-slate-400  hover:text-slate-900  hover:shadow transition duration-150">
+                            <img class="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy"
+                                alt="google logo">
+                            <span>Entrar com Google</span>
+                        </button>
+               
 
 
                 </div>
@@ -223,7 +256,8 @@ function corAuth() {
             <div :class="`flex flex-col justify-evenly h-full w-full p-4 border-2 border-escuro text-center`">
                 <h1 class="text-center text-5xl">📨</h1>
                 <h1 class="text-2xl text-center font-bold text-escuro animate-bounce">Cheque o seu email</h1>
-                <h3 class="text-xl font-semibold text-center mb-5 text-verde">Enviamos um email de confirmação do registro da
+                <h3 class="text-xl font-semibold text-center mb-5 text-verde">Enviamos um email de confirmação do registro
+                    da
                     conta, basta clicar no
                     link enviado. 😉</h3>
                 <button @click="showConfirmEmailMessage = false, authState = 'entrar'"

@@ -30,6 +30,13 @@ const useAuth = () => {
     if(error) throw error;
     return u;
   };
+  const signInGoogle = async () => {
+    const { user, session, error } = await supabase.auth.signIn({
+      // provider can be 'github', 'google', 'gitlab', and more
+      provider: 'google'
+    })
+    return user
+  };
   const recover = async ({ email, password }) => {
     const { user: u, error } = await supabase.auth.update({password: password})
     if(error) throw error;
@@ -50,6 +57,7 @@ const useAuth = () => {
     user,
     signUp,
     signIn,
+    signInGoogle,
     recover,
     signOut,
     isLoggedIn
