@@ -34,6 +34,8 @@ const useAuth = () => {
     const { user, session, error } = await supabase.auth.signIn({
       // provider can be 'github', 'google', 'gitlab', and more
       provider: 'google'
+    },{
+      redirectTo: 'https://app.saffron.com.br'
     })
     return user
   };
