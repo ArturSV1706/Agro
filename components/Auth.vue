@@ -65,7 +65,7 @@ const handleSubmit = async () => {
 
     try {
         if (authState.value === 'entrar') {
-            c({ email: input.email, password: input.password })
+            await signIn({ email: input.email, password: input.password })
             router.push("/")
         } else {
             emit('hide')
