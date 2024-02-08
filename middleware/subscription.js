@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async () => {
   const usuario = ref();
   if (process.client) {
 
-const stripe = new Stripe('sk_test_51Oh9oSHA4IKR1tD0BwY4UGubWHXOCKqqIr9wRG43o6BzWBrpazIPSRH5lDjjWHJeeGezX5PehsVmFxDRXqq66Ru600LKZe6ZmV');
+const stripe = new Stripe('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');
 const customers = await stripe.customers.search({
     query: `email:'${user.value.email}'`,
     expand: ['data.subscriptions'],  
