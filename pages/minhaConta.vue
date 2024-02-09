@@ -21,36 +21,40 @@ if (process.client) {
         expand: ['data.subscriptions'],
     });
 
-    session.value = await stripe.billingPortal.sessions.create({
-        customer: customers.data[0].id,
-        return_url: 'https://app.saffron.com.br',
-    });
-    // window.location.href = session.url;
+    if (customers.data[0] != undefined) {
+        session.value = await stripe.billingPortal.sessions.create({
+            customer: customers.data[0].id,
+            return_url: 'https://app.saffron.com.br',
+        });
+
+        // window.location.href = session.url;
 
 
-    if (customers.data[0].subscriptions.data[0] != undefined) {
+        if (customers.data[0].subscriptions.data[0] != undefined) {
 
-        subscription.value = await stripe.subscriptions.retrieve(
-            customers.data[0].subscriptions.data[0].id
-        );
-        // Unix timestamp
-        const unixTimestamp = subscription.value.current_period_end;
+            subscription.value = await stripe.subscriptions.retrieve(
+                customers.data[0].subscriptions.data[0].id
+            );
+            // Unix timestamp
+            const unixTimestamp = subscription.value.current_period_end;
 
-        // Convert Unix timestamp to milliseconds
-        const milliseconds = unixTimestamp * 1000;
+            // Convert Unix timestamp to milliseconds
+            const milliseconds = unixTimestamp * 1000;
 
-        // Create a new Date object
-        const dateObject = new Date(milliseconds);
+            // Create a new Date object
+            const dateObject = new Date(milliseconds);
 
-        // Get the individual components of the date
-        const day = ("0" + dateObject.getDate()).slice(-2);
-        const month = ("0" + (dateObject.getMonth() + 1)).slice(-2);
-        const year = dateObject.getFullYear();
+            // Get the individual components of the date
+            const day = ("0" + dateObject.getDate()).slice(-2);
+            const month = ("0" + (dateObject.getMonth() + 1)).slice(-2);
+            const year = dateObject.getFullYear();
 
-        // Format the date as dd-mm-yyyy
-        dataExpiracao.value = `${day}-${month}-${year}`;
+            // Format the date as dd-mm-yyyy
+            dataExpiracao.value = `${day}-${month}-${year}`;
 
+        }
     }
+
 }
 
 
@@ -203,7 +207,8 @@ const handleSubmitSetup = async () => {
             <h1 v-if="subscription === undefined" class=" text-vermelho font-bold animate-pulse">Sua Assinatura não está
                 ativa!
             </h1>
-            <h1 v-else-if="subscription.status === 'expirada'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura não está
+            <h1 v-else-if="subscription.status === 'expirada'" class=" text-vermelho font-bold animate-pulse">Sua Assinatura
+                não está
                 ativa!
             </h1>
             <NuxtLink v-if="subscription === undefined" to="https://saffron.com.br/comprar"
@@ -217,7 +222,7 @@ const handleSubmitSetup = async () => {
             </NuxtLink>
             <div class="bg-verde_apagado  border-l-8 border-l-verde flex-row p-4 max-w-[30vw]">
                 <h1 class="text-escuro font-semibold text-xl mb-6">Informações da conta</h1>
-               
+
 
                 <div class="flex flex-col">
 
@@ -225,7 +230,7 @@ const handleSubmitSetup = async () => {
 
                 </div>
                 <div class="flex w-full justify-evenly space-x-4">
-                    <NuxtLink :to="`${session.url}`" data-modal-toggle="defaultModal" type="button"
+                    <NuxtLink v-if="session != undefined" :to="`${session.url}`" data-modal-toggle="defaultModal" type="button"
                         class="text-claro bg-escuro flex  justify-between items-center space-x-2  rounded-lg w-full   text-md font-medium px-3 mt-4 py-2.5">
                         Editar Assinatura</NuxtLink>
                     <button @click="logOut()" data-modal-toggle="defaultModal" type="button"
@@ -292,9 +297,9 @@ const handleSubmitSetup = async () => {
 
                 </div>
 
-                <NuxtLink @click="handleSubmitSetup" :to="`${session.url}`" data-modal-toggle="defaultModal" type="button"
+                <NuxtLink v-if="session != undefined" @click="handleSubmitSetup" :to="`${session.url}`" data-modal-toggle="defaultModal" type="button"
                     class="text-claro text-center bg-verde_claro w-[90%]  rounded-lg   text-sm font-medium px-5 py-2.5">
-                    Editar Informações</NuxtLink>
+                    Editar Assinatura</NuxtLink>
                 <button @click="logOut()" data-modal-toggle="defaultModal" type="button"
                     class="text-claro bg-escuro flex justify-evenly text-center w-[90%]   items-center  rounded-lg   text-sm font-medium px-3 mt-4 py-2.5">
 
