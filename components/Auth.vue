@@ -71,6 +71,7 @@ const handleSubmit = async () => {
             emit('hide')
             await signUp({ email: input.email, password: input.password })
             showConfirmEmailMessage.value = true
+            emit('stopLoading')
         }
     } catch (err) {
         if (err.message.includes('You must provide either an email') || !input.password) {
