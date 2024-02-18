@@ -865,7 +865,7 @@ const valorCombustivelFormatar = (valor) => {
                             <th class="p-2 ">Abastecer</th>
                             <th class="p-2 ">Manutenção</th>
                             <th class="p-2 ">Pagar Parcela</th>
-                            <th class="p-2 ">Detalhes</th>
+                            <th class="p-2 ">Editar</th>
                             <th class="p-2 ">Deletar</th>
                         </thead>
                         <tbody>
