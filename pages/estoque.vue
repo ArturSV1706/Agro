@@ -1473,7 +1473,7 @@ const precoFormatar = (valor) => {
                                 placeholder=" " required>
                             <label for="floating_email"
                                 class="peer-focus:font-medium absolute text-sm text-claro  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Quantidade
-                                colhida em | {{ estoqueInput.grandeza }}</label>
+                                colhida em | {{ formatar(estoqueInput.grandeza) }}</label>
                         </div>
                         <div class="relative z-0 w-full mb-6 group">
 
