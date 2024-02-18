@@ -126,7 +126,7 @@ const handleSafraSelecioanda = async () => {
         mainElement.value.style.overflow = "auto";
     }
     if (safra_escolhida.value) {
-        console.log(safra_escolhida.value)
+        // console.log(safra_escolhida.value)
 
         showFluxo.value = true
         if (process.client) {
@@ -225,14 +225,14 @@ const handleVerNota = async (id) => {
     fluxoInput.id = id
     if (process.client) {
         let link = await supabase.storage.from(user.value.id).createSignedUrl(fluxoInput.id + ".pdf", 3600)
-        console.log(link.data.signedURL)
+        // console.log(link.data.signedURL)
         window.open(link.data.signedURL, "_blank")
     }
 }
 
 
 const handleSubmitEntrada = async () => {
-    console.log(entradaInput.comprador)
+    // console.log(entradaInput.comprador)
     if (paraFloat(entradaInput.valor_unitario) > 0 && parseFloat(entradaInput.valor_quantidade) > 0 && entradaInput.comprador) {
 
 
@@ -255,7 +255,7 @@ const handleSubmitEntrada = async () => {
             }).eq('id', safra_escolhida.value);
         }
         saldoResponse.value = await supabase.from("usuario").select().eq("id", 1)
-        fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+        fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
         fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
         fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
         saldoResult.value = parseFloat(fluxoEntrada.value) * parseFloat(fluxoSaida.value)
@@ -268,7 +268,7 @@ const handleSubmitEntrada = async () => {
         entradaInput.valor_quantidade = ""
 
         if (process.client) {
-            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
             fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
             fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
             safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
@@ -290,7 +290,7 @@ const handleSubmitEntrada = async () => {
         await supabase.from("fluxo").delete().eq('id', fluxoInput.id)
 
         if (process.client) {
-            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
             fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
             fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
             safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
@@ -358,7 +358,7 @@ const handleSubmitAdicionarDespesa = async () => {
             }
 
             if (process.client) {
-                fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+                fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
                 fluxoEntrada.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "entrada", id_safra: safra_escolhida.value })
                 fluxoSaida.value = await supabase.rpc('soma', { id_user: user.value.id, t_fluxo: "saida", id_safra: safra_escolhida.value })
                 safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
@@ -446,14 +446,14 @@ const handleSubmitEditarNota = async () => {
                 if (process.client) {
                     let test_bucket = await supabase.storage.getBucket(user.value.id)
                     if (!test_bucket.data) {
-                        console.log("Bucket doesn't exist")
+                        // console.log("Bucket doesn't exist")
                         await supabase.storage.createBucket(user.value.id, {
                             public: false,
                             allowedMimeTypes: ['image/pdf'],
                             fileSizeLimit: 2048
                         })
                     } else {
-                        console.log("Bucket exists" + test_bucket.value)
+                        // console.log("Bucket exists" + test_bucket.value)
 
                         await supabase.storage.from(user.value.id).upload(fluxoInput.id + ".pdf", fluxoInput.arquivo_nota, {
                             cacheControl: '3600',
@@ -486,7 +486,7 @@ const handleSubmitEditarNota = async () => {
         }).eq('id', fluxoInput.id);
 
         if (process.client) {
-            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
             safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
         }
 
@@ -502,7 +502,7 @@ const handleSubmitEditarNota = async () => {
         showPreencha.value = false
 
         if (process.client) {
-            fluxoResponse.value = await supabase.from("fluxo").select().match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
+            fluxoResponse.value = await supabase.from("fluxo").select("*, compradores(*)").match({ user_id: user.value.id, safra_id: parseInt(safra_escolhida.value) }).order('data_criacao', { ascending: false })
             safraSelecionadaResponse.value = await supabase.from("safras").select().match({ user_id: user.value.id, id: parseInt(safra_escolhida.value) })
         }
     }
@@ -705,9 +705,9 @@ function onFileSelected(event) {
 
 
 function calcularJurosCompostos(valorPresente, taxaJuros, numeroPeriodos) {
-    console.log('valorPresente: ', valorPresente)
-    console.log('taxaJuros: ', taxaJuros)
-    console.log('numeroPeriodos: ', numeroPeriodos)
+    // console.log('valorPresente: ', valorPresente)
+    // console.log('taxaJuros: ', taxaJuros)
+    // console.log('numeroPeriodos: ', numeroPeriodos)
     var valorFuturo = valorPresente * Math.pow((1 + (taxaJuros / 100)), numeroPeriodos);
     return valorFuturo;
 }
