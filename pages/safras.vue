@@ -172,7 +172,7 @@ const fecharModalNovaSafra = () => {
 }
 
 const handleSubmitNovaSafra = async () => {
-    if (safraInput.safra && safraInput.area && safraInput.taxa_arrendo && safraInput.grandeza && safraInput.despeza && safraInput.valor_unitario && safraInput.quantidade && safraInput.data_inicio && safraInput.data_fim) {
+    if (safraInput.safra && safraInput.area && !isNaN(safraInput.taxa_arrendo) && safraInput.grandeza && safraInput.despeza && safraInput.valor_unitario && safraInput.quantidade && safraInput.data_inicio && safraInput.data_fim) {
 
         if (!limitarForm.value) return
         limitarForm.value = false
