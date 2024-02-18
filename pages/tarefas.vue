@@ -627,7 +627,7 @@ const handlePagina = (i) => {
                             <div class="relative z-0 w-full mb-6 group">
 
                                 <textarea v-model="tarefaInput.descricao" maxlength="500" cols="30" rows="7"
-                                    class="block py-2.5 px-2.5 resize-none w-full rounded mt-4 text-sm text-escuro bg-transparent border-0 border-b-2  bg-claro appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
+                                    class="block py-2.5 px-2.5 resize-none w-full rounded mt-4 text-sm text-escuro  border-0 border-b-2  bg-claro appearance-none focus:outline-none focus:ring-0 focus:border-verde_claro peer"
                                     placeholder=" " required></textarea>
                                 <label
                                     class="peer-focus:font-medium absolute  text-sm text-escuro  duration-300 transform -translate-y-6 scale-75 top-5  left-1  font-bold   origin-[0] peer-focus:left-0 peer-focus:text-verde_claro peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
