@@ -976,7 +976,7 @@ const valorCombustivelFormatar = (valor) => {
                                 <td class="p-2">{{ combustivel.quantidade.toFixed(2) + " L" }}</td>
                                 <td class="p-2">
                                     <span class="cursor-pointer material-icons block text-center hover:text-xl"
-                                        @click="handleReporCombustivel(combustivel.id, combustivel.quantidade)"
+                                        @click="handleReporCombustivel(combustivel.id, combustivel.quantidade, combustivel.nome)"
                                         @close="showModalEditar = false">
                                         ➕
                                     </span>
@@ -1626,7 +1626,7 @@ const valorCombustivelFormatar = (valor) => {
             @close="showModalOpcoesCombustivel = false; mainElement.style.overflow = 'auto'">
             <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ combustivelInput.nome }}</h1>
             <ul>
-                <li @click="showModalOpcoesCombustivel = false; handleReporCombustivel(combustivelInput.id, combustivelInput.quantidade)"
+                <li @click="showModalOpcoesCombustivel = false; handleReporCombustivel(combustivelInput.id, combustivelInput.quantidade, ombustivelInput.nome)"
                     class="bg-verde py-1 px-2 rounded mb-2">
                     Editar
                 </li>

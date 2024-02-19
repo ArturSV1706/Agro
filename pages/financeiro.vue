@@ -823,7 +823,7 @@ function calcularJurosCompostos(valorPresente, taxaJuros, numeroPeriodos) {
                             paraReal(safraSelecionadaResponse.data[0].emprestimo) }}
                         </h1>
                     </div>
-                    <p class="ml-8 text-verde font-semibold">💡 Ao adicionar um empréstimo, uma despeza em seu valor será
+                    <p class="ml-8 text-verde font-semibold">💡 Ao adicionar um empréstimo, uma despesa em seu valor será
                         criada. <br> Novas despesas irão ser descontadas do valor do empréstimo até o mesmo acabar</p>
                 </div>
 
@@ -1288,7 +1288,7 @@ function calcularJurosCompostos(valorPresente, taxaJuros, numeroPeriodos) {
             </div>
             <!--  -->
             <!-- emprestimos -->
-            <p class="text-justify text-sm font-semibold mb-2">💡 Ao adicionar um empréstimo, uma despeza em seu valor será
+            <p class="text-justify text-sm font-semibold mb-2">💡 Ao adicionar um empréstimo, uma despesa em seu valor será
                 criada.
                 Novas despesas irão ser descontadas do valor do empréstimo até o mesmo acabar</p>
 
