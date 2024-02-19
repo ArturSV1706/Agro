@@ -493,7 +493,7 @@ const limitarTaxa = (valor) => {
                                 <h1 class="text-2xl font-bold text-vermelho ">{{ paraReal(safra.despeza_real) }}</h1>
                             </div>
                             <div class="flex flex-col item-center h-[80%]">
-                                <h1 class="text-3xl font-bold">Colhido</h1>
+                                <h1 class="text-3xl font-bold">Em estoque</h1>
                                 <h1 class="text-2xl font-bold text-verde_claro">{{ safra.quantidade_real }}</h1>
                                 <h3 class="text-verde">[{{ formatar(safra.grandeza) }}]</h3>
                             </div>
@@ -825,7 +825,7 @@ const limitarTaxa = (valor) => {
                     <h1 class=" font-bold text-vermelho ">{{ paraReal(safra.despeza_real) }}</h1>
                 </div>
                 <div class="flex items-center border-l-4 border-verde pl-2">
-                    <h1 class="font-bold text-escuro">Colhido &nbsp</h1>
+                    <h1 class="font-bold text-escuro">Em estoque &nbsp</h1>
                     <h1 class="font-bold text-verde_claro">{{ safra.quantidade_real }} &nbsp</h1>
                     <h3 class="text-verde">[{{ formatar(safra.grandeza) }}]</h3>
                 </div>
