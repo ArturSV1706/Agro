@@ -4,6 +4,7 @@ import { defineNuxtConfig } from "nuxt/config";
 
 export default {
   modules: ["@nuxtjs/tailwindcss"],
+  
  
   runtimeConfig: {
     STRIPE_SECRET: process.env.STRIPE_SECRET,

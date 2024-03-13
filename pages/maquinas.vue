@@ -338,7 +338,7 @@ const handleSubmitManutencao = async () => {
                         tipo_fluxo: "saida_emprestimo",
                         categoria: "manutencao",
                         // fornecedor: entradaInput.fornecedor,
-                        produto: parseInt(maquinaInput.id),
+                        produto:  maquinaInput.modelo + " " +  maquinaInput.ano,
                         valor: emprestimoResponse.value.data[0].emprestimo,
                         safra_id: combustivelInput.safra_id,
                         user_id: user.value.id
@@ -347,7 +347,7 @@ const handleSubmitManutencao = async () => {
                         tipo_fluxo: "saida",
                         categoria: "manutencao",
                         // fornecedor: entradaInput.fornecedor,
-                        produto: parseInt(maquinaInput.id),
+                        produto:  maquinaInput.modelo + " " +  maquinaInput.ano,
                         valor: paraFloat(maquinaInput.valor_manutencao) - emprestimoResponse.value.data[0].emprestimo,
                         safra_id: combustivelInput.safra_id,
                         user_id: user.value.id
@@ -362,7 +362,7 @@ const handleSubmitManutencao = async () => {
                         tipo_fluxo: "saida_emprestimo",
                         categoria: "manutencao",
                         // fornecedor: entradaInput.fornecedor,
-                        produto: parseInt(maquinaInput.id),
+                        produto:  maquinaInput.modelo + " " +  maquinaInput.ano,
                         valor: paraFloat(maquinaInput.valor_manutencao),
                         safra_id: combustivelInput.safra_id,
                         user_id: user.value.id

@@ -5,34 +5,34 @@ export default defineNuxtRouteMiddleware(async () => {
   const { user } = useAuth();
 
   const usuario = ref();
-  if (process.client) {
-    const stripe = new Stripe(
-      "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"
-    );
-    const customers = await stripe.customers.search({
-      query: `email:'${user.value.email}'`,
-      expand: ["data.subscriptions"],
-    });
+  const res =ref();
 
-    if (customers.data[0] != undefined) {
-      if (customers.data[0].subscriptions.data[0] === undefined) {
-        console.log("teste");
-        return navigateTo("/minhaConta");
-      } else {
-        const subscription = await stripe.subscriptions.retrieve(
-          customers.data[0].subscriptions.data[0].id
-        );
+  if (process.client) {
+    res.value = await $fetch('/api/stripeService', {
+      method: 'POST',
+      body: {
+          email: user.value.email
+      }
+  })
+
+    // const stripe = new Stripe(
+    //   "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"
+    // );
+    // const customers = await stripe.customers.search({
+    //   query: `email:'${user.value.email}'`,
+    //   expand: ["data.subscriptions"],
+    // });
+
+    
         if (
-          subscription.status === "active" ||
-          subscription.status === "trialing"
+          res.value.subscription.status === "active" ||
+          res.value.subscription.status === "trialing"
         ) {
         } else {
           return navigateTo("/minhaConta");
         }
-      }
-    }else{
-      return navigateTo("/minhaConta");
-    }
+      
+    
   }
 
   // if (process.client) {

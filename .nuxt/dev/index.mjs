@@ -4,7 +4,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, createEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseStatus, getRequestHeader, setResponseHeader, getRequestHeaders, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, getQuery as getQuery$1, createError } from 'file://C:/Users/Artur/Documents/nuxt/template/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, createEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseStatus, getRequestHeader, setResponseHeader, getRequestHeaders, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, getQuery as getQuery$1, createError } from 'file://C:/Users/Artur/Documents/nuxt/template/node_modules/h3/dist/index.mjs';
+import Stripe from 'file://C:/Users/Artur/Documents/nuxt/template/node_modules/stripe/esm/stripe.esm.node.js';
 import { createRenderer } from 'file://C:/Users/Artur/Documents/nuxt/template/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { stringify, uneval } from 'file://C:/Users/Artur/Documents/nuxt/template/node_modules/devalue/index.js';
 import { renderToString } from 'file://C:/Users/Artur/Documents/nuxt/template/node_modules/vue/server-renderer/index.mjs';
@@ -125,7 +126,7 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {},
-  "STRIPE_SECRET": "sk_test_51Oh9oSHA4IKR1tD0BwY4UGubWHXOCKqqIr9wRG43o6BzWBrpazIPSRH5lDjjWHJeeGezX5PehsVmFxDRXqq66Ru600LKZe6ZmV"
+  "STRIPE_SECRET": "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"
 };
 const ENV_PREFIX = "NITRO_";
 const ENV_PREFIX_ALT = _inlineRuntimeConfig.nitro.envPrefix ?? process.env.NITRO_ENV_PREFIX ?? "_";
@@ -642,9 +643,11 @@ const errorHandler = (async function errorhandler(error, event) {
   event.node.res.end(html);
 });
 
+const _lazy_mGsLHH = () => Promise.resolve().then(function () { return stripeService_post$1; });
 const _lazy_R6iLHd = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
+  { route: '/api/stripeService', handler: _lazy_mGsLHH, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_R6iLHd, lazy: true, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_R6iLHd, lazy: true, middleware: false, method: undefined }
 ];
@@ -773,6 +776,47 @@ const template$1 = _template;
 const errorDev = /*#__PURE__*/Object.freeze({
   __proto__: null,
   template: template$1
+});
+
+const stripeService_post = defineEventHandler(async (event) => {
+  const body = await readBody(event);
+  body.email;
+  const stripe = new Stripe(process.env.STRIPE_SECRET);
+  let subscription = "";
+  let session = "";
+  let dataExpiracao = "";
+  const customers = await stripe.customers.search({
+    query: `email:'${body.email}'`,
+    expand: ["data.subscriptions"]
+  });
+  if (customers.data[0] != void 0) {
+    session = await stripe.billingPortal.sessions.create({
+      customer: customers.data[0].id,
+      return_url: "https://app.saffron.com.br"
+    });
+    if (customers.data[0].subscriptions.data[0] != void 0) {
+      subscription = await stripe.subscriptions.retrieve(
+        customers.data[0].subscriptions.data[0].id
+      );
+      const unixTimestamp = subscription.current_period_end;
+      const milliseconds = unixTimestamp * 1e3;
+      const dateObject = new Date(milliseconds);
+      const day = ("0" + dateObject.getDate()).slice(-2);
+      const month = ("0" + (dateObject.getMonth() + 1)).slice(-2);
+      const year = dateObject.getFullYear();
+      dataExpiracao = `${day}-${month}-${year}`;
+    }
+  }
+  return {
+    subscription,
+    session,
+    dataExpiracao
+  };
+});
+
+const stripeService_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: stripeService_post
 });
 
 const appRootId = "__nuxt";
