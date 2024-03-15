@@ -99,7 +99,7 @@ const abrirOpcoesMobile = (nome, cargo, numero, is_assalariado, salario, diaPaga
     funcionarioInput.cargo = cargo
     funcionarioInput.numero = numero
     funcionarioInput.is_assalariado = is_assalariado
-    funcionarioInput.salario = salario
+    funcionarioInput.salario = paraReal(salario)
     funcionarioInput.data_pagamento_salario = diaPagamento
     funcionarioInput.id = id
 }
@@ -324,7 +324,7 @@ const handleSubmitPagarFuncionario = async () => {
 
         showModalPagarFuncionario.value = false
         showPreencha.value = false
-        showAlert("Pagamento realisado com sucesso!")
+        showAlert("Pagamento realizado com sucesso!")
 
     } else {
         showPreencha.value = true

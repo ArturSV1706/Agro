@@ -1626,9 +1626,9 @@ const valorCombustivelFormatar = (valor) => {
             @close="showModalOpcoesCombustivel = false; mainElement.style.overflow = 'auto'">
             <h1 class="capitalize text-center text-escuro font-semibold mb-2">{{ combustivelInput.nome }}</h1>
             <ul>
-                <li @click="showModalOpcoesCombustivel = false; handleReporCombustivel(combustivelInput.id, combustivelInput.quantidade, ombustivelInput.nome)"
+                <li @click="showModalOpcoesCombustivel = false; handleReporCombustivel(combustivelInput.id, combustivelInput.quantidade, combustivelInput.nome)"
                     class="bg-verde py-1 px-2 rounded mb-2">
-                    Editar
+                    Repor
                 </li>
                 <li @click="showModalOpcoesCombustivel = false; handleDeleteCombustivel(combustivelInput.id)"
                     class="bg-vermelho py-1 px-2 rounded">
